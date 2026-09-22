@@ -60,6 +60,8 @@ const TEMPLATE_VARS_16 = [
   'dice', 'stat', 'stat_value', 'bonus_name', 'bonus', 'luck_half', 'total', 'dc', 'result', 'cost', 'reason', 'rule',
   'choice_short', 'offer', 'quote', 'risk_line', 'injury_line', 'final_check_line',
 ]
+// 16에 없는 엔진 계약 변수: offered_relic이 채우고 remove_item chosen_relic·register_relic uid가 읽는다
+const TEMPLATE_VARS_NEW = ['relic_uid']
 const sorted = (xs: readonly string[]) => [...xs].sort()
 
 describe('기본 등록', () => {
@@ -70,8 +72,8 @@ describe('기본 등록', () => {
     assert.deepEqual(sorted(conditions.names()), sorted([...CONDITIONS_16, ...CONDITIONS_NEW]))
     assert.deepEqual(sorted(effects.names()), sorted([...EFFECTS_16, ...EFFECTS_NEW]))
     assert.deepEqual(contextSelectors.names(), ['rumor_place', 'best_hunting_ground', 'main_enemy_of', 'random_friend_name', 'offered_relic'])
-    assert.deepEqual(selectorYields('offered_relic'), ['relic_name', 'relic_note'])
-    assert.deepEqual(sorted(templateVars.list().map((v) => v.pattern)), sorted(TEMPLATE_VARS_16))
+    assert.deepEqual(selectorYields('offered_relic'), ['relic_name', 'relic_note', 'relic_uid'])
+    assert.deepEqual(sorted(templateVars.list().map((v) => v.pattern)), sorted([...TEMPLATE_VARS_16, ...TEMPLATE_VARS_NEW]))
     assert.equal(templateVars.match('rumor_place')?.meta.source, 'event')
     assert.equal(templateVars.match('name')?.meta.source, 'context')
     assert.equal(templateVars.match('die'), undefined) // 옛 표기는 등록하지 않는다

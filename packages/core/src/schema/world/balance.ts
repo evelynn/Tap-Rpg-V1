@@ -254,7 +254,7 @@ export const balanceSchema = obj({
     main_stat_start: posInt,
     stat_up_levels: z.array(posInt),
     melee_rank_levels: z.array(posInt),
-    // 모양은 DS-39 결정 전 자리: 판정 종류별 레벨 구간 보정 표
+    // 판정 종류별 레벨 구간 보정 표(01 §2.4 기준 인물, D46)
     check_bonus: z.record(ref('check_kind'), z.array(obj({ from_level: posInt, value: int })).min(1)),
   }),
   aging: obj({
@@ -366,6 +366,8 @@ export const balanceSchema = obj({
     item_loss_count: nonNegInt,
     return_travel_mult: nonNeg,
     arrive_hp_ratio: ratio,
+    // R01 방울 탈출의 부상 판정 보정(08 §3.5 "부상 판정 +5"). 칸이 없으면 보정 없음
+    escape_injury_add: int.optional(),
     // 키 = rescuer_table 이름공간
     rescuers: z.record(id, z.array(obj({ id, weight, line })).min(1)),
     // 키 = rescuer 이름공간(rescuer_override가 가리킴)

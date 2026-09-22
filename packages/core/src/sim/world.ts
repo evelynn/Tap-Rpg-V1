@@ -10,7 +10,9 @@ import type { SaveBody } from '../state/save'
 import { ageAt } from '../time/index'
 import { characterOf, constantConditionTest, type ConditionTest, type RuleContext } from '../rules/context'
 import { applyAging, type AgingChange } from '../rules/growth'
+import type { EventPorts, EventWorld } from '../events/index'
 import { createNewFamilyState, rngStates, type NewFamilyInput } from './create'
+import { createServices, type SimServices } from './services'
 
 // 해석기가 행동 시작 때 확정하는 부분(seq·kind·시작 시점·applied는 World가 채운다)
 export type ResolvedDraft = Omit<ResolvedAction, 'seq' | 'kind' | 'started_eff_min' | 'applied'>
@@ -30,7 +32,8 @@ export function registerActionResolver(kind: ActionKind, resolver: ActionResolve
 }
 
 export interface WorldOptions {
-  test?: ConditionTest // 조건 평가기(사건 규칙 태스크가 넣는다)
+  test?: ConditionTest // 조건 평가기(makeConditionTest). 사건 포트는 제 scope로 다시 만들어 쓴다
+  ports?: Partial<EventPorts> // 사건 포트 교체(출정 진행·계승이 제 구현을 넣는다)
   resolvers?: Partial<Record<ActionKind, ActionResolver>> // 없으면 ACTION_RESOLVERS
   // 다음 행동(04 행동 결정). 행동과 행동 사이에만 부른다. 할 일이 없을 때의 대기도 길이가 정해진 행동이다
   decide?: (world: World) => ActionKind
@@ -48,9 +51,11 @@ const MAX_ZERO_ACTIONS = 1000
 const toMs = (min: number) => Math.round(min * 60000)
 const toMin = (ms: number) => ms / 60000
 
-export class World implements RuleContext {
+export class World implements RuleContext, EventWorld {
   readonly rng: Record<RngStream, Pcg32>
   readonly test: ConditionTest
+  // 사건 엔진이 쓰는 포트 묶음(전투·장비·경제·회복). 적용 단계에서만 상태를 바꾼다
+  readonly services: SimServices
   private readonly resolvers: Partial<Record<ActionKind, ActionResolver>>
   private readonly decide: (world: World) => ActionKind
   private readonly onAge: WorldOptions['onAge']
@@ -67,6 +72,11 @@ export class World implements RuleContext {
       throw new Error('행동 결정기가 없다(WorldOptions.decide)')
     })
     this.onAge = opts.onAge
+    this.services = createServices(this, { ...(opts.ports ? { ports: opts.ports } : {}) })
+  }
+
+  get ports(): EventPorts {
+    return this.services.ports
   }
 
   static create(content: Content, input: NewFamilyInput, opts: WorldOptions = {}): World {

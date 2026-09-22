@@ -625,7 +625,12 @@ export const effects = new ParamRegistry('효과', ['type', 'when'])
 // 파라미터 사이의 제약(예: amount와 units 중 하나). 문제가 있으면 메시지를 돌려준다.
 export type EffectCheck = (value: Record<string, unknown>) => string | undefined
 
-export function registerEffect(name: string, shape: z.ZodRawShape, doc = '', check?: EffectCheck): void {
+// 결과 적용 순서(10 §9.1): 1 보상·손실 → 2 특성 → 3 생애 플래그 → 4 가문 플래그 → 5 기록 → 6 연출.
+// 등록할 때 함께 적는다(적지 않으면 1단계). 실행기(EFFECT_HANDLERS)가 effectPhase로 읽는다.
+const effectPhases = new Map<string, number>()
+export const effectPhase = (name: string): number => effectPhases.get(name) ?? 1
+
+export function registerEffect(name: string, shape: z.ZodRawShape, doc = '', check?: EffectCheck, phase?: number): void {
   const base = obj({ type: z.literal(name), when: condition.optional(), ...shape })
   const params = check
     ? base.superRefine((v, ctx) => {
@@ -634,6 +639,7 @@ export function registerEffect(name: string, shape: z.ZodRawShape, doc = '', che
       })
     : base
   effects.register(name, params, doc)
+  if (phase !== undefined) effectPhases.set(name, phase)
 }
 
 // 나열한 키 중 정확히 하나만 있어야 한다

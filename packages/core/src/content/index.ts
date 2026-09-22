@@ -6,7 +6,7 @@ import {
   descendantReactionSchema, enemyFamilySchema, enemySchema, epithetSchema, eventSchema, flagDefSchema,
   guildRankSchema, itemEffectSchema, itemSchema, materialSchema, namePoolSchema, npcSchema, propSchema,
   regionSchema, retireRoleSchema, textSchema, trapSchema, traitSchema,
-  CONTENT_KIND_NAMES, type ContentKind,
+  regionFilter, CONTENT_KIND_NAMES, type ContentKind,
 } from '../schema/index'
 
 // 코어가 읽을 수 있는 번들 형식 번호. content-kit BUNDLE_FORMAT이 이 값을 쓴다. 번들 모양을 호환되지 않게 바꿀 때만 올린다
@@ -82,4 +82,18 @@ export class Content {
   get balance(): ContentDef<'balance'> {
     return this.get('balance', 'balance')
   }
+}
+
+// 장소 거르개 평가(16 §3.2 regionFilter). 조건·장비 평가·카운터 합산이 모두 이 함수를 쓴다.
+// 키끼리는 AND, tags는 하나라도 맞으면 참
+export type RegionFilter = z.infer<typeof regionFilter>
+
+export function regionMatches(content: Content, id: string, f: RegionFilter): boolean {
+  const r = content.get('region', id)
+  const dungeon = r.kind === 'dungeon_floor' ? r.dungeon : null
+  return (!f.ids || f.ids.includes(id))
+    && (!f.kinds || f.kinds.includes(r.kind))
+    && (!f.tags || f.tags.some((t) => r.tags?.includes(t)))
+    && (f.dungeon_group === undefined || dungeon?.group === f.dungeon_group)
+    && (f.dungeon_depth_gte === undefined || (dungeon !== null && dungeon.depth >= f.dungeon_depth_gte))
 }

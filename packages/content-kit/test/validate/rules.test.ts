@@ -267,6 +267,26 @@ describe('V6 한 줄 길이', () => {
     // L02: 이름 6자+이, 가장 긴 장소 이름 17자+로, 떠났다 → 30자 > 28. 문형은 max_len 40이라 통과
     assert.deepEqual(r, ['V6 event/L02.json#/intro/lines/0'])
   })
+
+  it('상세 기록은 가장 긴 대입으로 80자, 여러 줄(편지 형식)은 줄마다 80자를 본다(오류)', () => {
+    const intro = (detail: string) => ({ intro: { lines: ['첫 줄', '둘째 줄'], tag: 'town', detail } })
+    const letter = (detail: string) => ({ choices: [choice('go', { outcomes: { always: { effects: [], detail } } })] })
+    const r = runSemanticChecks(buildIndex([
+      ...WORLD,
+      // 이름 6자 + 이 + 공백 + 72 = 80 → 통과, 73이면 81 → 오류
+      event('L02', intro('{name:이/가} ' + '가'.repeat(72))),
+      event('L03', intro('{name:이/가} ' + '가'.repeat(73))),
+      // 줄마다 80자면 전체가 길어도 통과, 한 줄이라도 81자면 그 줄만 오류
+      event('S07', letter(['가'.repeat(80), '{name}에게.', '가'.repeat(80)].join('\n'))),
+      event('S08', letter(['가'.repeat(80), '가'.repeat(81)].join('\n'))),
+    ]).index).filter((i) => i.code === 'V6')
+    assert.deepEqual(r.map((i) => `${i.severity} ${i.file}#${i.pointer}`), [
+      'error event/L03.json#/intro/detail',
+      'error event/S08.json#/choices/0/outcomes/always/detail',
+    ])
+    assert.match(r[0]!.message, /81자다\(상한 80\)/)
+    assert.match(r[1]!.message, /2번째 줄이 가장 긴 대입에서 81자다/)
+  })
 })
 
 describe('V3 교차 검사', () => {

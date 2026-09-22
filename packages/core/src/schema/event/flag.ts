@@ -28,15 +28,21 @@ export const flagDefSchema = obj({
 
 export type FlagDef = z.infer<typeof flagDefSchema>
 
+// 줄기 플래그 키의 단일 출처(§5.9, 10 §7). 파생 등록도 규칙 층도 이 함수로만 키를 만든다.
+const lower = (id: string) => id.toLowerCase()
+export const chainStageKey = (chainId: string) => `life.${lower(chainId)}_stage`
+export const chainDoneKey = (chainId: string) => `fam.${lower(chainId)}_done`
+export const chainOutcomeKey = (chainId: string, outcome: string) => `fam.${lower(chainId)}_${outcome}`
+export const chainUnfinishedKey = (chainId: string) => `fam.${lower(chainId)}_unfinished`
+
 // 줄기 정의에서 로더가 파생 등록하는 키(§5.9). outcome done은 완료 플래그와 같은 키라 하나로 친다.
 export function derivedChainFlags(chain: Pick<Chain, 'id' | 'stages' | 'outcomes'>): FlagDef[] {
-  const c = chain.id.toLowerCase()
   const src = `줄기 ${chain.id} 파생`
   const bool = (id: string): FlagDef => ({ id, scope: 'fam', value: 'bool', set_by: src, read_by: src })
   return [
-    { id: `life.${c}_stage`, scope: 'life', value: { int: [0, chain.stages] }, set_by: src, read_by: src },
-    bool(`fam.${c}_done`),
-    ...chain.outcomes.filter((o) => o !== 'done').map((o) => bool(`fam.${c}_${o}`)),
-    { id: `fam.${c}_unfinished`, scope: 'fam', value: { int: [1, Math.max(1, chain.stages - 1)] }, set_by: src, read_by: src },
+    { id: chainStageKey(chain.id), scope: 'life', value: { int: [0, chain.stages] }, set_by: src, read_by: src },
+    bool(chainDoneKey(chain.id)),
+    ...chain.outcomes.filter((o) => o !== 'done').map((o) => bool(chainOutcomeKey(chain.id, o))),
+    { id: chainUnfinishedKey(chain.id), scope: 'fam', value: { int: [1, Math.max(1, chain.stages - 1)] }, set_by: src, read_by: src },
   ]
 }

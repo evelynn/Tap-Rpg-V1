@@ -31,7 +31,7 @@
             { "type": "schedule_event", "event_id": "S02", "at": "next_town_return" }
           ],
           "line": "{partner:과/와} 다리 위에서 약속했다",
-          "detail": "여울 다리 위에서 {partner:과/와} 약속을 나눴다. 여울가 작은 집에 등불이 하나 더 걸렸다. {partner:은/는} 도토리 여울에서 {job} 일을 한다."
+          "detail": "여울 다리 위에서 {partner:과/와} 약속을 나눴다. 여울가 작은 집에 등불이 하나 더 걸렸다.\n{partner:은/는} 도토리 여울에서 {job} 일을 한다."
         }
       }
     },
@@ -45,7 +45,7 @@
             { "type": "schedule_event", "event_id": "S02", "at": "next_town_return" }
           ],
           "line": "{partner:과/와} 같은 길을 걷기로 했다",
-          "detail": "{partner:이/가} 말했다. \"이제 같은 길로 걷자.\" 약속 대신 오래 함께 걷기로 했다. {partner:은/는} 도토리 여울에서 {job} 일을 한다."
+          "detail": "{partner:이/가} 말했다. \"이제 같은 길로 걷자.\" 약속 대신 오래 함께 걷기로 했다.\n{partner:은/는} 도토리 여울에서 {job} 일을 한다."
         }
       }
     },
@@ -59,7 +59,7 @@
             { "type": "schedule_event", "event_id": "S02", "at": "next_town_return" }
           ],
           "line": "여울가 공동 집에 짐을 풀었다",
-          "detail": "{partner}의 집, 길드 동료 몇과 한 지붕 아래 아이들을 함께 키우기로 했다. 아이들 웃음소리가 컸다. {partner:은/는} 도토리 여울에서 {job} 일을 한다."
+          "detail": "{partner}의 집, 길드 동료 몇과 한 지붕 아래 아이들을 함께 키우기로 했다. 아이들 웃음소리가 컸다.\n{partner:은/는} 도토리 여울에서 {job} 일을 한다."
         }
       }
     }

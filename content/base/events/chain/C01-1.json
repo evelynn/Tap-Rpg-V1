@@ -16,7 +16,7 @@
   "_note": "11 C01-1. 연속 우선 검사 50%는 balance.events.chain_priority_chance. '가문 최대 1회(완료 기준)'는 줄기 family_once와 fam.c01_done 조건. 이어받기 변형(fam.c01_unfinished = 1)은 chains/C01.json resume_at. 가중치는 11에 없어 10(16 §4.4 C01-3 예). 맞춰 본다 성공 한 줄은 11 원문 '가리킨다'가 현재형이라 과거형으로 고쳤다(14 §3, 18 §6.3)",
   "intro": {
     "lines": [ "광차 밑에서 찢어진 지도를 봤다", "'도한'이라 적힌 지도를 주웠다" ],
-    "detail": "무너진 광차 밑에 찢어진 지도가 끼어 있다. 모서리에 '도한'이라는 이름과 작은 종 그림이 그려져 있다. 선은 중층 쪽으로 이어지다 찢겨 나갔다.",
+    "detail": "무너진 광차 밑에 찢어진 지도가 끼어 있다. 모서리에 '도한'이라는 이름과 작은 종 그림이 있다. 선은 중층 쪽으로 이어지다 찢겨 나갔다.",
     "tag": "dungeon",
     "animation": [ { "action": "discover", "props": ["map", "mine_cart"] }, { "action": "interact", "props": ["map"] } ]
   },

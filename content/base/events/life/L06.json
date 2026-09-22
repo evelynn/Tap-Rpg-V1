@@ -17,7 +17,7 @@
   ],
   "intro": {
     "lines": [ "게시판에 급한 의뢰가 붙었다", "붉은 핀이 꽂힌 쪽지를 봤다" ],
-    "detail": "길드 게시판에 붉은 핀이 꽂힌 쪽지가 붙어 있다. \"{target_place}의 {enemy:을/를} 다섯 마리만 쫓아내 주세요. 사례는 넉넉히.\" 하델이 턱으로 쪽지를 가리킨다.",
+    "detail": "길드 게시판에 붉은 핀이 꽂힌 쪽지가 붙어 있다. \"{target_place}의 {enemy:을/를} 다섯 마리만 쫓아내 주세요. 사례는 넉넉히.\"",
     "tag": "town",
     "animation": [ { "action": "interact", "props": ["notice_board"] } ]
   },

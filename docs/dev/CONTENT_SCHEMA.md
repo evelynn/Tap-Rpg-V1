@@ -526,7 +526,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `return_travel_time_mult` 신설 | number | | X03 |
 | `travel_fatigue_add` 신설 | number | | 눈 +1 |
 | `discovery_chance_add` / `discovery_chance_mult` | number | O | R02, 안개 |
-| `trap_encounter_add` | number | O | TI06 |
+| `trap_encounter_add` | number | O | TI06 +0.10. **상대 가산**: 함정 방 가중치 × (1 + 합)(00 D53) |
 | `treasure_room_chance_add` | number | O | `trip.propped_ceiling` |
 | `ambush_chance_add` 신설 | number(ratio) | | 안개 +0.05 |
 | `encounter_weight_mult.{enemy_family}` 신설 | number | | 눈 늑대 ×1.5 |
@@ -1580,7 +1580,7 @@ error V3 base/events/life/L08.json#/condition/all/1/foo: 알 수 없는 조건: 
 | V3 | 조건·수정자 문법 | `condition` 스키마(키 1개, 등록 단말, num 키·카운터, `policy` key는 16 §5.9 필드) + `modifier` 스키마(target 패턴, op·value). W1 교차: `special.{special}.{param}`의 두 값이 `enemySpecials` 이름과 그 파라미터 키 | common(완료)·W4 등록·W1 |
 | V4 | 효과 문법 | `effect` 판별 유니온(미등록 type, 필수 파라미터, 형식) + `exactlyOne` 검사 + `chance.p` ratio. 효과 안 이슈는 모두 V4(안쪽 규칙 번호는 유지) | common(완료)·W4 등록 |
 | V5 | 템플릿 | 문법·조사 쌍 9종·변수 이름 형식은 스키마(`template`이 렌더러 파서 `extractTemplateVars`를 부름). W1은 `templateRegistry` 표식 필드를 모아 변수가 `templateVars`에 있음, `source: event` 변수는 그 사건 `context_vars`에 있음. 옛 표기는 등록돼 있지 않으므로 오류 | W1(+W4 등록표) |
-| V6 | 한 줄 길이 | `line` 표식 필드에 가장 긴 대입(이름 6자, 장소·장비·적·NPC 이름은 번들에서 가장 긴 값, 숫자 변수는 5자리)을 넣은 길이 ≤ `balance.ui.line_max` | W1 |
+| V6 | 한 줄·상세 기록 길이 | `line` 표식 필드에 가장 긴 대입(이름 6자, 장소·장비·적·NPC 이름은 번들에서 가장 긴 값, 숫자 변수는 5자리)을 넣은 길이 ≤ `balance.ui.line_max`. 상세 기록 템플릿(필드 이름 `detail`·`detail_append`: 결과·도입·`journal` 효과·치명 관문)은 같은 대입으로 `\n`으로 나눈 줄마다 ≤ 80(14 §1, 편지 형식은 줄 단위). 80은 `balance.ui`에 자리가 없어 검증기 상수 `DETAIL_MAX`다 | W1 |
 | V7 | 자동 선택 정보 | 사건 refine: hold none이면 모든 선택지 `tags`(1~2)·`risk`·`short`. **면제**(tags·short만): `category: system` 사건 전부(선택지는 서술 변형이고 AI가 고르지 않는다, 5.10. DS-53을 T9에서 넓힘 → DS-55). `none`/`low` 선택지 ≥ 1은 hold·분류와 관계없이 모든 사건(10 §5.4, 16 §4.2) | W4 |
 | V8 | 선택 창 정보 | 사건 refine: hold≠none이면 `preview.body`·`hold_line`·선택지 `preview.{benefit,cost,reversible}`. 선택지 효과(중첩 포함)에 `COST_REQUIRED_EFFECTS`(4.2) 효과가 있으면 `cost`가 비어 있지 않음(문장 내용은 사람이 검수) | W4 |
 | V9 | 사망 안전 | `damage.hp_ratio < 1`, `damage.hp`는 경고. 사망을 일으키는 효과가 없다는 것은 스키마로 판별하지 않고 **핸들러 계약**으로 둔다: 일반 활동의 효과 핸들러는 HP를 1 미만으로 내리지 않는다(규칙 구현 테스트가 `EFFECT_HANDLERS` 전부를 HP 1 인물에 적용해 확인) | W4·W1·규칙 테스트 |

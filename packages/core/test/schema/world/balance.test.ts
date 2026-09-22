@@ -6,7 +6,7 @@ import { clone, expectFail, expectOk, registerTestVocabulary } from './helpers'
 
 registerTestVocabulary()
 
-// CONTENT_SCHEMA §5.1 예시 전체. 바꾼 곳: check_bonus 임시값(DS-39), equip_eval의 _note 전용 안내 행 제거.
+// CONTENT_SCHEMA §5.1 예시 전체. 바꾼 곳: equip_eval의 _note 전용 안내 행 제거.
 const example = JSON.parse(readFileSync(new URL('./fixtures/balance.json', import.meta.url), 'utf8')) as Record<string, any>
 
 describe('balance: 5.1 예시', () => {

@@ -63,8 +63,9 @@ registerContextSelector('random_friend_name', {
   params: obj({}),
   doc: '이름 풀에서 가문 인물과 겹치지 않는 이름(life 난수 흐름)',
 })
+// relic_uid는 문장에 쓰이지 않지만 remove_item chosen_relic·register_relic uid가 읽는 1급 계약이다(§4.5)
 registerContextSelector('offered_relic', {
-  yields: ['relic_name', 'relic_note'],
+  yields: ['relic_name', 'relic_note', 'relic_uid'],
   params: obj({}),
   doc: '헌납 후보(희귀 이상 유물 중 선택 창에서 고름)',
 })

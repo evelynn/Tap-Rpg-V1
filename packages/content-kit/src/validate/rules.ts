@@ -33,6 +33,11 @@ type Obj = Record<string, unknown>
 type CheckLike = Parameters<typeof checkDcRule>[0]
 type Report = (code: IssueCode, d: RawDef, path: Path, message: string, severity?: Severity) => void
 
+// 상세 기록 한 줄 상한(14 §1 문장 80자). balance.ui에 자리가 없어 여기 둔다
+const DETAIL_MAX = 80
+// 상세 기록 템플릿 필드: 결과·도입·journal 효과·치명 관문의 detail, 가문 변형 detail_append
+const DETAIL_KEYS = new Set(['detail', 'detail_append'])
+
 export function runSemanticChecks(index: DefIndex, schemas: Record<ContentKind, z.ZodType> = KIND_SCHEMAS): ContentIssue[] {
   const issues: ContentIssue[] = []
   const report: Report = (code, d, path, message, severity) =>
@@ -95,6 +100,14 @@ export function runSemanticChecks(index: DefIndex, schemas: Record<ContentKind, 
         const max = (d.kind === 'text' ? (d.value.max_len as number | undefined) : undefined) ?? balance.ui.line_max
         const len = [...renderTemplate(t.text, longest)].length
         if (len > max) report('V6', d, t.path, `한 줄 기록이 가장 긴 대입에서 ${len}자다(상한 ${max})`)
+      }
+      // 상세 기록(V6): 줄마다 가장 긴 대입에서 DETAIL_MAX 이내. 여러 줄 편지 형식은 줄 단위로 잰다(14 §1)
+      if (DETAIL_KEYS.has(String(t.path.at(-1))) && longest && ok) {
+        renderTemplate(t.text, longest).split('\n').forEach((row, i, rows) => {
+          const len = [...row].length
+          const at = rows.length > 1 ? ` ${i + 1}번째 줄` : ''
+          if (len > DETAIL_MAX) report('V6', d, t.path, `상세 기록${at}이 가장 긴 대입에서 ${len}자다(상한 ${DETAIL_MAX})`)
+        })
       }
     }
 

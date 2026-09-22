@@ -22,7 +22,7 @@
                "evade": "튀어나온 가시를 피했다.", "fail": "가시 발판을 밟았다." }
   },
   {
-    "_note": "회피 = 날씨 견디기 '기준'. 07 §5.3 표의 '기준'을 다른 함정처럼 지역 기준 DC로 읽어, 날씨 견디기 offset −4를 되돌리는 dc_offset +4(I33 (1), 11 '지역+0' 날씨 판정 L03·L07·C02-2와 같음. 07 확인 대상). 피로 +12의 TI05 ×1.3·A04 −30%는 fatigue_gain_mult 수정자가 적용. lines는 최소 작성(fail은 06 TI05 기록 예를 줄임)",
+    "_note": "회피 = 날씨 견디기 '기준'. 07 §5.3 표의 '기준'을 다른 함정처럼 지역 기준 DC로 읽어, 날씨 견디기 offset −4를 되돌리는 dc_offset +4(I33 (1), 11 '지역+0' 날씨 판정 L03·L07·C02-2와 같음. 00 D52). 피로 +12의 TI05 ×1.3·A04 −30%는 fatigue_gain_mult 수정자가 적용. lines는 최소 작성(fail은 06 TI05 기록 예를 줄임)",
     "id": "trap_dust", "name": "먼지 구멍",
     "detect_dc_offset": 0,
     "evade": { "check": "weather", "dc_offset": 4 },

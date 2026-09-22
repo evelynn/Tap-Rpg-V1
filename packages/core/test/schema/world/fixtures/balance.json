@@ -62,8 +62,12 @@
   },
   "reference_character": {                              "_comment": "01 §2.4 표준 진행 가정. 07 §5.2 방 생성 검증의 기준 인물",
     "main_stat_start": 3, "stat_up_levels": [4, 10, 16, 22, 28], "melee_rank_levels": [3, 7, 13, 19, 26],
-    "check_bonus": { "trap_detect": [ { "from_level": 1, "value": 0 } ], "trap_evade": [ { "from_level": 1, "value": 0 } ] },
-    "_note": "check_bonus 값은 DS-39 결정 전 임시값(테스트 픽스처)"
+    "check_bonus": {
+      "trap_detect": [ { "from_level": 1, "value": 2 }, { "from_level": 5, "value": 3 }, { "from_level": 9, "value": 4 },
+                       { "from_level": 15, "value": 5 }, { "from_level": 24, "value": 6 } ],
+      "trap_evade":  [ { "from_level": 1, "value": 2 }, { "from_level": 6, "value": 3 }, { "from_level": 11, "value": 4 },
+                       { "from_level": 19, "value": 5 }, { "from_level": 28, "value": 6 } ]
+    }
   },
   "aging": {                                            "_comment": "01 §2.2, 16 §6.5",
     "life_stages": [ { "id": "novice", "from_age": 18 }, { "id": "prime", "from_age": 30 },

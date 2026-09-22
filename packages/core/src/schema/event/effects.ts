@@ -113,33 +113,35 @@ export function registerBaseEffects(): void {
   )
 
   // 특성·생애
-  registerEffect('add_trait', { trait_id: ref('trait') }, '특성 획득')
-  registerEffect('remove_trait', { trait_id: ref('trait') }, '특성 제거')
-  registerEffect('specialize', { spec: z.enum(['guardian', 'pathfinder', 'defer']) }, '전문화 확정 또는 미룸')
+  registerEffect('add_trait', { trait_id: ref('trait') }, '특성 획득', undefined, 2)
+  registerEffect('remove_trait', { trait_id: ref('trait') }, '특성 제거', undefined, 2)
+  registerEffect('specialize', { spec: z.enum(['guardian', 'pathfinder', 'defer']) }, '전문화 확정 또는 미룸', undefined, 2)
   registerEffect('extend_lifespan', { years: posInt, cap: int.optional() }, '은퇴 나이 연장(cap 없으면 balance 상한)')
-  registerEffect('mutate', { trait_id: ref('trait') }, '변이(kind mutation 특성)')
+  registerEffect('mutate', { trait_id: ref('trait') }, '변이(kind mutation 특성)', undefined, 2)
   registerEffect('register_relic', { selector: z.enum(['this_item', 'uid']), priority: z.union([z.literal(1), z.literal(2)]) }, '유품 등록')
   registerEffect('create_child_candidate', {}, '자녀 후보 1명 생성')
   registerEffect('create_partner', {}, '동반자 1명 생성(12 §2.1 이름·직업·선천 특성·외형)')
 
   // 플래그와 연속 사건(범위 접두는 flagKey(scope)가 강제, V19)
-  registerEffect('set_flag', { key: flagKey('life'), value: flagValue.optional() }, '생애 플래그(value 기본 true)')
-  registerEffect('clear_flag', { key: flagKey('life') }, '생애 플래그 지움')
-  registerEffect('set_family_flag', { key: flagKey('fam'), value: flagValue.optional() }, '가문 플래그(value 기본 true)')
+  registerEffect('set_flag', { key: flagKey('life'), value: flagValue.optional() }, '생애 플래그(value 기본 true)', undefined, 3)
+  registerEffect('clear_flag', { key: flagKey('life') }, '생애 플래그 지움', undefined, 3)
+  registerEffect('set_family_flag', { key: flagKey('fam'), value: flagValue.optional() }, '가문 플래그(value 기본 true)', undefined, 4)
   registerEffect(
     'set_trip_flag',
     { key: flagKey('trip'), value: flagValue.optional(), remaining: oneKey(['encounters', 'rooms', 'scenes'], posInt).optional() },
     '출정 플래그. 출정 동안 효과는 플래그 등록표 trip_modifiers가 단일 출처',
+    undefined,
+    3,
   )
-  registerEffect('clear_trip_flag', { key: flagKey('trip') }, '출정 플래그 지움')
+  registerEffect('clear_trip_flag', { key: flagKey('trip') }, '출정 플래그 지움', undefined, 3)
   registerEffect(
     'counter_add',
     { key: z.string(), value: int, where: place.optional() },
     '생애 카운터. where가 있으면 그 장소 누계도 함께 올린다',
     (v) => (counterNames.has(String(v.key)) ? undefined : `등록되지 않은 카운터: ${String(v.key)}`),
   )
-  registerEffect('advance_chain', { chain_id: ref('chain'), stage: posInt }, '줄기 단계 기록')
-  registerEffect('end_chain', { chain_id: ref('chain'), outcome: varName }, '줄기 완료(outcome은 그 chain의 outcomes 중 하나, W1)')
+  registerEffect('advance_chain', { chain_id: ref('chain'), stage: posInt }, '줄기 단계 기록', undefined, 3)
+  registerEffect('end_chain', { chain_id: ref('chain'), outcome: varName }, '줄기 완료(outcome은 그 chain의 outcomes 중 하나, W1)', undefined, 4)
 
   // 진행·장소
   registerEffect('unlock_location', { location_id: ref('region') }, '장소 해금(가문 단위)')
@@ -248,7 +250,7 @@ export function registerBaseEffects(): void {
   // 기록·관계·연출
   registerEffect('npc_relation', { npc_id: ref('npc'), delta: int }, '인연 수치 변화')
   registerEffect('skill_use', { skill: z.union([skill, z.literal('lowest_rank')]), count: posInt }, '숙련 사용 횟수 가산(lowest_rank = 단계가 가장 낮은 숙련, 같으면 숙련 목록 순서 앞)')
-  registerEffect('family_record', { kind: z.enum(['chronicle', 'bond', 'codex']), key: z.string().min(1), text: template }, '가문 기록')
+  registerEffect('family_record', { kind: z.enum(['chronicle', 'bond', 'codex']), key: z.string().min(1), text: template }, '가문 기록', undefined, 5)
   // background면 그 종류로 참조 검사(V2). 칭호는 achievement.rewards로만 준다.
   const unlockBase = { type: z.literal('unlock_family'), when: condition.optional() }
   effects.register(
@@ -259,8 +261,8 @@ export function registerBaseEffects(): void {
     ]),
     '가문 해금',
   )
-  registerEffect('journal', { tag: journalTag, line, detail: template.optional(), importance: z.enum(JOURNAL_IMPORTANCE).optional() }, '결과 문장 외 추가 기록')
-  registerEffect('animation', { action: animationAction, props: z.array(ref('prop')).optional() }, '연출 지시(오프라인 정산에서는 무시)')
+  registerEffect('journal', { tag: journalTag, line, detail: template.optional(), importance: z.enum(JOURNAL_IMPORTANCE).optional() }, '결과 문장 외 추가 기록', undefined, 5)
+  registerEffect('animation', { action: animationAction, props: z.array(ref('prop')).optional() }, '연출 지시(오프라인 정산에서는 무시)', undefined, 6)
 }
 
 registerBaseEffects()

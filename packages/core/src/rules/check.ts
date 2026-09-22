@@ -153,6 +153,16 @@ export function hitBonus(ctx: RuleContext, enemyFamily?: string, sources: readon
   return checkBonus(ctx, attackKindId(ctx), { extraTargets }, sources)
 }
 
+// 판정 주사위 면수. balance에 칸이 생기기 전까지 코어 한 곳에 모아 둔다(05 §6.2)
+const DIE = 20
+
+// 성공 확률 P = (21 − 필요치) / 20, balance.check.success_p_clamp로 자른다(10 §5.3, 08 §7.2).
+// 필요치 = DC − 보정 합
+export function successChance(ctx: Pick<RuleContext, 'content'>, need: number): number {
+  const [lo, hi] = ctx.content.balance.check.success_p_clamp
+  return Math.max(lo, Math.min(hi, (DIE + 1 - need) / DIE))
+}
+
 // 05 §6.6: 이름별로 합쳐 최대 3개, 나머지는 기타. 상한에 걸리면 합친 값 하나에 (상한)
 function otherParts(named: readonly CheckPart[], others: number, capped: boolean): CheckPart[] {
   if (capped) return [{ label: SOURCE_LABELS.capped, value: others }]

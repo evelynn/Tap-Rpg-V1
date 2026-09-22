@@ -17,7 +17,7 @@ export function registerTemplateVar(name: string, { source }: { source: Template
 }
 
 // 16 §1.4.3 전부. 사건 선택자가 고르는 변수만 event.
-const EVENT_VARS = ['friend', 'rumor_place', 'target_place', 'relic_name', 'relic_note']
+const EVENT_VARS = ['friend', 'rumor_place', 'target_place', 'relic_name', 'relic_note', 'relic_uid']
 const CONTEXT_VARS = [
   // 인물과 가족
   'name', 'heir', 'parent_name', 'parent_call', 'partner', 'job', 'child', 'guardian', 'family', 'generation',

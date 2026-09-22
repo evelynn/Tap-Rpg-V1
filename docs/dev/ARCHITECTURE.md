@@ -24,7 +24,12 @@
 | `src/state` | 저장 상태 스키마(16 §5, CONTENT_SCHEMA §6 C1~C29), uid 발급기 |
 | `src/rules` | 규칙 층: 수정자 집계(`collectModSources`), 유도 수치, 판정, 성장·노화, 출생, 적 수치(`enemyStats`, V17과 같은 구현) |
 | `src/journal` | 일지 기록 생성과 보존(14 §1~§2, 13 §9) |
-| `src/sim` | `World`(콘텐츠 + 저장 + 난수 흐름 5개), 행동 골격(13 §8.1·§8.3), 새 가문 생성 |
+| `src/combat` | 전투 1회(`resolveCombat`·`applyCombat`), 적 특수능력 핸들러, 패배·사망(05 §7, 07 §2·§4·§8) |
+| `src/recovery` | 숨 고르기·야영·휴식·회복약·충전, 부상 판정과 누적(01 §6, 04 §7.6·§8) |
+| `src/items` | 등급별 성능·잠재 상태, 드롭·부가 효과 굴림, 장비 평가와 개선률, 가방·대기함·장착·제안(08) |
+| `src/economy` | 가격, 상점 재고, 마을 정비(판매·구매·교체), 예상 지출, 파산·길드 지원(08) |
+| `src/events` | 사건 엔진(10): 조건 평가, 효과 실행, 사건 선택, 선택지·보류, 연속·운명 사건, 예약 사건. 밖의 구조는 `ports.ts`로 받는다 |
+| `src/sim` | `World`(콘텐츠 + 저장 + 난수 흐름 5개 + 사건 포트), 행동 골격(13 §8.1·§8.3), 새 가문 생성, 포트 어댑터(`services.ts`) |
 | `src/index.ts` | 공개 진입점. 위 전부를 내보낸다(이름 충돌 처리는 I08) |
 
 ## 2 데이터 흐름
@@ -76,6 +81,7 @@ content/<팩>/*.json
 - **일시 수정자 scope**: `next_sortie`·`next_scene`·`next_visit`는 대기라 집계에서 빠진다. 그 출정·장면·방문을 시작하는 규칙이 scope를 `sortie`·`scene`으로 바꿔 켠다. `eff_min`은 `expires_eff_min`이 지나면 빠진다. `next_check`·`next_decision`·`encounters`는 켜진 채로 두고 쓰는 쪽이 `remaining`을 줄이거나 지운다.
 - **조건 평가 범위**(전투 종류 `combat_kind`, `{place}` 바인딩): `RuleContext.test`는 `(cond) => boolean` 하나다. 범위가 필요한 계산은 평가기를 만드는 쪽이 범위를 클로저로 묶은 test를 만들고 `{ content, state, test }`로 넘긴다. RuleContext에 범위 필드를 두지 않는다.
 - **저장 record 순회 순서**: 키 삽입 순서에 기대지 않는다(장착은 `SLOTS` 순서, 출정 플래그는 키 정렬). 불러온 저장의 키 순서가 달라도 set 수정자의 마지막 값과 판정 기록 항 순서가 같아야 한다.
+- **사건 포트**: 사건 엔진은 전투·장비·경제·부상·생애·출정·발견 구조를 직접 부르지 않고 `events/ports.ts`의 포트 7개(`EventPorts`)로 받는다. 포트를 실제 구현에 잇는 어댑터는 `sim/services.ts`의 `createServices(world, opts)` 한 곳이고, `World`가 생성 때 이것을 조립해 `world.ports`로 내놓는다. 포트는 사건 **적용 단계**에서만 불려 그 자리에서 상태를 바꾼다(확정 단계는 난수만 쓴다). 아직 구현이 없는 구조는 빈 함수로 삼키지 않고 호출을 `SimServices.deferred`에 쌓아 두며, 담당 태스크는 `WorldOptions.ports`로 제 구현을 바꿔 끼운다. 새 효과가 밖의 구조를 필요로 하면 포트 인터페이스 1곳 + 어댑터 1곳을 더한다.
 - **행동**: 결정기는 행동과 행동 사이에만 불린다. 할 일이 없을 때의 대기도 길이가 정해진 행동이다. 0초 행동은 허용하지만 한 `advance`에서 1000번 넘게 이어지면 예외다. 행동 시작·적용 직후 `state.rng_state`가 난수 상태와 맞는다.
 
 ## 4 검증
