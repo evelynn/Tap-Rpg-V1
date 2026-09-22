@@ -1,0 +1,27 @@
+{
+  "name": "tap-rpg",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "typecheck": "tsc -p packages/core && tsc -p packages/core/tsconfig.test.json && tsc -p packages/content-kit && tsc -p tools/sim",
+    "test": "node --import tsx --test \"packages/*/test/**/*.test.ts\" \"tools/*/test/**/*.test.ts\"",
+    "lint:ids": "tsx packages/content-kit/src/scripts/check-core-ids.ts",
+    "lint:docs": "python docs/design/tools/lint_docs.py",
+    "check": "pnpm typecheck && pnpm test && pnpm lint:ids && pnpm lint:docs",
+    "sim": "tsx tools/sim/src/cli.ts"
+  },
+  "pnpm": {
+    "overrides": {
+      "esbuild": "0.25.9"
+    }
+  },
+  "devDependencies": {
+    "@types/node": "22.19.15",
+    "tsx": "4.19.3",
+    "typescript": "5.9.2"
+  }
+}

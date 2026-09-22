@@ -1,0 +1,14 @@
+{
+  "name": "@tap/content-kit",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "콘텐츠 팩 로더·검증기·번들러 CLI (Node 도구).",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "@tap/core": "workspace:*",
+    "zod": "4.1.12"
+  }
+}

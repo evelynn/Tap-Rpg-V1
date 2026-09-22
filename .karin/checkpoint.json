@@ -1,0 +1,30 @@
+{
+  "karin_version": "1.3.0",
+  "session": 1,
+  "feature": "텝 마일스톤 1 — 코어·콘텐츠 기반(콘텐츠 팩·검증기·사건/시나리오 엔진·시뮬레이션 코어·헤드리스 시뮬레이터)",
+  "phase": "build",
+  "complexity": "Complex",
+  "level": "Dynamic",
+  "plan_file": "C:/Users/hansol/.claude/plans/reflective-floating-lovelace.md",
+  "stack": "Tauri 2 + TypeScript (pnpm monorepo, offline install). M1은 UI 없이 packages/core + packages/content-kit + tools/sim",
+  "design_docs": "docs/design/00~18, docs/텝_게임기획_설정문서_v0.1.md",
+  "tasks": [
+    {"id": "T1", "subject": "저장소 골격", "status": "completed", "priority": "high"},
+    {"id": "T2", "subject": "콘텐츠 스키마·팩 로더·검증기", "status": "pending", "priority": "high"},
+    {"id": "T3", "subject": "base 정적 콘텐츠", "status": "pending", "priority": "high"},
+    {"id": "T4", "subject": "코어 기초(rng·time·인물·판정·템플릿·일지·resolved_action)", "status": "pending", "priority": "high"},
+    {"id": "T5", "subject": "전투·부상·회복·성장", "status": "pending", "priority": "high"},
+    {"id": "T6", "subject": "아이템·경제·자동 구매", "status": "pending", "priority": "high"},
+    {"id": "T7", "subject": "사건 엔진", "status": "pending", "priority": "high"},
+    {"id": "T8", "subject": "행동 결정·활동", "status": "pending", "priority": "high"},
+    {"id": "T9", "subject": "사건 콘텐츠 이식", "status": "pending", "priority": "high"},
+    {"id": "T10", "subject": "생애·계승", "status": "pending", "priority": "high"},
+    {"id": "T11", "subject": "저장·오프라인 정산", "status": "pending", "priority": "medium"},
+    {"id": "T12", "subject": "헤드리스 시뮬레이터·밸런스 리포트", "status": "pending", "priority": "medium"},
+    {"id": "T13", "subject": "확장성 증명 팩·작성 가이드", "status": "pending", "priority": "medium"}
+  ],
+  "current_task": "T2",
+  "next_action": "T2: 16 스키마 + 탐색에서 나온 확장 필드(팩 매니페스트·패치·장소/태도/밸런스 누락 필드·ID 네임스페이스)를 zod로 설계",
+  "blockers": ["npm 레지스트리 403 — 로컬 pnpm 저장소 오프라인 설치만 가능(I01·I02). M2(Tauri)의 npm·crates 설치에는 네트워크 허용 필요"],
+  "last_updated": "2026-09-22T00:00:00+09:00"
+}

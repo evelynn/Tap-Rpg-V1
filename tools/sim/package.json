@@ -1,0 +1,11 @@
+{
+  "name": "@tap/sim",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "헤드리스 밸런스 시뮬레이터 CLI (17 §5).",
+  "dependencies": {
+    "@tap/content-kit": "workspace:*",
+    "@tap/core": "workspace:*"
+  }
+}

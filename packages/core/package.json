@@ -1,0 +1,13 @@
+{
+  "name": "@tap/core",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "텝 시뮬레이션 코어 — 순수 TypeScript(DOM·Node API 없음). 게임 창과 헤드리스 시뮬레이터가 함께 쓴다.",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "dependencies": {
+    "zod": "4.1.12"
+  }
+}
