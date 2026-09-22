@@ -1,0 +1,77 @@
+// 선택 대기와 진행 상태(16 §5.7) + C13·C26~C28. 확정 결과(resolved_action)는 13 §8.3.
+import { z } from 'zod'
+import { ACTIVITIES, ACTIVITY_STATES, ROOM_KINDS, TIME_OF_DAY, WEATHERS } from '../schema/index'
+import { defId, effMinV, flagValue, intV, nat, s, savedEffect, scopedFlagKey, tempModSchema, uid } from './common'
+import { journalDraftSchema } from './journal'
+
+export const pendingChoiceSchema = s({
+  kind: z.enum(['fate', 'branch']),
+  event_id: defId,
+  presented_eff_min: effMinV,
+  location: defId,
+  choices_visible: z.array(z.string()),
+  excluded: z.array(z.string()),
+  pre_rolled: z.record(z.string(), intV.min(1).max(20)), // {choice_id: d20}
+  pre_chance: z.record(z.string(), z.number().min(0).max(1)), // {effect_path: 0~1}
+  context: z.record(z.string(), z.unknown()),
+  preview_rendered: z.record(z.string(), z.unknown()),
+})
+export type PendingChoice = z.infer<typeof pendingChoiceSchema>
+
+export const sortieSchema = s({
+  id: uid,
+  activity: z.enum(ACTIVITIES),
+  location_id: defId,
+  time_of_day: z.enum(TIME_OF_DAY),
+  weather: z.enum(WEATHERS),
+  started_eff_min: effMinV,
+  plan: z.union([
+    s({ rooms: z.array(z.enum(ROOM_KINDS)), gate: z.boolean() }),
+    s({ scenes: intV.min(1) }),
+    s({ target_encounters: intV.min(1), safety_cap: intV.min(1) }),
+  ]),
+  progress: nat,
+  // C13: 수정자는 저장하지 않고 등록표 trip_modifiers에서 읽는다
+  trip_flags: z.record(scopedFlagKey('trip'), s({
+    value: flagValue,
+    remaining: s({ encounters: intV.min(1).optional(), rooms: intV.min(1).optional(), scenes: intV.min(1).optional() }).nullable(),
+  })),
+  temp_mods: z.array(tempModSchema),
+  dungeon_mods: z.array(savedEffect),
+  quest_wins: nat.nullable(),
+  loot: s({ coins: nat, item_uids: z.array(uid), materials: z.record(defId, nat) }),
+  potions_used: nat,
+  events_this_sortie: nat,
+  camps: nat, // C26
+  discovery_attempts: z.array(defId), // C27
+  exclusive_used: z.array(z.string()), // C28
+  fate_offered: z.boolean(),
+})
+export type Sortie = z.infer<typeof sortieSchema>
+
+export const ACTION_KINDS = ['encounter', 'room', 'scene', 'gate', 'travel', 'camp', 'inn', 'town', 'treatment', 'event'] as const
+export type ActionKind = (typeof ACTION_KINDS)[number]
+
+// 확정 결과: 행동 시작 때 난수를 모두 굴려 담고, 시간이 다 차면 적용한다
+export const resolvedActionSchema = s({
+  seq: intV.min(1),
+  kind: z.enum(ACTION_KINDS),
+  started_eff_min: effMinV,
+  duration_sec: nat,
+  rounds: z.array(s({ actor: z.string(), dice: intV, total: intV, target_ac: intV, hit: z.boolean(), damage: nat })).optional(),
+  outcome: z.string(),
+  effects: z.array(savedEffect),
+  journal: z.array(journalDraftSchema),
+  applied: z.boolean(),
+})
+export type ResolvedAction = z.infer<typeof resolvedActionSchema>
+
+export const currentActivitySchema = s({
+  state: z.enum(ACTIVITY_STATES),
+  paused_from: z.enum(ACTIVITY_STATES).nullable(), // 일시정지 직전 상태(재개 때 되돌림)
+  next_sortie_override: s({ location_id: defId, activity: z.enum(ACTIVITIES), source_event: defId }).nullable(),
+  sortie: sortieSchema.nullable(),
+  pending_town_effects: z.array(savedEffect),
+  resolved_action: resolvedActionSchema.nullable(),
+})
+export type CurrentActivity = z.infer<typeof currentActivitySchema>

@@ -18,3 +18,13 @@ export {
 } from './time/index'
 // 문장 템플릿 렌더러. 변수 추출 함수는 등록부 templateVars와 이름이 겹쳐 extractTemplateVars로 내보낸다(I08).
 export { type TemplateValues, renderTemplate, templateVars as extractTemplateVars } from './text/index'
+// 콘텐츠 조회기(번들 → 종류·ID 조회)
+export * from './content/index'
+// 저장 상태 스키마(16 §5, CONTENT_SCHEMA §6)와 uid 발급기
+export * from './state/index'
+// 규칙: 수정자 집계, 유도 수치, 판정, 성장, 출생
+export * from './rules/index'
+// 일지 기록과 보존
+export * from './journal/index'
+// 시뮬레이션 세계와 행동 골격
+export * from './sim/index'
