@@ -10,21 +10,21 @@
   "design_docs": "docs/design/00~18, docs/텝_게임기획_설정문서_v0.1.md",
   "tasks": [
     {"id": "T1", "subject": "저장소 골격", "status": "completed", "priority": "high"},
-    {"id": "T2", "subject": "콘텐츠 스키마·팩 로더·검증기", "status": "pending", "priority": "high"},
-    {"id": "T3", "subject": "base 정적 콘텐츠", "status": "pending", "priority": "high"},
-    {"id": "T4", "subject": "코어 기초(rng·time·인물·판정·템플릿·일지·resolved_action)", "status": "pending", "priority": "high"},
+    {"id": "T2", "subject": "콘텐츠 스키마·팩 로더·검증기", "status": "completed", "priority": "high"},
+    {"id": "T3", "subject": "base 정적 콘텐츠", "status": "in_progress", "priority": "high"},
+    {"id": "T4", "subject": "코어 기초(rng·time·인물·판정·템플릿·일지·resolved_action)", "status": "in_progress", "priority": "high"},
     {"id": "T5", "subject": "전투·부상·회복·성장", "status": "pending", "priority": "high"},
     {"id": "T6", "subject": "아이템·경제·자동 구매", "status": "pending", "priority": "high"},
     {"id": "T7", "subject": "사건 엔진", "status": "pending", "priority": "high"},
     {"id": "T8", "subject": "행동 결정·활동", "status": "pending", "priority": "high"},
-    {"id": "T9", "subject": "사건 콘텐츠 이식", "status": "pending", "priority": "high"},
+    {"id": "T9", "subject": "사건 콘텐츠 이식", "status": "in_progress", "priority": "high"},
     {"id": "T10", "subject": "생애·계승", "status": "pending", "priority": "high"},
     {"id": "T11", "subject": "저장·오프라인 정산", "status": "pending", "priority": "medium"},
     {"id": "T12", "subject": "헤드리스 시뮬레이터·밸런스 리포트", "status": "pending", "priority": "medium"},
     {"id": "T13", "subject": "확장성 증명 팩·작성 가이드", "status": "pending", "priority": "medium"}
   ],
-  "current_task": "T2",
-  "next_action": "T2: 16 스키마 + 탐색에서 나온 확장 필드(팩 매니페스트·패치·장소/태도/밸런스 누락 필드·ID 네임스페이스)를 zod로 설계",
+  "current_task": "T3·T4b·T9 (웨이브 2 워크플로 wf_cde55179-cbf)",
+  "next_action": "웨이브 2 결과 검증·커밋 → 웨이브 3(T5 전투·T6 경제·T7 사건 엔진)",
   "blockers": ["npm 레지스트리 403 — 로컬 pnpm 저장소 오프라인 설치만 가능(I01·I02). M2(Tauri)의 npm·crates 설치에는 네트워크 허용 필요"],
-  "last_updated": "2026-09-22T00:00:00+09:00"
+  "last_updated": "2026-09-23T00:00:00+09:00"
 }
