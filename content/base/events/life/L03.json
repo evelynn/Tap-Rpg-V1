@@ -1,0 +1,92 @@
+{
+  "id": "L03",
+  "name": "버섯 아래 소나기",
+  "category": "life",
+  "locations": ["H1", "H2", "A1"],
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "seasons": ["spring", "summer"],
+  "time_of_day": "day",
+  "condition": true,
+  "weight": 6,
+  "weight_mods": [ { "when": { "weather": ["rain"] }, "mult": 2 } ],
+  "cooldown_min": 30,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "비 가중 ×2는 01 §1.3 날씨 표. 날씨 견디기는 종류 기준이 지역 −4라 원문 '지역+0'을 dc_offset 4로 적는다. TI06 바위 밑 1순위는 특성 choice_tag_bonus가 맡는다. 비 효과 소품은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "갑자기 소나기가 쏟아졌다", "굵은 빗방울이 떨어졌다" ],
+    "detail": "하늘이 갑자기 어두워지더니 굵은 빗방울이 떨어진다. 몇 걸음 앞에 우산만 한 버섯이 서 있다. 빗물에 씻긴 바위 밑이 반짝이는 것도 같다.",
+    "tag": "hunt"
+  },
+  "choices": [
+    {
+      "id": "shelter", "label": "버섯 아래서 비를 긋는다", "short": "버섯 아래서 비를 그었다",
+      "tags": ["rest", "safe"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_time", "sec": 30 },
+            { "type": "add_fatigue", "value": -10 },
+            { "type": "if", "cond": { "location_kind": ["adventure_route"] },
+              "then": [ { "type": "sortie_mod", "remaining_add": { "scenes": -1 } } ],
+              "else": [ { "type": "sortie_mod", "remaining_add": { "encounters": -1 } } ] },
+            { "type": "add_fatigue", "value": -5, "when": { "has_trait": "TI08" } },
+            { "type": "journal", "tag": "trait", "line": "버섯 끝을 조금 떼어 먹었다", "when": { "has_trait": "TI08" } },
+            { "type": "animation", "action": "sit_eat", "props": ["mushroom_umbrella"] }
+          ],
+          "line": "버섯 아래서 비를 그었다"
+        }
+      }
+    },
+    {
+      "id": "press_on", "label": "비를 맞으며 계속한다", "short": "비를 맞으며 계속했다",
+      "tags": ["bold"], "risk": "medium",
+      "check": { "kind": "weather", "dc_offset": 4, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_fatigue", "value": 3 },
+            { "type": "set_trip_flag", "key": "trip.rain_hunt", "remaining": { "encounters": 2 } },
+            { "type": "animation", "action": "walk" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "빗속에서도 걸음이 가벼웠다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_fatigue", "value": 10 },
+            { "type": "injury", "grade": "light", "stat": "wil" },
+            { "type": "animation", "action": "walk" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "으슬으슬 한기가 들었다"
+        }
+      }
+    },
+    {
+      "id": "search_rock", "label": "바위 밑을 살핀다", "short": "바위 밑을 살폈다",
+      "tags": ["new_path", "reward"], "risk": "medium",
+      "check": { "kind": "forage", "dc_offset": 2, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "chance", "p": 0.2, "then": [ { "type": "add_item", "item_id": "J02", "grade": "common", "to": "bag" } ] },
+            { "type": "animation", "action": "walk" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "바위 밑에서 반짝이는 걸 찾았다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.05 },
+            { "type": "animation", "action": "walk" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "젖은 바위에 미끄러졌다"
+        }
+      }
+    }
+  ]
+}

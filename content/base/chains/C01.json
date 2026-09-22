@@ -1,0 +1,20 @@
+{
+  "id": "C01",
+  "name": "광부의 지도",
+  "stages": 3,
+  "outcomes": ["rescue", "treasure", "guild"],
+  "family_once": true,
+  "inheritable": true,
+  "resume_at": [
+    { "stage": 1, "when": { "location": ["D1"] }, "line": "수첩에 끼워진 찢어진 지도를 펼쳤다" },
+    { "stage": 2, "when": { "in_town": true }, "line": "수첩에 끼워진 찢어진 지도를 펼쳤다" }
+  ],
+  "unfinished_line": "끝나지 않은 이야기 — {chain_name}: {last_step_summary}",
+  "stage_summaries": [
+    "지도를 수첩 사이에 끼웠다",
+    "세나에게 약속했다",
+    "무너진 갱도 다리 앞에 섰다"
+  ],
+  "major_branch_stage": 3,
+  "_note": "10 §7, 11 C01. 이어받기(fam.c01_unfinished = 단계)는 후계자가 D1(1단계) 또는 마을(2단계)에 처음 갈 때 resume_at 문장으로 같은 단계를 완료한다. 11 C01-1 이어받기 변형의 상세 문장('{parent_call:이/가} 남긴 표시가 이 방을 가리킨다.')은 resume_at에 상세 칸이 없어 싣지 못했다. stage_summaries 1·2는 18 §8·16 §1.4.3 예시 문장, 3은 C01-3 도입 한 줄"
+}

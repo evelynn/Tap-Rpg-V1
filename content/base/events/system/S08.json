@@ -1,0 +1,44 @@
+{
+  "id": "S08",
+  "name": "긴 잠",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 3, "phase": "life_end" },
+  "condition": { "all": [ { "life_end_kind": ["long_sleep"] }, { "has_trait": "TM01" } ] },
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "11 S08, 09 §7.6. 발생(긴 잠 나이 도달·갈증 100·자발적 은둔, 안전 지점 귀환 뒤)은 엔진이 판정한다. 선택지 = 원인 변형: thirst는 갈증 한계 단계(requires), age와 voluntary는 가리는 조건이 없어 엔진이 고른다. 장소 '달그늘 지하'는 장소 정의가 없어 연출만. 도입 두 줄은 09 §7.6 한 줄을 28자에 맞게 둘로 나눴다. 촛불은 등불 소등 효과를 다시 쓴다(09 §7.6). 검은 장미 소품은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "{name:은/는} 달그늘 지하로 내려갔다", "{name:은/는} 낡은 잔을 머리맡에 두었다" ],
+    "tag": "retire",
+    "animation": [
+      { "action": "sleep", "props": ["cup", "lantern"] },
+      { "action": "sleep", "props": ["cup", "lantern_out"] },
+      { "action": "sleep", "props": ["moon_fx"] }
+    ]
+  },
+  "choices": [
+    {
+      "id": "age", "label": "정해진 나이", "risk": "none",
+      "requires": { "not": { "thirst_stage_gte": "limit" } },
+      "outcomes": { "always": { "effects": [],
+        "line": "{name:은/는} 긴 잠에 들었다",
+        "detail": "{name:은/는} 달그늘 지하의 서늘한 방에 누웠다. 비엘이 촛불 하나를 켜 두고 문을 닫았다. '좋은 꿈을.'" } }
+    },
+    {
+      "id": "thirst", "label": "갈증의 한계", "risk": "none",
+      "requires": { "thirst_stage_gte": "limit" },
+      "outcomes": { "always": { "effects": [],
+        "line": "갈증 끝에 긴 잠에 들었다",
+        "detail": "더는 견딜 수 없었다. {name:은/는} 낡은 잔을 머리맡에 두고 달그늘 지하로 내려갔다." } }
+    },
+    {
+      "id": "voluntary", "label": "자발적 은둔", "risk": "none",
+      "requires": { "not": { "thirst_stage_gte": "limit" } },
+      "outcomes": { "always": { "effects": [],
+        "line": "스스로 긴 잠을 택했다",
+        "detail": "{name:은/는} 달이 가장 밝은 밤을 골라 달그늘 지하의 문을 닫았다." } }
+    }
+  ]
+}

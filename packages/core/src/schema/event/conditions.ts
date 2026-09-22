@@ -1,8 +1,8 @@
-// 조건 단말 기본 등록(CONTENT_SCHEMA §4.1 표 = 16 §3.2 43종 중 thirst_gte를 뺀 42종 + 신설 14종 = 56종).
+// 조건 단말 기본 등록(CONTENT_SCHEMA §4.1 표 = 16 §3.2 43종 중 thirst_gte를 뺀 42종 + 신설 15종 = 57종).
 // 평가는 규칙 층의 CONDITION_EVAL이 같은 이름으로 한다. 결합자 all·any·not·num은 common.ts에 있다.
 import { z } from 'zod'
 import {
-  END_KINDS, MUTATIONS, SPECIALIZATIONS, flagKey, grade, int, lifeStage, obj, ratio, ref, regionFilter, regionKind,
+  END_KINDS, MUTATIONS, SPECIALIZATIONS, flagKey, grade, int, lifeStage, obj, posInt, ratio, ref, regionFilter, regionKind,
   registerCondition, season, skill, slot, stat, tier, timeOfDay, weather,
 } from '../common'
 
@@ -37,7 +37,8 @@ const BASE: [string, z.ZodType, string][] = [
   ['has_item', ref('item'), '가방·장착·수령 대기함에 정의 보유'],
   ['has_item_where', obj({ slot: slot.optional(), grade_gte: grade.optional(), tier_gte: tier.optional(), unique: bool.optional() }), '조건에 맞는 장비 보유'],
   ['equipped', ref('item'), '장착 중'],
-  ['received_relic', ref('item'), '이전 인물에게서 유품으로 받음'],
+  ['received_relic', z.union([ref('item'), z.literal(true)]), '이전 인물에게서 유품으로 받음(true = 어떤 유품이든)'],
+  ['has_consumable', obj({ carry_groups: z.array(ref('carry_group')).min(1), count: posInt }), '나열한 소지 묶음 중 하나에 소모품 count개 이상'],
   ['flag', z.union([flagKey(), obj({ key: flagKey(), value: z.union([bool, int]) })]), '플래그가 참 또는 값 일치(범위 무관, 꼬리 바인딩 가능)'],
   ['chain_stage', obj({ chain: ref('chain'), stage: int }), '줄기 단계 플래그 값이 같음'],
   ['lifetime_count_lt', eventCount, '이번 생애 발생 횟수 <'],

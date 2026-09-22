@@ -1,0 +1,23 @@
+[
+  { "_comment": "07 §3.3 재료(D31: 적이 떨어뜨리거나 흘린 것). 이름·판매가·기록 문장 원문",
+    "id": "mat_EN01", "name": "들쥐가 흘린 털뭉치", "source": "EN01", "sell_price": 2, "line": "풀숲에 떨어진 털뭉치를 주웠다" },
+  { "id": "mat_EN02", "name": "큰 들쥐의 도토리 주머니", "source": "EN02", "sell_price": 5, "line": "들쥐가 떨군 도토리 주머니를 주웠다" },
+  { "id": "mat_EN03", "name": "늑대의 털갈이 털", "source": "EN03", "sell_price": 12, "line": "둑에 남은 털갈이 털을 모았다" },
+  { "id": "mat_EN04", "name": "잿빛 늑대의 은빛 돌", "source": "EN04", "sell_price": 35, "line": "늑대가 물고 다니던 은빛 돌을 주웠다" },
+  { "id": "mat_EN05", "name": "박쥐 둥지의 반짝이 가루", "source": "EN05", "sell_price": 10, "line": "둥지 아래 반짝이 가루를 쓸어 담았다" },
+  { "id": "mat_EN06", "name": "쇳소리 박쥐의 쇳조각", "source": "EN06", "sell_price": 35, "line": "박쥐가 모아 둔 쇳조각을 챙겼다" },
+  { "id": "mat_EN07", "name": "그림자 박쥐의 검은 수정", "source": "EN07", "sell_price": 95, "line": "빛을 먹는 검은 수정을 천에 쌌다" },
+  { "id": "mat_EN08", "name": "코볼트 광석 주머니", "source": "EN08", "sell_price": 18, "line": "코볼트가 두고 간 광석 주머니를 챙겼다" },
+  { "id": "mat_EN09", "name": "광부장 곡괭이 날", "source": "EN09", "sell_price": 55, "line": "이가 빠진 곡괭이 날을 주웠다" },
+  { "id": "mat_EN10", "name": "녹슨 투구 조각", "source": "EN10", "sell_price": 130, "line": "녹슨 투구 조각에 옛 문양이 있었다" },
+  { "id": "mat_EB01", "name": "두목의 호루라기", "source": "EB01", "sell_price": 200, "line": "두목이 떨군 호루라기를 주웠다" },
+  { "id": "mat_EB02", "name": "늙은 광부장의 등불 심지", "source": "EB02", "sell_price": 520, "line": "꺼지지 않은 심지를 받아 들었다" },
+  { "_comment": "판매 대신 가문 기념품으로 남길 수 있다(07 §3.3, 12 기념품 규칙)",
+    "id": "mat_EB03", "name": "종의 파편", "source": "EB03", "sell_price": 2500, "line": "종의 파편이 희미하게 울렸다" },
+  { "_note": "가치는 '해당 층 적 동전식 × 1'(07 §3.3·§5.3)로 엔진이 balance.dungeon.trap_flow.disarm_parts_units에서 계산한다. sell_price 0은 고정가 없음 자리값",
+    "id": "mat_trap", "name": "함정 부품", "source": "trap", "sell_price": 0, "line": "함정에서 쓸 만한 부품을 떼어 냈다" },
+  { "_note": "가치는 '동전식(경로 중앙) × 1.5'(07 §6.2)로 엔진이 balance.adventure.forage.coin_units에서 계산한다. sell_price 0은 고정가 없음 자리값",
+    "id": "mat_forage", "name": "채집물", "source": "forage", "sell_price": 0, "line": "약초 한 다발을 배낭에 매달았다" },
+  { "_note": "07 §3.3 채집물(광석) 중 광맥 출처. 가치는 '층 적 동전식 × 4'(07 §5.3)로 엔진이 balance.dungeon.vein.coin_units에서 계산한다. sell_price 0은 자리값. 이름은 07 §5.3 '광석', 기록 문장은 11 L16 캐낸다 성공 문장",
+    "id": "mat_vein", "name": "광석", "source": "vein", "sell_price": 0, "line": "광맥을 떼어 배낭에 넣었다" }
+]

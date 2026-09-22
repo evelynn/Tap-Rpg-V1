@@ -1,0 +1,54 @@
+{
+  "id": "C01-2",
+  "name": "광부의 가족",
+  "category": "chain",
+  "chain": { "id": "C01", "stage": 2 },
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "condition": { "all": [ { "chain_stage": { "chain": "C01", "stage": 1 } } ] },
+  "weight": 10,
+  "max_per_life": 1,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "11 C01-2. 조건 충족 후 첫 마을 귀환 100%는 balance.events.chain_town_stage_chance(check_override에 같은 값을 두지 않음). 세나가 지도를 베껴 주는 것은 서술만",
+  "intro": {
+    "lines": [ "\"그거, 우리 아버지 글씨예요\"", "지도를 본 소녀가 멈춰 섰다" ],
+    "detail": "잡화점 앞에서 지도를 펼치자, 지나가던 광부 옷차림의 소녀가 걸음을 멈춘다. \"그거… 우리 아버지 글씨예요.\" 소녀의 이름은 세나다. 세나의 아버지 도한은 오래전 폐광 중층으로 내려간 뒤 돌아오지 않았다.",
+    "tag": "bond",
+    "animation": [ { "action": "interact", "props": ["map"] } ]
+  },
+  "choices": [
+    {
+      "id": "give_back", "label": "지도를 돌려준다", "short": "지도를 세나에게 돌려주었다",
+      "tags": ["kindness"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C01", "stage": 2 } ],
+          "line": "세나가 지도를 베껴 건넸다",
+          "detail": "세나가 말했다. \"아버지는 중층의 무너진 다리 너머를 늘 '종 아래'라고 불렀어요. 그곳에 표시를 해 뒀어요.\""
+        }
+      }
+    },
+    {
+      "id": "promise", "label": "함께 찾아보겠다고 약속한다", "short": "함께 찾아보겠다고 약속했다",
+      "tags": ["kindness", "bold"], "risk": "low",
+      "check": { "kind": "bond", "dc": 12, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "C01", "stage": 2 },
+            { "type": "add_consumable", "tier": "current", "count": 2 },
+            { "type": "set_flag", "key": "life.c01_promise" }
+          ],
+          "line": "\"꼭 찾아 주세요.\" 약병을 받았다",
+          "detail": "세나가 말했다. \"아버지는 중층의 무너진 다리 너머를 늘 '종 아래'라고 불렀어요. 그곳에 표시를 해 뒀어요.\""
+        },
+        "failure": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C01", "stage": 2 } ],
+          "line": "\"…기대는 안 할게요.\"",
+          "detail": "세나가 말했다. \"아버지는 중층의 무너진 다리 너머를 늘 '종 아래'라고 불렀어요. 그곳에 표시를 해 뒀어요.\""
+        }
+      }
+    }
+  ]
+}

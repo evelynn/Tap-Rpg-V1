@@ -1,0 +1,65 @@
+{
+  "id": "L24",
+  "name": "은퇴한 모험가의 조언",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "life_stages": ["veteran", "elder"],
+  "condition": true,
+  "weight": 4,
+  "cooldown_min": 45,
+  "max_per_life": 3,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "가문 변형의 '이전 인물이 은퇴 후 생존한 가문'은 은퇴 역할 후손 반응 기간(dr_retired_*)으로 거른다. 20% 확률은 조건으로 적을 수 없어 뺐다(조건이 맞으면 늘 붙는다). 소품 잔·백발 노인 실루엣은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "백발 모험가가 말을 걸었다", "여관 구석의 노인이 손짓했다" ],
+    "detail": "여관 구석의 백발 모험가가 {name}의 {weapon:을/를} 보며 고개를 끄덕인다. \"그 나이에 아직 현역이라니. 하나 알려 주지.\"",
+    "tag": "town",
+    "animation": [ { "action": "sit_eat" } ],
+    "family_variants": [
+      { "when": { "any": [ { "reaction_active": "dr_retired_inn" }, { "reaction_active": "dr_retired_instructor" }, { "reaction_active": "dr_retired_letters" } ] },
+        "detail_append": "\"{parent_call:과/와} 폐광에 간 적이 있지. 네 걸음걸이가 꼭 닮았어.\"" }
+    ]
+  },
+  "choices": [
+    {
+      "id": "listen", "label": "귀 기울인다", "short": "귀 기울여 들었다",
+      "tags": ["info"], "risk": "low",
+      "check": { "kind": "lore", "dc": 12, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "skill_use", "skill": "lowest_rank", "count": 10 }, { "type": "add_xp", "units": 1.5 } ],
+          "line": "노인의 오래된 요령을 배웠다"
+        },
+        "failure": {
+          "effects": [ { "type": "add_fatigue", "value": -10 } ],
+          "line": "이야기가 길어 꾸벅 졸았다"
+        }
+      }
+    },
+    {
+      "id": "tell", "label": "자기 이야기를 들려준다", "short": "자기 이야기를 들려주었다",
+      "tags": ["kindness"], "risk": "low",
+      "check": { "kind": "bond", "dc": 12, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "_note": "원문 '유품 등록이 0개면 가문 탭에 유품을 정해 두었나? 안내 표식 1회(12)'는 유품 수 조건과 안내 효과가 없어 옮기지 못했다",
+          "effects": [ { "type": "add_xp", "units": 1 } ],
+          "line": "노인이 은퇴 이야기를 들려줬다"
+        },
+        "failure": { "effects": [], "line": "노인은 창밖만 바라봤다" }
+      }
+    },
+    {
+      "id": "buy", "label": "한 잔 사고 일어선다", "short": "한 잔 사고 일어섰다",
+      "tags": ["rest"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "remove_coins", "amount": 5 } ],
+          "line": "잔을 채워 주고 일어섰다"
+        }
+      }
+    }
+  ]
+}

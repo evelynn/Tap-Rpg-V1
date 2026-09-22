@@ -1,0 +1,85 @@
+{
+  "id": "L06",
+  "name": "길드 게시판의 급한 의뢰",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "condition": true,
+  "weight": 6,
+  "cooldown_min": 35,
+  "max_per_life": 5,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "의뢰 규칙(기한 다음 출정 1회, 목적지 고정, 승리 5회, 비율 내림 정산, 중상 취소)은 accept_quest 파라미터로 적는다",
+  "context_vars": [
+    { "var": "target_place", "selector": "best_hunting_ground", "params": { "max_risk": "normal" } },
+    { "var": "enemy", "selector": "main_enemy_of", "params": { "place_var": "target_place" } }
+  ],
+  "intro": {
+    "lines": [ "게시판에 급한 의뢰가 붙었다", "붉은 핀이 꽂힌 쪽지를 봤다" ],
+    "detail": "길드 게시판에 붉은 핀이 꽂힌 쪽지가 붙어 있다. \"{target_place}의 {enemy:을/를} 다섯 마리만 쫓아내 주세요. 사례는 넉넉히.\" 하델이 턱으로 쪽지를 가리킨다.",
+    "tag": "town",
+    "animation": [ { "action": "interact", "props": ["notice_board"] } ]
+  },
+  "choices": [
+    {
+      "id": "accept", "label": "의뢰를 맡는다", "short": "의뢰를 맡았다",
+      "tags": ["reward"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "accept_quest", "quest": "L06", "location_var": "target_place", "enemy_var": "enemy",
+              "goal_wins": 5, "deadline": "next_sortie", "reward": { "coin_units": 6, "xp_units": 2 },
+              "settle": "ratio_floor", "cancel_on": "serious_injury",
+              "lines": { "complete": "의뢰를 마쳤다. 동전 {coins}개를 받았다", "partial": "의뢰 절반을 해냈다. 사례를 나눠 받았다", "cancel": "다친 몸으로 의뢰를 내려놓았다" } }
+          ],
+          "line": "{enemy} 퇴치 의뢰를 맡았다"
+        }
+      }
+    },
+    {
+      "id": "yield", "label": "새내기에게 양보한다", "short": "새내기에게 양보했다",
+      "tags": ["kindness"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "skill_use", "skill": "negotiation", "count": 1 } ],
+          "line": "새내기가 고맙다며 웃었다"
+        }
+      }
+    },
+    {
+      "id": "raise", "label": "조건을 따져 사례를 올린다", "short": "사례를 올려 맡았다",
+      "tags": ["reward", "thrift"], "risk": "low",
+      "check": { "kind": "haggle", "dc": 16 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "accept_quest", "quest": "L06", "location_var": "target_place", "enemy_var": "enemy",
+              "goal_wins": 5, "deadline": "next_sortie", "reward": { "coin_units": 8, "xp_units": 2 },
+              "settle": "ratio_floor", "cancel_on": "serious_injury",
+              "lines": { "complete": "의뢰를 마쳤다. 동전 {coins}개를 받았다", "partial": "의뢰 절반을 해냈다. 사례를 나눠 받았다", "cancel": "다친 몸으로 의뢰를 내려놓았다" } }
+          ],
+          "line": "사례를 두둑이 올렸다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "accept_quest", "quest": "L06", "location_var": "target_place", "enemy_var": "enemy",
+              "goal_wins": 5, "deadline": "next_sortie", "reward": { "coin_units": 7, "xp_units": 2 },
+              "settle": "ratio_floor", "cancel_on": "serious_injury",
+              "lines": { "complete": "의뢰를 마쳤다. 동전 {coins}개를 받았다", "partial": "의뢰 절반을 해냈다. 사례를 나눠 받았다", "cancel": "다친 몸으로 의뢰를 내려놓았다" } }
+          ],
+          "line": "사례를 조금 올렸다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "accept_quest", "quest": "L06", "location_var": "target_place", "enemy_var": "enemy",
+              "goal_wins": 5, "deadline": "next_sortie", "reward": { "coin_units": 6, "xp_units": 2 },
+              "settle": "ratio_floor", "cancel_on": "serious_injury",
+              "lines": { "complete": "의뢰를 마쳤다. 동전 {coins}개를 받았다", "partial": "의뢰 절반을 해냈다. 사례를 나눠 받았다", "cancel": "다친 몸으로 의뢰를 내려놓았다" } }
+          ],
+          "line": "하델이 코웃음을 쳤다"
+        }
+      }
+    }
+  ]
+}

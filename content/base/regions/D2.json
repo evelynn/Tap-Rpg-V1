@@ -1,0 +1,44 @@
+{
+  "_comment": "01 §8.1·§8.2·§8.3, 07 §5.1(적 50:50·2체 30%·하강 20초)·§5.3(함정 다섯 가지 각 20, 보물 70/30)·§4.5 잔당. noisy: 06 TI02 시끄러운 장소 D2",
+  "id": "D2",
+  "name": "종소리 폐광 중층",
+  "kind": "dungeon_floor",
+  "level_range": [13, 21],
+  "level_mid": 17,
+  "travel_sec": 60,
+  "descend_sec": 20,
+  "unlock": { "defeated": "EB01" },
+  "guild_rank_req": "silver",
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": true,
+  "tags": ["noisy", "dusty", "dark", "mine"],
+  "dungeon": { "group": "bell_mine", "depth": 2 },
+  "encounters": [
+    { "enemy_id": "EN06", "weight": 50 },
+    { "enemy_id": "EN09", "weight": 50 }
+  ],
+  "pair_chance": 0.30,
+  "rooms": [4, 6],
+  "room_weights": { "combat": 45, "trap": 20, "rest": 10, "treasure": 15, "event": 10 },
+  "trap_table": [
+    { "trap_id": "trap_rock", "weight": 20 },
+    { "trap_id": "trap_spike", "weight": 20 },
+    { "trap_id": "trap_dust", "weight": 20 },
+    { "trap_id": "trap_alarm", "weight": 20 },
+    { "trap_id": "trap_collapse", "weight": 20 }
+  ],
+  "treasure_table": { "chest": 70, "vein": 30 },
+  "gate": {
+    "enemy_id": "EB02",
+    "lethal": false,
+    "remnant": { "enemy_id": "EN09" },
+    "lines": { "turn_back": "관문 앞에서 발길을 돌렸다." }
+  },
+  "rescuers": "dungeon",
+  "background_id": "bg_mine_mid",
+  "feature_words": ["갱도 다리", "광부 휴게실"]
+}

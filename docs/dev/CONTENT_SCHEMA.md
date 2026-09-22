@@ -323,7 +323,8 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `has_item` | `ref("item")` | O | 가방·장착·수령 대기함 |
 | `has_item_where` | `{slot?, grade_gte?, tier_gte?, unique?}` | O | |
 | `equipped` | `ref("item")` | O | |
-| `received_relic` | `ref("item")` | 신설 | 이전 인물에게서 유품으로 받음(별칭 1순위) |
+| `received_relic` | `ref("item") \| true` | 신설 | 이전 인물에게서 유품으로 받음(별칭 1순위). `true` = 어떤 유품이든(S07 유품 편지) |
+| `has_consumable` | `{carry_groups: ref("carry_group")[], count: posInt}` | 신설(T9) | 나열한 소지 묶음 중 하나에 소모품 `count`개 이상. `remove_consumable`과 짝(L09 식량 나누기, L15 식량 또는 동전) |
 | `flag` | `flagKey()` 또는 `{key: flagKey(), value: bool\|int}` | O | 범위 무관. 키 꼬리 바인딩 `_{place}` 가능(3.1) |
 | `chain_stage` | `{chain: ref("chain"), stage: int}` | O | `life.{chain}_stage` 줄임 |
 | `lifetime_count_lt` | `{event: ref("event"), count: int}` | O | |
@@ -360,7 +361,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `combat_kind` | `("normal"\|"elite_gate"\|"boss_gate")[]` | 신설 | 지금 치르는 전투 종류. 수호자 `hit +1 when combat_kind [elite_gate, boss_gate]`(05 §8.2) |
 | `main_place` | `regionFilter` | 신설 | 주 활동 장소(08 §7.1: 최근 출정 3회 최빈)가 거르개에 맞음. 장비 평가표(5.1 `equip_eval`)가 쓴다 |
 
-개수: 16의 43종에서 `thirst_gte`를 뺀 42종(쌍 키를 각각 셈) + 신설 14종 = 56종. 16 §3.2의 `family_flag`는 이미 `flag`로 통합됐다. `thirst_gte`는 num `thirst`와 겹치고 경계 복사를 부르므로 폐기, 사망 제안용 단말은 두지 않는다(5.1 `defeat.death_suggestions`를 엔진이 계산).
+개수: 16의 43종에서 `thirst_gte`를 뺀 42종(쌍 키를 각각 셈) + 신설 15종(T9 사건 이식에서 `has_consumable` 추가, DS-54) = 57종. 16 §3.2의 `family_flag`는 이미 `flag`로 통합됐다. `thirst_gte`는 num `thirst`와 겹치고 경계 복사를 부르므로 폐기, 사망 제안용 단말은 두지 않는다(5.1 `defeat.death_suggestions`를 엔진이 계산).
 
 **num 키**(`numKeys`, 구현 완료): `age` `level` `coins` `generation` `fatigue` `hp` `hp_max` `thirst` `stat.{stat}` `skill.{skill}` `counter.{counter}` `counter.{counter}.{region}` 신설 `family_counter.{counter}` 신설 `relation.{npc}` 신설 `activity_weight.{activity}`(04 §5.2 계산값, 08 §7.3 `던전 가중치 25 이상`) 그리고 `flag.{전체 플래그 키}`(범위 무관, 정수 플래그 비교. `flag.fam.c01_unfinished` 가능 — 16의 "life만" 제한 해제, 6절 C11). `{region}` 자리에는 바인딩을 쓸 수 있다(3.1).
 
@@ -375,7 +376,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | type | 파라미터 | 변경점 |
 | --- | --- | --- |
 | `add_coins` | `amount: nonNegInt \| units: units` | `formula` 폐기(DS-07) |
-| `remove_coins` | `amount: nonNegInt \| units: units \| ratio: ratio \| sortie_income_ratio: ratio` | `sortie_income_ratio` 신설: 이번 출정 동전 수입의 비율(05 §6.4 대실패 곤란 2) |
+| `remove_coins` | `amount: nonNegInt \| units: units \| ratio: ratio \| sortie_income_ratio: ratio \| inn_costs: posInt` | `sortie_income_ratio` 신설: 이번 출정 동전 수입의 비율(05 §6.4 대실패 곤란 2). `inn_costs` 신설(T9): 여관비 N회분 = `balance.recovery.inn.cost` × 수정자 `inn_cost_mult`(08 §5.2 여관비 식, L05 `한 잔 산다`) |
 | `add_xp` | `amount: nonNegInt \| units: units \| encounters: posInt` | |
 | `heal` | `hp: posInt \| hp_ratio: ratio` | |
 | `damage` | `hp: posInt \| hp_ratio: ratio \| dice: dice` | `dice` 문법 `NdM+K` 확정. 체력 1 미만 금지는 엔진 규칙(V9) |
@@ -394,6 +395,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `add_consumable` | `consumable_id: ref("consumable") \| tier: "current"`, `count: posInt` | |
 | `remove_consumable` 신설 | `carry_groups: ref("carry_group")[]`, `count: posInt` | 나열 순서대로 가진 묶음 하나에서 뺀다. L09 식량 나누기, 05 §6.4 곤란 3(식량 또는 붕대) |
 | `add_material` 신설 | `material_id: ref("material")`, `count: posInt` | 사건 결과의 재료(채집물 등) |
+| `open_chest` 신설(T9) | 없음 | 보물 방 상자 내용(07 §5.3: 장비 1개 `drops.treasure_chest` + 동전 `dungeon.chest.coin_units` + 재료 `dungeon.chest.material`, 현재 장소 기준)을 받는다. 잠김·함정 판정은 하지 않는다(사건 판정이 대신한다). L17·L20 `보물 상자 1개` |
 | `offer_purchase` | `pool: {facilities: ref("facility")[], slots: slot[]}`, `tier: "character"\|tier`, `grade_weights`, `price_mult: number`, `defect?: modifier[]`, `exempt_discount_cap?: bool = true`, `respect_auto_buy?: bool = true` | 후보는 그 시설에 `shop`을 선언한 장비(5.5) |
 
 **특성·생애**
@@ -406,6 +408,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `mutate` | `trait_id: ref("trait")` (그 특성 `kind: mutation`이어야 함, W1 V검사) |
 | `register_relic` | `selector: "this_item"\|"uid"`, `priority: 1\|2` |
 | `create_child_candidate` | 없음 |
+| `create_partner` 신설(T9) | 없음 — 동반자 1명 생성(12 §2.1 이름·직업·선천 특성·외형). S01. 코어가 사건 ID를 몰라도 되게 효과로 둔다 |
 
 **플래그와 연속 사건** (V19 범위 접두를 파라미터 스키마로 강제)
 
@@ -425,10 +428,11 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | type | 파라미터 | 변경점 |
 | --- | --- | --- |
 | `unlock_location` | `location_id: ref("region")` | |
+| `reveal_discovery` 신설(T9) | `prefer?: ref("discovery")[]` | 현재 장소의 미발견 발견 지점 하나를 판정 없이 발견한다(발견 효과·지도 조각 포함). `prefer` 중 미발견인 것이 먼저, 없으면 `condition`이 맞는 미발견 지점 중 `event` 흐름 무작위, 남은 지점이 없으면 아무 일도 없다. L18 일지, L19 언덕(`A2-1` 우선) |
 | `set_destination` | `location: ref("region") \| place_var: string(context 변수)`, `activity?: activity`, `scope: "next_sortie"`, `respect_risk_cap?: bool = true` | place_var는 그 사건 `context_vars`에 있어야 함(W1) |
 | `accept_quest` | `quest: ref("event")`, `location_var`, `enemy_var`, `goal_wins: posInt`, `deadline: "next_sortie"`, `reward: {coin_units, xp_units}`, `settle: "ratio_floor"`, `cancel_on: "serious_injury"`, `lines: {complete: line, partial: line, cancel: line}` | `lines` 신설(11 L06 달성·부분·취소 기록). 보상 단위는 `location_var` 장소 기준 |
 | `sortie_mod` | `remaining_add?: {encounters\|scenes: int}`, `return_travel_sec_add?: int`, `camp?: {hp_mult?: number, fatigue_add?: int}` 하나 이상 | `camp.fatigue_add`는 야영 피로 변화(−40)에 더하는 값(+10이면 −30). 수정자 `camp_fatigue_add`와 같은 규약 |
-| `dungeon_mod` | `op: "add_room"\|"skip_rooms"\|"next_room_weight"`, `room_kind?: ROOM_KINDS`, `count?: posInt`, `weight_add?: int`, `scope: "this_sortie"\|"next_visit"`, `location?: ref("region") \| 바인딩 = "{place}"` | next_visit 저장 위치 6절 C7 |
+| `dungeon_mod` | `op: "add_room"\|"skip_rooms"\|"next_room_weight"`, `room_kind?: ROOM_KINDS`, `count?: posInt`, `weight_add?: int`, `scope: "this_sortie"\|"next_visit"`, `location?: ref("region") \| 바인딩 = "{place}"` | next_visit 저장 위치 6절 C7. `skip_rooms`는 관문 앞 마지막 방을 건너뛰지 않고, 건너뛴 방의 보상은 없다(엔진 규칙, 11 L14) |
 | `add_time` | `sec: posInt` | |
 | `end_sortie` | `reason: "event"\|"injury"\|"command"` | |
 | `temp_mod` | `modifier`, `scope: "scene"\|"next_scene"\|"sortie"\|"next_sortie"\|"encounters"\|"next_decision"\|"eff_min"\|"next_check"\|"next_visit"`, `count?: posInt`(encounters면 필수, next_visit이면 그 방문의 조우 수 제한), `duration_min?: effMin`(eff_min이면 필수), `location?: ref("region") \| 바인딩`(next_visit이면 필수) | `next_check`(다음 판정 1회, 05 §6.4 곤란 4)·`next_visit`(그 장소 다음 방문 동안, L05·L16) 신설. next_visit 저장 6절 C7 |
@@ -451,13 +455,13 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | type | 파라미터 | 변경점 |
 | --- | --- | --- |
 | `npc_relation` | `npc_id: ref("npc")`, `delta: int` | |
-| `skill_use` | `skill`, `count: posInt` | |
+| `skill_use` | `skill: skill \| "lowest_rank"`, `count: posInt` | `lowest_rank` 신설(T9): 단계가 가장 낮은 숙련, 같으면 숙련 목록(`SKILLS`) 순서 앞(L24) |
 | `family_record` | `kind: "chronicle"\|"bond"\|"codex"`, `key: string`, `text: template` | |
 | `unlock_family` | `kind: "background"\|"appearance"`, `id: string` | background면 ref("background") 검사. 연대기 칭호는 가리킬 종류가 없으므로 `achievement.rewards {kind: "title", text}`로만 준다 |
 | `journal` | `tag: journalTag`, `line: line`, `detail?: template`, `importance?: JOURNAL_IMPORTANCE` | |
 | `animation` | `action: animationAction`, `props?: ref("prop")[]` | 영어 키(DS-09) |
 
-`start_chain`은 폐기 유지. 합계 50 + `add_material` `remove_consumable` `roll_check` = 53종.
+`start_chain`은 폐기 유지. 합계 50 + `add_material` `remove_consumable` `roll_check` + T9 사건 이식의 `reveal_discovery` `open_chest` `create_partner`(DS-54) = 56종.
 
 **비용 표시 필수 효과(V8)**: `mutate`·`extend_lifespan`·`remove_item(chosen_relic)`·`life_stat_add` 목록은 W4 refine에 박지 않고 `schema/event/effects.ts`의 등록 코드 옆 상수 `COST_REQUIRED_EFFECTS`(export `Set`)에 둔다. 새 효과를 더하는 코드는 같은 파일(또는 확장 모듈)에서 이 Set에 더한다.
 
@@ -518,7 +522,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `fatigue_gain_mult` | number | O | A04, TI05 |
 | `travel_time_mult` | number | O | TI03, R02, 날씨, 길잡이 ×0.8 |
 | `travel_sec_add.{region}` 신설 | number(초) | | 07 A2-3: `travel_sec_add.A2` −10 등 그 장소까지 이동 |
-| `descend_sec_add.{region}` 신설 | number(초) | | 07 A3-5: `descend_sec_add.D2`·`.D3` −10 |
+| `descend_sec_add.{region}` 신설 | number(초) | | 07 A3-5: `descend_sec_add.D2`·`.D3`·`.A4` −10(A4는 D3 하강을 거친다) |
 | `return_travel_time_mult` 신설 | number | | X03 |
 | `travel_fatigue_add` 신설 | number | | 눈 +1 |
 | `discovery_chance_add` / `discovery_chance_mult` | number | O | R02, 안개 |
@@ -588,6 +592,8 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
     { "var": "target_place", "selector": "best_hunting_ground", "params": { "max_risk": "normal" } },
     { "var": "enemy", "selector": "main_enemy_of", "params": { "place_var": "target_place" } } ] }
 ```
+
+변수를 둘 이상 채우는 선택자(`offered_relic`)는 변수마다 항목을 하나씩 적는다(`{var: "relic_name", selector: "offered_relic"}`, `{var: "relic_note", selector: "offered_relic"}`). 엔진은 한 사건 안에서 같은 `selector`·`params` 항목을 한 번만 계산해 그 값을 나눠 쓴다(두 변수가 서로 다른 유물을 가리키지 않게).
 
 선택자 정의는 W4 `registerContextSelector(name, {yields: 변수[], params: zod 스키마, doc})`다. 스키마는 이름 존재, `params` 모양, `yields`가 변수 등록표에 있는지, `place_var`가 앞 항목의 변수인지(W1)를 본다. 계산은 핸들러 맵 `SELECTOR_HANDLERS`(4절 계약)가 한다. 장소를 채우는 선택자의 변수는 바인딩(3.1)에 쓸 수 있다.
 
@@ -701,7 +707,12 @@ branch 이름은 고정 목록이 아니다. `listChancePaths(event)`는 효과 
   },
   "reference_character": {                              "_comment": "01 §2.4 표준 진행 가정. 07 §5.2 방 생성 검증의 기준 인물",
     "main_stat_start": 3, "stat_up_levels": [4, 10, 16, 22, 28], "melee_rank_levels": [3, 7, 13, 19, 26],
-    "check_bonus": "결정 대기(DS-39)"
+    "check_bonus": {
+      "trap_detect": [ { "from_level": 1, "value": 2 }, { "from_level": 5, "value": 3 }, { "from_level": 9, "value": 4 },
+                       { "from_level": 15, "value": 5 }, { "from_level": 24, "value": 6 } ],
+      "trap_evade":  [ { "from_level": 1, "value": 2 }, { "from_level": 6, "value": 3 }, { "from_level": 11, "value": 4 },
+                       { "from_level": 19, "value": 5 }, { "from_level": 28, "value": 6 } ]
+    }
   },
   "aging": {                                            "_comment": "01 §2.2, 16 §6.5",
     "life_stages": [ { "id": "novice", "from_age": 18 }, { "id": "prime", "from_age": 30 },
@@ -1030,7 +1041,7 @@ branch 이름은 고정 목록이 아니다. `listChancePaths(event)`는 효과 
 
 필드 규칙(W2가 스키마로 강제):
 
-- 모든 섹션 필수, 섹션 안 키도 전부 필수(기본값 없음). 확장 팩은 패치로만 바꾼다. 위 예시에서 `"결정 대기(DS-39)"` 값은 DS가 정해질 때까지 스키마 자리만 잡아 둔 것이다.
+- 모든 섹션 필수, 섹션 안 키도 전부 필수(기본값 없음). 확장 팩은 패치로만 바꾼다. `reference_character.check_bonus`는 01 §2.4 기준 인물 판정 보정 표(D46)다.
 - **같은 수치는 한 곳에만 둔다**(00 §2.4). 이 판에서 겹침을 없앴다: 최후 판정 행운 나눗수 → `check_kinds.final.luck_div`, 야영 → `recovery.camp`(시간 포함), 입원·무료 치료 시간 → `injury.serious.clinic_min/free_min`, 생애 단계 경계 → `aging.life_stages`, 던전 손실 모델의 보물·휴식 항 → `region.treasure_table`·`dungeon.chest.trapped`·`loss_model.trap_loss`·`recovery.rest_point`, 자녀 후보 최대 → S02 `max_per_life`, 한 줄 최대 길이 → `ui.line_max`(스키마의 `line`은 표식만), 장비 단계 수 → `economy.tier_levels` 길이, 수명 연장 상한 → `inheritance.lifespan.extend_cap`, 흡혈귀 수치 → TM01 `trait.mutation`(5.6).
 - `balance` 안의 ID 참조(`first_sortie.location` → region, `first_sortie.guaranteed_drop.item` → item, `guaranteed_event.event` → event, `economy.aid.issue_items` → item, `starting_kit` → consumable·item(record 키도 ref), `inheritance.fallback_guardian_npc` → npc, `policy_defaults.attitude` → attitude, `equip_eval.value_table[].mults[].when` 안의 ID)는 ref로 선언해 V2 대상이 된다. **코어 코드는 이 값을 읽을 뿐 ID를 쓰지 않는다**(I04). 저장 스키마의 방침 기본값 `attitude`도 여기서 읽는다(코드에 `adventurous`를 두지 않음).
 - `defeat.death_suggestions.rules[].ctx`는 코드 열거 `DEATH_CTX`(`armor_tier_below_level_tier` `effective_level_below_gate` `potions_at_start_lte` `serious_injuries_gte`)이며, 엔진이 사망 기록(07 §8.3)에서 계산한다. 기준 수치는 `value`. 치명 허용 문장과 기본 문장은 관문별로 `region.gate.lines`에 둔다(아래).
@@ -1432,7 +1443,7 @@ V19: 모든 `flag`·`set_*_flag`·`chain_stage`·`num flag.` 키가 등록표의
 | `luck_scaled` | bool | O | 기연 가중(상한 `balance.events.fortune_cap`) |
 | `appear_chance` 신설 | ratio? | | 후보가 된 뒤 등장 확률(F02·F03 0.5) |
 | `pity_after` 신설 | posInt? | | 조건 충족 상태의 판단 지점 N회째 확정(F02·F03 3) |
-| `check_override` 신설 | ratio? | | 판단 지점 검사 확률 대신 이 값(F01 첫 귀환 1.0, 연속 마을 단계 1.0) |
+| `check_override` 신설 | ratio? | | 판단 지점 검사 확률 대신 이 값(F01 첫 귀환 1.0, L23 확정 1.0). 연속 사건 마을 단계(C01-2·C02-3)의 100%는 사건에 적지 않고 `balance.events.chain_town_stage_chance`가 맡는다(10 §3.1) |
 | `exclusive_group` 신설 | string? | | 같은 그룹 사건은 한 판단 지점에 하나만 후보(1:1 추첨), 같은 출정에 하나만(F02·F03 `lifespan_offer`) |
 | `cooldown_min` | effMin? | O | |
 | `cooldown_per_season` 신설 | bool = false | 16 설명만 | 계절당 1회(L11) |
@@ -1478,6 +1489,7 @@ V19: 모든 `flag`·`set_*_flag`·`chain_stage`·`num flag.` 키가 등록표의
 
 - `schedule_event`로 예약된 사건은 발화할 때 `condition`만 검사한다. `appear_chance`·`cooldown_*`·`check_override`·판단 지점 확률은 무시한다(12 §2.2 첫 S02 확정).
 - 시스템 사건의 확률(S02 추가 8%)은 `check_override`로 쓴다. `appear_chance`는 운명 사건처럼 후보가 된 뒤의 등장 확률에만 쓴다.
+- **시스템 사건의 선택지 = 서술 변형**(T9). AI가 고르지 않으므로 `tags`·`short`를 쓰지 않는다(V7 면제). 엔진은 `requires`가 참인 선택지 중에서 고른다. 둘 이상 열려 있으면 그 사건 규칙이 정한 값과 **id가 같은 선택지**를 적용한다: S01 = `balance.inheritance.family_forms` 키, S03 = 정해진 `retire_role` id(서술 변형 `letters_fallback`은 09 §4.1 조건), S07 = 편지 종류(`apple`·`relic`·`story`·`lesson`·`final_{역할}`), S08 = 긴 잠 원인(`age`·`thirst`·`voluntary`). 하나만 열려 있으면 그것을 적용한다(S02·S04·감사의 식탁).
 - 사건 횟수(`lifetime_count_lt`·`family_count_lt`가 읽는 값, 6절 C2)는 그 사건의 결과 효과를 모두 적용한 **뒤에** 올린다. 결과 안에서 `lifetime_count_lt {S02, 1}`은 "이번이 첫째"다.
 - 발견·장비의 `event_weight_mult`가 `appear_chance`를 가진 운명 사건을 가리키면 `appear_chance`에 곱하고 `balance.events.fortune_cap`으로 자른다(07 A4-1·A4-2 F02·F03 ×2).
 
@@ -1569,7 +1581,7 @@ error V3 base/events/life/L08.json#/condition/all/1/foo: 알 수 없는 조건: 
 | V4 | 효과 문법 | `effect` 판별 유니온(미등록 type, 필수 파라미터, 형식) + `exactlyOne` 검사 + `chance.p` ratio. 효과 안 이슈는 모두 V4(안쪽 규칙 번호는 유지) | common(완료)·W4 등록 |
 | V5 | 템플릿 | 문법·조사 쌍 9종·변수 이름 형식은 스키마(`template`이 렌더러 파서 `extractTemplateVars`를 부름). W1은 `templateRegistry` 표식 필드를 모아 변수가 `templateVars`에 있음, `source: event` 변수는 그 사건 `context_vars`에 있음. 옛 표기는 등록돼 있지 않으므로 오류 | W1(+W4 등록표) |
 | V6 | 한 줄 길이 | `line` 표식 필드에 가장 긴 대입(이름 6자, 장소·장비·적·NPC 이름은 번들에서 가장 긴 값, 숫자 변수는 5자리)을 넣은 길이 ≤ `balance.ui.line_max` | W1 |
-| V7 | 자동 선택 정보 | 사건 refine: hold none이면 모든 선택지 `tags`(1~2)·`risk`·`short`. **면제**(tags·short만): `category: system`이고 선택지가 1개뿐인 사건(자동 사건). `none`/`low` 선택지 ≥ 1은 hold·분류와 관계없이 모든 사건(10 §5.4, 16 §4.2) | W4 |
+| V7 | 자동 선택 정보 | 사건 refine: hold none이면 모든 선택지 `tags`(1~2)·`risk`·`short`. **면제**(tags·short만): `category: system` 사건 전부(선택지는 서술 변형이고 AI가 고르지 않는다, 5.10. DS-53을 T9에서 넓힘 → DS-55). `none`/`low` 선택지 ≥ 1은 hold·분류와 관계없이 모든 사건(10 §5.4, 16 §4.2) | W4 |
 | V8 | 선택 창 정보 | 사건 refine: hold≠none이면 `preview.body`·`hold_line`·선택지 `preview.{benefit,cost,reversible}`. 선택지 효과(중첩 포함)에 `COST_REQUIRED_EFFECTS`(4.2) 효과가 있으면 `cost`가 비어 있지 않음(문장 내용은 사람이 검수) | W4 |
 | V9 | 사망 안전 | `damage.hp_ratio < 1`, `damage.hp`는 경고. 사망을 일으키는 효과가 없다는 것은 스키마로 판별하지 않고 **핸들러 계약**으로 둔다: 일반 활동의 효과 핸들러는 HP를 1 미만으로 내리지 않는다(규칙 구현 테스트가 `EFFECT_HANDLERS` 전부를 HP 1 인물에 적용해 확인) | W4·W1·규칙 테스트 |
 | V10 | 치명 선택지 금지 | `risk: lethal` 선택지는 오류(D26). 확장에서 허용이 필요해지면 그때 규칙을 더한다 | W4 |
@@ -1584,7 +1596,7 @@ error V3 base/events/life/L08.json#/condition/all/1/foo: 알 수 없는 조건: 
 | V20 | 판정 종류 | `ref("check_kind")` → V2로 검사. 사건이 능력치·숙련을 따로 적으면 strict S01. 사건의 `dc`·`dc_offset`은 5.10 표를 따른다(`level_formula`·`enemy_ac` 종류는 사건 사용 금지) | common·W4·W1 |
 | V21 | 소모품 | `carry_group` 참조(V2), `sellable: false`, `effect` 열거. 08 값과의 일치는 기반 팩 골든 테스트(T-콘텐츠)로 옮긴다(DS-26) | W3·W1 |
 
-**그 밖의 W1 교차 검사**(V 번호 없이 해당 V에 붙여 보고): 던전 group마다 depth 1..n 연속(V2), `tier` 값 ≤ `economy.tier_levels` 길이(S01), `context_vars`의 `place_var`가 앞 항목 변수(V5), `trait.acquire.type: event`의 선택지에 `add_trait`가 있음(V15와 같은 W3·W1 묶음).
+**그 밖의 W1 교차 검사**(V 번호 없이 해당 V에 붙여 보고): 던전 group마다 depth 1..n 연속(V2), `tier` 값 ≤ `economy.tier_levels` 길이(S01), `context_vars`의 `place_var`가 앞 항목 변수(V5), `trait.acquire.type: event`의 선택지에 `add_trait`(변이 특성이면 `mutate`)가 있음(V15와 같은 W3·W1 묶음. TM01 ← F03 `accept`의 `mutate`).
 
 ### 7.3 참조 워커 (W1)
 
@@ -1647,7 +1659,7 @@ error V3 base/events/life/L08.json#/condition/all/1/foo: 알 수 없는 조건: 
 | DS-36 | 자리 바인딩 `{변수}`(3.1): 키 묶음 플래그·장소 자리 수정자 target·장소 파라미터에 `{place}` 또는 사건 장소 변수. `temp_mod`·`dungeon_mod`의 `scope: next_visit` + `location`, 저장 C7 일반화. 16 §5.2 키 묶음 설명에 "데이터에는 `_{place}`를 적고 엔진이 치환"을 더한다 | 아니오 | 16 §3·§4.3·§5.2 |
 | DS-37 | **밤 출정의 적 레벨 +1(07 §7.1)을 관문 적(EB01~EB03, 잔당)에도 적용하는가.** 07 §7.1 "던전: 밤 출정의 적 레벨 +1만 적용"은 조우 적 기준이라 관문이 모호하다. 권장: 적용(관문도 조우), 치명 관문 위험 차 계산(01 §7.2)에도 반영 | 예 | 07 §5.6·§7.1 |
 | DS-38 | 16 §4.5 F03 주석 "가격 계산(08)이 `life.f03_clue`를 읽는다"를 "TM01의 `shop_surcharge` 수정자 `when`이 플래그를 읽는다"로 고친다(코어가 콘텐츠 플래그 키를 모르게, I04). 흡혈귀 `time_modifiers`는 출정 중 시간대 기준이고 마을 규칙은 `in_town` 조건 수정자 | 아니오 | 16 §4.5·§5.2 |
-| DS-39 | **07 §5.2 방 생성 검증의 기준 인물 판정 보정**(함정 감지·회피 확률 계산용 지식+탐색, 민첩+기동)이 정해져 있지 않다. 01 §2.4는 주능력치·근접 단계만 가정한다. 01 §2.4에 보조 능력치·탐색·기동 단계 가정을 더해 정하고, 값은 `reference_character.check_bonus`(레벨별 판정 종류 보정 표)에 둔다. 이 문서는 값을 정하지 않는다 | 예 | 01 §2.4, 07 §5.2 |
+| DS-39 | **07 §5.2 방 생성 검증의 기준 인물 판정 보정**(함정 감지·회피 확률 계산용 지식+탐색, 민첩+기동)이 정해져 있지 않다. 01 §2.4는 주능력치·근접 단계만 가정한다. 01 §2.4에 보조 능력치·탐색·기동 단계 가정을 더해 정하고, 값은 `reference_character.check_bonus`(레벨별 판정 종류 보정 표)에 둔다. → **D46으로 결정됨**(01 §2.4 `방 생성 기준 인물의 판정 보정` 표. 기반 팩 `check_bonus`에 넣었다) | 예 | 01 §2.4, 07 §5.2 |
 | DS-40 | **공포 판정 실패 효과 불일치**: 05 §6.1은 "이번 출정 퇴각 기준 +10%p", 16 §5.2 `trip.fear`는 "공포 판정 실패로도 설정 → 모든 판정 −1 + 퇴각 +10%p". 05가 판정 종류의 단일 출처(00 §2.4)이므로 권장: 05를 따르고 16 `trip.fear`의 설정처에서 "공포 판정 실패"를 뺀다(L17 실패만). `check_kinds.fear.fail_effects`는 05 값으로 적었다 | 예(정합) | 05 §6.1, 16 §5.2 |
 | DS-41 | 09 §1.2 노년기 "`[가족]`·`[인연]` 기록 가중 ×2"를 **사건 가중**(`intro.tag`가 family·bond인 사건 ×2)으로 해석한다(`life_stage_rules.elder`) | 예(해석) | 09 §1.2, 10 §4.2 |
 | DS-42 | 판매 선언은 장비·소모품의 `shop`에만 둔다(시설 `stock` 폐기). 장비 `shop`은 배열 + `pick_group`(08 §5.1 길드 2단계). 고유 장비 대체는 장비의 `reacquire`, 장소 전용 드롭은 `sources` drop 항목(`room`·`grade_is`·`chance`·`once_per_life`) | 아니오 | 16 §2.3.1·§2.5 |
@@ -1662,6 +1674,12 @@ error V3 base/events/life/L08.json#/condition/all/1/foo: 알 수 없는 조건: 
 | DS-51 | `event.context_vars` record `{변수: 규칙}` → 배열 `{var, selector, params?}[]`(선언 순서대로 평가, 4.5) | 아니오 | 16 §4.1 |
 | DS-52 | `intro.animation` 단일 객체 → 순서 있는 배열 `{action, props?, sec?}[]`(DS-09 영어 키와 함께) | 아니오 | 16 §4.1, §4.4·§4.5 예시 |
 | DS-53 | V7 면제: `category: system`이고 선택지가 1개인 자동 사건은 `tags`·`short`를 생략한다. `none`/`low` 선택지 ≥ 1은 모든 사건에 그대로 적용(10 §5.4) | 아니오 | 16 §7.2 V7 |
+| DS-54 | T9 사건 이식 등록부 신설: 조건 `has_consumable`, `received_relic: true`(어떤 유품이든), 효과 `reveal_discovery`·`open_chest`·`create_partner`, 파라미터 `remove_coins.inn_costs`·`skill_use.skill: "lowest_rank"`(4.1·4.2). 11 원문 규칙을 그대로 옮기기 위한 것이고 값은 바꾸지 않는다 | 아니오 | 16 §3.2·§4.3 |
+| DS-55 | V7 면제를 `category: system` 사건 전부로 넓힌다(DS-53 대체). 시스템 사건의 선택지는 서술 변형이며, 둘 이상 열리면 엔진이 정한 값과 id가 같은 선택지를 적용한다(5.10) | 아니오 | 16 §4.1·§7.2 V7 |
+| DS-56 | **길찾기 부분 성공 불일치**: 11 L17 `소리를 따라간다`·L19 `발자국을 따른다`는 부분 결과를 적었지만 05 §6.1 길찾기는 부분 성공이 없다. 지금 데이터는 05를 따라 부분 결과를 뺐다(V11, 그 구간은 실패). 11에서 부분 결과를 지우거나 05에서 길찾기 부분 성공을 허용한다 | 예(정합) | 05 §6.1, 11 L17·L19 |
+| DS-57 | **11 가문 변형과 12 §7.6(후손 반응의 유일한 정의) 불일치**: (1) 11 L02·L18(`fam.c01_rescue`)·L24(은퇴 생존, 20%) 문장 변형이 12 표에 없다. (2) 11 L18 `일지를 읽는다` 자동 성공은 12 원칙 1(판정 보정 금지, D29) 위반이라 데이터에서 뺐다. (3) 12의 `fam.c01_treasure` → L18 `사과한다`(교섭, 반응 종료)는 11에 문장·DC가 없고 반응을 끝내는 효과도 없어 옮기지 않았다. 권장: 12 표에 문장 변형 3건을 더하고, 11 L18 자동 성공을 지우고, `사과한다` 원문을 11에 쓰거나 12에서 뺀다 | 예(정합) | 11 L02·L18·L24, 12 §7.6 |
+| DS-58 | **L22 부고 변형**(숙련기 이후 30%, 생애 1회, 이후 L22 중지)은 한 사건 안의 확률 변형이라 스키마로 적을 수 없다. 권장: 부고를 별도 사건 ID로 두고(`appear_chance 0.3`, `life_stages [veteran, elder]`, `max_per_life 1`), L22 조건에 `lifetime_count_lt {부고, 1}`을 건다. 01 §12 사건 등록부에 ID 추가가 필요하다 | 예(등록부) | 01 §12, 11 L22 |
+| DS-59 | 11 문장 정리 후보: S04 편지 서명 `하델` 고정은 02 §8.10 출장소장 교대(3대부터)와 맞지 않는다(`{npc}` 후보). L20 TI02 반응 `귀가 먹먹하다`와 C01-1 `맞춰 본다` 성공 한 줄 `찢긴 선이 중층을 가리킨다`(18 §6.3)는 현재형이다(14 한 줄 기록 과거형). 데이터는 과거형 `귀가 먹먹했다`·`찢긴 선이 중층을 가리켰다`로 적었다 | 아니오 | 11 S04·L20·C01-1 |
 
 16 §4.4·§4.5·§4.6 예시는 DS-09·DS-46·DS-49·DS-51·DS-52를 반영해야 지금 스키마를 통과한다(W4 테스트 fixture는 바꿔서 통과시켰다). 합치기 순서 4에서 예시도 함께 고친다.
 
@@ -1740,8 +1758,8 @@ JSON Schema 내보내기는 편집기 보조로 둔다(`pnpm content:schema`, I1
 
 | 파일 | 공개 export |
 | --- | --- |
-| `conditions.ts` | `registerBaseConditions()`(4.1의 56종, 모듈 로드 시 1회 실행) |
-| `effects.ts` | `registerBaseEffects()`(4.2의 53종), `combatSchema`, `COST_REQUIRED_EFFECTS`(V8) |
+| `conditions.ts` | `registerBaseConditions()`(4.1의 57종, 모듈 로드 시 1회 실행) |
+| `effects.ts` | `registerBaseEffects()`(4.2의 56종), `combatSchema`, `COST_REQUIRED_EFFECTS`(V8) |
 | `context.ts` | `contextSelectors`, `registerContextSelector` + 4.5 기본 5종(params 스키마 포함) |
 | `template-vars.ts` | `templateVars`, `registerTemplateVar` + 16 §1.4.3 전부(옛 표기 §1.4.4는 등록하지 않음). 조사 9쌍은 `text/template.ts`가 단일 출처 |
 | `text.ts` | `textSchema`, `textSlots`, `registerTextSlot` |
@@ -1781,7 +1799,7 @@ JSON Schema 내보내기는 편집기 보조로 둔다(`pnpm content:schema`, I1
 | `dungeon.trap_flow`를 check_kinds 참조로 | 중복 제거 | vein 피로만 옮김 | `trap_flow`의 값(해제 실패 뒤 회피 +2, 부품 1단위)은 05 §6.1에 없는 07 절차 값이라 중복이 아니다 |
 | 흡혈귀 `rest{kind: blood_rest}`·`inn{kind: cellar}`·`aging_stop_age`·`time_ratio.overrides` | 판별 객체·나이 필드 | 단순한 모양으로 | 변이 종류는 코드 열거(DS-30)라 판별자가 필요 없다. 09 §7.2는 나이가 아니라 "변이 이후 감소 없음"이므로 bool. 굶주림 밤 100%는 단계 속성(`stages[].night_ratio`)이 조건식보다 짧다 |
 | 장비 평가 장소 조건을 `location_match`로 | 현재 장소 거르개 | 새 단말 `main_place` | 08 §7.3의 조건은 현재 장소가 아니라 **주 활동 장소**(최근 3회 최빈)다. `location_match`로 적으면 마을에서 평가할 때 항상 거짓이 된다 |
-| `balance.reference_character.check_bonus_by_level` | 값 채우기 | 자리만, 값은 DS-39 | 설계 문서 어디에도 기준 인물의 탐색·기동 가정이 없다. 이 문서가 값을 지어내면 규칙 결정이 된다 |
+| `balance.reference_character.check_bonus_by_level` | 값 채우기 | 이 문서는 자리만 두고 DS-39로 올림 → D46으로 결정됨 | 검토 당시 설계 문서 어디에도 기준 인물의 탐색·기동 가정이 없어, 이 문서가 값을 지어내면 규칙 결정이 됐다. 이후 00 D46이 01 §2.4에 표를 정했고 기반 팩 `check_bonus`에 넣었다 |
 | 관문 보스 밤 +1 | 적용 여부 적기 | DS-37로 | 07 §7.1이 조우 적만 말한다. 규칙 선택이라 여기서 확정하지 않는다 |
 | 노년기 걷기 ×0.9(09 §1.2) | balance에 | 기각 | 스프라이트 재생 속도라 15(아트) 소유 연출 값이다. 규칙이 읽지 않는다 |
 | S04 연출 3+2+4초 | balance에 | 사건 `intro.animation[].sec` | 사건 하나의 연출이라 그 사건 데이터에 둔다 |

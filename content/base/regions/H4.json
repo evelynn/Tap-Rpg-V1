@@ -1,0 +1,27 @@
+{
+  "_comment": "01 §8.1(D1 첫 진입), 07 §3.1, 10 §3.1. tags: 06 TI05·08 A04 폐광·먼지 장소(D1~D3·H4·H5)",
+  "id": "H4",
+  "name": "광재 골짜기",
+  "kind": "hunting_ground",
+  "level_range": [14, 21],
+  "level_mid": 17,
+  "travel_sec": 60,
+  "unlock": { "visited": "D1" },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "tags": ["dusty", "mine"],
+  "encounters": [
+    { "enemy_id": "EN04", "weight": 30 },
+    { "enemy_id": "EN06", "weight": 35 },
+    { "enemy_id": "EN09", "weight": 35 }
+  ],
+  "pair_chance": 0.15,
+  "event_check": 0.07,
+  "rescuers": "field",
+  "background_id": "bg_slag_valley",
+  "feature_words": ["녹슨 레일", "광재 더미"]
+}

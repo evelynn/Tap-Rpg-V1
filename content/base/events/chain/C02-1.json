@@ -1,0 +1,77 @@
+{
+  "id": "C02-1",
+  "name": "다리 밑에서 우는 아이",
+  "category": "chain",
+  "chain": { "id": "C02", "stage": 1 },
+  "locations": ["H1", "A1"],
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "life_stages": ["novice"],
+  "condition": { "all": [
+    { "chain_stage": { "chain": "C02", "stage": 0 } },
+    { "level_gte": 2 },
+    { "not": { "flag": "fam.c02_done" } },
+    { "not": { "flag": "fam.c02_unfinished" } }
+  ] },
+  "weight": 10,
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "11 C02-1. 연속 우선 검사 50%는 balance.events.chain_priority_chance. 여울 다리·아이 실루엣 소품은 prop 정의가 없어 뺐다. 가중치는 11에 없어 10",
+  "intro": {
+    "lines": [ "다리 밑에서 아이가 울고 있었다", "작은 울음소리가 들렸다" ],
+    "detail": "여울 다리 밑에서 작은 아이가 무릎을 끌어안고 울고 있다. 손에는 나무 호각이 꼭 쥐여 있다. \"토리… 집에 가는 길을 잃었어.\"",
+    "tag": "bond",
+    "animation": [ { "action": "discover", "props": ["whistle"] }, { "action": "walk", "props": ["whistle"] } ]
+  },
+  "choices": [
+    {
+      "id": "escort", "label": "달래서 마을로 데려다준다", "short": "아이를 달래 마을로 데려다줬다",
+      "tags": ["kindness", "safe"], "risk": "none",
+      "check": { "kind": "bond", "dc_offset": 0, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_xp", "units": 1 },
+            { "type": "advance_chain", "chain_id": "C02", "stage": 1 },
+            { "type": "end_sortie", "reason": "event" }
+          ],
+          "line": "토리가 울음을 그치고 노래했다",
+          "detail": "토리가 말했다. \"호각은 할아버지가 준 거야. 늑대가 오면 불래.\""
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_time", "sec": 40 },
+            { "type": "advance_chain", "chain_id": "C02", "stage": 1 },
+            { "type": "end_sortie", "reason": "event" }
+          ],
+          "line": "업고 가는 내내 토리가 울었다",
+          "detail": "토리가 말했다. \"호각은 할아버지가 준 거야. 늑대가 오면 불래.\""
+        }
+      }
+    },
+    {
+      "id": "track", "label": "발자국을 거슬러 가족을 찾는다", "short": "발자국을 거슬러 가족을 찾았다",
+      "tags": ["info", "new_path"], "risk": "low",
+      "check": { "kind": "pathfinding", "dc_offset": 2 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 1 },
+            { "type": "advance_chain", "chain_id": "C02", "stage": 1 }
+          ],
+          "line": "광대 수레에 토리를 데려다줬다",
+          "detail": "토리가 말했다. \"호각은 할아버지가 준 거야. 늑대가 오면 불래.\""
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_fatigue", "value": 5 },
+            { "type": "advance_chain", "chain_id": "C02", "stage": 1 },
+            { "type": "end_sortie", "reason": "event" }
+          ],
+          "line": "헤매다 결국 마을로 데려갔다",
+          "detail": "토리가 말했다. \"호각은 할아버지가 준 거야. 늑대가 오면 불래.\""
+        }
+      }
+    }
+  ]
+}

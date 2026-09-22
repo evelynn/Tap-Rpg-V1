@@ -1,0 +1,16 @@
+{
+  "_comment": "01 §8.1, 02 §6.1 시설, 08 §5.1 좋은 등급 재고(대장간 2, 잡화점 1)",
+  "id": "T00",
+  "name": "도토리 여울 마을",
+  "kind": "town",
+  "unlock": true,
+  "background_id": "bg_town",
+  "facilities": [
+    { "id": "inn", "name": "여관 '도토리 모자'", "npc_id": "N04", "services": ["inn"] },
+    { "id": "guild", "name": "길드 출장소", "npc_id": "N01", "services": ["lodging", "special_shop"] },
+    { "id": "smithy", "name": "대장간", "npc_id": "N02", "good_stock": 2 },
+    { "id": "general_store", "name": "잡화점·약초", "npc_id": "N03", "good_stock": 1, "services": ["light_treatment"] },
+    { "id": "clinic", "name": "치료소", "npc_id": "N01", "services": ["clinic", "free_treatment"],
+      "_note": "02 §6.1 '미루가 약초를 대고 길드가 운영', 08 §5.1 '길드 운영'이라 담당 NPC를 길드 출장소장 N01로 둠(문서에 단일 담당자 없음)" }
+  ]
+}

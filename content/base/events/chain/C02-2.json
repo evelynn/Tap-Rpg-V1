@@ -1,0 +1,102 @@
+{
+  "id": "C02-2",
+  "name": "언덕의 호각 소리",
+  "category": "chain",
+  "chain": { "id": "C02", "stage": 2 },
+  "locations": ["H2", "H3"],
+  "triggers": ["after_encounter"],
+  "condition": { "all": [ { "chain_stage": { "chain": "C02", "stage": 1 } } ] },
+  "weight": 10,
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "11 C02-2. TI07 전투 전 공포 판정은 combat.pre_check에 when이 없어, 쫓는다를 TI07 보유 여부로 나눈 두 선택지(requires)와 불씨 실패 전투의 if로 적었다. TI02 +1은 판정 선택지의 situational. 걷기 1.5배 속도와 짐수레·음표 효과는 적을 자리가 없다",
+  "intro": {
+    "lines": [ "언덕에서 호각 소리가 들렸다", "호각 소리가 끊어질 듯 이어졌다" ],
+    "detail": "언덕 너머에서 가늘고 높은 호각 소리가 끊어질 듯 이어진다. 토리의 호각 소리다. 광대 가족의 짐수레가 여울 늑대들에게 둘러싸여 있다.",
+    "tag": "bond",
+    "animation": [ { "action": "walk", "props": ["whistle"] } ]
+  },
+  "choices": [
+    {
+      "id": "chase", "label": "달려가 늑대를 쫓는다", "short": "달려가 늑대를 쫓았다",
+      "tags": ["bold", "kindness"], "risk": "medium",
+      "requires": { "not": { "has_trait": "TI07" } },
+      "combat": {
+        "enemies": [ { "enemy_id": "EN03" } ],
+        "count": [ { "when": { "level_lt": 8 }, "count": 1 }, { "when": true, "count": 2 } ],
+        "sequential": true
+      },
+      "outcomes": {
+        "win": {
+          "effects": [ { "type": "add_xp", "units": 1 }, { "type": "advance_chain", "chain_id": "C02", "stage": 2 } ],
+          "line": "늑대를 쫓고 수레를 지켰다"
+        },
+        "defeat": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C02", "stage": 2 } ],
+          "line": "쓰러진 사이 가족은 피했다"
+        }
+      }
+    },
+    {
+      "id": "chase_fearful", "label": "달려가 늑대를 쫓는다", "short": "달려가 늑대를 쫓았다",
+      "tags": ["bold", "kindness"], "risk": "medium",
+      "requires": { "has_trait": "TI07" },
+      "combat": {
+        "enemies": [ { "enemy_id": "EN03" } ],
+        "count": [ { "when": { "level_lt": 8 }, "count": 1 }, { "when": true, "count": 2 } ],
+        "sequential": true,
+        "pre_check": { "kind": "fear", "dc_offset": 0, "on_fail": [ { "target": "hit", "op": "add", "value": -2 } ] }
+      },
+      "outcomes": {
+        "win": {
+          "effects": [ { "type": "add_xp", "units": 1 }, { "type": "advance_chain", "chain_id": "C02", "stage": 2 } ],
+          "line": "늑대를 쫓고 수레를 지켰다"
+        },
+        "defeat": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C02", "stage": 2 } ],
+          "line": "쓰러진 사이 가족은 피했다"
+        }
+      }
+    },
+    {
+      "id": "fire", "label": "불을 피워 늑대를 겁준다", "short": "불을 피워 늑대를 겁줬다",
+      "tags": ["safe", "kindness"], "risk": "medium",
+      "check": { "kind": "weather", "dc_offset": 4, "partial_allowed": false,
+        "_comment": "11: 지역+0(H2 13, H3 15). weather 종류 기본 offset −4를 +4로 되돌린다",
+        "situational": [ { "target": "check.all", "op": "add", "value": 1, "when": { "has_trait": "TI02" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "add_xp", "units": 1 }, { "type": "advance_chain", "chain_id": "C02", "stage": 2 }, { "type": "animation", "action": "interact" } ],
+          "line": "불길에 늑대가 흩어졌다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "C02", "stage": 2 },
+            { "type": "if", "cond": { "has_trait": "TI07" },
+              "then": [ { "type": "start_combat", "enemies": [ { "enemy_id": "EN03" } ], "count": 1,
+                "pre_check": { "kind": "fear", "dc_offset": 0, "on_fail": [ { "target": "hit", "op": "add", "value": -2 } ] } } ],
+              "else": [ { "type": "start_combat", "enemies": [ { "enemy_id": "EN03" } ], "count": 1 } ] }
+          ],
+          "line": "불씨가 꺼져 늑대와 맞섰다"
+        }
+      }
+    },
+    {
+      "id": "lead", "label": "가족을 수레째 언덕 아래로 이끈다", "short": "가족을 수레째 언덕 아래로 이끌었다",
+      "tags": ["kindness", "info"], "risk": "low",
+      "check": { "kind": "terrain", "dc_offset": 2, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": 1, "when": { "has_trait": "TI02" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C02", "stage": 2 }, { "type": "animation", "action": "interact" } ],
+          "line": "수레를 끌고 언덕을 내려왔다"
+        },
+        "failure": {
+          "effects": [ { "type": "add_fatigue", "value": 10 }, { "type": "advance_chain", "chain_id": "C02", "stage": 2 }, { "type": "animation", "action": "interact" } ],
+          "line": "바퀴를 빼내느라 진땀을 뺐다"
+        }
+      }
+    }
+  ]
+}

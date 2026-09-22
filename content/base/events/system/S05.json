@@ -1,0 +1,23 @@
+{
+  "id": "S05",
+  "name": "계승",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 8, "phase": "succession" },
+  "condition": true,
+  "max_per_life": 1,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "11 S05, 12 §1.3. 출발 장면(계승 5단계)에서 엔진이 발화한다. {first_page}는 12 §1.3 선정 규칙. 계승 대기 기록('다음 걸음을 기다린다')은 hold 종류에 계승 대기가 없어 적지 못했다. 끝나지 않은 이야기 한 줄('끝나지 않은 이야기 — {chain_name}')은 줄기마다 엔진이 chain 정의로 남길 것이라 여기에 줄기 이름을 박지 않았다",
+  "intro": {
+    "lines": [ "{heir:은/는} {parent_call}의 수첩을 펼쳤다", "{heir:이/가} 수첩을 펼쳤다" ],
+    "detail": "첫 장에는 {first_page:이/가} 있었다.",
+    "tag": "succession"
+  },
+  "choices": [
+    {
+      "id": "auto", "label": "수첩을 펼친다", "risk": "none",
+      "outcomes": { "always": { "effects": [] } }
+    }
+  ]
+}

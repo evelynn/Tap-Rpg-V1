@@ -1,0 +1,84 @@
+{
+  "id": "L04",
+  "name": "들쥐 굴의 반짝이는 것",
+  "category": "life",
+  "locations": ["H1"],
+  "triggers": ["after_encounter"],
+  "life_stages": ["novice"],
+  "condition": true,
+  "weight": 7,
+  "cooldown_min": 20,
+  "max_per_life": 2,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "J02 등급 굴림은 add_item에 grade를 적지 않는다. TI04 함정 해제 +2는 특성 수정자가 이미 준다(막대기 채집 +2만 사건 보정). 소품 들쥐 굴·막대기는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "들쥐 굴에서 무언가 반짝였다", "굴 입구에서 빛나는 걸 봤다" ],
+    "detail": "들쥐가 파 놓은 굴 입구에서 무언가 반짝인다. 팔을 쭉 넣으면 닿을 것 같다. 굴 안쪽에서 찍찍 소리가 난다.",
+    "tag": "hunt",
+    "animation": [ { "action": "discover" }, { "action": "interact" } ]
+  },
+  "choices": [
+    {
+      "id": "reach", "label": "팔을 넣어 꺼낸다", "short": "굴에 팔을 넣었다",
+      "tags": ["reward", "bold"], "risk": "medium",
+      "requires": { "not": { "has_trait": "TI07" } },
+      "check": { "kind": "trap_disarm", "dc_offset": 2 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "chance", "p": 0.5,
+              "then": [ { "type": "add_item", "item_id": "J02", "to": "bag" } ],
+              "else": [ { "type": "add_coins", "units": 3 } ] }
+          ],
+          "line": "굴 속에서 {loot:을/를} 꺼냈다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "damage", "hp_ratio": 0.05 }
+          ],
+          "line": "손가락을 물렸지만 꺼냈다"
+        },
+        "failure": {
+          "effects": [ { "type": "damage", "hp_ratio": 0.1 } ],
+          "line": "들쥐에게 물려 손을 뺐다"
+        }
+      }
+    },
+    {
+      "id": "stick", "label": "막대기로 긁어낸다", "short": "막대기로 긁어냈다",
+      "tags": ["safe", "reward"], "risk": "low",
+      "check": { "kind": "forage", "dc_offset": 4, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "has_trait": "TI04" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "when": { "has_trait": "TI07" } }
+          ],
+          "line": "막대기로 동전을 긁어냈다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "when": { "has_trait": "TI07" } }
+          ],
+          "line": "굴이 무너져 버렸다"
+        }
+      }
+    },
+    {
+      "id": "leave", "label": "들쥐의 집이니 둔다", "short": "들쥐 굴을 그냥 두었다",
+      "tags": ["kindness"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_trip_flag", "key": "trip.rat_luck" },
+            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "when": { "has_trait": "TI07" } }
+          ],
+          "line": "들쥐가 고개를 내밀었다"
+        }
+      }
+    }
+  ]
+}

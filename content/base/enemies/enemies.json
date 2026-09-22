@@ -1,0 +1,157 @@
+[
+  {
+    "_comment": "수치 01 §5.2, 특수능력 07 §4.1, 승리 문장 07 §4.2, 퇴장 07 §4.1",
+    "id": "EN01", "name": "여울 들쥐", "family": "rat", "level": 1, "rank": "normal",
+    "hp": 10, "ac": 10, "hit": 2, "damage": [1, 2], "xp": 9, "coins": 5,
+    "material_id": "mat_EN01",
+    "specials": [ { "kind": "cowardly_flee", "hp_ratio_lte": 0.30, "chance": 0.25, "xp_ratio": 0.5 } ],
+    "sprite_family": "rat", "palette_id": "rat_river",
+    "lines": ["{enemy:이/가} 풀숲에서 튀어나왔다.", "{enemy:이/가} 발목을 물었다.", "{enemy:이/가} 도토리를 물고 달아났다."],
+    "victory_lines": ["여울가 들쥐를 쫓아냈다.", "들쥐가 꼬리를 감추고 달아났다."],
+    "exit_line": "풀숲으로 굴러 사라진다."
+  },
+  {
+    "id": "EN02", "name": "큰 들쥐", "family": "rat", "level": 4, "rank": "normal",
+    "hp": 17, "ac": 11, "hit": 3, "damage": [1, 3], "xp": 18, "coins": 12,
+    "material_id": "mat_EN02",
+    "specials": [ { "kind": "gnaw", "chance": 0.15, "ac_add": -1, "max_times": 1 } ],
+    "sprite_family": "rat", "palette_id": "rat_big",
+    "lines": ["{enemy:이/가} 버티고 서서 이를 드러냈다.", "{enemy:이/가} 볼주머니를 부풀렸다.", "{enemy:이/가} 뒤집혀 버둥거렸다."],
+    "victory_lines": ["큰 들쥐와 한참 씨름했다.", "큰 들쥐를 뒤집어 놓았다."],
+    "exit_line": "뒤집혀 버둥거리다 달아난다."
+  },
+  {
+    "id": "EN03", "name": "여울 늑대", "family": "wolf", "level": 8, "rank": "normal",
+    "hp": 26, "ac": 12, "hit": 4, "damage": [2, 5], "xp": 30, "coins": 28,
+    "material_id": "mat_EN03",
+    "specials": [ { "kind": "pack_hunt", "min_count": 2, "hit_add": 1 } ],
+    "sprite_family": "wolf", "palette_id": "wolf_river",
+    "lines": ["{enemy:이/가} 주위를 빙빙 돌았다.", "{enemy:이/가} 옆구리로 파고들었다.", "{enemy:이/가} 꼬리를 말고 뛰었다."],
+    "victory_lines": ["늑대가 둑 너머로 물러났다.", "늑대의 눈을 피하지 않았다."],
+    "exit_line": "꼬리를 말고 둑 너머로 뛴다."
+  },
+  {
+    "_comment": "lines는 16 §2.4 예시",
+    "id": "EN04", "name": "잿빛 늑대", "family": "wolf", "level": 15, "rank": "normal",
+    "hp": 42, "ac": 15, "hit": 7, "damage": [3, 8], "xp": 51, "coins": 81,
+    "material_id": "mat_EN04",
+    "specials": [ { "kind": "howl", "check": "fear", "on_fail": [ { "target": "hit", "op": "add", "value": -1 } ] } ],
+    "sprite_family": "wolf", "palette_id": "wolf_ash",
+    "lines": ["{enemy:이/가} 잿빛 털을 세웠다.", "{enemy:이/가} 언덕 너머에서 달려왔다.", "{enemy:이/가} 꼬리를 말고 물러났다."],
+    "victory_lines": ["잿빛 늑대의 울음이 멎었다.", "능선의 잿빛 늑대를 몰아냈다."],
+    "exit_line": "한 번 더 울고 능선으로 사라진다."
+  },
+  {
+    "id": "EN05", "name": "종굴 박쥐", "family": "bat", "level": 7, "rank": "normal",
+    "hp": 24, "ac": 12, "hit": 4, "damage": [2, 4], "xp": 27, "coins": 23,
+    "material_id": "mat_EN05",
+    "specials": [ { "kind": "erratic_flight", "first_attack_hit_add": -2 } ],
+    "sprite_family": "bat", "palette_id": "bat_bell",
+    "lines": ["{enemy:이/가} 천장에서 떨어지듯 날아들었다.", "{enemy:이/가} 거꾸로 매달려 졸았다.", "{enemy:이/가} 종 속으로 날아 들어갔다."],
+    "victory_lines": ["종 속의 박쥐를 쫓아 버렸다.", "천장의 박쥐가 조용해졌다."],
+    "exit_line": "종 속으로 날아 들어간다."
+  },
+  {
+    "_comment": "TI02 +1은 특성의 special.screech.fatigue",
+    "id": "EN06", "name": "쇳소리 박쥐", "family": "bat", "level": 15, "rank": "normal",
+    "hp": 42, "ac": 15, "hit": 7, "damage": [3, 8], "xp": 51, "coins": 81,
+    "material_id": "mat_EN06",
+    "specials": [ { "kind": "screech", "fatigue": 2 } ],
+    "sprite_family": "bat", "palette_id": "bat_iron",
+    "lines": ["{enemy:이/가} 날카로운 소리를 냈다.", "{enemy:이/가} 소리로 방향을 흐렸다.", "{enemy:이/가} 쇳소리를 남기고 흩어졌다."],
+    "victory_lines": ["귀를 막고 박쥐 떼를 지나왔다.", "쇳소리가 멀어졌다."],
+    "exit_line": "쇳소리를 남기고 흩어진다."
+  },
+  {
+    "_comment": "어둠 방어 무효(J04·TA02)는 수정자 dark_penalty_ignore",
+    "id": "EN07", "name": "그림자 박쥐", "family": "bat", "level": 23, "rank": "normal",
+    "hp": 61, "ac": 17, "hit": 9, "damage": [4, 11], "xp": 75, "coins": 220,
+    "material_id": "mat_EN07",
+    "specials": [ { "kind": "dark_defense", "ac_add": 1,
+                    "when": { "any": [ { "time_of_day": "night" }, { "location_kind": ["dungeon_floor"] } ] } } ],
+    "sprite_family": "bat", "palette_id": "bat_shadow",
+    "lines": ["{enemy:이/가} 빛이 약한 쪽으로 파고들었다.", "{enemy:이/가} 등불 쪽으로 날아들었다.", "{enemy:이/가} 그림자와 함께 녹아 사라졌다."],
+    "victory_lines": ["등불을 들어 그림자를 걷어 냈다.", "어둠 속 날갯짓이 끊겼다."],
+    "exit_line": "그림자와 함께 녹아 사라진다."
+  },
+  {
+    "id": "EN08", "name": "폐광 코볼트", "family": "kobold", "level": 10, "rank": "normal",
+    "hp": 31, "ac": 13, "hit": 5, "damage": [2, 6], "xp": 36, "coins": 39,
+    "material_id": "mat_EN08",
+    "specials": [ { "kind": "stone_throw", "damage": [1, 3], "hit_check": true } ],
+    "sprite_family": "kobold", "palette_id": "kobold_mine",
+    "lines": ["{enemy:이/가} 돌부터 던졌다.", "{enemy:이/가} 곡괭이를 끌고 다가왔다.", "{enemy:이/가} 광차 뒤로 숨었다."],
+    "victory_lines": ["돌 던지는 코볼트를 몰아냈다.", "코볼트가 광석을 두고 달아났다."],
+    "exit_line": "광차 뒤로 숨어 달아난다."
+  },
+  {
+    "id": "EN09", "name": "코볼트 광부장", "family": "kobold", "level": 18, "rank": "normal",
+    "hp": 49, "ac": 16, "hit": 8, "damage": [4, 9], "xp": 60, "coins": 120,
+    "material_id": "mat_EN09",
+    "specials": [ { "kind": "heavy_swing", "rounds": [3, 6, 9], "damage_mult": 1.5 } ],
+    "sprite_family": "kobold", "palette_id": "kobold_foreman",
+    "lines": ["{enemy:이/가} 곡괭이를 크게 휘둘렀다.", "{enemy:이/가} 광부 흉내를 냈다.", "{enemy:이/가} 곡괭이를 끌며 물러났다."],
+    "victory_lines": ["광부장의 곡괭이를 받아 냈다.", "코볼트 광부장이 물러났다."],
+    "exit_line": "곡괭이를 끌며 물러난다."
+  },
+  {
+    "_comment": "W05의 코볼트 추가 피해는 감소 뒤에 더한다(엔진 순서 규칙)",
+    "id": "EN10", "name": "녹슨 투구 코볼트", "family": "kobold", "level": 26, "rank": "normal",
+    "hp": 68, "ac": 18, "hit": 10, "damage": [5, 12], "xp": 84, "coins": 311,
+    "material_id": "mat_EN10",
+    "specials": [ { "kind": "damage_reduction", "value": 2, "min": 1 } ],
+    "sprite_family": "kobold", "palette_id": "kobold_helm",
+    "lines": ["{enemy:이/가} 투구로 막고 틈을 노렸다.", "{enemy:이/가} 길을 막았다.", "{enemy:이/가} 투구를 떨어뜨리고 도망쳤다."],
+    "victory_lines": ["녹슨 투구가 바닥에 굴렀다.", "투구 틈으로 한 번에 찔렀다."],
+    "exit_line": "투구를 떨어뜨리고 도망친다."
+  },
+  {
+    "_comment": "07 §4.3 호루라기. 승리 문장은 14 §5.1 문형, 퇴장은 15 §7.1 코볼트 퇴장",
+    "id": "EB01", "name": "코볼트 두목", "family": "kobold", "level": 13, "rank": "elite",
+    "hp": 95, "ac": 14, "hit": 8, "damage": [4, 10], "xp": 112, "coins": 152,
+    "material_id": "mat_EB01",
+    "specials": [ { "kind": "summon", "hp_ratio_lte": 0.5, "enemy_id": "EN08", "level": 10, "skip_attack": true, "max_times": 1 } ],
+    "sprite_family": "kobold", "palette_id": "kobold_boss",
+    "lines": ["{enemy:이/가} 호루라기를 불었다.", "{enemy:이/가} 큰 곡괭이를 휘둘렀다.", "{enemy:이/가} 뿔 투구를 고쳐 썼다."],
+    "victory_lines": ["{enemy:을/를} 쫓아냈다.", "{enemy:이/가} 물러섰다."],
+    "exit_line": "넘어졌다 일어나 도망친다."
+  },
+  {
+    "_comment": "07 §4.3 갱도 흔들기 DC 17 = D2 지역 기준(dc_offset 0). 승리 문장은 14 §5.1 문형, 퇴장은 15 §7.1",
+    "id": "EB02", "name": "늙은 광부장", "family": "kobold", "level": 21, "rank": "elite",
+    "hp": 141, "ac": 17, "hit": 11, "damage": [6, 13], "xp": 172, "coins": 435,
+    "material_id": "mat_EB02",
+    "specials": [ {
+      "kind": "cave_shake", "hp_thresholds": [0.6, 0.3], "check": "trap_evade", "dc_offset": 0,
+      "fail": [ { "type": "damage", "hp_ratio": 0.08 } ],
+      "partial": [ { "type": "damage", "hp_ratio": 0.04 } ]
+    } ],
+    "sprite_family": "kobold", "palette_id": "kobold_elder",
+    "lines": ["{enemy:이/가} 갱도를 흔들었다.", "{enemy:이/가} 등불을 들어 올렸다.", "{enemy:이/가} 흰 수염을 흔들며 다가왔다."],
+    "victory_lines": ["{enemy:을/를} 쫓아냈다.", "{enemy:이/가} 물러섰다."],
+    "exit_line": "넘어졌다 일어나 도망친다."
+  },
+  {
+    "_comment": "07 §4.4 단계: 경계 67%/34%를 hp_above 0.66/0.33(초과)으로. 공포 DC 25 = D3 지역 기준 21 + 관문 +4이며 +4는 check_kinds.fear.gate_add가 더하므로 dc_offset 0. 공포 면역(W10·TA08)은 수정자 fear_immunity. 승리 문장 02 §7·07 §9.2, 퇴장 15 §7.3",
+    "id": "EB03", "name": "부서진 종의 파수꾼", "family": "unique", "level": 29, "rank": "boss",
+    "hp": 373, "ac": 21, "hit": 14, "damage": [8, 20], "xp": 930, "coins": 4330,
+    "material_id": "mat_EB03",
+    "lethal": true,
+    "specials": [ {
+      "kind": "phases",
+      "phases": [
+        { "hp_above": 0.66, "name": "종 울림",
+          "fear_check": { "every_rounds": 3, "dc_offset": 0,
+                          "fail": [ { "target": "hit", "op": "add", "value": -2 } ],
+                          "partial": [ { "target": "hit", "op": "add", "value": -1 } ],
+                          "duration_rounds": 2 } },
+        { "hp_above": 0.33, "name": "파편 비", "attacks_per_round": 2, "damage_mult": 0.6 },
+        { "hp_above": 0, "name": "마지막 종소리", "damage_mult": 1.3, "ac_add": -2 }
+      ]
+    } ],
+    "sprite_family": "bellwarden", "palette_id": "bellwarden",
+    "lines": ["{enemy}의 종이 크게 울렸다.", "종의 파편이 사방으로 튀었다.", "종이 갈라지는 소리가 났다."],
+    "victory_lines": ["파수꾼이 종 곁에 멈춰 섰다.", "부서진 종이 마침내 멈췄다."],
+    "exit_line": "종소리가 멎고 주저앉는다."
+  }
+]

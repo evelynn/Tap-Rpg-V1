@@ -1,4 +1,5 @@
-// 효과 기본 등록(CONTENT_SCHEMA §4.2 확정 파라미터 = 16 §4.3의 50종 + add_material·remove_consumable·roll_check = 53종).
+// 효과 기본 등록(CONTENT_SCHEMA §4.2 확정 파라미터 = 16 §4.3의 50종 + add_material·remove_consumable·roll_check
+// + reveal_discovery·open_chest·create_partner = 56종).
 // 실행은 규칙 층의 EFFECT_HANDLERS가 같은 이름으로 한다. 모든 효과는 {type, when?, ...params} strict 객체다.
 import { z } from 'zod'
 import {
@@ -56,9 +57,9 @@ export function registerBaseEffects(): void {
   registerEffect('add_coins', { amount: nonNegInt.optional(), units: units.optional() }, '동전 획득(units = 장소 동전 단위 배수)', exactlyOne('amount', 'units'))
   registerEffect(
     'remove_coins',
-    { amount: nonNegInt.optional(), units: units.optional(), ratio: ratio.optional(), sortie_income_ratio: ratio.optional() },
-    '동전 잃음(0 아래로 내려가지 않음). sortie_income_ratio = 이번 출정 동전 수입의 비율',
-    exactlyOne('amount', 'units', 'ratio', 'sortie_income_ratio'),
+    { amount: nonNegInt.optional(), units: units.optional(), ratio: ratio.optional(), sortie_income_ratio: ratio.optional(), inn_costs: posInt.optional() },
+    '동전 잃음(0 아래로 내려가지 않음). sortie_income_ratio = 이번 출정 동전 수입의 비율, inn_costs = 여관비(balance.recovery.inn.cost × inn_cost_mult) N회분',
+    exactlyOne('amount', 'units', 'ratio', 'sortie_income_ratio', 'inn_costs'),
   )
   registerEffect('add_xp', { amount: nonNegInt.optional(), units: units.optional(), encounters: posInt.optional() }, '경험치', exactlyOne('amount', 'units', 'encounters'))
   registerEffect('heal', { hp: posInt.optional(), hp_ratio: ratio.optional() }, '체력 회복', exactlyOne('hp', 'hp_ratio'))
@@ -96,6 +97,7 @@ export function registerBaseEffects(): void {
   )
   registerEffect('remove_consumable', { carry_groups: z.array(ref('carry_group')).min(1), count: posInt }, '나열 순서대로 가진 묶음 하나에서 뺀다')
   registerEffect('add_material', { material_id: ref('material'), count: posInt }, '재료 획득')
+  registerEffect('open_chest', {}, '보물 방 상자 내용(balance.dungeon.chest·drops.treasure_chest)을 받는다. 잠김·함정 판정은 없다')
   registerEffect(
     'offer_purchase',
     {
@@ -118,6 +120,7 @@ export function registerBaseEffects(): void {
   registerEffect('mutate', { trait_id: ref('trait') }, '변이(kind mutation 특성)')
   registerEffect('register_relic', { selector: z.enum(['this_item', 'uid']), priority: z.union([z.literal(1), z.literal(2)]) }, '유품 등록')
   registerEffect('create_child_candidate', {}, '자녀 후보 1명 생성')
+  registerEffect('create_partner', {}, '동반자 1명 생성(12 §2.1 이름·직업·선천 특성·외형)')
 
   // 플래그와 연속 사건(범위 접두는 flagKey(scope)가 강제, V19)
   registerEffect('set_flag', { key: flagKey('life'), value: flagValue.optional() }, '생애 플래그(value 기본 true)')
@@ -140,6 +143,11 @@ export function registerBaseEffects(): void {
 
   // 진행·장소
   registerEffect('unlock_location', { location_id: ref('region') }, '장소 해금(가문 단위)')
+  registerEffect(
+    'reveal_discovery',
+    { prefer: z.array(ref('discovery')).min(1).optional() },
+    '현재 장소의 미발견 발견 지점 하나를 판정 없이 발견(prefer 중 미발견이 먼저, 없으면 조건이 맞는 미발견 지점 중 event 흐름 무작위)',
+  )
   registerEffect(
     'set_destination',
     { location: ref('region').optional(), place_var: varName.optional(), activity: activity.optional(), scope: z.literal('next_sortie'), respect_risk_cap: bool.optional() },
@@ -239,7 +247,7 @@ export function registerBaseEffects(): void {
 
   // 기록·관계·연출
   registerEffect('npc_relation', { npc_id: ref('npc'), delta: int }, '인연 수치 변화')
-  registerEffect('skill_use', { skill, count: posInt }, '숙련 사용 횟수 가산')
+  registerEffect('skill_use', { skill: z.union([skill, z.literal('lowest_rank')]), count: posInt }, '숙련 사용 횟수 가산(lowest_rank = 단계가 가장 낮은 숙련, 같으면 숙련 목록 순서 앞)')
   registerEffect('family_record', { kind: z.enum(['chronicle', 'bond', 'codex']), key: z.string().min(1), text: template }, '가문 기록')
   // background면 그 종류로 참조 검사(V2). 칭호는 achievement.rewards로만 준다.
   const unlockBase = { type: z.literal('unlock_family'), when: condition.optional() }

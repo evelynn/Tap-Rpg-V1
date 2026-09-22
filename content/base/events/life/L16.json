@@ -1,0 +1,81 @@
+{
+  "id": "L16",
+  "name": "반짝이는 광맥",
+  "category": "life",
+  "locations": ["D1", "D2", "D3", "H4"],
+  "triggers": ["dungeon_after_room", "after_encounter"],
+  "life_stages": ["prime", "veteran", "elder"],
+  "condition": true,
+  "weight": 6,
+  "cooldown_min": 20,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "TI05 캐낼 때 피로 +30%와 A04 상쇄는 두 정의의 fatigue_gain_mult(먼지 장소)가 준다(01 §11). 적어 둔다의 다음 방문 효과는 등록표 life.vein_marked_{place} 설명대로 next_visit 효과로 건다. 소품 곡괭이·광맥 반짝임 효과는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "벽 틈에 은빛 광맥이 보였다", "곡괭이 자국 옆에 광맥이 있었다" ],
+    "detail": "벽 틈으로 은빛 줄무늬가 드러나 있다. 몇 번만 두드리면 떼어낼 수 있을 것 같지만, 위쪽 바위가 불안하게 걸쳐 있다.",
+    "tag": "dungeon"
+  },
+  "choices": [
+    {
+      "id": "mine", "label": "캐낸다", "short": "광맥을 캐냈다",
+      "tags": ["reward"], "risk": "low",
+      "check": { "kind": "force", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_time", "sec": 40 },
+            { "type": "add_fatigue", "value": 6 },
+            { "type": "add_coins", "units": 3 },
+            { "type": "add_coins", "units": 1.5, "when": { "equipped": "W05" } },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "광맥을 떼어 배낭에 넣었다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "add_time", "sec": 40 },
+            { "type": "add_fatigue", "value": 6 },
+            { "type": "add_coins", "units": 2 },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "조금 떼다 손목이 저렸다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_time", "sec": 40 },
+            { "type": "add_fatigue", "value": 10 },
+            { "type": "add_coins", "units": 1 },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "돌가루만 잔뜩 뒤집어썼다"
+        }
+      }
+    },
+    {
+      "id": "mark", "label": "위치만 적어 둔다", "short": "광맥 위치만 적어 두었다",
+      "tags": ["info"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_flag", "key": "life.vein_marked_{place}" },
+            { "type": "dungeon_mod", "op": "add_room", "room_kind": "treasure", "count": 1, "scope": "next_visit",
+              "when": { "location_kind": ["dungeon_floor"] } },
+            { "type": "temp_mod", "modifier": { "target": "coin_mult", "op": "mul", "value": 1.5 },
+              "scope": "next_visit", "count": 3, "location": "{place}",
+              "when": { "location_kind": ["hunting_ground"] } }
+          ],
+          "line": "수첩에 광맥 자리를 그렸다"
+        }
+      }
+    },
+    {
+      "id": "leave", "label": "바위가 불안하니 둔다", "short": "바위가 불안해 그냥 두었다",
+      "tags": ["safe"], "risk": "none",
+      "outcomes": {
+        "always": { "effects": [], "line": "아쉽지만 바위를 믿지 않았다" }
+      }
+    }
+  ]
+}

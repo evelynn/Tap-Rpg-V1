@@ -1,0 +1,71 @@
+{
+  "id": "L19",
+  "name": "안개 산길의 갈림길",
+  "category": "life",
+  "locations": ["A2"],
+  "triggers": ["adventure_event_scene"],
+  "condition": true,
+  "weight": 7,
+  "weight_mods": [ { "when": { "season": ["autumn"] }, "mult": 1.5 } ],
+  "cooldown_min": 25,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "발견 확률 +30%는 07 §6.1 관례대로 discovery_chance_mult ×1.3. TI03 발자국·언덕 +1은 특성 수정자 check.pathfinding·check.terrain이 이미 준다. 소품 이정표·안개 효과는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "안개 속에서 길이 둘로 갈렸다", "이정표와 발자국이 갈라졌다" ],
+    "detail": "짙은 안개 속에서 길이 둘로 갈린다. 한쪽에는 이끼 낀 이정표가, 다른 쪽에는 방금 찍힌 듯한 발자국이 있다. 오른편 바위 언덕은 안개 위로 머리를 내밀고 있다.",
+    "tag": "adventure",
+    "animation": [ { "action": "idle" }, { "action": "walk" } ]
+  },
+  "choices": [
+    {
+      "id": "sign", "label": "이정표를 따른다", "short": "이정표를 따라갔다",
+      "tags": ["safe"], "risk": "none",
+      "outcomes": {
+        "always": { "effects": [], "line": "이끼 낀 이정표를 따라갔다" }
+      }
+    },
+    {
+      "id": "tracks", "label": "발자국을 따른다", "short": "발자국을 따라갔다",
+      "tags": ["new_path", "info"], "risk": "medium",
+      "_note": "원문 부분 성공(성공 효과 + 체력 −5%, '가시덤불을 헤치고 지름길로 갔다')은 05 §6.1 길찾기가 부분 성공 불가라 옮기지 못했다(V11, DS-56). 부분 구간은 실패로 처리된다",
+      "check": { "kind": "pathfinding", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 1.3 }, "scope": "next_scene" },
+            { "type": "sortie_mod", "return_travel_sec_add": -30 },
+            { "type": "journal", "tag": "trait", "line": "안개 속에서도 방향을 잃지 않았다", "when": { "has_trait": "TI03" } }
+          ],
+          "line": "발자국 끝에 지름길이 있었다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "sortie_mod", "remaining_add": { "scenes": 1 } },
+            { "type": "add_fatigue", "value": 8 }
+          ],
+          "line": "안개 속을 한참 헤맸다"
+        }
+      }
+    },
+    {
+      "id": "hill", "label": "바위 언덕에 올라 살핀다", "short": "바위 언덕에 올라 살폈다",
+      "tags": ["info", "bold"], "risk": "medium",
+      "check": { "kind": "terrain", "dc_offset": 2, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "reveal_discovery", "prefer": ["A2-1"] },
+            { "type": "journal", "tag": "trait", "line": "안개 속에서도 방향을 잃지 않았다", "when": { "has_trait": "TI03" } }
+          ],
+          "line": "안개 위로 폐광 종탑이 보였다"
+        },
+        "failure": {
+          "effects": [ { "type": "damage", "hp_ratio": 0.1 } ],
+          "line": "젖은 바위에서 미끄러졌다"
+        }
+      }
+    }
+  ]
+}

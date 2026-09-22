@@ -1,0 +1,51 @@
+{
+  "_comment": "01 §8.1, 07 §6.1(장면·조우·2체 10%)·§6.3 발견 A1-1~A1-7·§6.4 지도 조각, 04 §4.2~§4.4 순찰·지원·적자. 지도 조각 이름은 CONTENT_SCHEMA §5.3 예시",
+  "id": "A1",
+  "name": "여울 들길",
+  "kind": "adventure_route",
+  "level_range": [1, 8],
+  "level_mid": 4,
+  "travel_sec": 25,
+  "unlock": true,
+  "patrol_zone": true,
+  "fallback": false,
+  "aid_allowed": true,
+  "deficit_exempt": "always",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "scenes": [3, 5],
+  "scene_weights": { "discovery": 25, "path": 15, "forage": 20, "encounter": 20, "event": 20 },
+  "encounters": [
+    { "enemy_id": "EN01", "weight": 50 },
+    { "enemy_id": "EN02", "weight": 50 }
+  ],
+  "pair_chance": 0.10,
+  "map_fragments": [
+    { "id": "A1-M1", "name": "오래된 이정표 조각" },
+    { "id": "A1-M2", "name": "무덤가 지도 조각" }
+  ],
+  "discoveries": [
+    { "id": "A1-1", "name": "물레방아 터", "condition": true, "dc": { "grade": "easy" },
+      "effects": [ { "type": "add_coins", "amount": 30 } ],
+      "notebook_line": "물레방아 터를 수첩에 적었다.",
+      "_note": "notebook_line: 07 §6.3 '수첩 기록'의 문장이 문서에 없어 발견 이름으로 최소 작성" },
+    { "id": "A1-2", "name": "버드나무 둑 가는 길", "condition": true, "dc": { "grade": "normal" },
+      "effects": [ { "type": "unlock_location", "location_id": "H2" } ] },
+    { "id": "A1-3", "name": "늑대 발자국 언덕", "condition": { "level_gte": 5 }, "dc": { "grade": "normal" },
+      "effects": [ { "type": "unlock_location", "location_id": "H3" } ] },
+    { "id": "A1-4", "name": "오래된 이정표", "condition": true, "dc": { "grade": "normal" },
+      "map_fragment": "A1-M1" },
+    { "id": "A1-5", "name": "여울 다리 아래", "condition": true, "dc": { "grade": "easy" },
+      "event_weight_mult": { "C02-1": 2 } },
+    { "id": "A1-6", "name": "도토리 숲 샘터", "condition": { "level_gte": 3 }, "dc": { "grade": "hard" },
+      "modifiers": [ { "target": "camp_hp_mult", "op": "mul", "value": 1.10, "when": { "location": ["H1", "H2", "A1"] } } ] },
+    { "id": "A1-7", "name": "이름 없는 무덤", "condition": true, "dc": { "grade": "normal" },
+      "map_fragment": "A1-M2",
+      "effects": [ { "type": "family_record", "kind": "codex", "key": "A1-7", "text": "이름 없는 무덤" } ],
+      "_note": "가문 도감 기록: key는 발견 지점 id, text는 발견 이름(도감 key 규칙은 CONTENT_SCHEMA 6절 C14 미확정)" }
+  ],
+  "tags": [],
+  "rescuers": "field",
+  "background_id": "bg_river_path",
+  "feature_words": ["이정표", "작은 다리", "돌 사당"]
+}

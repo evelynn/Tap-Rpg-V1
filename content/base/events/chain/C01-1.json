@@ -1,0 +1,54 @@
+{
+  "id": "C01-1",
+  "name": "찢어진 지도",
+  "category": "chain",
+  "chain": { "id": "C01", "stage": 1 },
+  "locations": ["D1"],
+  "triggers": ["dungeon_event_room"],
+  "condition": { "all": [
+    { "chain_stage": { "chain": "C01", "stage": 0 } },
+    { "not": { "flag": "fam.c01_done" } }
+  ] },
+  "weight": 10,
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "11 C01-1. 연속 우선 검사 50%는 balance.events.chain_priority_chance. '가문 최대 1회(완료 기준)'는 줄기 family_once와 fam.c01_done 조건. 이어받기 변형(fam.c01_unfinished = 1)은 chains/C01.json resume_at. 가중치는 11에 없어 10(16 §4.4 C01-3 예). 맞춰 본다 성공 한 줄은 11 원문 '가리킨다'가 현재형이라 과거형으로 고쳤다(14 §3, 18 §6.3)",
+  "intro": {
+    "lines": [ "광차 밑에서 찢어진 지도를 봤다", "'도한'이라 적힌 지도를 주웠다" ],
+    "detail": "무너진 광차 밑에 찢어진 지도가 끼어 있다. 모서리에 '도한'이라는 이름과 작은 종 그림이 그려져 있다. 선은 중층 쪽으로 이어지다 찢겨 나갔다.",
+    "tag": "dungeon",
+    "animation": [ { "action": "discover", "props": ["map", "mine_cart"] }, { "action": "interact", "props": ["map"] } ]
+  },
+  "choices": [
+    {
+      "id": "keep", "label": "조심히 챙겨 둔다", "short": "지도를 조심히 챙겨 두었다",
+      "tags": ["safe", "info"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C01", "stage": 1 } ],
+          "line": "지도를 수첩 사이에 끼웠다"
+        }
+      }
+    },
+    {
+      "id": "read", "label": "그 자리에서 맞춰 본다", "short": "그 자리에서 지도를 맞춰 봤다",
+      "tags": ["info", "new_path"], "risk": "low",
+      "check": { "kind": "pathfinding", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "C01", "stage": 1 },
+            { "type": "set_flag", "key": "life.c01_map_read" },
+            { "type": "add_xp", "units": 1 }
+          ],
+          "line": "찢긴 선이 중층을 가리켰다"
+        },
+        "failure": {
+          "effects": [ { "type": "advance_chain", "chain_id": "C01", "stage": 1 } ],
+          "line": "선이 끊겨 알아볼 수 없었다"
+        }
+      }
+    }
+  ]
+}

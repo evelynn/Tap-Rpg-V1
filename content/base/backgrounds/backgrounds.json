@@ -1,0 +1,13 @@
+[
+  { "id": "bg_river", "name": "여울의 아이", "start_skill": null, "fixed_stat": null, "unlock": null,
+    "intro_line": "여울가 풀밭에서 뛰놀며 자랐다.",
+    "_note": "능력치 1점도 무작위(5점 모두 추첨, 12 §8.1)" },
+  { "id": "bg_inn", "name": "여관집 아이", "start_skill": "negotiation", "fixed_stat": "soc", "unlock": { "achievement": "AC10" },
+    "intro_line": "'도토리 모자' 부엌에서 손님 이야기를 들으며 자랐다." },
+  { "id": "bg_smithy", "name": "대장간 도제", "start_skill": "melee", "fixed_stat": "str", "unlock": { "achievement": "AC09" },
+    "intro_line": "보름의 망치 소리를 자장가 삼아 자랐다." },
+  { "id": "bg_guild", "name": "길드 사환", "start_skill": "search", "fixed_stat": "kno", "unlock": { "achievement": "AC04" },
+    "intro_line": "하델의 심부름으로 게시판을 오가며 자랐다." },
+  { "id": "bg_miner", "name": "광부 집안", "start_skill": "survival", "fixed_stat": "wil", "unlock": { "achievement": "AC06" },
+    "intro_line": "세나네 광부들 틈에서 등불 켜는 법을 배웠다." }
+]

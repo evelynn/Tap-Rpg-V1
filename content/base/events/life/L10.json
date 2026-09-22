@@ -1,0 +1,73 @@
+{
+  "id": "L10",
+  "name": "대장간의 실패작",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "condition": true,
+  "weight": 5,
+  "cooldown_min": 45,
+  "max_per_life": 3,
+  "allow_serious_injury": false,
+  "blocked_during_aid": true,
+  "hold": "none",
+  "_note": "상품(인물 단계 대장간 무기·방어구 1개, 일반)은 offer_purchase로 적는다. defect는 슬롯을 가리지 못해 무기(명중 −1)·방어구(방어 −1)를 chance 0.5로 나눈다(원문은 비율을 정하지 않음). 가격 40%·60%는 할인 상한 예외(08). 도입의 {item}과 구매 장비를 같은 물건으로 묶는 선택자는 등록부에 없다. 소품 모루·망치는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "보름이 실패작을 내밀었다", "모루 옆에 휜 {item:이/가} 있었다" ],
+    "detail": "보름이 망치를 내려놓고 모루 옆의 물건을 가리킨다. \"날이 조금 휘었어. 싸게 줄게.\" 망치 소리가 평소보다 작다.",
+    "tag": "town",
+    "animation": [ { "action": "interact" } ]
+  },
+  "choices": [
+    {
+      "id": "buy", "label": "산다", "short": "실패작을 샀다",
+      "tags": ["thrift", "reward"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "chance", "p": 0.5, "when": { "not": { "has_trait": "TI04" } },
+              "then": [ { "type": "offer_purchase", "pool": { "facilities": ["smithy"], "slots": ["weapon"] }, "tier": "character",
+                          "grade_weights": { "common": 1 }, "price_mult": 0.4,
+                          "defect": [ { "target": "hit", "op": "add", "value": -1 } ], "exempt_discount_cap": true, "respect_auto_buy": true } ],
+              "else": [ { "type": "offer_purchase", "pool": { "facilities": ["smithy"], "slots": ["armor"] }, "tier": "character",
+                          "grade_weights": { "common": 1 }, "price_mult": 0.4,
+                          "defect": [ { "target": "ac", "op": "add", "value": -1 } ], "exempt_discount_cap": true, "respect_auto_buy": true } ] },
+            { "type": "offer_purchase", "pool": { "facilities": ["smithy"], "slots": ["weapon", "armor"] }, "tier": "character",
+              "grade_weights": { "common": 1 }, "price_mult": 0.4, "exempt_discount_cap": true, "respect_auto_buy": true,
+              "when": { "has_trait": "TI04" } },
+            { "type": "journal", "tag": "trait", "line": "직접 숫돌에 날을 세웠다", "when": { "has_trait": "TI04" } }
+          ],
+          "line": "휜 {item:을/를} 싸게 샀다"
+        }
+      }
+    },
+    {
+      "id": "ask_fix", "label": "제대로 고쳐 달라고 한다", "short": "고쳐 달라고 했다",
+      "tags": ["reward", "bold"], "risk": "low",
+      "check": { "kind": "haggle", "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "offer_purchase", "pool": { "facilities": ["smithy"], "slots": ["weapon", "armor"] }, "tier": "character",
+              "grade_weights": { "common": 1 }, "price_mult": 0.6, "exempt_discount_cap": true, "respect_auto_buy": true }
+          ],
+          "line": "보름이 다시 벼려 주었다"
+        },
+        "failure": {
+          "effects": [],
+          "line": "\"그럴 거면 새 걸 사.\""
+        }
+      }
+    },
+    {
+      "id": "decline", "label": "사양한다", "short": "사양했다",
+      "tags": ["safe"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [],
+          "line": "보름이 망치를 다시 들었다"
+        }
+      }
+    }
+  ]
+}

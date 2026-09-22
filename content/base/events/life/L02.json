@@ -1,0 +1,82 @@
+{
+  "id": "L02",
+  "name": "흥정하는 떠돌이 상인",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "condition": { "not": { "thirst_stage_gte": "starving" } },
+  "weight": 6,
+  "cooldown_min": 40,
+  "max_per_life": 5,
+  "allow_serious_injury": false,
+  "blocked_during_aid": true,
+  "hold": "none",
+  "_note": "상품(인물 단계 장비 1개, 대장간·잡화점 품목, 일반 70·좋은 30)은 offer_purchase로 적는다. 가격 110%·90%·75%는 할인 상한 예외(08). 도입의 {item}과 구매 장비가 같은 물건이 되게 하는 선택자와 구매 불발 문장 '마음에 드는 물건이 없었다'는 등록부에 없다. 소품 짐수레 천막은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "광장에 떠돌이 상인이 왔다", "낯선 짐수레가 천막을 폈다" ],
+    "detail": "짐수레를 끄는 떠돌이 상인이 광장에 천막을 폈다. 먼 지방에서 온 물건이라며 값을 크게 부른다. 수레 위에는 {item:이/가} 햇빛에 반짝인다.",
+    "tag": "town",
+    "animation": [ { "action": "walk" }, { "action": "interact" } ],
+    "family_variants": [
+      { "when": { "reaction_active": "dr_c01_rescue" }, "detail_append": "광부 집안을 도운 가문 이야기는 저 먼 고개까지 들렸수." }
+    ]
+  },
+  "choices": [
+    {
+      "id": "haggle", "label": "흥정한다", "short": "값을 흥정했다",
+      "tags": ["reward", "thrift"], "risk": "low",
+      "check": { "kind": "haggle",
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "flag": "life.honest_finder" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "offer_purchase", "pool": { "facilities": ["smithy", "general_store"], "slots": ["weapon", "armor", "accessory", "relic"] },
+              "tier": "character", "grade_weights": { "common": 70, "good": 30 }, "price_mult": 0.75,
+              "exempt_discount_cap": true, "respect_auto_buy": true }
+          ],
+          "line": "값을 넉넉히 깎았다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "offer_purchase", "pool": { "facilities": ["smithy", "general_store"], "slots": ["weapon", "armor", "accessory", "relic"] },
+              "tier": "character", "grade_weights": { "common": 70, "good": 30 }, "price_mult": 0.9,
+              "exempt_discount_cap": true, "respect_auto_buy": true }
+          ],
+          "line": "조금 깎았다"
+        },
+        "failure": {
+          "effects": [],
+          "line": "상인이 토라져 떠났다"
+        }
+      }
+    },
+    {
+      "id": "buy", "label": "부르는 값에 산다", "short": "부르는 값에 샀다",
+      "tags": ["reward"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "offer_purchase", "pool": { "facilities": ["smithy", "general_store"], "slots": ["weapon", "armor", "accessory", "relic"] },
+              "tier": "character", "grade_weights": { "common": 70, "good": 30 }, "price_mult": 1.1,
+              "exempt_discount_cap": true, "respect_auto_buy": true, "when": { "not": { "has_trait": "TA01" } } },
+            { "type": "offer_purchase", "pool": { "facilities": ["smithy", "general_store"], "slots": ["weapon", "armor", "accessory", "relic"] },
+              "tier": "character", "grade_weights": { "common": 70, "good": 30 }, "price_mult": 1,
+              "exempt_discount_cap": true, "respect_auto_buy": true, "when": { "has_trait": "TA01" },
+              "_note": "TA01 다리의 은인: 상인이 처음부터 기준가 ×100%를 부른다" }
+          ],
+          "line": "부르는 값에 {item:을/를} 샀다"
+        }
+      }
+    },
+    {
+      "id": "listen", "label": "구경하며 먼 지방 이야기를 듣는다", "short": "먼 지방 이야기를 들었다",
+      "tags": ["thrift", "info"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "set_flag", "key": "life.rumor_ready" } ],
+          "line": "먼 지방 이야기를 들었다"
+        }
+      }
+    }
+  ]
+}

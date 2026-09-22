@@ -1,0 +1,21 @@
+[
+  { "id": "CP01", "name": "회복약(작은 병)", "effect": "heal_hp", "amount": 15, "tier": 1,
+    "price": { "kind": "fixed", "value": 10 }, "carry_group": "potion", "shop": ["general_store"], "sellable": false },
+  { "id": "CP02", "name": "회복약(병)", "effect": "heal_hp", "amount": 30, "tier": 2,
+    "price": { "kind": "fixed", "value": 30 }, "carry_group": "potion", "shop": ["general_store"], "sellable": false },
+  { "id": "CP03", "name": "회복약(큰 병)", "effect": "heal_hp", "amount": 50, "tier": 3,
+    "price": { "kind": "fixed", "value": 80 }, "carry_group": "potion", "shop": ["general_store"], "sellable": false },
+  { "id": "CP04", "name": "진한 회복약", "effect": "heal_hp", "amount": 75, "tier": 4,
+    "price": { "kind": "fixed", "value": 200 }, "carry_group": "potion", "shop": ["general_store"], "sellable": false },
+  { "id": "CP05", "name": "별빛 회복약", "effect": "heal_hp", "amount": 100, "tier": 5,
+    "price": { "kind": "fixed", "value": 450 }, "carry_group": "potion", "shop": ["general_store"], "sellable": false },
+  { "id": "CP06", "name": "야영 식량", "effect": "camp_ration", "amount": 1,
+    "price": { "kind": "fixed", "value": 5 }, "carry_group": "ration", "shop": ["general_store"], "sellable": false,
+    "_note": "TI08 가격 7은 TI08의 food_cost_mult ×1.5로 처리한다(CONTENT_SCHEMA §5.5)" },
+  { "id": "CP07", "name": "붕대", "effect": "cure_minor_injury", "amount": 1,
+    "price": { "kind": "fixed", "value": 15 }, "carry_group": "bandage", "shop": ["general_store", "clinic"], "sellable": false },
+  { "id": "CP08", "name": "달빛 포도주", "effect": "thirst_down", "amount": 25,
+    "price": { "kind": "potion_of_level_tier", "mult": 2 }, "carry_group": "moon_wine", "shop": ["general_store"],
+    "requires": { "all": [ { "has_trait": "TM01" }, { "last_trip_time": "night" } ] },
+    "sellable": false }
+]

@@ -1,0 +1,79 @@
+{
+  "id": "L14",
+  "name": "녹슨 광차",
+  "category": "life",
+  "locations": ["D1", "D2"],
+  "triggers": ["dungeon_event_room"],
+  "life_stages": ["prime", "veteran", "elder"],
+  "condition": true,
+  "weight": 5,
+  "cooldown_min": 30,
+  "max_per_life": 3,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "광석 동전은 동전 단위로 준다(mat_vein 가치는 층 동전식 ×4로 고정이라 ×2단위를 적을 수 없다). 올라탄다의 '관문 앞 방 1개는 남김'은 skip_rooms의 엔진 규칙이다(CONTENT_SCHEMA §4.2 dungeon_mod). 소품 레일은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "레일 위에 녹슨 광차가 서 있었다", "비탈에 광차 하나가 멈췄다" ],
+    "detail": "레일 위에 녹슨 광차가 멈춰 있다. 레일은 어둠 속 아래쪽으로 비스듬히 이어진다. 바퀴를 밀자 삐걱 소리와 함께 한 뼘쯤 움직인다.",
+    "tag": "dungeon",
+    "animation": [ { "action": "interact", "props": ["mine_cart"] } ]
+  },
+  "choices": [
+    {
+      "id": "ride", "label": "올라타고 내려간다", "short": "광차에 올라타고 내려갔다",
+      "tags": ["new_path", "bold"], "risk": "medium",
+      "check": { "kind": "terrain", "dc_offset": 2 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "dungeon_mod", "op": "skip_rooms", "count": 2, "scope": "this_sortie" },
+            { "type": "add_xp", "units": 1 },
+            { "type": "animation", "action": "sit_eat", "props": ["mine_cart"] }
+          ],
+          "line": "광차를 타고 단숨에 내려갔다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "dungeon_mod", "op": "skip_rooms", "count": 1, "scope": "this_sortie" },
+            { "type": "damage", "hp_ratio": 0.1, "when": { "not": { "has_trait": "TI03" } } },
+            { "type": "journal", "tag": "trait", "line": "갈림 레일을 먼저 알아봤다", "when": { "has_trait": "TI03" } },
+            { "type": "animation", "action": "sit_eat", "props": ["mine_cart"] }
+          ],
+          "line": "광차가 덜컹이며 멈췄다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.2 },
+            { "type": "injury", "grade": "light", "stat": "dex" }
+          ],
+          "line": "광차가 레일을 벗어났다"
+        }
+      }
+    },
+    {
+      "id": "search", "label": "광차 안을 뒤져 본다", "short": "광차 안을 뒤져 보았다",
+      "tags": ["reward"], "risk": "low",
+      "check": { "kind": "forage", "dc_offset": 0, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "add_coins", "units": 1, "when": { "equipped": "W05" } }
+          ],
+          "line": "광차 바닥에서 광석을 긁었다"
+        },
+        "failure": {
+          "effects": [ { "type": "add_fatigue", "value": 3 } ],
+          "line": "녹가루만 한 줌 나왔다"
+        }
+      }
+    },
+    {
+      "id": "walk", "label": "레일을 따라 걸어간다", "short": "레일을 따라 걸어갔다",
+      "tags": ["safe"], "risk": "none",
+      "outcomes": {
+        "always": { "effects": [], "line": "광차를 두고 레일을 따라갔다" }
+      }
+    }
+  ]
+}

@@ -25,7 +25,7 @@ const C01 = {
   major_branch_stage: 3,
 }
 
-// 16 §3.2 43종에서 thirst_gte를 뺀 42종 + CONTENT_SCHEMA §4.1 신설 14종
+// 16 §3.2 43종에서 thirst_gte를 뺀 42종 + CONTENT_SCHEMA §4.1 신설 15종
 const CONDITIONS_16 = [
   'age_gte', 'age_lt', 'level_gte', 'level_lt', 'life_stage', 'specific_age', 'location', 'location_kind', 'location_tag',
   'season', 'time_of_day', 'last_trip_time', 'weather', 'attitude', 'has_trait', 'has_item', 'has_item_where', 'equipped',
@@ -36,8 +36,9 @@ const CONDITIONS_16 = [
 const CONDITIONS_NEW = [
   'location_match', 'trait_hook', 'received_relic', 'discovery_found', 'first_sortie_of_character', 'safe_returns_gte',
   'codex_count_gte', 'codex_complete', 'reaction_active', 'life_end_kind', 'died_at', 'thirst_stage_gte', 'combat_kind', 'main_place',
+  'has_consumable',
 ]
-// 16 §4.3 50종 + CONTENT_SCHEMA §4.2 신설 3종
+// 16 §4.3 50종 + CONTENT_SCHEMA §4.2 신설 6종
 const EFFECTS_16 = [
   'add_coins', 'remove_coins', 'add_xp', 'heal', 'damage', 'add_fatigue', 'injury', 'cure_injury', 'life_stat_add', 'add_item',
   'add_random_item', 'remove_item', 'add_consumable', 'offer_purchase', 'add_trait', 'remove_trait', 'specialize',
@@ -47,7 +48,7 @@ const EFFECTS_16 = [
   'if', 'on_town_return', 'schedule_event', 'reopen_choices', 'npc_relation', 'skill_use', 'family_record', 'unlock_family',
   'journal', 'animation',
 ]
-const EFFECTS_NEW = ['add_material', 'remove_consumable', 'roll_check']
+const EFFECTS_NEW = ['add_material', 'remove_consumable', 'roll_check', 'reveal_discovery', 'open_chest', 'create_partner']
 // 16 §1.4.3 변수 등록표 전부(78개)
 const TEMPLATE_VARS_16 = [
   'name', 'heir', 'parent_name', 'parent_call', 'partner', 'job', 'child', 'guardian', 'friend', 'family', 'generation', 'age',
@@ -62,7 +63,7 @@ const TEMPLATE_VARS_16 = [
 const sorted = (xs: readonly string[]) => [...xs].sort()
 
 describe('기본 등록', () => {
-  it('조건 56종·효과 53종·선택자 5종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
+  it('조건 57종·효과 56종·선택자 5종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
     assert.equal(CONDITIONS_16.length, 42)
     assert.equal(EFFECTS_16.length, 50)
     assert.equal(TEMPLATE_VARS_16.length, 78)

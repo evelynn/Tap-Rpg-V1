@@ -1,0 +1,62 @@
+{
+  "_comment": "01 §8.1·§8.2·§8.3, 07 §5.1(적 50:50·2체 35%·하강 40초)·§5.3(함정 여섯 가지 균등, 보물 70/30)·§4.5 잔당·§5.6 관문·첫 격파·§8.3 사망 제안 문장. first_clear는 CONTENT_SCHEMA §5.3 gate 예시 + 07 §5.6 연대기 [가문] 기록(문장 07 §9.2)",
+  "id": "D3",
+  "name": "종소리 폐광 심층",
+  "kind": "dungeon_floor",
+  "level_range": [21, 30],
+  "level_mid": 25,
+  "travel_sec": 60,
+  "descend_sec": 40,
+  "unlock": { "defeated": "EB02" },
+  "guild_rank_req": "gold",
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": true,
+  "tags": ["dusty", "dark", "mine"],
+  "dungeon": { "group": "bell_mine", "depth": 3 },
+  "encounters": [
+    { "enemy_id": "EN07", "weight": 50 },
+    { "enemy_id": "EN10", "weight": 50 }
+  ],
+  "pair_chance": 0.35,
+  "rooms": [5, 7],
+  "room_weights": { "combat": 45, "trap": 20, "rest": 5, "treasure": 15, "event": 15 },
+  "trap_table": [
+    { "trap_id": "trap_rock", "weight": 1 },
+    { "trap_id": "trap_spike", "weight": 1 },
+    { "trap_id": "trap_dust", "weight": 1 },
+    { "trap_id": "trap_alarm", "weight": 1 },
+    { "trap_id": "trap_collapse", "weight": 1 },
+    { "trap_id": "trap_saw", "weight": 1 }
+  ],
+  "treasure_table": { "chest": 70, "vein": 30 },
+  "gate": {
+    "enemy_id": "EB03",
+    "lethal": true,
+    "remnant": { "enemy_id": "EN10" },
+    "first_clear": [
+      { "type": "add_item", "item_id": "W10", "to": "bag_or_pending" },
+      { "type": "add_trait", "trait_id": "TA08" },
+      { "type": "set_family_flag", "key": "fam.eb03_slain" },
+      { "type": "family_record", "kind": "chronicle", "key": "eb03_slain",
+        "text": "{name:이/가} 부서진 종을 멈췄다. 폐광에 처음으로 고요가 내렸다." }
+    ],
+    "lines": {
+      "turn_back": "관문 앞에서 발길을 돌렸다.",
+      "lethal_blocked": {
+        "line": "부서진 종 앞에서 돌아섰다.",
+        "detail": "종이 울릴 때마다 발밑이 흔들렸다. 이곳에서 쓰러지면 돌아오지 못한다. (방침에서 치명 위험을 허용하면 도전한다)"
+      },
+      "lethal_auto_entry": "방침에 따라 부서진 종 앞에 섰다.",
+      "death_line": "부서진 종 아래에서 눈을 감았다.",
+      "suggest_lethal_off": "치명 위험 허용을 끄면 부서진 종 앞에서 돌아선다.",
+      "suggest_default": "종은 준비된 자에게도 무겁게 울렸다."
+    }
+  },
+  "rescuers": "dungeon",
+  "background_id": "bg_mine_deep",
+  "feature_words": ["종의 방", "무너진 벽"]
+}

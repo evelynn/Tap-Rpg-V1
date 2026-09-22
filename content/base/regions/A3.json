@@ -1,0 +1,58 @@
+{
+  "_comment": "01 §8.1(D2 첫 진입), 07 §6.1·§6.3 발견 A3-1~A3-6·§6.4. A3-3 동전 = 동전식(19) × 5 = 장소 단위 5. A3-4 공포 DC 18 = A3 지역 기준(dc_offset 0)",
+  "id": "A3",
+  "name": "옛 광부촌",
+  "kind": "adventure_route",
+  "level_range": [15, 23],
+  "level_mid": 19,
+  "travel_sec": 65,
+  "unlock": { "visited": "D2" },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "scenes": [4, 6],
+  "scene_weights": { "discovery": 25, "path": 10, "forage": 15, "encounter": 25, "event": 25 },
+  "encounters": [
+    { "enemy_id": "EN04", "weight": 50 },
+    { "enemy_id": "EN09", "weight": 50 }
+  ],
+  "pair_chance": 0.10,
+  "map_fragments": [
+    { "id": "A3-M1", "name": "선광장 지도 조각" },
+    { "id": "A3-M2", "name": "노래비 지도 조각" }
+  ],
+  "discoveries": [
+    { "id": "A3-1", "name": "광부 조합 회관", "condition": true, "dc": { "grade": "normal" },
+      "effects": [ { "type": "add_item", "item_id": "J04", "grade": "common", "to": "bag_or_pending" } ] },
+    { "id": "A3-2", "name": "세나의 옛집", "condition": true, "dc": { "grade": "normal" },
+      "event_weight_mult": { "C01-3": 2 },
+      "notebook_line": "세나의 옛집을 수첩에 적었다.",
+      "_note": "C01-3은 C01 진행 중에만 후보라 조건 없이 ×2. notebook_line은 문서에 문장이 없어 최소 작성" },
+    { "id": "A3-3", "name": "무너진 선광장", "condition": true, "dc": { "grade": "hard" },
+      "map_fragment": "A3-M1",
+      "effects": [ { "type": "add_coins", "units": 5 } ] },
+    { "id": "A3-4", "name": "광부 묘지", "condition": true, "dc": { "grade": "normal" },
+      "effects": [
+        { "type": "roll_check", "check": { "kind": "fear", "dc_offset": 0 },
+          "success": [ { "type": "counter_add", "key": "safe_returns", "value": 1, "where": "D2" } ] }
+      ],
+      "_note": "TA02 조건(bell_mine depth 2 이상 무사 귀환)에 1회로 세도록 where D2. D3으로 세면 별패(depth 3) 조건까지 올라가므로 D2" },
+    { "id": "A3-5", "name": "우물 속 갱도", "condition": { "discovery_found": "A3-3" }, "dc": { "grade": "hard" },
+      "modifiers": [
+        { "target": "descend_sec_add.D2", "op": "add", "value": -10 },
+        { "target": "descend_sec_add.D3", "op": "add", "value": -10 },
+        { "target": "descend_sec_add.A4", "op": "add", "value": -10 }
+      ],
+      "_note": "A4도 D3 하강 40초를 거쳐 들어가므로(01 §8.1, 07 §5.4) D3 하강 단축을 A4에도 건다(A2-3 입구 이동 단축을 A4까지 건 것과 같은 해석)" },
+    { "id": "A3-6", "name": "광부들의 노래비", "condition": true, "dc": { "grade": "easy" },
+      "map_fragment": "A3-M2",
+      "effects": [ { "type": "family_record", "kind": "codex", "key": "A3-6", "text": "광부들의 노래비" } ],
+      "_note": "가문 도감 기록: key는 발견 지점 id, text는 발견 이름(C14 미확정)" }
+  ],
+  "rescuers": "field",
+  "background_id": "bg_miner_village",
+  "feature_words": ["빈 집", "우물", "종탑"]
+}

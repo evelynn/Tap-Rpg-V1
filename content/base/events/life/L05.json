@@ -1,0 +1,93 @@
+{
+  "id": "L05",
+  "name": "여관의 소문",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "condition": true,
+  "weight": 7,
+  "cooldown_min": 30,
+  "max_per_life": 6,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "TA04 가중 ×1.5는 특성 ai_hooks.event_weight_mult가 맡는다. life.rumor_ready(L02·L09)가 있으면 `자세히 묻는다`를 판정 없는 선택지(ask_ready)로 바꿔 성공 효과를 주고 지운다. '여관비 1회분'은 remove_coins inn_costs 1(TA04면 무료). 흡혈귀 장소 문장('지하 창고에서'), L12 '누가 주머니를 주웠다더라' 도입 변형은 등록부에 없어 빠졌다. 소품 여관 탁자·잔은 prop 정의가 없어 뺐다",
+  "context_vars": [
+    { "var": "rumor_place", "selector": "rumor_place", "params": { "chain_next_chance": 0.5 } }
+  ],
+  "intro": {
+    "lines": [ "도담 아주머니가 목소리를 낮췄다", "여관에 새 소문이 돌았다" ],
+    "detail": "도담 아주머니가 빈 잔을 닦으며 목소리를 낮춘다. \"요즘 {rumor_place} 쪽에서 이상한 게 보인다더라.\" 옆자리 짐꾼이 귀를 쫑긋 세운다.",
+    "tag": "town",
+    "animation": [ { "action": "sit_eat" } ]
+  },
+  "choices": [
+    {
+      "id": "ask", "label": "자세히 묻는다", "short": "소문을 자세히 물었다",
+      "tags": ["info"], "risk": "low",
+      "requires": { "not": { "flag": "life.rumor_ready" } },
+      "check": { "kind": "persuade", "dc": 12 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 2 }, "scope": "next_visit", "location": "{rumor_place}" },
+            { "type": "temp_mod", "modifier": { "target": "location_score.{rumor_place}", "op": "add", "value": 15 }, "scope": "next_decision" }
+          ],
+          "line": "{rumor_place} 이야기를 들었다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "temp_mod", "modifier": { "target": "location_score.{rumor_place}", "op": "add", "value": 15 }, "scope": "next_decision" }
+          ],
+          "line": "소문을 반쯤 들었다"
+        },
+        "failure": {
+          "effects": [ { "type": "remove_coins", "amount": 5 } ],
+          "line": "헛소문에 술값만 냈다"
+        }
+      }
+    },
+    {
+      "id": "ask_ready", "label": "자세히 묻는다", "short": "소문을 자세히 물었다",
+      "tags": ["info"], "risk": "none",
+      "requires": { "flag": "life.rumor_ready" },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 2 }, "scope": "next_visit", "location": "{rumor_place}" },
+            { "type": "temp_mod", "modifier": { "target": "location_score.{rumor_place}", "op": "add", "value": 15 }, "scope": "next_decision" },
+            { "type": "clear_flag", "key": "life.rumor_ready" }
+          ],
+          "line": "{rumor_place} 이야기를 들었다"
+        }
+      }
+    },
+    {
+      "id": "buy_drink", "label": "한 잔 사고 듣는다", "short": "한 잔 사고 들었다",
+      "tags": ["info", "kindness"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 2 }, "scope": "next_visit", "location": "{rumor_place}" },
+            { "type": "temp_mod", "modifier": { "target": "location_score.{rumor_place}", "op": "add", "value": 15 }, "scope": "next_decision" },
+            { "type": "remove_coins", "inn_costs": 1, "when": { "not": { "has_trait": "TA04" } } },
+            { "type": "journal", "tag": "trait", "line": "도담 아주머니가 잔을 공짜로 채웠다", "when": { "has_trait": "TA04" } }
+          ],
+          "line": "한 잔 사고 소문을 들었다"
+        }
+      }
+    },
+    {
+      "id": "go_now", "label": "날이 밝으면 곧장 가 본다", "short": "곧장 가 보기로 했다",
+      "tags": ["bold", "new_path"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_destination", "place_var": "rumor_place", "scope": "next_sortie", "respect_risk_cap": true },
+            { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 1.5 }, "scope": "next_sortie" }
+          ],
+          "line": "소문을 듣자마자 짐을 쌌다"
+        }
+      }
+    }
+  ]
+}

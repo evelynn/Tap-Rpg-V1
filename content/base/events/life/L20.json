@@ -1,0 +1,99 @@
+{
+  "id": "L20",
+  "name": "쇳소리 박쥐 떼",
+  "category": "life",
+  "locations": ["D2", "H4"],
+  "triggers": ["dungeon_after_room", "after_encounter"],
+  "life_stages": ["prime", "veteran", "elder"],
+  "condition": true,
+  "weight": 5,
+  "cooldown_min": 25,
+  "max_per_life": 3,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "TI02 반응(피로 +5, '귀가 먹먹했다')은 모든 결과에 붙이고(11 원문 '먹먹하다'는 현재형이라 14 과거형으로 고쳤다, DS-59) 엎드리기 판정 +2는 판정 보정으로 적는다. 보물 상자 1개는 open_chest(07 §5.3 상자 내용: 장비·동전·재료, 잠김·함정 판정 없음)다. 소품 박쥐 떼 효과는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "쇳소리와 함께 박쥐 떼가 왔다", "천장에서 박쥐가 쏟아졌다" ],
+    "detail": "끼이익— 쇠 긁는 소리와 함께 박쥐 떼가 천장에서 쏟아진다. 날갯짓 바람에 등불이 꺼질 듯 흔들린다.",
+    "tag": "dungeon"
+  },
+  "choices": [
+    {
+      "id": "duck", "label": "엎드려 지나가길 기다린다", "short": "엎드려 지나가길 기다렸다",
+      "tags": ["safe"], "risk": "medium",
+      "check": { "kind": "fear", "dc_offset": 0, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "has_trait": "TI02" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_time", "sec": 20 },
+            { "type": "if", "cond": { "has_trait": "TI02" },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+            { "type": "animation", "action": "hit" }
+          ],
+          "line": "엎드려 날갯짓을 흘려보냈다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.1 },
+            { "type": "if", "cond": { "has_trait": "TI02" },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+            { "type": "animation", "action": "hit" }
+          ],
+          "line": "박쥐 발톱에 볼을 긁혔다"
+        }
+      }
+    },
+    {
+      "id": "chase", "label": "등불을 휘둘러 쫓는다", "short": "등불을 휘둘러 쫓았다",
+      "tags": ["bold"], "risk": "medium",
+      "check": { "kind": "attack_event", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 1 },
+            { "type": "add_xp", "units": 1 },
+            { "type": "if", "cond": { "has_trait": "TI02" },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+            { "type": "animation", "action": "attack" }
+          ],
+          "line": "등불에 놀란 박쥐가 흩어졌다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.15 },
+            { "type": "if", "cond": { "has_trait": "TI02" },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+            { "type": "animation", "action": "attack" }
+          ],
+          "line": "박쥐 떼에 휩싸였다"
+        }
+      }
+    },
+    {
+      "id": "search", "label": "박쥐가 나온 틈을 살핀다", "short": "박쥐가 나온 틈을 살폈다",
+      "tags": ["new_path", "reward"], "risk": "low",
+      "check": { "kind": "forage", "dc_offset": 2, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "open_chest" },
+            { "type": "if", "cond": { "has_trait": "TI02" },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "박쥐 둥지 뒤에 상자가 있었다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_fatigue", "value": 8 },
+            { "type": "if", "cond": { "has_trait": "TI02" },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "박쥐 똥 냄새에 머리가 아팠다"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,81 @@
+{
+  "id": "L23",
+  "name": "생일 잔치",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "condition": { "specific_age": [30, 40, 50, 60] },
+  "weight": 10,
+  "check_override": 1,
+  "pity_after": 1,
+  "max_per_life": 4,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "원문은 가중치 없이 '조건 충족 시 확정, 검사 확률 무시'다. check_override 1과 pity_after 1로 옮기고 weight 10은 V13 자리값이다. 나이별 문장은 조건부 상세(family_variants)로 붙인다. 50·60세 [성장] 기록은 노화 이정표(01 §2.2)가 남긴다. 다 함께의 '가정(S01)이 있으면 가족 문장 추가'는 원문 문장이 없어 옮기지 못했다. 흡혈귀 조용한 생일은 도입 문장을 바꿀 자리가 없어 선택지만 바꾼다. 11 조건은 '도달 후 첫 귀환'이라 출정 중 생일도 잡아야 한다. specific_age('이번 판단 지점에서 막 도달')가 직전 판단 지점 이후만 보면 출정 중 생일을 놓친다(미결: 조건 의미를 '직전 마을 귀환 이후'로 정하거나 전용 조건)",
+  "intro": {
+    "lines": [ "여관에 촛불 꽂은 빵이 나왔다", "{age}번째 생일을 맞았다" ],
+    "detail": "여관 문을 열자 도담 아주머니가 촛불 꽂은 빵을 들고 서 있다. \"{age}번째 생일이지? 올해도 무사히 돌아왔네.\"",
+    "tag": "town",
+    "animation": [ { "action": "sit_eat", "props": ["bread"] }, { "action": "cheer" } ],
+    "family_variants": [
+      { "when": { "specific_age": [30] }, "detail_append": "새내기 티를 벗었다는 말을 들었다." },
+      { "when": { "specific_age": [40] }, "detail_append": "길드 명부에서 이름이 꽤 앞쪽으로 올라왔다." },
+      { "when": { "specific_age": [50] }, "detail_append": "촛불 너머로 지나온 길이 보였다." },
+      { "when": { "specific_age": [60] }, "detail_append": "촛불을 끄는 데 숨이 조금 더 들었다." },
+      { "when": { "all": [ { "reaction_active": "dr_c02_done" }, { "lifetime_count_lt": { "event": "L23", "count": 1 } } ] },
+        "detail_append": "광장에서 토리네 광대가 공을 던져 올렸다." }
+    ]
+  },
+  "choices": [
+    {
+      "id": "share", "label": "다 함께 나눠 먹는다", "short": "다 함께 나눠 먹었다",
+      "tags": ["rest", "kindness"], "risk": "none",
+      "_note": "여관 휴식과 같은 회복(무료)을 체력 전부 회복·피로 −100(피로 0)으로 옮긴다. 무료 여관 휴식 효과가 등록부에 없다",
+      "requires": { "mutation": "none" },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "heal", "hp_ratio": 1 },
+            { "type": "add_fatigue", "value": -100 },
+            { "type": "journal", "tag": "trait", "line": "빵 세 개를 먹었다", "when": { "has_trait": "TI08" } }
+          ],
+          "line": "여관이 웃음소리로 가득했다"
+        }
+      }
+    },
+    {
+      "id": "slice", "label": "조용히 한 조각만 먹는다", "short": "조용히 한 조각만 먹었다",
+      "tags": ["rest"], "risk": "none",
+      "requires": { "mutation": "none" },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_fatigue", "value": -30 },
+            { "type": "journal", "tag": "trait", "line": "빵 세 개를 먹었다", "when": { "has_trait": "TI08" } }
+          ],
+          "line": "빵 한 조각을 천천히 먹었다"
+        }
+      }
+    },
+    {
+      "id": "leave", "label": "촛불만 끄고 곧장 떠난다", "short": "촛불만 끄고 곧장 떠났다",
+      "tags": ["bold"], "risk": "none",
+      "requires": { "mutation": "none" },
+      "outcomes": {
+        "always": { "effects": [], "line": "촛불은 다음에 끄기로 했다" }
+      }
+    },
+    {
+      "id": "quiet", "label": "여관 지하에서 촛불 하나를 켠다", "short": "여관 지하에서 촛불을 켰다",
+      "tags": ["rest"], "risk": "none",
+      "_note": "흡혈귀의 조용한 생일(09 §7.4): 선택지 없이 한 조각 결과만 적용한다",
+      "requires": { "mutation": "vampire" },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "add_fatigue", "value": -30 } ],
+          "line": "여관 지하에서 촛불 하나를 켰다"
+        }
+      }
+    }
+  ]
+}

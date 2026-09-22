@@ -1,0 +1,52 @@
+{
+  "_comment": "01 §8.1(D3 첫 진입, 입구 60 + 하강 40), 01 §1.3 A4 안쪽 날씨 없음, 02 §2.4 계승 때 닫힘, 07 §6.1·§6.3 발견 A4-1~A4-6·§6.4. A4-6 업적 '길을 본 자'는 achievement 조건(discovery_found A4-6)이 준다. 선택 창 배경 묘사(A4-1·A4-2)는 F02·F03 preview.variants 몫",
+  "id": "A4",
+  "name": "길바뀜의 틈",
+  "kind": "adventure_route",
+  "level_range": [22, 30],
+  "level_mid": 26,
+  "travel_sec": 60,
+  "descend_sec": 40,
+  "unlock": { "visited": "D3" },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": true,
+  "weather_exempt": true,
+  "scenes": [3, 5],
+  "scene_weights": { "discovery": 20, "path": 10, "forage": 5, "encounter": 30, "event": 35 },
+  "encounters": [
+    { "enemy_id": "EN07", "weight": 50 },
+    { "enemy_id": "EN10", "weight": 50 }
+  ],
+  "pair_chance": 0.10,
+  "map_fragments": [
+    { "id": "A4-M1", "name": "폐허 파편 지도 조각" },
+    { "id": "A4-M2", "name": "장미 덩굴 지도 조각" }
+  ],
+  "discoveries": [
+    { "id": "A4-1", "name": "별빛이 새는 틈", "condition": true, "dc": { "grade": "normal" },
+      "event_weight_mult": { "F02": 2 } },
+    { "id": "A4-2", "name": "달그늘 지하 계단", "condition": true, "dc": { "grade": "normal" },
+      "event_weight_mult": { "F03": 2 } },
+    { "id": "A4-3", "name": "떠도는 폐허 파편", "condition": true, "dc": { "grade": "hard" },
+      "map_fragment": "A4-M1",
+      "effects": [ { "type": "family_record", "kind": "codex", "key": "A4-3", "text": "별잠 유적" } ],
+      "_note": "확장 지역 기록 `별잠 유적`을 가문 도감(codex)으로. key는 발견 지점 id(C14 미확정)" },
+    { "id": "A4-4", "name": "검은 장미 덩굴", "condition": true, "dc": { "grade": "hard" },
+      "map_fragment": "A4-M2",
+      "effects": [ { "type": "family_record", "kind": "codex", "key": "A4-4", "text": "달그늘 영지" } ],
+      "_note": "확장 지역 기록 `달그늘 영지`를 가문 도감(codex)으로. key는 발견 지점 id(C14 미확정)" },
+    { "id": "A4-5", "name": "거꾸로 흐르는 물줄기", "condition": true, "dc": { "grade": "normal" },
+      "effects": [ { "type": "add_consumable", "consumable_id": "CP05", "count": 1 } ],
+      "notebook_line": "거꾸로 흐르는 물줄기를 수첩에 적었다.",
+      "_note": "회복약 T5 = CP05(08 §4). notebook_line은 문서에 문장이 없어 최소 작성" },
+    { "id": "A4-6", "name": "길바뀜의 중심",
+      "condition": { "all": [ { "discovery_found": "A4-3" }, { "discovery_found": "A4-4" } ] },
+      "dc": { "grade": "legend" } }
+  ],
+  "rescuers": "field",
+  "background_id": "bg_rift",
+  "feature_words": ["별잠 샘", "달그늘 지하 계단"]
+}

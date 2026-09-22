@@ -1,0 +1,9 @@
+[
+  { "_comment": "01 §5.2 계열, 15 §7.1 스프라이트 계열·§12 파일 이름(enm_rat_48). name은 {enemy_kind}(14 §5)",
+    "id": "rat", "name": "들쥐", "sprite_family": "rat" },
+  { "id": "wolf", "name": "늑대", "sprite_family": "wolf" },
+  { "id": "bat", "name": "박쥐", "sprite_family": "bat" },
+  { "id": "kobold", "name": "코볼트", "sprite_family": "kobold" },
+  { "_note": "01 §5.2 계열 '고유'. 공유 스프라이트가 없어 sprite_family는 자리값이고, 고유 적은 적 정의의 sprite_family를 쓴다(EB03 bellwarden, 15 §7.3)",
+    "id": "unique", "name": "고유", "sprite_family": "unique" }
+]

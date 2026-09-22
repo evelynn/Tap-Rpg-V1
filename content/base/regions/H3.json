@@ -1,0 +1,25 @@
+{
+  "_comment": "01 §8.1(레벨 7 또는 A1 발견 = A1-3 unlock_location), 07 §3.1, 10 §3.1",
+  "id": "H3",
+  "name": "늑대 언덕",
+  "kind": "hunting_ground",
+  "level_range": [8, 15],
+  "level_mid": 11,
+  "travel_sec": 45,
+  "unlock": { "any": [ { "level_gte": 7 }, { "discovered": "H3" } ] },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "encounters": [
+    { "enemy_id": "EN03", "weight": 65 },
+    { "enemy_id": "EN04", "weight": 35 }
+  ],
+  "pair_chance": 0.20,
+  "event_check": 0.08,
+  "rescuers": "field",
+  "background_id": "bg_wolf_hill",
+  "feature_words": ["봉화대 폐허", "바위 틈"]
+}

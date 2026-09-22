@@ -1,10 +1,10 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { registerTextSlot, type ContentKind } from '../../src/core'
+import { enemyStats, registerTextSlot, type ContentKind } from '../../src/core'
 import { buildIndex } from '../../src/pack/index-defs'
 import type { RawDef } from '../../src/pack/read'
 import { KIND_SCHEMAS } from '../../src/validate/kind-schemas'
-import { enemyStats, runSemanticChecks } from '../../src/validate/rules'
+import { runSemanticChecks } from '../../src/validate/rules'
 
 // 코어가 부르는 문형 id 예(V2 텍스트 슬롯). 첫 검사 때 잠기므로 먼저 등록한다
 registerTextSlot('journal.test.slot')
@@ -365,6 +365,17 @@ describe('V15·V4·V9·S01 효과 교차 검사', () => {
       trait('TA03', { type: 'event', event_id: 'L02', choice: 'fly' }),
     ])
     assert.deepEqual(r, ['V15 trait/TA02.json#/acquire', 'V15 trait/TA03.json#/acquire/choice'])
+  })
+
+  it('mutate도 획득으로 본다(변이 특성의 acquire)', () => {
+    const giver = event('F03', { choices: [choice('go'), choice('accept', effects({ type: 'mutate', trait_id: 'TM01' }))] })
+    const r = run([
+      ...WORLD,
+      giver,
+      trait('TM01', { type: 'event', event_id: 'F03', choice: 'accept' }),
+      trait('TM02', { type: 'event', event_id: 'F03', choice: 'accept' }),
+    ], 'V15')
+    assert.deepEqual(r, ['V15 trait/TM02.json#/acquire'])
   })
 
   it('mutate는 변이 특성, damage hp는 경고, tier는 단계 수 이하', () => {

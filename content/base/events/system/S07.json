@@ -1,0 +1,68 @@
+{
+  "id": "S07",
+  "name": "은퇴한 부모의 편지",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 7, "phase": "town_routine_family" },
+  "condition": { "any": [
+    { "reaction_active": "dr_retired_inn" },
+    { "reaction_active": "dr_retired_instructor" },
+    { "reaction_active": "dr_retired_letters" }
+  ] },
+  "check_override": 0.12,
+  "cooldown_min": 15,
+  "max_per_life": 7,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "11 S07, 09 §4.2(후계자 30세까지 귀환마다 12%, 간격 15분, 최대 6회 + 30세 이후 첫 귀환 마무리 편지 1회 = 7). 은퇴 생존 인물(family.retirees) 여부와 마무리 편지 시점(30세 뒤 첫 귀환 확정)은 엔진이 판정한다(30은 balance.inheritance.retiree_visible_until_heir_age). 선택지 = 편지 변형: apple·relic·story는 일반 편지, lesson은 교관 역할 교육(2회), final_*는 역할별 마무리 편지. 엔진이 변형을 고른다. 편지 가족의 선물은 retire_role.letter_gift, 교육 숙련 +20은 후계자가 고른 숙련이라 엔진 몫. relic 편지는 물려받은 유품이 있을 때만 열린다(received_relic true). 긴 잠 인물은 S07 대신 달그늘에서 온 편지(09 §7.9)",
+  "intro": {
+    "lines": [ "{parent_call}의 편지가 왔다", "{parent_name:이/가} 편지를 보냈다" ],
+    "tag": "family"
+  },
+  "choices": [
+    {
+      "id": "apple", "label": "사과나무", "risk": "none",
+      "outcomes": { "always": { "effects": [],
+        "detail": "\"여관 뒷마당 사과나무에 꽃이 폈다. 너도 밥은 꼭 챙겨 먹어라.\"" } }
+    },
+    {
+      "id": "relic", "label": "유품", "risk": "none",
+      "requires": { "received_relic": true },
+      "outcomes": { "always": { "effects": [],
+        "detail": "\"{relic:은/는} 잘 쓰고 있니? 칼자루 끈이 풀리면 보름에게 맡기거라.\"" } }
+    },
+    {
+      "id": "story", "label": "이야기", "risk": "none",
+      "outcomes": { "always": { "effects": [],
+        "detail": "\"오늘 길드 새내기들에게 폐광 이야기를 해 주었다. 네 이야기도 조금 보탰다.\"" } }
+    },
+    {
+      "id": "lesson", "label": "교육(교관 역할)", "risk": "none",
+      "requires": { "reaction_active": "dr_retired_instructor" },
+      "outcomes": { "always": { "effects": [],
+        "line": "{parent_call:이/가} 목검을 들고 왔다",
+        "detail": "\"{name}, 오늘은 한 가지만 가르치마.\"" } }
+    },
+    {
+      "id": "final_inn", "label": "마무리 편지(여관 주인)", "risk": "none",
+      "requires": { "reaction_active": "dr_retired_inn" },
+      "outcomes": { "always": { "effects": [],
+        "line": "{parent_call:이/가} 평안히 떠났다",
+        "detail": "{name}에게. 여관 문은 이제 이웃에게 맡겼다. 창가 자리는 늘 네 몫으로 비워 두라고 했단다.\n나는 오늘 아침, 오래 걷던 길을 한 번 더 걸었다. 다리 위에서 바람이 불었고, 그걸로 충분했다.\n네 배낭이 너무 무겁지 않기를. — {parent_name}\n여관 창가에 작은 도토리 하나가 놓여 있었다." } }
+    },
+    {
+      "id": "final_instructor", "label": "마무리 편지(길드 교관)", "risk": "none",
+      "requires": { "reaction_active": "dr_retired_instructor" },
+      "outcomes": { "always": { "effects": [],
+        "line": "{parent_call:이/가} 평안히 떠났다",
+        "detail": "{name}에게. 교관 자리는 하델이 다른 이에게 맡겼다. 목검은 네가 쓰던 것만 남겨 두었다.\n마지막으로 가르칠 것은 하나뿐이다. 물러날 때를 아는 사람이 오래 걷는다. — {parent_name}\n훈련장 벽에 목검 하나가 걸려 있었다." } }
+    },
+    {
+      "id": "final_letters", "label": "마무리 편지(편지를 보내는 가족)", "risk": "none",
+      "requires": { "reaction_active": "dr_retired_letters" },
+      "outcomes": { "always": { "effects": [],
+        "line": "{parent_call:이/가} 평안히 떠났다",
+        "detail": "{name}에게. 이번 편지가 마지막일 것 같구나. 오래 써서 펜촉이 다 닳았다.\n네가 보낸 이야기들은 수첩 뒤쪽에 옮겨 적어 두었다. 이제 앞쪽은 네 것이다. — {parent_name}\n수첩에 마른 꽃 한 송이가 끼워져 있었다." } }
+    }
+  ]
+}

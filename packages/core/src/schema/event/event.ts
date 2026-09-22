@@ -198,8 +198,8 @@ export const eventSchema = def({
   const ids = e.choices.map((c) => c.id)
   ids.forEach((cid, i) => { if (ids.indexOf(cid) !== i) issue(ctx, `선택지 id 중복: ${cid}`, ['choices', i, 'id']) })
 
-  // V7 자동 선택 정보. tags·short는 선택지 1개뿐인 system 사건이 면제
-  if (e.hold === 'none' && !(e.category === 'system' && e.choices.length === 1)) {
+  // V7 자동 선택 정보. system 사건은 AI가 고르지 않으므로(requires 또는 엔진이 정한 변형 값) tags·short 면제
+  if (e.hold === 'none' && e.category !== 'system') {
     e.choices.forEach((c, i) => {
       if (!c.tags) issue(ctx, 'hold none 사건의 선택지는 tags(1~2개)가 필요하다', ['choices', i, 'tags'], 'V7')
       if (c.short === undefined) issue(ctx, 'hold none 사건의 선택지는 short가 필요하다', ['choices', i, 'short'], 'V7')

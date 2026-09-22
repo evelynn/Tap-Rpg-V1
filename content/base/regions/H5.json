@@ -1,0 +1,26 @@
+{
+  "_comment": "01 §8.1(D2 첫 진입), 07 §3.1, 10 §3.1. tags: 06 TI05·08 A04 폐광·먼지 장소",
+  "id": "H5",
+  "name": "무너진 갱도 입구",
+  "kind": "hunting_ground",
+  "level_range": [20, 30],
+  "level_mid": 25,
+  "travel_sec": 70,
+  "unlock": { "visited": "D2" },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "tags": ["dusty", "mine"],
+  "encounters": [
+    { "enemy_id": "EN07", "weight": 50 },
+    { "enemy_id": "EN10", "weight": 50 }
+  ],
+  "pair_chance": 0.15,
+  "event_check": 0.06,
+  "rescuers": "field",
+  "background_id": "bg_mine_gate",
+  "feature_words": ["무너진 문", "종탑 실루엣"]
+}

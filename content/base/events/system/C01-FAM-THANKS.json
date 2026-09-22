@@ -1,0 +1,36 @@
+{
+  "id": "C01-FAM-THANKS",
+  "name": "감사의 식탁",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 9, "phase": "town_routine_family" },
+  "condition": { "all": [
+    { "reaction_active": "dr_c01_rescue" },
+    { "visited": "D1" }
+  ] },
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "12 §7.6 fam.c01_rescue 후손 반응(반응 기간 3세대는 descendant_reaction). 후손이 이번 생애에 D1에 들어간 뒤 첫 마을 귀환 때 한 번. 기록 원문은 11 C01-3·12 §7.6. 선택지 = 말하는 이 변형: 세나(딸)·도윤(아들). 담당 NPC는 대수로 교대하므로(N05 successors from_generation 3) generation_gte 3이면 도윤이다. 도입 두 줄은 12의 장면 서술에서 옮겼다. 동전·장비·능력치 이익 없음(D29)",
+  "intro": {
+    "lines": [ "광부 집안이 식탁에 불렀다", "감사의 식탁에 초대받았다" ],
+    "tag": "bond",
+    "animation": [ { "action": "sit_eat", "props": ["bread"] } ]
+  },
+  "choices": [
+    {
+      "id": "daughter", "label": "광부의 딸", "risk": "none",
+      "requires": { "not": { "generation_gte": 3 } },
+      "outcomes": { "always": { "effects": [],
+        "line": "광부의 딸이 기억하고 있었다",
+        "detail": "\"우리 집을 도운 분과 닮았네요.\"" } }
+    },
+    {
+      "id": "son", "label": "광부의 아들", "risk": "none",
+      "requires": { "generation_gte": 3 },
+      "outcomes": { "always": { "effects": [],
+        "line": "광부의 아들이 기억하고 있었다",
+        "detail": "\"우리 집을 도운 분과 닮았네요.\"" } }
+    }
+  ]
+}

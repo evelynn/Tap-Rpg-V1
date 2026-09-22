@@ -1,0 +1,94 @@
+{
+  "id": "L21",
+  "name": "길드 교관의 대련 제안",
+  "category": "life",
+  "locations": ["T00"],
+  "triggers": ["town_return"],
+  "life_stages": ["novice", "prime"],
+  "condition": { "any": [ { "mutation": "none" }, { "last_trip_time": "night" } ] },
+  "weight": 5,
+  "cooldown_min": 40,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "흡혈귀는 밤 출정 귀환에만 후보(09 §7.4). 근접 사용 +N은 판정 기본 +1에 더하는 값이다(10 §6.2). 소품 목검은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "하델이 대련을 청했다", "연습장에서 목검이 부딪쳤다" ],
+    "detail": "하델이 지팡이로 연습장 바닥을 두드린다. \"몸 좀 풀겠나? 다리 저는 늙은이 상대로.\" 말과 달리 눈빛이 날카롭다.",
+    "tag": "town"
+  },
+  "choices": [
+    {
+      "id": "spar", "label": "대련에 응한다", "short": "대련에 응했다",
+      "tags": ["bold"], "risk": "low",
+      "check": { "kind": "attack_event", "dc": 16, "partial_allowed": true,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "specialization": ["guardian"] } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "skill_use", "skill": "melee", "count": 5 },
+            { "type": "add_xp", "units": 2 },
+            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "when": { "specialization": ["guardian"] } },
+            { "type": "animation", "action": "attack" },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "하델의 목검을 쳐냈다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "skill_use", "skill": "melee", "count": 3 },
+            { "type": "add_xp", "units": 1 },
+            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "when": { "specialization": ["guardian"] } },
+            { "type": "animation", "action": "attack" }
+          ],
+          "line": "한 번은 받아냈다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "skill_use", "skill": "melee", "count": 2 },
+            { "type": "add_fatigue", "value": 10 },
+            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "when": { "specialization": ["guardian"] } },
+            { "type": "animation", "action": "attack" },
+            { "type": "animation", "action": "hit" }
+          ],
+          "line": "엉덩방아를 찧었다. 하델이 웃었다"
+        }
+      }
+    },
+    {
+      "id": "watch", "label": "구경하며 배운다", "short": "구경하며 배웠다",
+      "tags": ["info"], "risk": "low",
+      "requires": { "not": { "specialization": ["pathfinder"] } },
+      "check": { "kind": "lore", "dc": 12, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "skill_use", "skill": "melee", "count": 3 } ],
+          "line": "하델의 발놀림을 눈에 담았다"
+        },
+        "failure": {
+          "effects": [ { "type": "skill_use", "skill": "melee", "count": 1 } ],
+          "line": "빠른 목검을 눈으로 좇지 못했다"
+        }
+      }
+    },
+    {
+      "id": "map", "label": "지도를 함께 본다", "short": "하델과 지도를 함께 보았다",
+      "tags": ["info"], "risk": "none",
+      "_note": "길잡이 전문화 반응(구경한다 대신 나온다). 원문에 판정·결과 문장이 없어 판정 없이 탐색 사용 +3만 주고, 한 줄 기록은 새로 썼다",
+      "requires": { "specialization": ["pathfinder"] },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "skill_use", "skill": "search", "count": 3 } ],
+          "line": "하델과 지도를 함께 보았다"
+        }
+      }
+    },
+    {
+      "id": "decline", "label": "정중히 사양한다", "short": "정중히 사양했다",
+      "tags": ["rest"], "risk": "none",
+      "outcomes": {
+        "always": { "effects": [], "line": "다음을 약속하고 물러났다" }
+      }
+    }
+  ]
+}

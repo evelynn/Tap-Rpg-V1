@@ -1,0 +1,149 @@
+{
+  "id": "C01-3",
+  "name": "무너진 갱도 다리",
+  "category": "chain",
+  "chain": { "id": "C01", "stage": 3 },
+  "locations": ["D2"],
+  "triggers": ["dungeon_event_room"],
+  "condition": { "all": [ { "chain_stage": { "chain": "C01", "stage": 2 } } ] },
+  "weight": 10,
+  "max_per_life": 1,
+  "max_per_family": 1,
+  "allow_serious_injury": false,
+  "hold": "branch",
+  "_note": "11 C01-3(중대 분기, 사전 방침 미적용이라 policy_hooks 없음), 16 §4.4 예시를 바탕으로 11과 다른 곳을 맞췄다: injury none 조건 제거(11에 없음), 구조 부분·실패도 성공과 같은 보상·귀환 효과, 약속 경험치 +1단위는 구조 세 결과 모두. npc_relation·family_record는 16 예시에서 가져왔다. 광맥·무너진 다리 소품은 prop 정의가 없어 뺐다",
+  "hold_line": "무너진 다리 앞에서 결정을 기다린다",
+  "hold_animation": { "action": "sit_eat", "props": ["book", "map"] },
+  "preview": {
+    "body": "지도에 표시된 '종 아래'에 이르자, 갱도를 가로지르던 나무다리가 무너져 있다. 건너편 바위에는 도한이 새긴 종 문양과 녹슨 도시락통이 보인다. 발아래 틈에서는 은빛 광맥이 빛나고, 무너진 벽 너머에서 누군가 규칙적으로 돌을 두드린다. 다리를 다시 놓으려면 광맥 쪽 받침돌을 빼내야 한다."
+  },
+  "intro": {
+    "lines": [ "무너진 갱도 다리 앞에 섰다", "벽 너머에서 돌 두드리는 소리" ],
+    "detail": "도한의 지도가 가리킨 곳이다.",
+    "tag": "important"
+  },
+  "choices": [
+    {
+      "id": "rescue", "label": "다리를 다시 놓고 소리 나는 쪽으로 간다", "risk": "medium",
+      "preview": { "benefit": "벽 너머의 사람을 구하러 간다. 도한의 흔적을 세나에게 전할 수 있다", "cost": "받침돌을 빼면 광맥은 무너진다. 다리를 놓다 다칠 수 있다(체력 최대 −30%, 경상)", "reversible": false },
+      "check": { "kind": "force", "dc_offset": 2,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "flag": "life.c01_map_read" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_xp", "units": 4 },
+            { "type": "add_xp", "units": 1, "when": { "flag": "life.c01_promise" } },
+            { "type": "add_coins", "units": 2 },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "rescue" },
+            { "type": "npc_relation", "npc_id": "N05", "delta": 40 },
+            { "type": "family_record", "kind": "bond", "key": "sena_family", "text": "{name:이/가} {age}세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다." },
+            { "type": "on_town_return", "effects": [
+              { "type": "journal", "tag": "bond", "line": "세나가 아버지의 검을 건넸다", "detail": "세나가 말했다. \"아버지가 집에 두고 간 검이에요. 종소리가 나면 무섭지 않대요.\"" },
+              { "type": "add_item", "item_id": "W07", "to": "bag_or_pending" },
+              { "type": "add_trait", "trait_id": "TA01" } ] },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "갇힌 광부 둘을 데리고 나왔다",
+          "detail": "갇힌 광부 둘을 구하고, 도한의 수첩 한 장을 찾았다."
+        },
+        "partial": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.2 },
+            { "type": "add_xp", "units": 4 },
+            { "type": "add_xp", "units": 1, "when": { "flag": "life.c01_promise" } },
+            { "type": "add_coins", "units": 2 },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "rescue" },
+            { "type": "npc_relation", "npc_id": "N05", "delta": 40 },
+            { "type": "family_record", "kind": "bond", "key": "sena_family", "text": "{name:이/가} {age}세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다." },
+            { "type": "on_town_return", "effects": [
+              { "type": "journal", "tag": "bond", "line": "세나가 아버지의 검을 건넸다", "detail": "세나가 말했다. \"아버지가 집에 두고 간 검이에요. 종소리가 나면 무섭지 않대요.\"" },
+              { "type": "add_item", "item_id": "W07", "to": "bag_or_pending" },
+              { "type": "add_trait", "trait_id": "TA01" } ] },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "손을 다치며 다리를 놓았다",
+          "detail": "갇힌 광부 둘을 구하고, 도한의 수첩 한 장을 찾았다."
+        },
+        "failure": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.3 },
+            { "type": "injury", "grade": "light", "stat": "str" },
+            { "type": "add_xp", "units": 3 },
+            { "type": "add_xp", "units": 1, "when": { "flag": "life.c01_promise" } },
+            { "type": "add_coins", "units": 2 },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "rescue" },
+            { "type": "npc_relation", "npc_id": "N05", "delta": 40 },
+            { "type": "family_record", "kind": "bond", "key": "sena_family", "text": "{name:이/가} {age}세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다." },
+            { "type": "on_town_return", "effects": [
+              { "type": "journal", "tag": "bond", "line": "세나가 아버지의 검을 건넸다", "detail": "세나가 말했다. \"아버지가 집에 두고 간 검이에요. 종소리가 나면 무섭지 않대요.\"" },
+              { "type": "add_item", "item_id": "W07", "to": "bag_or_pending" },
+              { "type": "add_trait", "trait_id": "TA01" } ] },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "다리가 한 번 무너졌지만 해냈다",
+          "detail": "갇힌 광부 둘을 구하고, 도한의 수첩 한 장을 찾았다."
+        }
+      }
+    },
+    {
+      "id": "treasure", "label": "광맥을 캐고 지도를 마저 따라간다", "risk": "low",
+      "preview": { "benefit": "희귀 광석과 도한이 숨겨 둔 상자", "cost": "벽 너머의 사람은 나중에 다른 이가 구한다. 세나 집안이 이 선택을 기억한다", "reversible": false },
+      "check": { "kind": "force", "dc_offset": 0,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "flag": "life.c01_map_read" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 12 },
+            { "type": "add_random_item", "tier": 3, "grade_weights": { "rare": 1 }, "exclude_cursed": true },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "treasure" },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다" } ] },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "광맥과 도한의 상자를 챙겼다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "add_coins", "units": 8 },
+            { "type": "add_random_item", "tier": 3, "grade_weights": { "rare": 1 }, "exclude_cursed": true },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "treasure" },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다" } ] },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "광맥 절반과 상자를 챙겼다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_coins", "units": 5 },
+            { "type": "add_random_item", "tier": 3, "grade_weights": { "rare": 1 }, "exclude_cursed": true },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "treasure" },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다" } ] },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "discover" }
+          ],
+          "line": "광맥이 부서져 상자만 건졌다"
+        }
+      }
+    },
+    {
+      "id": "guild", "label": "돌아가 길드에 알린다", "risk": "none",
+      "preview": { "benefit": "길드 구조대가 사람을 구한다. 다칠 일이 없다", "cost": "광맥은 길드가 거둔다. 이번 출정은 여기서 귀환한다", "reversible": false },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_coins", "units": 3 },
+            { "type": "end_chain", "chain_id": "C01", "outcome": "guild" },
+            { "type": "end_sortie", "reason": "event" },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "\"사람들을 불러 주셔서 고마워요.\"" } ] },
+            { "type": "animation", "action": "walk" }
+          ],
+          "line": "길드 구조대를 이끌고 돌아왔다"
+        }
+      }
+    }
+  ]
+}

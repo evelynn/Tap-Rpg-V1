@@ -1,0 +1,18 @@
+[
+  { "id": "apprentice", "name": "견습", "order": 0, "condition": true,
+    "grants_text": "H1, H2, A1 안내",
+    "_comment": "01 §8.3. 등급 상승 기록은 문형 journal.growth.guild_rank(14 §5.1)" },
+  { "id": "bronze", "name": "동패", "order": 1,
+    "condition": { "level_gte": 6 },
+    "grants_text": "D1 입장, H3, A2 안내" },
+  { "id": "silver", "name": "은패", "order": 2,
+    "condition": { "all": [ { "level_gte": 12 }, { "defeated": "EB01" } ] },
+    "grants_text": "D2 입장, 길드 특별 상점 1단계(R01)" },
+  { "id": "gold", "name": "금패", "order": 3,
+    "condition": { "all": [ { "level_gte": 18 }, { "defeated": "EB02" } ] },
+    "grants_text": "D3 입장, 길드 특별 상점 2단계" },
+  { "id": "star", "name": "별패", "order": 4,
+    "condition": { "all": [ { "level_gte": 24 },
+                            { "safe_returns_gte": { "count": 3, "where": { "dungeon_group": "bell_mine", "dungeon_depth_gte": 3 } } } ] },
+    "grants_text": "T5 상점 품목, 연대기 칭호" }
+]

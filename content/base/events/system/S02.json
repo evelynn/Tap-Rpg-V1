@@ -1,0 +1,46 @@
+{
+  "id": "S02",
+  "name": "아이의 소식",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 6, "phase": "town_routine_family" },
+  "condition": { "all": [
+    { "flag": "life.household" },
+    { "age_lt": 46 },
+    { "mutation": "none" }
+  ] },
+  "check_override": 0.08,
+  "cooldown_min": 36,
+  "max_per_life": 3,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "11 S02, 12 §2.2. 첫 S02는 S01의 schedule_event(다음 귀환 확정, 예약 발화는 condition만 검사), 추가는 귀환마다 8%·간격 36분·부모 45세 이하. max_per_life 3이 자녀 후보 최대 수의 단일 출처(balance 주석). 변이 뒤에는 일어나지 않는다(09 §7.9). 선택지 = 첫째/둘째 이후 변형(requires로 하나만 열린다). 어린 시절 기록은 balance.inheritance.childhood + text journal.family.childhood. 도입 두 줄은 11에 없어 새로 썼다",
+  "intro": {
+    "lines": [ "아이의 소식이 들려왔다", "집에 기쁜 소식이 왔다" ],
+    "tag": "family"
+  },
+  "choices": [
+    {
+      "id": "first", "label": "첫째", "risk": "none",
+      "requires": { "lifetime_count_lt": { "event": "S02", "count": 1 } },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "create_child_candidate" } ],
+          "line": "{child:이/가} 태어났다",
+          "detail": "작은 울음소리가 여관까지 들렸다."
+        }
+      }
+    },
+    {
+      "id": "later", "label": "둘째 이후", "risk": "none",
+      "requires": { "not": { "lifetime_count_lt": { "event": "S02", "count": 1 } } },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "create_child_candidate" } ],
+          "line": "{child:이/가} 가족이 되었다",
+          "detail": "집이 조금 좁아졌다. 문 앞 신발이 하나 늘었다."
+        }
+      }
+    }
+  ]
+}

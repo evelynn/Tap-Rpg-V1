@@ -1,0 +1,65 @@
+{
+  "id": "S04",
+  "name": "생애의 끝",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 1, "phase": "life_end" },
+  "condition": { "life_end_kind": ["died"] },
+  "max_per_life": 1,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "11 S04, 09 §5. 발생(치명 활동 최후 판정 실패)은 엔진이 판정한다. 선택지 = 사망 장소별 길드 편지 변형(requires died_at로 하나만 열린다). 편지는 연대기에 원문 그대로(family_record), 사망 원인 기록(09 §5.4)은 결과 상세. {relic}은 사망 시 이전 유품 1개, 없으면 엔진이 '남은 배낭'으로 채운다. 서명은 11대로 하델(3대 이후 출장소장 교대와 맞지 않음). 편지 2·3은 확장용(D26)",
+  "intro": {
+    "lines": [ "{name}의 등불이 꺼졌다", "{name:은/는} {place}에서 돌아오지 않았다" ],
+    "tag": "death",
+    "animation": [
+      { "action": "collapse", "props": ["lantern"], "sec": 3 },
+      { "action": "collapse", "props": ["lantern_out"], "sec": 2 },
+      { "action": "collapse", "props": ["lantern_out"], "sec": 4 }
+    ]
+  },
+  "choices": [
+    {
+      "id": "letter_mine", "label": "종소리 폐광에서", "risk": "none",
+      "requires": { "died_at": { "dungeon_group": "bell_mine" } },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_family_flag", "key": "fam.death_{place}" },
+            { "type": "family_record", "kind": "chronicle", "key": "death_letter",
+              "text": "{family} 가문께.\n종소리 폐광 깊은 곳에서 {name}의 등불이 꺼졌습니다. 함께 내려간 이들이 배낭과 {relic:을/를} 수습해 올렸습니다.\n{name:은/는} 마지막 종이 울릴 때까지 앞을 보고 있었다고 합니다. 길드는 그 이름을 폐광 입구 명판에 새기겠습니다.\n— 도토리 여울 길드 출장소장 하델" }
+          ],
+          "detail": "{name} ({age}세 · Lv{level}) — {place}\n진입 위험 : {risk_line}\n누적 부상 : {injury_line}\n결정적 순간 : {final_check_line}"
+        }
+      }
+    },
+    {
+      "id": "letter_rift", "label": "길바뀜의 틈에서", "risk": "none",
+      "requires": { "died_at": { "ids": ["A4"] } },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_family_flag", "key": "fam.death_{place}" },
+            { "type": "family_record", "kind": "chronicle", "key": "death_letter",
+              "text": "{family} 가문께.\n길바뀜의 틈이 닫히기 전, 저편에서 {name}의 등불 빛이 한 번 보였다가 사라졌습니다. 길드는 틈 앞에서 {relic:을/를} 찾았습니다.\n그 길 끝에 무엇이 있었는지 우리는 알지 못합니다. 다만 {name:은/는} 스스로 그 길을 골랐습니다.\n— 도토리 여울 길드 출장소장 하델" }
+          ],
+          "detail": "{name} ({age}세 · Lv{level}) — {place}\n진입 위험 : {risk_line}\n누적 부상 : {injury_line}\n결정적 순간 : {final_check_line}"
+        }
+      }
+    },
+    {
+      "id": "letter_other", "label": "그 밖의 치명 활동", "risk": "none",
+      "requires": { "not": { "any": [ { "died_at": { "dungeon_group": "bell_mine" } }, { "died_at": { "ids": ["A4"] } } ] } },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_family_flag", "key": "fam.death_{place}" },
+            { "type": "family_record", "kind": "chronicle", "key": "death_letter",
+              "text": "{family} 가문께.\n{place}에서 돌아오지 못했다는 소식을 전합니다. 남은 물건 가운데 {relic:을/를} 길드가 보관하고 있습니다.\n{name:이/가} 걸어온 길은 가문의 수첩에 이미 적혀 있습니다. 그 길은 끊긴 것이 아니라, 다음 사람을 기다리고 있을 뿐입니다.\n— 도토리 여울 길드 출장소장 하델" }
+          ],
+          "detail": "{name} ({age}세 · Lv{level}) — {place}\n진입 위험 : {risk_line}\n누적 부상 : {injury_line}\n결정적 순간 : {final_check_line}"
+        }
+      }
+    }
+  ]
+}

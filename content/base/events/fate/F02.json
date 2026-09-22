@@ -1,0 +1,124 @@
+{
+  "id": "F02",
+  "name": "별잠 샘물",
+  "category": "fate",
+  "locations": ["A4"],
+  "triggers": ["adventure_event_scene"],
+  "condition": { "all": [
+    { "age_gte": 50 },
+    { "mutation": "none" },
+    { "lifetime_count_lt": { "event": "F02", "count": 1 } }
+  ] },
+  "weight": 5,
+  "luck_scaled": true,
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "appear_chance": 0.5,
+  "pity_after": 3,
+  "exclusive_group": "lifespan_offer",
+  "hold": "fate",
+  "policy_hooks": { "decline_choice": "leave" },
+  "context_vars": [
+    { "var": "relic_name", "selector": "offered_relic" },
+    { "var": "relic_note", "selector": "offered_relic" }
+  ],
+  "_note": "11 F02, 09 §6, 10 §4.3(50% × 기연 가중, 3회째 확정, F03과 1:1 = 같은 가중치 5). 가문 변형은 12 §7.6 반응 기간을 따라 reaction_active로 건다. dr_f02_drank의 '대가 설명 강조 표시'는 화면 규칙이라 적지 않았다. ask_yuan(12 §7.6 유안에게 묻는다)의 결과 문장은 11에 없어 선택지 이름에서 옮겼다(임시). 마신다 상세 둘째 문장은 유물이 없어 행운을 잃은 경우에도 그대로 나온다",
+  "hold_line": "별잠 샘 앞에서 결정을 기다린다",
+  "preview": {
+    "body": "길바뀜의 틈 안쪽, 별빛 문양이 새겨진 돌샘에서 물이 솟는다. 물에 비친 {name}의 얼굴이 조금 젊어 보인다. 샘가에는 다리를 다친 길잡이 유안이 앉아 있다. \"그 물, 한 사람 몫밖에 안 나와요. 나도 여기까지 오느라 다리를 버렸지만.\"",
+    "variants": [
+      { "when": { "reaction_active": "dr_f02_drank" }, "text": "샘가 돌에 {parent_call}의 이름이 희미하게 남아 있다. \"이 피는 이미 한 번 마셨다.\"" },
+      { "when": { "reaction_active": "dr_f02_gave_yuan" }, "text": "샘가 바위에 유안이 새겨 둔 길잡이 표식이 있다." },
+      { "when": { "not": { "has_item_where": { "slot": "relic", "grade_gte": "rare" } } }, "text": "알려진 대가: 행운 −2 (현재 {luck} → {luck_after})" }
+    ]
+  },
+  "intro": {
+    "lines": [ "별빛 새긴 샘에서 물이 솟았다", "샘가에 다친 길잡이가 있었다" ],
+    "detail": "샘 앞에 다친 길잡이가 앉아 있었다. {name:은/는} 당신의 결정을 기다린다.",
+    "tag": "important",
+    "animation": [ { "action": "discover", "props": ["star_spring"] } ],
+    "family_variants": [
+      { "when": { "reaction_active": "dr_f02_drank" }, "detail_append": "샘가 돌에 {parent_call}의 이름이 희미하게 남아 있다." },
+      { "when": { "reaction_active": "dr_f02_gave_yuan" }, "detail_append": "샘가 바위에 유안이 새겨 둔 길잡이 표식이 있다." }
+    ]
+  },
+  "choices": [
+    {
+      "id": "drink", "label": "샘물을 마신다", "risk": "none",
+      "preview": {
+        "benefit": "은퇴 나이가 10년 늦춰진다({retire_age}세 → {retire_age_plus10}세)",
+        "cost": "샘이 유물 하나를 요구한다: {relic_name:을/를} 샘에 바친다{relic_note}. 희귀 이상 유물이 없으면 이번 생애 동안 행운 −2(최저 0)",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "extend_lifespan", "years": 10 },
+            { "type": "if", "cond": { "has_item_where": { "slot": "relic", "grade_gte": "rare" } },
+              "then": [ { "type": "remove_item", "selector": "chosen_relic" } ],
+              "else": [ { "type": "life_stat_add", "stat": "luk", "value": -2, "floor": 0 } ] },
+            { "type": "set_family_flag", "key": "fam.f02_drank" },
+            { "type": "family_record", "kind": "chronicle", "key": "f02_drank", "text": "별잠 샘물을 마셨다" },
+            { "type": "animation", "action": "sit_eat", "props": ["star_spring"] },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "샘물을 마셨다. 은퇴가 10년 멀어졌다",
+          "detail": "목을 타고 내려간 물이 별빛처럼 차가웠다. {relic_name:은/는} 샘 바닥으로 천천히 가라앉았다."
+        }
+      }
+    },
+    {
+      "id": "give", "label": "유안에게 양보한다", "risk": "none",
+      "preview": { "benefit": "유안의 다리가 낫는다. 가문 기록 '샘을 양보한 이'", "cost": "생명 연장 기회를 잃는다", "reversible": false },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_family_flag", "key": "fam.f02_gave_yuan" },
+            { "type": "family_record", "kind": "chronicle", "key": "f02_gave_yuan", "text": "샘을 양보한 이" },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "유안에게 샘물을 건넸다",
+          "detail": "유안이 일어서서 절뚝임 없이 세 걸음을 걸었다. \"이 빚은 꼭 갚을게요. 당신 가문에라도.\""
+        }
+      }
+    },
+    {
+      "id": "bottle", "label": "병에 담는다", "risk": "none",
+      "preview": { "benefit": "R03 별잠 물병: 한 번 쓰는 물병. 중상 즉시 치유 또는 최후 판정 +5, 쓰고 나면 빈 병 기념품", "cost": "수명은 그대로. 유안은 다친 채 남는다", "reversible": false },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_item", "item_id": "R03", "to": "bag_or_pending" },
+            { "type": "set_family_flag", "key": "fam.f02_bottled" },
+            { "type": "family_record", "kind": "chronicle", "key": "f02_bottled", "text": "샘물 한 병을 담아 왔다" },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "샘물을 작은 병에 담았다",
+          "detail": "병 속에서 작은 별빛 하나가 떠다녔다. 유안은 고개를 끄덕였다. \"현명하네요.\""
+        }
+      }
+    },
+    {
+      "id": "leave", "label": "그대로 돌아선다", "risk": "none", "decline": true,
+      "preview": { "benefit": "—", "cost": "샘은 다음 길바뀜에 사라진다", "reversible": false },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "animation", "action": "walk" } ],
+          "line": "샘을 두고 돌아섰다",
+          "detail": "등 뒤에서 물소리가 오래 들렸다."
+        }
+      }
+    },
+    {
+      "id": "ask_yuan", "label": "유안에게 묻는다", "tags": ["info"], "risk": "none",
+      "requires": { "reaction_active": "dr_f02_gave_yuan" },
+      "preview": { "benefit": "유안이 샘의 대가를 모두 알려 준다", "cost": "없음. 묻고 난 뒤 다른 선택지를 다시 고른다", "reversible": true },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "reopen_choices", "exclude": ["ask_yuan"] } ],
+          "line": "유안에게 샘의 값을 물었다"
+        }
+      }
+    }
+  ]
+}

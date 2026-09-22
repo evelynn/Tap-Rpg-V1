@@ -7,6 +7,7 @@ import {
   checkDcRule,
   derivedChainFlags,
   enemySpecials,
+  enemyStats,
   extractTemplateVars,
   renderTemplate,
   templateVars,
@@ -181,7 +182,7 @@ export function runSemanticChecks(index: DefIndex, schemas: Record<ContentKind, 
     }
   }
 
-  // 특성 acquire type event(V15): 그 선택지 결과에 add_trait가 있어야 한다
+  // 특성 acquire type event(V15): 그 선택지 결과에 add_trait(변이 특성이면 mutate)가 있어야 한다
   for (const d of defs('trait')) {
     const t = d.value as Trait
     const acq = t.acquire
@@ -189,12 +190,13 @@ export function runSemanticChecks(index: DefIndex, schemas: Record<ContentKind, 
     const ev = get('event', acq.event_id)
     if (!ev) continue
     const ci = (ev.value as Event).choices.findIndex((c) => c.id === acq.choice)
-    const gives = ci >= 0 && facts.get(ev)!.effects.some((e) => e.path[0] === 'choices' && e.path[1] === ci && e.value.type === 'add_trait' && e.value.trait_id === t.id)
+    const gives = ci >= 0 && facts.get(ev)!.effects.some((e) =>
+      e.path[0] === 'choices' && e.path[1] === ci && (e.value.type === 'add_trait' || e.value.type === 'mutate') && e.value.trait_id === t.id)
     if (ci < 0) report('V15', d, ['acquire', 'choice'], `사건 ${ev.id}에 선택지 ${acq.choice}가 없다`)
-    else if (!gives) report('V15', d, ['acquire'], `사건 ${ev.id} 선택지 ${acq.choice}의 결과에 add_trait ${t.id}가 없다`)
+    else if (!gives) report('V15', d, ['acquire'], `사건 ${ev.id} 선택지 ${acq.choice}의 결과에 add_trait·mutate ${t.id}가 없다`)
   }
 
-  // 적 수치(V17): enemy_formula와 다르면 경고. 등록부 값이 기준이면 _note를 단다
+  // 적 수치(V17): enemy_formula와 다르면 경고. 등록부 값이 기준이면 _note를 단다. 식은 코어 enemyStats(런타임과 같은 구현)
   if (balance) {
     for (const d of defs('enemy')) {
       const e = d.value as Enemy & { _note?: string }
@@ -356,34 +358,4 @@ function groupBy<T>(items: T[], key: (x: T) => string): Map<string, T[]> {
 function hasChainStage(cond: unknown, chain: string, stage: number): boolean {
   const list = isObject(cond) && Array.isArray(cond.all) ? cond.all : [cond]
   return list.some((c) => isObject(c) && isObject(c.chain_stage) && c.chain_stage.chain === chain && c.chain_stage.stage === stage)
-}
-
-// 01 §5.1 기준식(balance.enemy_formula). 레벨 오프셋 0의 적 수치.
-// 반올림은 부록 A(Python round)와 같게 짝수 쪽으로, 올림·내림은 부동소수 잡음(10×1.3)을 없앤 값에 한다.
-// 이렇게 해야 01 §5.2 등록부 13종과 모두 맞는다.
-export function enemyStats(f: Balance['enemy_formula'], level: number, rank: Enemy['rank']) {
-  const clean = (x: number) => Math.round(x * 1e9) / 1e9
-  const apply = (mode: 'round' | 'ceil' | 'floor', x: number) => {
-    if (mode !== 'round') return Math[mode](clean(x))
-    const lo = Math.floor(x)
-    const frac = x - lo
-    return frac > 0.5 ? lo + 1 : frac < 0.5 ? lo : lo % 2 === 0 ? lo : lo + 1
-  }
-  const n = f.normal
-  const step = (p: { base: number; div: number }) => p.base + Math.floor(clean(level / p.div))
-  const hpRaw = n.hp.base + n.hp.per_level * level
-  const xp = apply(f.rounding.base, n.xp.base + n.xp.per_level * level)
-  const coins = apply(f.rounding.base, (n.coins.base + n.coins.per_level * level) * n.coins.growth ** level)
-  const base = { hp: apply(f.rounding.base, hpRaw), ac: step(n.ac), hit: step(n.hit), dmg_min: step(n.dmg_min), dmg_max: step(n.dmg_max), xp, coins }
-  if (rank === 'normal') return base
-  const m = f[rank]
-  return {
-    hp: apply(f.rounding.hp_mult, hpRaw * m.hp_mult),
-    ac: base.ac + m.ac_add,
-    hit: base.hit + m.hit_add,
-    dmg_min: apply(f.rounding.dmg_mult, base.dmg_min * m.dmg_mult),
-    dmg_max: apply(f.rounding.dmg_mult, base.dmg_max * m.dmg_mult),
-    xp: apply(f.rounding.xp_coins_mult, base.xp * m.xp_mult),
-    coins: apply(f.rounding.xp_coins_mult, base.coins * m.coins_mult),
-  }
 }

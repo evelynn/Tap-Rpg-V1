@@ -1,0 +1,54 @@
+{
+  "_comment": "01 §8.1(레벨 8), 07 §6.1·§6.3 발견 A2-1~A2-6·§6.4. A2-3 '폐광 입구 이동'은 입구를 거치는 D1·D2·D3·A4 모두(travel_sec가 입구까지)",
+  "id": "A2",
+  "name": "안개 산길",
+  "kind": "adventure_route",
+  "level_range": [8, 16],
+  "level_mid": 12,
+  "travel_sec": 50,
+  "unlock": { "level_gte": 8 },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "scenes": [4, 6],
+  "scene_weights": { "discovery": 25, "path": 20, "forage": 15, "encounter": 20, "event": 20 },
+  "encounters": [
+    { "enemy_id": "EN03", "weight": 60 },
+    { "enemy_id": "EN05", "weight": 40 }
+  ],
+  "pair_chance": 0.10,
+  "map_fragments": [
+    { "id": "A2-M1", "name": "돌탑 지도 조각" },
+    { "id": "A2-M2", "name": "절벽 지도 조각" }
+  ],
+  "discoveries": [
+    { "id": "A2-1", "name": "폐광 입구", "condition": true, "dc": { "grade": "normal" },
+      "effects": [ { "type": "unlock_location", "location_id": "D1" } ] },
+    { "id": "A2-2", "name": "안개 속 돌탑", "condition": true, "dc": { "grade": "normal" },
+      "map_fragment": "A2-M1" },
+    { "id": "A2-3", "name": "산양 길", "condition": true, "dc": { "grade": "hard" },
+      "modifiers": [
+        { "target": "travel_sec_add.A2", "op": "add", "value": -10 },
+        { "target": "travel_sec_add.D1", "op": "add", "value": -10 },
+        { "target": "travel_sec_add.D2", "op": "add", "value": -10 },
+        { "target": "travel_sec_add.D3", "op": "add", "value": -10 },
+        { "target": "travel_sec_add.A4", "op": "add", "value": -10 }
+      ] },
+    { "id": "A2-4", "name": "버려진 순찰 초소", "condition": true, "dc": { "grade": "normal" },
+      "modifiers": [
+        { "target": "camp_hp_mult", "op": "mul", "value": 1.10, "when": { "location": ["A2"] } },
+        { "target": "camp_raid_immunity", "op": "flag", "value": true, "when": { "location": ["A2"] } }
+      ] },
+    { "id": "A2-5", "name": "종소리 들리는 절벽", "condition": { "discovery_found": "A2-1" }, "dc": { "grade": "hard" },
+      "map_fragment": "A2-M2",
+      "event_weight_mult": { "L19": 2 } },
+    { "id": "A2-6", "name": "약초 비탈", "condition": true, "dc": { "grade": "easy" },
+      "modifiers": [ { "target": "forage_reward_mult", "op": "mul", "value": 1.30, "when": { "location": ["A2"] } } ] }
+  ],
+  "rescuers": "field",
+  "background_id": "bg_mist_trail",
+  "feature_words": ["흔들다리", "갈림길", "폐광 입구 전망대"]
+}

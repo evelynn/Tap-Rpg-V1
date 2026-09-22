@@ -1,0 +1,89 @@
+{
+  "id": "L11",
+  "name": "첫눈 오는 날",
+  "category": "life",
+  "triggers": ["after_encounter", "adventure_event_scene", "dungeon_event_room", "dungeon_after_room", "town_return", "camp"],
+  "seasons": ["winter"],
+  "condition": { "any": [ { "not": { "injury": "serious" } }, { "in_town": true } ] },
+  "weight": 10,
+  "check_override": 0.6,
+  "cooldown_per_season": true,
+  "max_per_life": 8,
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "'겨울 첫 판단 지점에 60%'는 '계절 첫 판단 지점' 조건이 없어 check_override 0.6(계절당 1회 쿨다운과 함께)로 근사한다. 부상 중 가능(마을에서)은 allow_serious_injury + 조건. 노년 한 줄 '첫눈이었다. 무릎이 먼저 알았다'는 조건부 도입 문장 필드가 없어 빠졌다. 노년·가족 눈사람 문장은 선택지 snowman_elder로 가른다(가족 = life.household). 소품 눈 효과·눈사람은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "올해의 첫눈이 내렸다", "하얀 눈송이가 내려앉았다" ],
+    "detail": "하얀 눈송이가 하나둘 {name}의 어깨에 내려앉는다. 올해의 첫눈이다. 발밑에 누군가 먼저 지나간 작은 발자국이 찍혀 있다.",
+    "tag": "rest",
+    "animation": [ { "action": "idle" } ]
+  },
+  "choices": [
+    {
+      "id": "snowman", "label": "눈사람을 만든다", "short": "눈사람을 만들었다",
+      "tags": ["rest"], "risk": "none",
+      "requires": { "not": { "all": [ { "life_stage": ["elder"] }, { "flag": "life.household" } ] } },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_time", "sec": 30 },
+            { "type": "add_fatigue", "value": -15 },
+            { "type": "family_record", "kind": "chronicle", "key": "first_snow", "text": "{generation}대 {name:이/가} {age}세에 첫눈을 맞았다." },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "작은 눈사람을 세웠다"
+        }
+      }
+    },
+    {
+      "id": "snowman_elder", "label": "눈사람을 만든다", "short": "눈사람을 만들었다",
+      "tags": ["rest"], "risk": "none",
+      "requires": { "all": [ { "life_stage": ["elder"] }, { "flag": "life.household" } ] },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_time", "sec": 30 },
+            { "type": "add_fatigue", "value": -15 },
+            { "type": "family_record", "kind": "chronicle", "key": "first_snow", "text": "{generation}대 {name:이/가} {age}세에 첫눈을 맞았다." },
+            { "type": "animation", "action": "interact" }
+          ],
+          "line": "손주 몫까지 두 개를 세웠다"
+        }
+      }
+    },
+    {
+      "id": "follow_tracks", "label": "작은 발자국을 따라간다", "short": "작은 발자국을 따라갔다",
+      "tags": ["new_path", "info"], "risk": "low",
+      "requires": { "not": { "life_stage": ["elder"] } },
+      "check": { "kind": "pathfinding", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "if", "cond": { "in_town": true },
+              "then": [ { "type": "add_coins", "units": 1 } ],
+              "else": [ { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 1.2 }, "scope": "sortie" } ] },
+            { "type": "animation", "action": "walk" }
+          ],
+          "line": "발자국 끝에 여우 굴이 있었다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_fatigue", "value": 5 },
+            { "type": "animation", "action": "walk" }
+          ],
+          "line": "발이 시려 돌아왔다"
+        }
+      }
+    },
+    {
+      "id": "carry_on", "label": "하던 일을 계속한다", "short": "하던 일을 계속했다",
+      "tags": ["bold"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "animation", "action": "walk" } ],
+          "line": "눈을 털고 걸음을 옮겼다"
+        }
+      }
+    }
+  ]
+}

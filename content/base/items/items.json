@@ -1,0 +1,365 @@
+[
+  {
+    "id": "W01", "name": "녹슨 검", "slot": "weapon", "tier": 1, "grade_mode": "fixed", "fixed_grade": "common", "unique": false,
+    "stat": "str", "base": { "damage": [1, 4] },
+    "cursed": false,
+    "sources": [ { "kind": "start" }, { "kind": "aid" } ],
+    "sellable": true, "sell_price_override": 5,
+    "visual_group": "V1",
+    "story_template": "{generation}대 {name:이/가} 길드에서 처음 받았다.",
+    "description": "이가 빠지고 녹이 슬었다. 그래도 첫 검이다."
+  },
+  {
+    "id": "W02", "name": "여울 대장간 한손검", "slot": "weapon", "tier": 1, "grade_mode": "rolled", "unique": false,
+    "stat": "str",
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "V1",
+    "story_template": "{name:이/가} 첫 벌이로 {npc}에게 샀다.",
+    "description": "여울 대장간의 표준 한손검."
+  },
+  {
+    "id": "W03", "name": "버들가지 단검", "slot": "weapon", "tier": 1, "grade_mode": "rolled", "unique": false,
+    "stat": "dex",
+    "modifiers": [ { "target": "first_strike_hit_add", "op": "add", "value": 1 } ],
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" }, { "kind": "drop", "id": "H1" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "V2",
+    "story_template": "여울가 풀숲에서 주운 단검이다.",
+    "description": "먼저 휘두를 때 손에 착 붙는다. 선제 공격 라운드 명중 +1"
+  },
+  {
+    "id": "W04", "name": "순찰대 장검", "slot": "weapon", "tier": 2, "grade_mode": "rolled", "unique": false,
+    "stat": "str",
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "V3",
+    "story_template": "{name:이/가} 동패를 받던 날 샀다.",
+    "description": "여울 순찰대가 쓰던 장검."
+  },
+  {
+    "id": "W05", "name": "광부의 곡괭이", "slot": "weapon", "tier": 2, "grade_mode": "rolled", "unique": false,
+    "stat": "str",
+    "modifiers": [
+      { "target": "mining_reward_mult", "op": "mul", "value": 1.5, "when": { "location_match": { "tags": ["mine"] } } },
+      { "target": "damage_vs.kobold", "op": "add", "value": 2 }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "drop", "id": "D1" } ],
+    "sellable": true,
+    "visual_group": "V5",
+    "story_template": "상층 코볼트 굴에서 끌어냈다.",
+    "description": "광맥을 잘 찾아 파고, 코볼트가 이 곡괭이를 싫어한다. 광맥 채취 보상 +50%, 코볼트 계열 대상 피해 +2",
+    "_note": "폐광 광맥은 16 §2.3 장소 태그 mine(W05)으로 가린다"
+  },
+  {
+    "id": "W06", "name": "늑대송곳니 창", "slot": "weapon", "tier": 3, "grade_mode": "rolled", "unique": false,
+    "stat": "best_of_str_dex",
+    "modifiers": [ { "target": "hit_vs.wolf", "op": "add", "value": 2 } ],
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" }, { "kind": "drop", "id": "H3" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "V4",
+    "story_template": "늑대 언덕 바위틈에 꽂혀 있었다.",
+    "description": "늑대의 움직임을 읽기 쉽다. 늑대 계열 대상 명중 +2"
+  },
+  {
+    "id": "W07", "name": "종이 달린 짧은 검", "slot": "weapon", "tier": 3, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
+    "stat": "dex",
+    "modifiers": [
+      { "target": "check.fear", "op": "add", "value": 2 },
+      { "target": "ambush_negate", "op": "charges_per_sortie", "value": 1 }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "event", "id": "C01-3", "detail": "rescue" } ],
+    "reacquire": { "pool": ["W06"], "grade": "rare" },
+    "sellable": false,
+    "visual_group": "V1",
+    "story_template": "{generation}대 {name:이/가} 무너진 갱도 다리를 다시 놓고 {npc}에게 받았다.",
+    "description": "작은 종이 먼저 운다. 공포 판정 +2. 출정당 1회, 매복 시도를 일반 조우로 바꾼다"
+  },
+  {
+    "id": "W08", "name": "은빛 광맥 장검", "slot": "weapon", "tier": 4, "grade_mode": "rolled", "unique": false,
+    "stat": "str",
+    "modifiers": [
+      { "target": "damage_vs.bat", "op": "add", "value": 3 },
+      { "target": "check.stat.soc", "op": "add", "value": -1, "when": { "mutation": "vampire" } },
+      { "target": "equip_eval_mult", "op": "mul", "value": 0.9, "when": { "mutation": "vampire" } }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" }, { "kind": "drop", "id": "D2" }, { "kind": "guild_special", "id": "guild" } ],
+    "shop": [
+      { "facility": "smithy", "guild_rank_req": "gold" },
+      { "facility": "guild", "guild_rank_req": "gold", "grades": ["rare"], "pick_group": "guild_t2" }
+    ],
+    "sellable": true,
+    "visual_group": "V3",
+    "story_template": "중층 은빛 광맥 옆에서 찾았다.",
+    "description": "은빛 광맥이 어둠 속 날갯짓을 비춘다. 박쥐 계열 대상 피해 +3"
+  },
+  {
+    "id": "W09", "name": "종탑 강철검", "slot": "weapon", "tier": 5, "grade_mode": "rolled", "unique": false,
+    "stat": "str",
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" } ],
+    "shop": [ { "facility": "smithy", "guild_rank_req": "star" } ],
+    "sellable": true,
+    "visual_group": "V3",
+    "story_template": "별패를 받은 해에 주문했다.",
+    "description": "종탑 대장간이 마지막으로 벼린 검."
+  },
+  {
+    "id": "W10", "name": "파수꾼의 종추", "slot": "weapon", "tier": 5, "grade_mode": "fixed", "fixed_grade": "legendary", "unique": true,
+    "stat": "str",
+    "modifiers": [
+      { "target": "enemy_hit_first_round_add", "op": "add", "value": -3 },
+      { "target": "fear_immunity", "op": "flag", "value": true }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "gate", "id": "EB03", "detail": "첫 격파" } ],
+    "reacquire": { "pool": ["W09", "A07"], "grade": "rare" },
+    "sellable": false,
+    "visual_group": "V6",
+    "story_template": "{name:이/가} 부서진 종을 멈추고 거두었다.",
+    "description": "종추가 울리면 적이 먼저 움츠린다. 관문 전투 첫 라운드 적 명중 −3, 공포 판정 자동 성공"
+  },
+  {
+    "id": "A01", "name": "누빈 천옷", "slot": "armor", "tier": 1, "grade_mode": "fixed", "fixed_grade": "common", "unique": false,
+    "base": { "ac": 0 },
+    "cursed": false,
+    "sources": [ { "kind": "start" }, { "kind": "aid" } ],
+    "sellable": true, "sell_price_override": 5,
+    "visual_group": "천옷 / 투구 없음",
+    "story_template": "떠나는 날 아침에 받았다.",
+    "description": "어머니가 누벼 준 천옷. 칼은 막지 못한다."
+  },
+  {
+    "id": "A02", "name": "여울 가죽조끼", "slot": "armor", "tier": 1, "grade_mode": "rolled", "unique": false,
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "가죽 / 투구 없음",
+    "story_template": "들쥐 굴 옆에서 주운 조끼다.",
+    "description": "여울 사람들이 즐겨 입는 가죽조끼.",
+    "_note": "첫 인물 보장 드롭(01 §9.5)은 balance.first_sortie.guaranteed_drop이 준다. drop 획득처로 적으면 H1 일반 드롭 후보가 되므로 적지 않는다"
+  },
+  {
+    "id": "A03", "name": "순찰대 가죽갑옷", "slot": "armor", "tier": 2, "grade_mode": "rolled", "unique": false,
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "가죽 / 가죽 모자",
+    "story_template": "동패를 받고 처음 산 갑옷이다.",
+    "description": "순찰대가 입던 두툼한 가죽갑옷."
+  },
+  {
+    "id": "A04", "name": "광부의 두꺼운 외투", "slot": "armor", "tier": 2, "grade_mode": "rolled", "unique": false,
+    "modifiers": [
+      { "target": "fatigue_gain_mult", "op": "mul", "value": 0.7, "when": { "location_match": { "tags": ["dusty"] } } }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "general_store" }, { "kind": "drop", "id": "D1" } ],
+    "shop": [ { "facility": "general_store" } ],
+    "sellable": true,
+    "visual_group": "천옷 / 광부 모자",
+    "story_template": "{npc}의 가게 구석에 걸려 있었다.",
+    "description": "먼지를 덜 마신다. 폐광(D1~D3, H4, H5) 피로 획득 −30%",
+    "_note": "폐광(D1~D3, H4, H5)은 16 §2.3 장소 태그 dusty(TI05·A04)로 가린다"
+  },
+  {
+    "id": "A05", "name": "박쥐가죽 망토옷", "slot": "armor", "tier": 3, "grade_mode": "rolled", "unique": false,
+    "modifiers": [
+      { "target": "check.skill.mobility", "op": "add", "value": 1 },
+      { "target": "check.stealth", "op": "add", "value": 1, "when": { "time_of_day": "night" } }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" }, { "kind": "drop", "id": "D2" } ],
+    "shop": [ { "facility": "smithy" } ],
+    "sellable": true,
+    "visual_group": "가죽 / 두건",
+    "story_template": "중층 박쥐 둥지 아래서 찾았다.",
+    "description": "발소리가 가볍고 어둠에 섞인다. 기동 판정 +1, 밤 출정 은밀 판정 +1"
+  },
+  {
+    "id": "A06", "name": "코볼트 판금 조각갑", "slot": "armor", "tier": 4, "grade_mode": "rolled", "unique": false,
+    "modifiers": [ { "target": "travel_time_mult", "op": "mul", "value": 1.1 } ],
+    "cursed": false,
+    "sources": [
+      { "kind": "shop", "id": "smithy" }, { "kind": "drop", "id": "D2" }, { "kind": "drop", "id": "D3" },
+      { "kind": "guild_special", "id": "guild" }
+    ],
+    "shop": [
+      { "facility": "smithy", "guild_rank_req": "gold" },
+      { "facility": "guild", "guild_rank_req": "gold", "grades": ["rare"], "pick_group": "guild_t2" }
+    ],
+    "sellable": true,
+    "visual_group": "금속 / 조각 투구",
+    "story_template": "코볼트 창고에서 끌어낸 갑옷이다.",
+    "description": "단단하지만 무겁다. 이동 시간 +10%"
+  },
+  {
+    "id": "A07", "name": "종지기의 청동 흉갑", "slot": "armor", "tier": 5, "grade_mode": "rolled", "unique": false,
+    "modifiers": [ { "target": "check.injury", "op": "add", "value": 2 } ],
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "smithy" }, { "kind": "drop", "id": "D3" } ],
+    "shop": [ { "facility": "smithy", "guild_rank_req": "star" } ],
+    "sellable": true,
+    "visual_group": "금속 / 종 모양 투구",
+    "story_template": "심층 종루 아래에 남아 있었다.",
+    "description": "종지기의 흉갑은 쓰러져도 숨을 지켜 준다. 부상 판정 +2"
+  },
+  {
+    "id": "J01", "name": "낡은 호각", "slot": "accessory", "tier": 1, "grade_mode": "fixed", "fixed_grade": "good", "unique": true,
+    "modifiers": [
+      { "target": "rescuer_override", "op": "set", "value": "whistle_family" },
+      { "target": "defeat_loss_mult", "op": "mul", "value": 0.4 },
+      { "target": "defeat_item_loss_chance", "op": "set", "value": 0.2 }
+    ],
+    "cursed": false,
+    "sources": [ { "kind": "event", "id": "C02-3" } ],
+    "reacquire": { "pool": ["J02"], "grade": "rare" },
+    "sellable": false,
+    "visual_group": "표시 안 함",
+    "story_template": "{npc:이/가} 고맙다며 목에 걸어 주었다.",
+    "description": "위험할 때 불면 누군가 온다. 일반 활동 패배 시 동전·재료 손실 50% → 20%, 이번 출정 획득 장비 손실은 20% 확률로만"
+  },
+  {
+    "id": "J02", "name": "들쥐 이빨 목걸이", "slot": "accessory", "tier": 1, "grade_mode": "rolled", "unique": false,
+    "grade_modifiers": {
+      "common": [ { "target": "stat.luk", "op": "add", "value": 1 } ],
+      "good": [ { "target": "stat.luk", "op": "add", "value": 1 } ],
+      "rare": [ { "target": "stat.luk", "op": "add", "value": 2 } ]
+    },
+    "cursed": false,
+    "sources": [ { "kind": "drop", "id": "H1" } ],
+    "sellable": true,
+    "visual_group": "표시 안 함",
+    "story_template": "들쥐 굴에서 반짝이던 것이다.",
+    "description": "가끔 운이 따른다. 행운 +1"
+  },
+  {
+    "id": "J03", "name": "매의 깃 장식", "slot": "accessory", "tier": 2, "grade_mode": "rolled", "unique": false,
+    "grade_modifiers": {
+      "common": [ { "target": "check.skill.search", "op": "add", "value": 1 } ],
+      "good": [ { "target": "check.skill.search", "op": "add", "value": 1 } ],
+      "rare": [ { "target": "check.skill.search", "op": "add", "value": 2 } ]
+    },
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "general_store" } ],
+    "shop": [ { "facility": "general_store" } ],
+    "sellable": true,
+    "visual_group": "깃 부품",
+    "story_template": "{npc:이/가} 좋은 깃이라며 권했다.",
+    "description": "바람의 방향이 보인다. 탐색 판정 +1"
+  },
+  {
+    "id": "J04", "name": "광부의 등불", "slot": "accessory", "tier": 3, "grade_mode": "rolled", "unique": false,
+    "modifiers": [ { "target": "dark_penalty_ignore", "op": "flag", "value": true } ],
+    "grade_modifiers": {
+      "common": [ { "target": "check.fear", "op": "add", "value": 1 } ],
+      "good": [ { "target": "check.fear", "op": "add", "value": 1 } ],
+      "rare": [ { "target": "check.fear", "op": "add", "value": 2 } ]
+    },
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "general_store" }, { "kind": "discovery", "id": "A3-1" } ],
+    "shop": [ { "facility": "general_store" } ],
+    "sellable": true,
+    "visual_group": "등불 부품",
+    "story_template": "광부 조합 회관 선반에 있었다.",
+    "description": "꺼지지 않는 작은 불. 폐광의 어둠 불리(EN07 어둠 방어 포함) 무시, 공포 판정 +1"
+  },
+  {
+    "id": "J05", "name": "속삭이는 종 조각", "slot": "accessory", "tier": 4, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
+    "modifiers": [
+      { "target": "check.skill.search", "op": "add", "value": 3 },
+      { "target": "check.trap_detect", "op": "add", "value": 2 },
+      { "target": "check.trap_evade", "op": "add", "value": 2 },
+      { "target": "check.trap_disarm", "op": "add", "value": 2 },
+      { "target": "check.stat.wil", "op": "add", "value": -2 }
+    ],
+    "cursed": true,
+    "sources": [ { "kind": "drop", "id": "D3", "room": "treasure", "grade_is": "rare", "chance": 0.5, "once_per_life": true } ],
+    "reacquire": { "reroll": true },
+    "sellable": true,
+    "visual_group": "표시 안 함",
+    "story_template": "심층 상자 속에서 혼자 울리고 있었다.",
+    "description": "종 조각이 숨은 길을 속삭인다. 밤마다 다른 것도 속삭인다. 탐색 판정 +3, 함정 감지·회피·해제 판정 +2 / 의지 판정 −2. 출정의 첫 판단 지점에서 공포 판정. 실패하면 피로 +10과 기록 '종 조각이 이름을 불렀다.'",
+    "_note": "08 §3.4 출정 첫 판단 지점의 공포 판정(실패 시 피로 +10)은 장비 필드로 적을 자리가 없다. 사건(조건 equipped J05) 또는 새 필드가 필요하다"
+  },
+  {
+    "id": "R01", "name": "귀환의 방울", "slot": "relic", "tier": 2, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
+    "modifiers": [ { "target": "escape_on_defeat", "op": "charges_per_sortie", "value": 1 } ],
+    "cursed": false,
+    "sources": [ { "kind": "guild_special", "id": "guild", "detail": "은패" } ],
+    "shop": [ { "facility": "guild", "guild_rank_req": "silver", "grades": ["rare"] } ],
+    "sellable": true,
+    "visual_group": "표시 안 함",
+    "story_template": "{npc:이/가} \"한 번은 살려 줄 거다\"라며 건넸다.",
+    "description": "위험한 순간 방울이 울리면 길이 열린다. 출정당 1회. 일반 활동 HP 0 → 동전·재료·장비 손실 없이 탈출, 부상 판정 +5. 치명 활동 HP 0 → 최후 판정 없이 중상 + 탈출. 방전 후 마을 도착 시 재충전",
+    "_note": "구매가 2,850은 단계·슬롯·희귀 배수 기준가와 같아 price_override를 두지 않는다. 탈출 때의 부상 판정 +5는 탈출 절차(엔진) 몫이다. '생애 1개'(08 §5.1·§14)는 shop 항목에 적을 필드가 없다. 고유 규칙은 가문에 있을 때만 진열에서 빼므로 판 뒤 다시 사는 것은 막지 못한다(미결: 생애 구매 한도 필드 또는 엔진 규칙)"
+  },
+  {
+    "id": "R02", "name": "길잡이 나침반", "slot": "relic", "tier": 2, "grade_mode": "rolled", "unique": false,
+    "grade_modifiers": {
+      "common": [
+        { "target": "discovery_chance_mult", "op": "mul", "value": 1.2 },
+        { "target": "travel_time_mult", "op": "mul", "value": 0.9 }
+      ],
+      "good": [
+        { "target": "discovery_chance_mult", "op": "mul", "value": 1.2 },
+        { "target": "travel_time_mult", "op": "mul", "value": 0.9 }
+      ],
+      "rare": [
+        { "target": "discovery_chance_mult", "op": "mul", "value": 1.3 },
+        { "target": "travel_time_mult", "op": "mul", "value": 0.85 }
+      ]
+    },
+    "cursed": false,
+    "sources": [ { "kind": "shop", "id": "general_store" } ],
+    "shop": [ { "facility": "general_store" } ],
+    "sellable": true,
+    "visual_group": "표시 안 함",
+    "story_template": "여행 수첩 사이에 끼워 두었다.",
+    "description": "바늘이 아직 가 보지 않은 길을 가리킨다. 모험 발견 장면 가중치 ×1.2, 이동 시간 −10%"
+  },
+  {
+    "id": "R03", "name": "별잠 물병", "slot": "relic", "tier": 4, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
+    "modifiers": [
+      { "target": "serious_heal", "op": "charges_total", "value": 1 },
+      { "target": "final_check_add", "op": "add", "value": 5 }
+    ],
+    "single_use": true, "keepsake_after_use": "빈 별잠 물병",
+    "cursed": false,
+    "sources": [ { "kind": "event", "id": "F02", "detail": "병에 담는다" } ],
+    "reacquire": { "pool": ["W08", "A06"], "grade": "rare" },
+    "sellable": false,
+    "visual_group": "표시 안 함",
+    "story_template": "별잠 샘에서 물을 병에 담아 돌아왔다.",
+    "description": "별잠 샘의 물 한 모금. 단 한 번 쓸 수 있다. 최후 판정에 +5, 또는 중상 즉시 치유(출정 계속 가능). 사용하면 빈 별잠 물병 기념품이 되어 효과가 사라진다. 쓰지 않은 채 유품으로 이어받으면 후계자가 그 한 번을 쓸 수 있고, 다시 채워지지 않는다",
+    "_note": "사용 순서(최후 판정 우선, 중상 즉시 치유는 치명 위험 허용이 꺼져 있을 때만)는 08 §3.5 엔진 규칙이다"
+  },
+  {
+    "id": "R04", "name": "성주의 은잔", "slot": "relic", "tier": 4, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
+    "modifiers": [
+      { "target": "night_damage_mult", "op": "mul", "value": 1.2 },
+      { "target": "day_fatigue_mult", "op": "mul", "value": 1.2, "when": { "mutation": "none" } }
+    ],
+    "cursed": true,
+    "sources": [ { "kind": "event", "id": "F03", "detail": "decline" } ],
+    "reacquire": { "pool": ["W08", "A06"], "grade": "rare" },
+    "sellable": false,
+    "visual_group": "표시 안 함",
+    "story_template": "성주는 떠나는 {name}의 손에 잔을 쥐여 주었다.",
+    "description": "잔에 달빛이 고인다. 밤 출정에서 인물이 주는 피해 +20%(올림) / 낮 출정 피로 획득 +20%. 흡혈귀(TM01)는 낮 출정 불리를 받지 않는다",
+    "_note": "09 §7.7: 흡혈귀 밤 피해 +10%와 더해 +30%(곱이 아니라 합). TM01의 damage_mult와 이 night_damage_mult를 합산하는 것은 엔진 규칙이다"
+  }
+]

@@ -1,0 +1,79 @@
+{
+  "id": "L17",
+  "name": "어둠 속 속삭임",
+  "category": "life",
+  "locations": ["D2", "D3"],
+  "triggers": ["dungeon_event_room"],
+  "life_stages": ["prime", "veteran", "elder"],
+  "condition": true,
+  "weight": 5,
+  "cooldown_min": 30,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "J05는 이 사건을 일으키지 않고 '종을 울려 대답한다' 노출 조건으로만 쓴다. 귀를 막는다의 보정(TA02·W07 +2, TI07 −2, J04 +1)은 각 정의의 check.fear가 주고, TA08 자동 성공은 TA08의 fear_immunity(폐광)가 준다. 보물 상자 1개는 open_chest(07 §5.3 상자 내용: 장비·동전·재료, 잠김·함정 판정 없음)다. 소품 어둠 효과는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "벽 너머에서 누가 이름을 불렀다", "어둠 속에서 속삭임이 들렸다" ],
+    "detail": "등불이 흔들리는 사이, 벽 너머에서 누군가 {name:을/를} 부른다. 이름을 아는 목소리다. 돌아보면 아무도 없다.",
+    "tag": "dungeon",
+    "animation": [ { "action": "idle", "props": ["lantern"] }, { "action": "walk" } ]
+  },
+  "choices": [
+    {
+      "id": "cover", "label": "귀를 막고 지나간다", "short": "귀를 막고 지나갔다",
+      "tags": ["safe"], "risk": "low",
+      "check": { "kind": "fear", "dc_offset": 0, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "journal", "tag": "trait", "line": "파수꾼의 종소리가 귓가에 남아 있었다", "when": { "has_trait": "TA08" } }
+          ],
+          "line": "속삭임을 등지고 걸었다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "set_trip_flag", "key": "trip.fear" },
+            { "type": "add_fatigue", "value": 10 }
+          ],
+          "line": "이름 부르는 소리가 따라왔다"
+        }
+      }
+    },
+    {
+      "id": "follow", "label": "소리를 따라간다", "short": "소리를 따라갔다",
+      "tags": ["new_path", "bold"], "risk": "medium",
+      "_note": "원문 부분 성공(동전 ×2단위, '빈 방에 동전 몇 닢뿐이었다')은 05 §6.1 길찾기가 부분 성공 불가라 옮기지 못했다(V11, DS-56). 부분 구간은 실패로 처리된다",
+      "check": { "kind": "pathfinding", "dc_offset": 2 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "open_chest" },
+            { "type": "add_xp", "units": 1.5 }
+          ],
+          "line": "소리 끝에 숨은 방이 있었다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "damage", "hp_ratio": 0.15 },
+            { "type": "set_trip_flag", "key": "trip.fear" }
+          ],
+          "line": "길을 잃고 한참을 헤맸다"
+        }
+      }
+    },
+    {
+      "id": "bell", "label": "종을 울려 대답한다", "short": "종을 울려 대답했다",
+      "tags": ["info"], "risk": "none",
+      "requires": { "any": [ { "equipped": "W07" }, { "equipped": "J05" }, { "has_trait": "TA08" } ] },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_xp", "units": 1 },
+            { "type": "family_record", "kind": "chronicle", "key": "bell_answer", "text": "{generation}대 {name:이/가} 폐광의 속삭임에 종소리로 대답했다." }
+          ],
+          "line": "종소리에 속삭임이 멎었다"
+        }
+      }
+    }
+  ]
+}

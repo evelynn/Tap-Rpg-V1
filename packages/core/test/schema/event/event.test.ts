@@ -128,6 +128,24 @@ describe('실패해야 하는 것', () => {
     assert.deepEqual(rulesOf(eventSchema, e), ['V7'])
   })
 
+  it('system 사건은 선택지가 여럿이어도 tags·short 면제(V7), risk none·low는 필요', () => {
+    const e = fixture('L01')
+    Object.assign(e, { category: 'system', triggers: ['system'], system: { order: 1, phase: 'life_end' } })
+    for (const c of e.choices) { delete c.tags; delete c.short }
+    assert.deepEqual(problems(eventSchema, e), [])
+    for (const c of e.choices) c.risk = 'medium'
+    assert.deepEqual(rulesOf(eventSchema, e), ['V7'])
+  })
+
+  it('신설 파라미터: remove_coins inn_costs(하나만), skill_use lowest_rank, received_relic true', () => {
+    assert.deepEqual(problems(effectList, [ { type: 'remove_coins', inn_costs: 1 }, { type: 'skill_use', skill: 'lowest_rank', count: 10 } ]), [])
+    assert.ok(problems(effectList, [ { type: 'remove_coins', inn_costs: 1, amount: 5 } ]).length > 0)
+    assert.ok(problems(effectList, [ { type: 'skill_use', skill: 'highest_rank', count: 1 } ]).length > 0)
+    assert.deepEqual(problems(condition, { received_relic: true }), [])
+    assert.ok(problems(condition, { received_relic: false }).length > 0)
+    assert.ok(problems(condition, { has_consumable: { carry_groups: [], count: 1 } }).length > 0)
+  })
+
   it('fate인데 decline 없음(V14)', () => {
     const e = fixture('F03')
     delete e.choices[1].decline

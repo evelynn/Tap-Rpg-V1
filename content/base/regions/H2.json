@@ -1,0 +1,25 @@
+{
+  "_comment": "01 §8.1(레벨 3 또는 A1 발견 = A1-2 unlock_location), 07 §3.1, 10 §3.1, 04 §4.2 F3·§4.3(지원 기간 적자 판단 없음)",
+  "id": "H2",
+  "name": "버드나무 둑",
+  "kind": "hunting_ground",
+  "level_range": [4, 9],
+  "level_mid": 6,
+  "travel_sec": 30,
+  "unlock": { "any": [ { "level_gte": 3 }, { "discovered": "H2" } ] },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": true,
+  "deficit_exempt": "during_aid",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "encounters": [
+    { "enemy_id": "EN02", "weight": 55 },
+    { "enemy_id": "EN03", "weight": 45 }
+  ],
+  "pair_chance": 0.15,
+  "event_check": 0.08,
+  "rescuers": "field",
+  "background_id": "bg_willow_bank",
+  "feature_words": ["둑길", "부서진 수문"]
+}

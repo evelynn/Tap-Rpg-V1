@@ -1,0 +1,25 @@
+{
+  "_comment": "01 §8.1, 07 §3.1 조우 표·2체, 10 §3.1 사건 검사, 04 §4.2~§4.4 순찰·대체·지원·적자, 02 §6.2 지형 요소",
+  "id": "H1",
+  "name": "여울가 풀밭",
+  "kind": "hunting_ground",
+  "level_range": [1, 4],
+  "level_mid": 2,
+  "travel_sec": 20,
+  "unlock": true,
+  "patrol_zone": true,
+  "fallback": true,
+  "aid_allowed": true,
+  "deficit_exempt": "always",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "encounters": [
+    { "enemy_id": "EN01", "weight": 70 },
+    { "enemy_id": "EN02", "weight": 30 }
+  ],
+  "pair_chance": 0.10,
+  "event_check": 0.10,
+  "rescuers": "field",
+  "background_id": "bg_river_meadow",
+  "feature_words": ["징검다리", "도토리 무더기"]
+}

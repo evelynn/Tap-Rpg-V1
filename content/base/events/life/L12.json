@@ -1,0 +1,81 @@
+{
+  "id": "L12",
+  "name": "잃어버린 동전 주머니",
+  "category": "life",
+  "locations": ["H1", "H2", "H3"],
+  "triggers": ["after_encounter"],
+  "condition": true,
+  "weight": 4,
+  "cooldown_min": 60,
+  "max_per_life": 2,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "도입의 '동전 ×4단위'는 {coins}(엔진이 4단위 값을 채움)로 적는다. TA06이 챙긴다에 절약 태그를 더하는 것은 선택지 keep_thrift로 가른다. 챙긴다의 '30% 확률로 다음 L05 도입 문장 변경'은 등록된 플래그와 조건부 도입 문장이 없어 빠졌다. 소품 수놓인 주머니는 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "풀숲에서 동전 주머니를 봤다", "묵직한 주머니를 주웠다" ],
+    "detail": "풀숲에 묵직한 동전 주머니가 떨어져 있다. 주머니에 서툰 바느질로 '바람'이라는 이름이 수놓여 있다. 안에는 동전 {coins}개가 들어 있다.",
+    "tag": "hunt",
+    "animation": [ { "action": "discover" }, { "action": "interact" } ]
+  },
+  "choices": [
+    {
+      "id": "hand_in", "label": "길드에 맡긴다", "short": "주머니를 길드에 맡겼다",
+      "tags": ["kindness", "safe"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "on_town_return", "effects": [ { "type": "add_coins", "units": 1 } ] },
+            { "type": "set_flag", "key": "life.honest_finder" }
+          ],
+          "line": "주머니를 길드에 맡겼다"
+        }
+      }
+    },
+    {
+      "id": "keep", "label": "챙긴다", "short": "주머니를 챙겼다",
+      "tags": ["reward"], "risk": "none",
+      "requires": { "not": { "has_trait": "TA06" } },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "add_coins", "units": 4 } ],
+          "line": "주머니를 배낭에 넣었다"
+        }
+      }
+    },
+    {
+      "id": "keep_thrift", "label": "챙긴다", "short": "주머니를 챙겼다",
+      "tags": ["reward", "thrift"], "risk": "none",
+      "requires": { "has_trait": "TA06" },
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "add_coins", "units": 4 } ],
+          "line": "주머니를 배낭에 넣었다"
+        }
+      }
+    },
+    {
+      "id": "find_owner", "label": "주인을 찾아 나선다", "short": "주인을 찾아 나섰다",
+      "tags": ["kindness", "info"], "risk": "low",
+      "check": { "kind": "bond", "dc_offset": 0, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "has_trait": "TA01" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_time", "sec": 40 },
+            { "type": "add_coins", "units": 2 },
+            { "type": "set_flag", "key": "life.honest_finder" }
+          ],
+          "line": "바람이네 아버지가 고개 숙였다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_time", "sec": 40 },
+            { "type": "on_town_return", "effects": [ { "type": "add_coins", "units": 1 } ] },
+            { "type": "set_flag", "key": "life.honest_finder" }
+          ],
+          "line": "주인을 못 찾아 길드에 맡겼다"
+        }
+      }
+    }
+  ]
+}

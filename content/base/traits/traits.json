@@ -1,0 +1,318 @@
+[
+  {
+    "id": "TI01", "name": "튼튼한 체질", "short_name": "튼튼함", "kind": "innate", "subkind": "constitution",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [
+      { "target": "hp_max_mult", "op": "add", "value": 0.1 },
+      { "target": "rest_recovery_mult", "op": "add", "value": 0.2 },
+      { "target": "breather_mult", "op": "add", "value": 0.2 },
+      { "target": "check.injury", "op": "add", "value": 2 }
+    ],
+    "ai_hooks": { "camp_extra": 1, "rest_preference": "camp" },
+    "name_adj": "튼튼한",
+    "lines": [
+      "{name:은/는} 모닥불 앞에서 금세 기운을 되찾았다.",
+      "튼튼한 몸 덕분에 긁힌 상처로 끝났다.",
+      "비에 젖고도 {name:은/는} 콧노래를 불렀다."
+    ],
+    "birth_weight": 14, "birth_stat_weights": ["str", "wil"],
+    "_note": "휴식 회복 +20%는 숨 고르기·야영·여관 모두(06 §3). TI08(숨 고르기 제외)과 더해 +35%이므로 add로 쓰고 숨 고르기는 breather_mult로 따로 적는다"
+  },
+  {
+    "id": "TI02", "name": "예민한 귀", "short_name": "예민한 귀", "kind": "innate", "subkind": "constitution",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [
+      { "target": "check.trap_detect", "op": "add", "value": 2 },
+      { "target": "check.ambush", "op": "add", "value": 2 },
+      { "target": "fatigue_gain_mult", "op": "mul", "value": 1.25, "when": { "location_match": { "tags": ["noisy"] } } },
+      { "target": "special.screech.fatigue", "op": "add", "value": 1 }
+    ],
+    "ai_hooks": { "location_score_add": [ { "when": { "location_match": { "tags": ["noisy"] } }, "value": -10 } ] },
+    "name_adj": "귀가 밝은",
+    "lines": [
+      "예민한 귀 덕분에 벽 너머 발소리를 먼저 들었다.",
+      "쇳소리에 귀가 먹먹해 자꾸 멈춰 섰다.",
+      "풀숲이 바스락거리기 전에 몸을 낮췄다."
+    ],
+    "birth_weight": 12, "birth_stat_weights": ["kno"],
+    "_note": "시끄러운 장소(D2)는 16 §2.3 장소 태그 noisy(TI02)로 가린다. 축제 태그 사건·L20 진행 중 피로 +25%는 사건 쪽에서 적는다. EN06 쇳소리 피로 +1(07 §4.1 'TI02 보유 시 +3')은 special.screech.fatigue"
+  },
+  {
+    "id": "TI03", "name": "길눈이 밝음", "short_name": "길눈", "kind": "innate", "subkind": "talent",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [
+      { "target": "travel_time_mult", "op": "mul", "value": 0.85 },
+      { "target": "check.pathfinding", "op": "add", "value": 1 },
+      { "target": "check.terrain", "op": "add", "value": 1 }
+    ],
+    "ai_hooks": { "prefer_shortcut": true },
+    "name_adj": "길눈 밝은",
+    "lines": [
+      "{name:은/는} 안개 속에서도 돌아가는 길을 알았다.",
+      "풀이 눌린 자국을 따라 길을 찾았다."
+    ],
+    "birth_weight": 14, "birth_stat_weights": ["dex"],
+    "_note": "06 기록 예의 [판정] 줄은 판정 기록 서식 예시라 특성 문장에서 뺐다"
+  },
+  {
+    "id": "TI04", "name": "손재주", "short_name": "손재주", "kind": "innate", "subkind": "talent",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [
+      { "target": "check.trap_disarm", "op": "add", "value": 2 },
+      { "target": "maintenance_mult", "op": "mul", "value": 0.7 }
+    ],
+    "ai_hooks": { "activity_weight_add": { "dungeon": 5 }, "attempt_disarm": true },
+    "name_adj": "손재주 좋은",
+    "lines": [
+      "{name:은/는} 머리핀 하나로 자물쇠를 열었다.",
+      "버려진 칼자루를 깎아 손에 맞게 고쳤다."
+    ],
+    "birth_weight": 12, "birth_stat_weights": ["dex", "kno"]
+  },
+  {
+    "id": "TI05", "name": "약한 폐", "short_name": "약한 폐", "kind": "innate", "subkind": "negative",
+    "inheritable": true, "inherit_class": "negative",
+    "modifiers": [
+      { "target": "fatigue_gain_mult", "op": "mul", "value": 1.3, "when": { "location_match": { "tags": ["dusty"] } } }
+    ],
+    "ai_hooks": {
+      "activity_weight_add": { "dungeon": -10 },
+      "location_score_add": [ { "when": { "location_match": { "tags": ["dusty"] } }, "value": -10 } ]
+    },
+    "name_adj": "숨이 약한",
+    "lines": [
+      "먼지 때문에 {name:은/는} 한참 기침을 했다.",
+      "두꺼운 외투 깃을 세우자 숨쉬기가 한결 편해졌다."
+    ],
+    "birth_weight": 8, "birth_stat_weights": ["kno"],
+    "_note": "폐광·먼지 장소(D1~D3, H4, H5)는 장소 태그 dusty(TI05·A04). 질식·독 의지 판정 −1과 먼지 태그 사건(L13)은 사건의 check.situational로 적는다(판정 종류가 따로 없다)"
+  },
+  {
+    "id": "TI06", "name": "호기심 많음", "short_name": "호기심", "kind": "innate", "subkind": "temperament",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [ { "target": "trap_encounter_add", "op": "add", "value": 0.1 } ],
+    "ai_hooks": {
+      "activity_weight_add": { "adventure": 10 },
+      "location_score_add": [ { "when": { "location_kind": ["adventure_route"] }, "value": 10 } ],
+      "choice_tag_bonus": { "new_path": 2, "info": 1 }
+    },
+    "reason_phrase": "호기심을 참지 못하고",
+    "name_adj": "호기심 많은",
+    "lines": [
+      "{name:은/는} 이끼 낀 문을 그냥 지나치지 못했다.",
+      "궁금한 건 못 참았다. 굴 안을 들여다봤다."
+    ],
+    "birth_weight": 14, "birth_stat_weights": ["kno", "luk"],
+    "_note": "장소 가산 +10의 대상은 06 §7 '미발견 발견 지점이 남은 장소'지만 이를 가리는 조건 단말이 없어 16 §2.7 예시대로 모험 경로 전체로 둔다. 함정 조우 +10%는 16 예시대로 trap_encounter_add 0.10이다. 06은 '상대'(D1 함정 방 15% → 16.5%)인데 target의 가산 단위가 정해지지 않아 절대 +10%p(→ 25%)로 읽힐 수 있다(미결: target 단위 또는 곱 target 등록). 06 기록 예 셋째 줄은 TI07 동시 보유 전용이라 뺐다"
+  },
+  {
+    "id": "TI07", "name": "겁이 많음", "short_name": "겁", "kind": "innate", "subkind": "temperament",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [
+      { "target": "check.fear", "op": "add", "value": -2 },
+      { "target": "check.ambush", "op": "add", "value": 1 }
+    ],
+    "ai_hooks": {
+      "retreat_hp_add": 0.1,
+      "activity_weight_add": { "dungeon": -5 },
+      "choice_tag_bonus": { "safe": 2, "bold": -2 }
+    },
+    "reason_phrase": "겁이 많아",
+    "name_adj": "겁 많은",
+    "lines": [
+      "겁이 많은 {name:은/는} 한 번 더 뒤를 돌아봤다.",
+      "조심성 덕분에 매복을 한 걸음 먼저 피했다."
+    ],
+    "birth_weight": 12, "birth_stat_weights": ["dex"]
+  },
+  {
+    "id": "TI08", "name": "대식가", "short_name": "대식가", "kind": "innate", "subkind": "constitution",
+    "inheritable": true, "inherit_class": "positive",
+    "modifiers": [
+      { "target": "rest_recovery_mult", "op": "add", "value": 0.15 },
+      { "target": "inn_cost_mult", "op": "mul", "value": 1.5 },
+      { "target": "food_cost_mult", "op": "mul", "value": 1.5 }
+    ],
+    "ai_hooks": { "rest_preference": "inn", "choice_tag_bonus": { "rest": 1 } },
+    "reason_phrase": "배가 고파서",
+    "name_adj": "먹성 좋은",
+    "lines": [
+      "{name:은/는} 빵 세 개를 먹고 나서야 잠들었다.",
+      "여관 주인이 {name}의 그릇을 두 번 채웠다."
+    ],
+    "birth_weight": 14, "birth_stat_weights": ["str", "soc"],
+    "_note": "야영 식량 목표 소지량 +1(06 §3)은 구매 목표를 바꾸는 훅이 없어 적지 못했다"
+  },
+  {
+    "id": "TA01", "name": "다리의 은인", "short_name": "다리의 은인", "kind": "acquired", "subkind": "story",
+    "acquired_class": "unique", "inheritable": false,
+    "acquire": { "type": "event", "event_id": "C01-3", "choice": "rescue" },
+    "modifiers": [ { "target": "price_mult", "op": "add", "value": -0.1 } ],
+    "ai_hooks": { "choice_tag_bonus": { "kindness": 1 } },
+    "lines": [
+      "대장간 보름이 값을 부르다 말고 고개를 저었다.",
+      "다리의 은인이라며 광부촌 아이들이 뒤를 따랐다."
+    ]
+  },
+  {
+    "id": "TA02", "name": "어둠을 견딘 자", "short_name": "어둠 견딤", "kind": "acquired", "subkind": "story",
+    "acquired_class": "cumulative", "inheritable": false,
+    "acquire": { "type": "counter", "counter": "safe_returns", "where": { "dungeon_group": "bell_mine", "dungeon_depth_gte": 2 }, "threshold": 10 },
+    "modifiers": [
+      { "target": "check.fear", "op": "add", "value": 2 },
+      { "target": "dark_penalty_ignore", "op": "flag", "value": true }
+    ],
+    "ai_hooks": { "activity_weight_add": { "dungeon": 5 } },
+    "lines": [
+      "등불이 흔들려도 걸음을 늦추지 않았다.",
+      "이 어둠은 처음이 아니다. 숨을 고르고 내려갔다."
+    ]
+  },
+  {
+    "id": "TA03", "name": "오래된 상처", "short_name": "옛 상처", "kind": "acquired", "subkind": "negative",
+    "acquired_class": "negative", "inheritable": false,
+    "acquire": { "type": "counter", "counter": "serious_injuries", "threshold": 3 },
+    "modifiers": [
+      { "target": "hp_max_mult", "op": "add", "value": -0.05 },
+      { "target": "fatigue_gain_mult", "op": "mul", "value": 1.2, "when": { "season": ["winter"] } },
+      { "target": "check.injury", "op": "add", "value": 1 },
+      { "target": "retreat_hp_add", "op": "add", "value": 0.05, "when": { "season": ["winter"] } }
+    ],
+    "lines": [
+      "오래된 상처가 쑤셔 일찍 걸음을 돌렸다.",
+      "눈이 오면 어깨가 먼저 안다."
+    ],
+    "_note": "겨울 출정 퇴각 기준 +5%p는 DS-29 권장대로 훅 winter_retreat_hp_add 대신 수정자로 적었다"
+  },
+  {
+    "id": "TA04", "name": "여울의 단골", "short_name": "단골", "kind": "acquired", "subkind": "story",
+    "acquired_class": "cumulative", "inheritable": false,
+    "acquire": { "type": "counter", "counter": "inn_rests", "threshold": 40 },
+    "modifiers": [ { "target": "inn_cost_mult", "op": "mul", "value": 0.7 } ],
+    "ai_hooks": { "event_weight_mult": { "L05": 1.5 }, "rest_preference": "inn" },
+    "lines": [
+      "도담이 {name}의 자리를 창가에 비워 두었다.",
+      "늘 쓰던 방, 늘 먹던 수프. 푹 잤다."
+    ]
+  },
+  {
+    "id": "TA05", "name": "백전의 감각", "short_name": "백전", "kind": "acquired", "subkind": "story",
+    "acquired_class": "cumulative", "inheritable": false,
+    "acquire": { "type": "counter", "counter": "wins", "threshold": 150 },
+    "modifiers": [ { "target": "hit", "op": "add", "value": 1 } ],
+    "lines": [
+      "몸이 먼저 알았다. 칼끝이 빈틈을 찾았다.",
+      "싸움의 박자가 손에 익었다."
+    ]
+  },
+  {
+    "id": "TA06", "name": "알뜰한 살림꾼", "short_name": "살림꾼", "kind": "acquired", "subkind": "story",
+    "acquired_class": "cumulative", "inheritable": false,
+    "acquire": { "type": "condition", "condition": { "all": [
+      { "num": { "key": "counter.guild_aids", "op": ">=", "value": 1 } },
+      { "guild_aid_active": false },
+      { "coins_gte": 1000 }
+    ] } },
+    "modifiers": [
+      { "target": "reserve_add", "op": "add", "value": 0.1 },
+      { "target": "sell_mult", "op": "add", "value": 0.1 }
+    ],
+    "ai_hooks": { "choice_tag_bonus": { "thrift": 2 } },
+    "reason_phrase": "한 푼이 아까워",
+    "lines": [
+      "빈손이던 시절을 잊지 않았다. 동전을 두 번 셌다.",
+      "{name:은/는} 헌 장비를 제값에 팔아 치웠다."
+    ],
+    "_note": "예약금 최대 70%(06 §4)는 수정자로 적을 자리가 없어 엔진 규칙으로 둔다. 획득은 08 §11 '지원 종료 뒤 1,000동전'"
+  },
+  {
+    "id": "TA07", "name": "겁을 이긴 자", "short_name": "용기", "kind": "acquired", "subkind": "story",
+    "acquired_class": "cumulative", "inheritable": false,
+    "acquire": { "type": "condition", "condition": { "all": [
+      { "has_trait": "TI07" },
+      { "num": { "key": "counter.fear_successes", "op": ">=", "value": 5 } }
+    ] } },
+    "replaces": "TI07", "exclusive_with": ["TI07"],
+    "modifiers": [ { "target": "check.fear", "op": "add", "value": 1 } ],
+    "ai_hooks": { "choice_tag_bonus": { "bold": 1 } },
+    "lines": [
+      "다섯 번째 어둠 앞에서 떨지 않았다.",
+      "겁 많던 아이는 오늘 처음으로 앞장섰다."
+    ]
+  },
+  {
+    "id": "TA08", "name": "종지기의 인정", "short_name": "종지기", "kind": "acquired", "subkind": "story",
+    "acquired_class": "unique", "inheritable": false,
+    "acquire": { "type": "condition", "condition": { "defeated": "EB03" } },
+    "modifiers": [
+      { "target": "stat.wil", "op": "add", "value": 1 },
+      { "target": "fear_immunity", "op": "flag", "value": true, "when": { "location_match": { "tags": ["mine"] } } }
+    ],
+    "ai_hooks": { "activity_weight_add": { "dungeon": 5 } },
+    "lines": [
+      "마지막 종이 울리고 파수꾼이 고개를 숙였다.",
+      "종소리가 들리면 오히려 마음이 가라앉았다."
+    ],
+    "_note": "의지 +1의 '자연 상한 8 무시 1회'(06 §4)는 수정자로 적을 자리가 없어 엔진 규칙으로 둔다. 폐광(D1~D3, H4, H5)은 장소 태그 mine"
+  },
+  {
+    "id": "TM01", "name": "달의 갈증", "short_name": "달의 갈증", "kind": "mutation", "subkind": "story",
+    "inheritable": false,
+    "acquire": { "type": "event", "event_id": "F03", "choice": "accept" },
+    "modifiers": [],
+    "lines": [
+      "{name:은/는} 잔을 비웠다. 달빛이 달게 느껴졌다.",
+      "해가 뜨자 {name:은/는} 망토 깃을 올렸다."
+    ],
+    "mutation": {
+      "stat_add": { "str": 1, "dex": 1, "wil": 1, "soc": -1 }, "stat_floor": 1,
+      "natural_cap_add": { "str": 1, "dex": 1 },
+      "no_aging_loss": true,
+      "blocks_lifespan_extension": true,
+      "time_ratio": { "day": 0.2, "night": 0.8 },
+      "time_modifiers": {
+        "day": [
+          { "target": "check.all", "op": "add", "value": -2 },
+          { "target": "fatigue_gain_mult", "op": "mul", "value": 1.5 },
+          { "target": "recovery_coef", "op": "set", "value": 0.7 }
+        ],
+        "night": [
+          { "target": "hit", "op": "add", "value": 1 },
+          { "target": "damage_mult", "op": "mul", "value": 1.1 },
+          { "target": "breather_mult", "op": "mul", "value": 2 },
+          { "target": "recovery_coef", "op": "set", "value": 1.0 }
+        ]
+      },
+      "modifiers": [
+        { "target": "recovery_coef", "op": "set", "value": 0.9, "when": { "in_town": true } },
+        { "target": "shop_surcharge", "op": "add", "value": 0.2,
+          "when": { "all": [ { "in_town": true }, { "last_trip_time": "day" }, { "not": { "flag": "life.f03_clue" } } ] } }
+      ],
+      "thirst": {
+        "per_min": 2, "day_sortie": 5, "night_win": -3, "elite_boss": -15,
+        "auto_drink": { "sortie_gte": 60, "town_gte": 40 },
+        "stages": [
+          { "id": "calm", "from": 0 },
+          { "id": "thirsty", "from": 40,
+            "modifiers": [ { "target": "check.stat.soc", "op": "add", "value": -1 } ],
+            "line": "목이 말랐다. 달이 뜨기를 기다렸다." },
+          { "id": "starving", "from": 70,
+            "modifiers": [ { "target": "check.all", "op": "add", "value": -1 } ], "night_ratio": 1.0,
+            "line": "{name:은/는} 사람들 곁에 오래 머물지 않았다." },
+          { "id": "brink", "from": 90,
+            "modifiers": [ { "target": "check.all", "op": "add", "value": -1 } ], "night_ratio": 1.0,
+            "line": "갈증이 한계에 가까워졌다.",
+            "_note": "09 §7.5 '굶주림 효과 + 중요 표식'. 은둔 선택 제시는 엔진" },
+          { "id": "limit", "from": 100,
+            "line": "{name:은/는} 더는 견딜 수 없었다.",
+            "_note": "귀환 시작과 S08 긴 잠은 엔진. 09에 이 단계의 판정 효과가 적혀 있지 않다" }
+        ]
+      },
+      "blood_rest": { "min": 6, "thirst_add": 20, "cures": "serious" },
+      "cellar_rest_sec": 120,
+      "blocked_triggers": [ { "trigger": "camp", "when": { "time_of_day": "day" } } ],
+      "sleep": { "add_years": 30, "cap": 118 }
+    },
+    "_note": "09 §7.3 '밤 출정 시야 탐색 불리 없음'은 수정자 target이 없어 적지 못했다. 갈증 단계 id(calm·thirsty·starving·brink·limit)는 이 파일이 정한 이름이다"
+  }
+]

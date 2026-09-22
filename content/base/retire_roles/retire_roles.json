@@ -1,0 +1,52 @@
+[
+  {
+    "id": "inn", "name": "길드 앞 작은 여관 주인", "base_points": 0,
+    "score": [
+      { "when": { "skill_rank_gte": { "skill": "negotiation", "rank": 3 } }, "points": 1 },
+      { "when": { "has_trait": "TA04" }, "points": 2 },
+      { "when": { "has_trait": "TI08" }, "points": 1 },
+      { "when": { "num": { "key": "counter.inn_rests", "op": ">=", "value": 60 } }, "points": 1 }
+    ],
+    "tie_winner": false,
+    "heir_modifiers": [ { "target": "inn_cost_mult", "op": "mul", "value": 0.5 } ],
+    "heir_events": [],
+    "letter_gift": [],
+    "until_heir_age": 30,
+    "family_flag": "fam.retired_inn"
+  },
+  {
+    "id": "instructor", "name": "길드 교관", "base_points": 0,
+    "score": [
+      { "when": { "skill_rank_gte": { "skill": "melee", "rank": 4 } }, "points": 1 },
+      { "when": { "has_trait": "TA05" }, "points": 2 },
+      { "when": { "specialization": ["guardian"] }, "points": 1 },
+      { "when": { "defeated": "EB02" }, "points": 1 }
+    ],
+    "tie_winner": false,
+    "heir_modifiers": [],
+    "heir_events": ["S07"],
+    "letter_gift": [],
+    "until_heir_age": 30,
+    "family_flag": "fam.retired_instructor",
+    "_note": "교육 사건 2회(각 회 후계자가 고른 숙련 누적 사용 +20, 한 숙련에 한 번, 09 §4.1)는 11 S07의 `교육(교관 역할)` 변형이다. 별도 사건 ID가 정해지면 heir_events를 바꾼다"
+  },
+  {
+    "id": "letters", "name": "편지를 보내는 가족", "base_points": 1,
+    "score": [
+      { "when": { "flag": "life.household" }, "points": 1 },
+      { "when": { "age_gte": 60 }, "points": 1 }
+    ],
+    "tie_winner": true,
+    "heir_modifiers": [],
+    "heir_events": [],
+    "letter_gift": [
+      { "type": "chance", "p": 0.5,
+        "then": [ { "type": "add_consumable", "consumable_id": "CP06", "count": 2 } ],
+        "else": [ { "type": "add_consumable", "consumable_id": "CP01", "count": 1 } ] }
+    ],
+    "until_heir_age": 30,
+    "family_flag": "fam.retired_letters",
+    "fallback_name": "길드에 이름을 남긴 선배",
+    "_note": "선물은 09 §4.1 '야영 식량 2개 또는 회복약 T1 1개'. 둘 중 고르는 규칙이 없어 반반(p 0.5)으로 두었다. fallback_name은 역할 점수가 모두 1 이하이고 가정이 없을 때의 서술(효과 같음)"
+  }
+]

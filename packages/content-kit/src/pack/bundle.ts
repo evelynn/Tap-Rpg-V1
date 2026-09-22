@@ -1,11 +1,11 @@
 // 게임·시뮬레이터용 번들(CONTENT_SCHEMA §2.4). 같은 입력이면 같은 바이트가 나온다.
 import { createHash } from 'node:crypto'
-import { CONTENT_KIND_NAMES, type ContentKind } from '../core'
+import { CONTENT_BUNDLE_FORMAT, CONTENT_KIND_NAMES, type ContentKind } from '../core'
 import type { DefIndex } from './index-defs'
 import type { PackManifest } from './manifest'
 
-// 번들 모양을 호환되지 않게 바꿀 때만 올린다
-export const BUNDLE_FORMAT = 1
+// 코어가 읽는 번들 형식 번호를 그대로 쓴다(단일 출처는 코어 content/index.ts)
+export const BUNDLE_FORMAT = CONTENT_BUNDLE_FORMAT
 
 export interface ContentBundle {
   format: number

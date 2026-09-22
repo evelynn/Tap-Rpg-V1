@@ -1,0 +1,96 @@
+{
+  "id": "L15",
+  "name": "코볼트의 거래 제안",
+  "category": "life",
+  "locations": ["D1", "D2"],
+  "triggers": ["dungeon_event_room"],
+  "life_stages": ["prime", "veteran", "elder"],
+  "condition": true,
+  "weight": 5,
+  "cooldown_min": 35,
+  "max_per_life": 3,
+  "allow_serious_injury": false,
+  "blocked_during_aid": true,
+  "hold": "none",
+  "_note": "광석 동전은 동전 단위로 준다. 비용은 야영 식량 1개(TI08은 2개), 모자라면 동전 ×0.5단위다(has_consumable). 가문 기록(식량과 바꾼다 성공 가문 누적 3회 → 연대기 '코볼트와 빵을 나눈 가문')은 가문 누적 횟수를 셀 플래그·카운터가 없어 옮기지 못했다. 소품 광석은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "코볼트가 반짝이는 돌을 내밀었다", "창을 내려놓은 코볼트를 만났다" ],
+    "detail": "투구를 쓴 코볼트 하나가 창을 내려놓고 반짝이는 돌을 내민다. 킁킁거리며 배낭 속 빵 냄새 쪽으로 코를 돌린다.",
+    "tag": "dungeon"
+  },
+  "choices": [
+    {
+      "id": "trade", "label": "식량과 바꾼다", "short": "식량과 광석을 바꿨다",
+      "tags": ["kindness", "reward"], "risk": "low",
+      "check": { "kind": "persuade", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "if", "cond": { "has_trait": "TI08" },
+              "then": [ { "type": "if", "cond": { "has_consumable": { "carry_groups": ["ration"], "count": 2 } },
+                          "then": [ { "type": "remove_consumable", "carry_groups": ["ration"], "count": 2 },
+                                    { "type": "journal", "tag": "trait", "line": "빵을 내주는 손이 조금 떨렸다" } ],
+                          "else": [ { "type": "remove_coins", "units": 0.5 } ] } ],
+              "else": [ { "type": "if", "cond": { "has_consumable": { "carry_groups": ["ration"], "count": 1 } },
+                          "then": [ { "type": "remove_consumable", "carry_groups": ["ration"], "count": 1 } ],
+                          "else": [ { "type": "remove_coins", "units": 0.5 } ] } ] },
+            { "type": "add_coins", "units": 3 },
+            { "type": "animation", "action": "interact", "props": ["bread"] }
+          ],
+          "line": "빵 한 덩이로 광석을 바꿨다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "if", "cond": { "has_trait": "TI08" },
+              "then": [ { "type": "if", "cond": { "has_consumable": { "carry_groups": ["ration"], "count": 2 } },
+                          "then": [ { "type": "remove_consumable", "carry_groups": ["ration"], "count": 2 },
+                                    { "type": "journal", "tag": "trait", "line": "빵을 내주는 손이 조금 떨렸다" } ],
+                          "else": [ { "type": "remove_coins", "units": 0.5 } ] } ],
+              "else": [ { "type": "if", "cond": { "has_consumable": { "carry_groups": ["ration"], "count": 1 } },
+                          "then": [ { "type": "remove_consumable", "carry_groups": ["ration"], "count": 1 } ],
+                          "else": [ { "type": "remove_coins", "units": 0.5 } ] } ] },
+            { "type": "add_coins", "units": 2 },
+            { "type": "animation", "action": "interact", "props": ["bread"] }
+          ],
+          "line": "코볼트가 작은 돌만 내줬다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "if", "cond": { "has_trait": "TI08" },
+              "then": [ { "type": "if", "cond": { "has_consumable": { "carry_groups": ["ration"], "count": 2 } },
+                          "then": [ { "type": "remove_consumable", "carry_groups": ["ration"], "count": 2 },
+                                    { "type": "journal", "tag": "trait", "line": "빵을 내주는 손이 조금 떨렸다" } ],
+                          "else": [ { "type": "remove_coins", "units": 0.5 } ] } ],
+              "else": [ { "type": "if", "cond": { "has_consumable": { "carry_groups": ["ration"], "count": 1 } },
+                          "then": [ { "type": "remove_consumable", "carry_groups": ["ration"], "count": 1 } ],
+                          "else": [ { "type": "remove_coins", "units": 0.5 } ] } ] },
+            { "type": "animation", "action": "interact", "props": ["bread"] }
+          ],
+          "line": "코볼트가 빵만 물고 달아났다"
+        }
+      }
+    },
+    {
+      "id": "pass", "label": "못 본 척 지나간다", "short": "못 본 척 지나갔다",
+      "tags": ["safe"], "risk": "none",
+      "outcomes": {
+        "always": { "effects": [], "line": "코볼트가 고개를 갸웃했다" }
+      }
+    },
+    {
+      "id": "fight", "label": "싸워서 빼앗는다", "short": "싸워서 돌을 빼앗았다",
+      "tags": ["bold", "reward"], "risk": "medium",
+      "combat": { "enemies": [ { "by_location": { "D1": "EN08", "D2": "EN09" } } ], "count": 1, "first_strike": "char" },
+      "outcomes": {
+        "win": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "set_trip_flag", "key": "trip.kobold_grudge" }
+          ],
+          "line": "돌을 빼앗았다. 뒤가 서늘했다"
+        },
+        "defeat": { "effects": [], "line": "코볼트 창에 밀려 물러났다" }
+      }
+    }
+  ]
+}

@@ -1,0 +1,67 @@
+{
+  "id": "S01",
+  "name": "가정을 꾸리다",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 5, "phase": "town_routine_family" },
+  "condition": { "all": [
+    { "age_gte": 28 }, { "age_lt": 35 },
+    { "policy": { "key": "family_formation", "value": true } },
+    { "mutation": "none" },
+    { "not": { "flag": "life.household" } }
+  ] },
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "11 S01, 12 §2.1(28~34세 첫 귀환, 중상이면 다음 귀환, 가정 형성 방침, 변이 전, 생애 1회). 선택지 = 서술 형태 변형이며 id는 balance.inheritance.family_forms 키다. 형태를 가리는 조건이 없어 엔진이 굴린 형태의 선택지를 적용한다. 동반자 생성(12 §2.1)은 create_partner다. TI08 문장은 결과 상세 끝에 붙일 자리가 없어 도입 상세 변형으로 둔다. 작은 집 소품은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "가정을 꾸렸다", "{partner:과/와} 가정을 꾸렸다" ],
+    "tag": "family",
+    "animation": [ { "action": "cheer", "props": ["lantern"] } ],
+    "family_variants": [ { "when": { "has_trait": "TI08" }, "detail_append": "함께 차린 저녁 식탁이 넘치도록 푸짐했다." } ]
+  },
+  "choices": [
+    {
+      "id": "spouse", "label": "배우자", "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "create_partner" },
+            { "type": "set_flag", "key": "life.household" },
+            { "type": "schedule_event", "event_id": "S02", "at": "next_town_return" }
+          ],
+          "line": "{partner:과/와} 다리 위에서 약속했다",
+          "detail": "여울 다리 위에서 {partner:과/와} 약속을 나눴다. 여울가 작은 집에 등불이 하나 더 걸렸다. {partner:은/는} 도토리 여울에서 {job} 일을 한다."
+        }
+      }
+    },
+    {
+      "id": "partner", "label": "동반자", "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "create_partner" },
+            { "type": "set_flag", "key": "life.household" },
+            { "type": "schedule_event", "event_id": "S02", "at": "next_town_return" }
+          ],
+          "line": "{partner:과/와} 같은 길을 걷기로 했다",
+          "detail": "{partner:이/가} 말했다. \"이제 같은 길로 걷자.\" 약속 대신 오래 함께 걷기로 했다. {partner:은/는} 도토리 여울에서 {job} 일을 한다."
+        }
+      }
+    },
+    {
+      "id": "co_parenting", "label": "공동 양육 가족", "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "create_partner" },
+            { "type": "set_flag", "key": "life.household" },
+            { "type": "schedule_event", "event_id": "S02", "at": "next_town_return" }
+          ],
+          "line": "여울가 공동 집에 짐을 풀었다",
+          "detail": "{partner}의 집, 길드 동료 몇과 한 지붕 아래 아이들을 함께 키우기로 했다. 아이들 웃음소리가 컸다. {partner:은/는} 도토리 여울에서 {job} 일을 한다."
+        }
+      }
+    }
+  ]
+}

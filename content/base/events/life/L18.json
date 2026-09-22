@@ -1,0 +1,67 @@
+{
+  "id": "L18",
+  "name": "옛 광부촌의 빈 집",
+  "category": "life",
+  "locations": ["A3"],
+  "triggers": ["adventure_event_scene"],
+  "life_stages": ["prime", "veteran", "elder"],
+  "condition": true,
+  "weight": 6,
+  "cooldown_min": 30,
+  "max_per_life": 3,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "유적 해석은 종류 기준이 지역 +4라 원문 '지역+0'(A3 18)을 dc_offset −4로 적는다. 일지를 읽는다 성공의 'A3 미발견 요소 1개 확정 발견'은 reveal_discovery다. 'C01 진행 중이면 다음 행동 결정 1회에 임무 보너스를 한 번 더'는 임무 보너스 수정자 target이 없어 옮기지 못했다. 가문 변형(fam.c01_rescue)은 후손 반응 기간(reaction_active dr_c01_rescue)으로 거르고, 도입을 바꾸는 대신 상세 끝에 붙인다(family_variants는 덧붙이기만 한다). 원문의 '일지를 읽는다 자동 성공'은 가문 플래그가 판정 보정을 주지 않는다는 12 §7.6 원칙 1(D29)과 맞지 않아 넣지 않았다(IMPL_DECISIONS I31)",
+  "intro": {
+    "lines": [ "문이 반쯤 열린 빈 집을 찾았다", "먼지 쌓인 일지가 펼쳐져 있었다" ],
+    "detail": "옛 광부촌 끝, 문이 반쯤 열린 빈 집이 있다. 식탁 위에 먼지 쌓인 일지가 펼쳐져 있고, 벽에는 녹슨 등불이 걸려 있다.",
+    "tag": "adventure",
+    "animation": [ { "action": "interact", "props": ["lantern"] }, { "action": "sit_eat", "props": ["book"] } ],
+    "family_variants": [
+      { "when": { "reaction_active": "dr_c01_rescue" }, "detail_append": "세나네 옛집이다. 문패에 종 문양이 새겨져 있다." }
+    ]
+  },
+  "choices": [
+    {
+      "id": "read", "label": "일지를 읽는다", "short": "일지를 읽었다",
+      "tags": ["info"], "risk": "low",
+      "check": { "kind": "ruin_lore", "dc_offset": -4, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "reveal_discovery" }, { "type": "add_xp", "units": 1 } ],
+          "line": "일지에서 옛 갱도 이름을 찾았다"
+        },
+        "failure": { "effects": [], "line": "글씨가 번져 읽을 수 없었다" }
+      }
+    },
+    {
+      "id": "loot", "label": "쓸 만한 물건을 챙긴다", "short": "쓸 만한 물건을 챙겼다",
+      "tags": ["reward"], "risk": "low",
+      "check": { "kind": "forage", "dc_offset": 2, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "chance", "p": 0.15,
+              "then": [ { "type": "add_item", "item_id": "J04", "to": "bag" } ],
+              "else": [ { "type": "add_coins", "units": 2 } ] }
+          ],
+          "line": "선반에서 {loot:을/를} 찾았다"
+        },
+        "failure": {
+          "effects": [ { "type": "add_coins", "units": 0.5 } ],
+          "line": "빈 서랍뿐이었다"
+        }
+      }
+    },
+    {
+      "id": "close", "label": "문을 닫아 준다", "short": "문을 닫아 주었다",
+      "tags": ["kindness", "safe"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "set_trip_flag", "key": "trip.a3_kind", "remaining": { "scenes": 1 } } ],
+          "line": "누가 돌아올지 몰라 문을 닫았다"
+        }
+      }
+    }
+  ]
+}

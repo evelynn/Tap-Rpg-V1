@@ -1,0 +1,75 @@
+{
+  "id": "L07",
+  "name": "늑대 울음이 가까운 밤",
+  "category": "life",
+  "locations": ["H2", "H3", "A2"],
+  "triggers": ["camp"],
+  "condition": true,
+  "weight": 6,
+  "weight_mods": [ { "when": { "time_of_day": "night" }, "mult": 2 } ],
+  "cooldown_min": 30,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "날씨 견디기는 종류 기준이 지역 −4라 원문 '지역+0'을 dc_offset 4로 적는다. 피로 회복 −20만·회복 없음은 야영 피로 변화(−40)에 더하는 camp.fatigue_add +20·+40이다. 공포 판정 특성·장비 보정(TI07 −2, TA02·W07 +2)은 각 정의의 수정자가 준다. 소품 달은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "늑대 울음이 가까이서 들렸다", "언덕에서 울음이 번갈아 왔다" ],
+    "detail": "모닥불이 사그라들 무렵, 가까운 언덕에서 늑대 울음이 번갈아 들린다. 바람 방향이 바뀌면 냄새가 닿을 거리다.",
+    "tag": "rest",
+    "animation": [ { "action": "sleep", "props": ["campfire"] }, { "action": "idle", "props": ["campfire"] } ]
+  },
+  "choices": [
+    {
+      "id": "move", "label": "자리를 옮긴다", "short": "자리를 옮겼다",
+      "tags": ["safe", "new_path"], "risk": "medium",
+      "check": { "kind": "terrain", "dc_offset": 0, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "has_trait": "TI02" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "journal", "tag": "trait", "line": "울음의 방향을 먼저 알아챘다", "when": { "has_trait": "TI02" } },
+            { "type": "animation", "action": "walk" }
+          ],
+          "line": "조용한 바위 뒤로 옮겼다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "injury", "grade": "light", "stat": "dex" },
+            { "type": "journal", "tag": "trait", "line": "울음의 방향을 먼저 알아챘다", "when": { "has_trait": "TI02" } },
+            { "type": "animation", "action": "walk" }
+          ],
+          "line": "어둠 속에서 발을 삐었다"
+        }
+      }
+    },
+    {
+      "id": "keep_watch", "label": "불을 키우고 깨어 있는다", "short": "불을 키우고 깨어 있었다",
+      "tags": ["safe"], "risk": "low",
+      "check": { "kind": "weather", "dc_offset": 4, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "sortie_mod", "camp": { "fatigue_add": 20 } } ],
+          "line": "불빛에 늑대가 물러났다"
+        },
+        "failure": {
+          "effects": [ { "type": "sortie_mod", "camp": { "fatigue_add": 40 } } ],
+          "line": "밤새 한숨도 못 잤다"
+        }
+      }
+    },
+    {
+      "id": "drive_off", "label": "먼저 가서 쫓아낸다", "short": "늑대를 쫓으러 나섰다",
+      "tags": ["bold", "reward"], "risk": "medium",
+      "combat": {
+        "enemies": [ { "by_location": { "H2": "EN03", "A2": "EN03", "H3": "EN04" } } ],
+        "count": 1,
+        "pre_check": { "kind": "fear", "dc_offset": 0, "on_fail": [ { "target": "hit", "op": "add", "value": -2 } ] },
+        "reward_mult": 1.5
+      },
+      "outcomes": {
+        "win": { "effects": [], "line": "늑대를 쫓고 푹 잤다" },
+        "defeat": { "effects": [], "line": "늑대에게 밀려 물러났다" }
+      }
+    }
+  ]
+}

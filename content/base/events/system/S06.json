@@ -1,0 +1,30 @@
+{
+  "id": "S06",
+  "name": "길드 지원",
+  "category": "system",
+  "triggers": ["system"],
+  "system": { "order": 4, "phase": "judgment" },
+  "condition": { "guild_aid_active": false },
+  "allow_serious_injury": true,
+  "hold": "none",
+  "_note": "11 S06, 01 §9.6. 발생(파산 조건)은 balance.economy.bankruptcy로 엔진이 판정하고, 지원 내용(W01·A01 지급, 숙소·무료 치료, 사냥 동전 +20%)과 종료선은 balance.economy.aid다. counter.guild_aids는 엔진이 올린다(카운터 등록부 주석). 지원 종료 한 줄('길드 숙소 열쇠를 돌려주었다')과 TA06 획득 한 줄은 이 사건이 발화하는 시점이 아니라 적지 못했다. 후손 반응(12 §7.6)은 도입 상세 변형",
+  "intro": {
+    "lines": [ "하델이 녹슨 검을 건넸다", "길드 숙소에 짐을 풀었다" ],
+    "detail": "하델이 말했다. \"빈손으로 돌아오는 날도 있지. 여기 녹슨 검이라도 쥐게. 숙소 밥은 싱거워도 배는 부를 거야.\"",
+    "tag": "town",
+    "family_variants": [
+      { "when": { "all": [ { "reaction_active": "dr_guild_aid" }, { "lifetime_count_lt": { "event": "S06", "count": 1 } } ] },
+        "detail_append": "\"네 {parent_call}도 처음엔 빈손이었지.\"" }
+    ]
+  },
+  "choices": [
+    {
+      "id": "auto", "label": "길드 지원을 받는다", "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "set_family_flag", "key": "fam.guild_aid" } ]
+        }
+      }
+    }
+  ]
+}

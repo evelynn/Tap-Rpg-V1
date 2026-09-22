@@ -1,0 +1,78 @@
+{
+  "id": "L09",
+  "name": "모닥불 옆 낯선 여행자",
+  "category": "life",
+  "location_match": { "kinds": ["hunting_ground", "adventure_route"] },
+  "triggers": ["camp"],
+  "condition": { "not": { "thirst_stage_gte": "starving" } },
+  "weight": 5,
+  "weight_mods": [ { "when": { "time_of_day": "night" }, "mult": 1.5 } ],
+  "cooldown_min": 40,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "던전 휴식 지점 제외(D42)는 location_match kinds로 적는다. 피로 회복 절반은 야영 피로 변화(−40)에 더하는 camp.fatigue_add +20이다. 식량 나누기는 야영 식량(TI08은 2개)이 있을 때만 열린다(has_consumable). 소품 망토 쓴 실루엣은 prop 정의가 없어 뺐다",
+  "intro": {
+    "lines": [ "낯선 여행자가 불을 청했다", "망토 쓴 이가 곁에 앉았다" ],
+    "detail": "모닥불 너머에서 망토를 쓴 여행자가 손을 녹여도 되겠냐고 묻는다. 신발 밑창이 닳은 것을 보니 먼 길을 온 사람이다.",
+    "tag": "rest",
+    "animation": [ { "action": "sit_eat", "props": ["campfire"] } ]
+  },
+  "choices": [
+    {
+      "id": "offer_seat", "label": "자리를 내어준다", "short": "자리를 내어주었다",
+      "tags": ["kindness", "info"], "risk": "none",
+      "check": { "kind": "bond", "dc": 12, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": -1, "when": { "has_trait": "TI07" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "set_flag", "key": "life.rumor_ready" },
+            { "type": "chance", "p": 0.2, "then": [ { "type": "add_consumable", "tier": "current", "count": 1 } ] }
+          ],
+          "line": "여행자가 먼 길 이야기를 했다"
+        },
+        "failure": {
+          "effects": [],
+          "line": "여행자는 말없이 불만 쬐었다"
+        }
+      }
+    },
+    {
+      "id": "stay_wary", "label": "경계하며 불을 나눈다", "short": "경계하며 불을 나눴다",
+      "tags": ["safe"], "risk": "low",
+      "check": { "kind": "weather", "dc": 12, "partial_allowed": false,
+        "situational": [ { "target": "check.all", "op": "add", "value": 1, "when": { "has_trait": "TI07" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [],
+          "line": "여행자는 새벽에 떠났다"
+        },
+        "failure": {
+          "effects": [ { "type": "sortie_mod", "camp": { "fatigue_add": 20 } } ],
+          "line": "경계하느라 잠을 설쳤다"
+        }
+      }
+    },
+    {
+      "id": "share_food", "label": "식량을 나눠 먹는다", "short": "식량을 나눠 먹었다",
+      "tags": ["kindness", "rest"], "risk": "none",
+      "requires": { "any": [
+        { "all": [ { "not": { "has_trait": "TI08" } }, { "has_consumable": { "carry_groups": ["ration"], "count": 1 } } ] },
+        { "has_consumable": { "carry_groups": ["ration"], "count": 2 } }
+      ] },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "remove_consumable", "carry_groups": ["ration"], "count": 1, "when": { "not": { "has_trait": "TI08" } } },
+            { "type": "remove_consumable", "carry_groups": ["ration"], "count": 2, "when": { "has_trait": "TI08" } },
+            { "type": "add_fatigue", "value": -10 },
+            { "type": "add_xp", "units": 0.5 },
+            { "type": "journal", "tag": "trait", "line": "둘이서 세 사람 몫을 먹었다", "when": { "has_trait": "TI08" } }
+          ],
+          "line": "둘이서 빵을 나눠 먹었다"
+        }
+      }
+    }
+  ]
+}
