@@ -1,0 +1,86 @@
+{
+  "id": "F03", "name": "마지막 잔을 권하는 성주", "category": "fate",
+  "locations": ["A4"], "triggers": ["adventure_event_scene"],
+  "condition": { "all": [
+    { "age_gte": 35 }, { "age_lt": 65 },
+    { "attitude": ["adventurous", "challenging"] },
+    { "mutation": "none" },
+    { "lifetime_count_lt": { "event": "F03", "count": 1 } }
+  ] },
+  "weight": 5, "luck_scaled": true, "max_per_life": 1, "allow_serious_injury": false,
+  "appear_chance": 0.5, "pity_after": 3, "exclusive_group": "lifespan_offer",
+  "hold": "fate",
+  "policy_hooks": { "decline_choice": "decline" },
+  "hold_line": "성주가 마지막 잔을 내밀었다",
+  "preview": {
+    "body": "틈의 끝, 검은 장미가 핀 지하 계단 위에 긴 탁자가 놓여 있다. 창백한 얼굴의 비엘 달그늘이 낡은 은잔을 민다.\n\n\"너의 길은 아직 끝나지 않았구나. 한 모금이면 달이 네 편이 된다.\"",
+    "note": "갈증은 출정 중에 차오르고, 밤 출정에서 이기거나 달빛 포도주를 마시면 가라앉는다. 밤에 주로 움직이면 크게 오르지 않는다.",
+    "variants": [
+      { "when": { "flag": "fam.f03_refused" }, "text": "\"네 윗대도 이 잔을 내려놓았지. 너는 어떨까.\"", "after_paragraph": 2 },
+      { "when": { "flag": "fam.f03_accepted" }, "text": "\"오래전 네 가문의 누군가와 달빛 아래서 잔을 나눴다. 그 사람은 지금 긴 잠을 자고 있지.\"", "after_paragraph": 2 }
+    ]
+  },
+  "hold_animation": { "action": "sit_eat", "props": ["cup"] },
+  "intro": {
+    "lines": [ "성주가 낡은 은잔을 내밀었다", "검은 장미 계단에 성주가 있었다" ],
+    "detail": "성주가 마지막 잔을 내밀었다. {name:은/는} 당신의 결정을 기다린다.",
+    "tag": "important",
+    "animation": [ { "action": "sit_eat", "props": ["book", "cup"] } ],
+    "family_variants": [
+      { "when": { "flag": "fam.f03_refused" }, "detail_append": "\"네 윗대도 이 잔을 내려놓았지. 너는 어떨까.\"" },
+      { "when": { "flag": "fam.f03_accepted" }, "detail_append": "\"오래전 네 가문의 누군가와 달빛 아래서 잔을 나눴다. 그 사람은 지금 긴 잠을 자고 있지.\"" }
+    ]
+  },
+  "choices": [
+    {
+      "id": "accept", "label": "잔을 받는다", "risk": "none",
+      "preview": {
+        "benefit": "흡혈귀가 된다(TM01 달의 갈증). 밤 출정에서 명중 +1·피해 +10%·숨 고르기 회복 2배. 힘·민첩·의지 +1. 60세 이후 노화가 멈춘다",
+        "cost": "낮 출정에서 모든 판정 −2·피로 +50%. 치료소 대신 피의 휴식을 쓴다. 사교 −1. 갈증이 100이 되면 {sleep_age}세 전에도 긴 잠에 든다. 이후 생명 연장 기연을 받을 수 없다. 긴 잠 예정 {sleep_age}세",
+        "reversible": false
+      },
+      "outcomes": { "always": {
+        "effects": [
+          { "type": "mutate", "trait_id": "TM01" },
+          { "type": "set_family_flag", "key": "fam.f03_accepted" },
+          { "type": "family_record", "kind": "chronicle", "key": "vampire", "text": "{generation}대 {name:이/가} 달그늘의 잔을 받았다." },
+          { "type": "animation", "action": "cheer", "props": ["moon_fx"] }
+        ],
+        "line": "잔을 비웠다. 달빛이 차갑지 않았다",
+        "detail": "성주가 빈 잔을 받아 들며 말했다. \"긴 잠은 {sleep_age}세에 찾아온다. 그때까지는 달이 네 편이다.\""
+      } }
+    },
+    {
+      "id": "decline", "label": "잔을 내려놓는다", "risk": "none", "decline": true,
+      "preview": { "benefit": "사람으로 남는다", "cost": "성주가 잔을 두고 간다(R04 성주의 은잔, 저주 장비, 자동 장착 안 함). 이번 생애에 제안이 다시 오지 않는다", "reversible": false },
+      "outcomes": { "always": {
+        "effects": [
+          { "type": "add_item", "item_id": "R04", "to": "bag_or_pending" },
+          { "type": "set_family_flag", "key": "fam.f03_refused" },
+          { "type": "if", "cond": { "flag": "life.f03_clue" }, "then": [
+              { "type": "add_xp", "units": 3 },
+              { "type": "family_record", "kind": "chronicle", "key": "lord_story", "text": "{generation}대 {name:이/가} 성주의 사연을 들었다." } ] }
+        ],
+        "line": "잔을 내려놓고 계단을 내려왔다",
+        "detail": "\"그 잔은 두고 가지. 언젠가 마음이 바뀔지도 모르니.\""
+      } }
+    },
+    {
+      "id": "ask", "label": "성주의 사연을 묻는다", "risk": "none",
+      "preview": { "benefit": "성공하면 대가를 줄일 단서를 얻는다", "cost": "없음. 실패해도 변이는 일어나지 않는다. 묻고 난 뒤 위 두 선택지 중 하나를 다시 고른다", "reversible": true },
+      "check": { "any_of": ["lore", "persuade"], "dc": 16, "partial_allowed": false },
+      "outcomes": {
+        "success": {
+          "effects": [ { "type": "set_flag", "key": "life.f03_clue" }, { "type": "reopen_choices", "exclude": ["ask"] } ],
+          "line": "성주가 제 사연을 들려주었다",
+          "detail": "비엘은 삼백 년 전 달그늘 영지의 막내였다. 역병이 돌던 해 가족을 지키려 달과 계약했고, 가족은 모두 늙어 떠났다."
+        },
+        "failure": {
+          "effects": [ { "type": "reopen_choices", "exclude": ["ask"] } ],
+          "line": "성주가 웃으며 말을 돌렸다",
+          "detail": "\"이야기는 잔을 비운 사람에게만 해 주지.\""
+        }
+      }
+    }
+  ]
+}

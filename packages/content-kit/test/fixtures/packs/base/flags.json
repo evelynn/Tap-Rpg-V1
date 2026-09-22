@@ -1,0 +1,12 @@
+[
+  {
+    "id": "life.l01_marked_{place}",
+    "scope": "life",
+    "value": "bool",
+    "family": {
+      "place": "region"
+    },
+    "set_by": "L01",
+    "read_by": "L01"
+  }
+]

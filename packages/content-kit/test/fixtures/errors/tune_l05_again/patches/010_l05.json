@@ -1,0 +1,12 @@
+[
+  {
+    "target": {
+      "kind": "event",
+      "id": "L05"
+    },
+    "op": "merge",
+    "value": {
+      "weight": 2
+    }
+  }
+]

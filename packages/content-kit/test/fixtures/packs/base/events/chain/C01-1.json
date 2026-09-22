@@ -1,0 +1,10 @@
+{
+  "id": "C01-1",
+  "name": "찢어진 지도",
+  "category": "chain",
+  "chain": {
+    "id": "C01",
+    "stage": 1
+  },
+  "weight": 5
+}

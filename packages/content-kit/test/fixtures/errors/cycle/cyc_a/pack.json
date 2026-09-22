@@ -1,0 +1,8 @@
+{
+  "id": "cyc_a",
+  "name": "순환 A",
+  "version": "0.1.0",
+  "requires": [
+    "cyc_b"
+  ]
+}

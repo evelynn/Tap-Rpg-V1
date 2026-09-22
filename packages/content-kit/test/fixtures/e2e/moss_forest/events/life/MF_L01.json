@@ -1,0 +1,12 @@
+{
+  "id": "MF_L01", "name": "이끼 샘", "category": "life", "locations": ["MF_H1"], "triggers": ["after_encounter"],
+  "condition": { "all": [{ "visited": "H1" }, { "num": { "key": "counter.wins.MF_H1", "op": ">=", "value": 3 } }] },
+  "weight": 3, "allow_serious_injury": false, "hold": "none",
+  "intro": { "lines": ["이끼 사이로 샘이 솟았다", "물이 차가웠다"], "tag": "rest" },
+  "choices": [
+    {
+      "id": "drink", "label": "샘물을 마신다", "short": "샘물을 마셨다", "tags": ["rest"], "risk": "none",
+      "outcomes": { "always": { "effects": [{ "type": "heal", "hp_ratio": 0.2 }, { "type": "counter_add", "key": "event_scenes", "value": 1, "where": "{place}" }] } }
+    }
+  ]
+}

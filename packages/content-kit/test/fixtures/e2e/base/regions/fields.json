@@ -1,0 +1,28 @@
+[
+  {
+    "id": "H1", "name": "여울 들판", "kind": "hunting_ground", "level_range": [1, 5], "level_mid": 3, "travel_sec": 20,
+    "unlock": true, "tags": ["field"], "rescuers": "field", "background_id": "bg_field",
+    "encounters": [{ "enemy_id": "EN01", "weight": 100 }], "pair_chance": 0.1, "event_check": 0.2
+  },
+  {
+    "id": "H4", "name": "안개 들판", "kind": "hunting_ground", "level_range": [4, 9], "level_mid": 6, "travel_sec": 30,
+    "unlock": { "visited": "H1" }, "rescuers": "field", "background_id": "bg_field",
+    "encounters": [{ "enemy_id": "EN01", "weight": 100 }], "pair_chance": 0.1, "event_check": 0.2
+  },
+  {
+    "id": "H5", "name": "바람 언덕", "kind": "hunting_ground", "level_range": [6, 11], "level_mid": 8, "travel_sec": 30,
+    "unlock": { "visited": "H4" }, "rescuers": "field", "background_id": "bg_field",
+    "encounters": [{ "enemy_id": "EN01", "weight": 100 }], "pair_chance": 0.1, "event_check": 0.2
+  },
+  {
+    "id": "D2", "name": "폐광 둘째 굴", "kind": "hunting_ground", "level_range": [6, 11], "level_mid": 8, "travel_sec": 40,
+    "unlock": { "visited": "H4" }, "rescuers": "field", "background_id": "bg_field",
+    "encounters": [{ "enemy_id": "EN01", "weight": 100 }], "pair_chance": 0.1, "event_check": 0.2,
+    "_note": "balance 장비 평가표가 가리키는 자리만 채운다(장소 종류는 이 픽스처에서 보지 않는다)"
+  },
+  {
+    "id": "D3", "name": "폐광 셋째 굴", "kind": "hunting_ground", "level_range": [8, 13], "level_mid": 10, "travel_sec": 40,
+    "unlock": { "visited": "D2" }, "rescuers": "field", "background_id": "bg_field",
+    "encounters": [{ "enemy_id": "EN01", "weight": 100 }], "pair_chance": 0.1, "event_check": 0.2
+  }
+]

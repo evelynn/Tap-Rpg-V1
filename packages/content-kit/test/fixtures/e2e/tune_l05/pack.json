@@ -1,0 +1,6 @@
+{
+  "id": "tune_l05",
+  "name": "소문 조정",
+  "version": "0.1.0",
+  "requires": ["base"]
+}

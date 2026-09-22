@@ -1,2 +1,13 @@
 // @tap/content-kit — 콘텐츠 팩 로더·검증기(Node 도구).
 export { findCoreContentIds } from './scripts/core-id-scan'
+export { manifestSchema, type PackManifest } from './pack/manifest'
+export { discoverPacks, orderPacks, type PackSource } from './pack/discover'
+export { readPackFiles, type RawDef, type PatchFile, type PackFiles } from './pack/read'
+export { buildIndex, type DefIndex } from './pack/index-defs'
+export { patchOpSchema, mergePatch, applyPatches } from './pack/patch'
+export { buildBundle, contentHash, BUNDLE_FORMAT, type ContentBundle } from './pack/bundle'
+export { KIND_SCHEMAS } from './validate/kind-schemas'
+export { formatIssue, zodToIssues, type ContentIssue, type IssueCode, type Severity } from './validate/issues'
+export { validateContent, type ValidateOptions, type ValidateResult } from './validate/index'
+export { collectRefs, type Facts } from './validate/refs'
+export { runSemanticChecks } from './validate/rules'

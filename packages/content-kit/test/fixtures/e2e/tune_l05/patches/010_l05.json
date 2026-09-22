@@ -1,0 +1,3 @@
+[
+  { "target": { "kind": "event", "id": "L05" }, "op": "merge", "value": { "weight": 8, "cooldown_min": null } }
+]

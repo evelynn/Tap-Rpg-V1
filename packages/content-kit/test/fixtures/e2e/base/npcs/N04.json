@@ -1,0 +1,4 @@
+{
+  "id": "N04", "name": "세나", "role": "여관 주인", "home": "T00",
+  "speech": { "style": "다정", "samples": [] }, "events": [], "relation_default": 0
+}

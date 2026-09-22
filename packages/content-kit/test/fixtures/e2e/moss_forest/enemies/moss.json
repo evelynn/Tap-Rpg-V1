@@ -1,0 +1,10 @@
+[
+  {
+    "id": "MF_EN01", "name": "이끼늑대", "family": "wolf", "level": 5, "rank": "normal",
+    "hp": 20, "ac": 11, "hit": 3, "damage": [1, 4], "xp": 21, "coins": 15, "specials": [],
+    "sprite_family": "wolf", "palette_id": "wolf_moss",
+    "lines": ["이끼늑대가 으르렁거렸다", "이끼늑대가 달려들었다", "이끼늑대가 몸을 낮췄다"],
+    "victory_lines": ["이끼늑대를 쫓아냈다", "이끼늑대가 달아났다"],
+    "exit_line": "이끼늑대가 덤불로 사라졌다"
+  }
+]

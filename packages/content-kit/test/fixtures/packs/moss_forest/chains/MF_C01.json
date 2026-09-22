@@ -1,0 +1,10 @@
+{
+  "id": "MF_C01",
+  "name": "이끼 아래 길",
+  "stages": 1,
+  "outcomes": [
+    "done"
+  ],
+  "family_once": true,
+  "inheritable": false
+}

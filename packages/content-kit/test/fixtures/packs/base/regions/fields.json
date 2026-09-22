@@ -1,0 +1,63 @@
+[
+  {
+    "id": "H1",
+    "name": "여울 들판",
+    "kind": "hunting_ground",
+    "level_range": [
+      1,
+      5
+    ],
+    "level_mid": 3,
+    "travel_sec": 20,
+    "unlock": true,
+    "tags": [
+      "field"
+    ],
+    "rescuers": "field",
+    "background_id": "bg_field",
+    "encounters": [
+      {
+        "enemy_id": "EN01",
+        "weight": 100
+      }
+    ],
+    "pair_chance": 0.1,
+    "event_check": 0.2
+  },
+  {
+    "id": "A1",
+    "name": "여울 들길",
+    "kind": "adventure_route",
+    "level_range": [
+      1,
+      8
+    ],
+    "level_mid": 4,
+    "travel_sec": 25,
+    "unlock": true,
+    "tags": [],
+    "rescuers": "field",
+    "background_id": "bg_river_path",
+    "scenes": [
+      3,
+      5
+    ],
+    "encounters": [
+      {
+        "enemy_id": "EN01",
+        "weight": 100
+      }
+    ],
+    "pair_chance": 0.1,
+    "discoveries": [
+      {
+        "id": "A1-1",
+        "name": "버드나무 둑",
+        "condition": true,
+        "dc": {
+          "grade": "easy"
+        }
+      }
+    ]
+  }
+]

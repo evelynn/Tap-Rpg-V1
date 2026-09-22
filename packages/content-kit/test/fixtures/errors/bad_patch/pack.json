@@ -1,0 +1,8 @@
+{
+  "id": "bad_patch",
+  "name": "패치 오류",
+  "version": "0.1.0",
+  "requires": [
+    "base"
+  ]
+}

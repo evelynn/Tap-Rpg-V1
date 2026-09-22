@@ -1,0 +1,12 @@
+{
+  "id": "L01",
+  "name": "돌탑",
+  "category": "life",
+  "location_match": {
+    "kinds": [
+      "hunting_ground",
+      "adventure_route"
+    ]
+  },
+  "weight": 5
+}

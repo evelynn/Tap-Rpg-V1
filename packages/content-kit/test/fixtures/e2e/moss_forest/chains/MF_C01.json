@@ -1,0 +1,5 @@
+{
+  "id": "MF_C01", "name": "이끼 아래 길", "stages": 2, "outcomes": ["done"], "family_once": true, "inheritable": false,
+  "resume_at": [], "unfinished_line": "끝나지 않은 이야기 — {chain_name}",
+  "stage_summaries": ["이끼 표식을 찾았다", "이끼 아래 길을 걸었다"]
+}

@@ -1,0 +1,10 @@
+[
+  {
+    "id": "CP01", "name": "회복약(작은 병)", "effect": "heal_hp", "amount": 15, "tier": 1,
+    "price": { "kind": "fixed", "value": 10 }, "carry_group": "potion", "shop": [], "sellable": false
+  },
+  {
+    "id": "CP06", "name": "야영 식량", "effect": "camp_ration", "amount": 1,
+    "price": { "kind": "fixed", "value": 4 }, "carry_group": "ration", "shop": [], "sellable": false
+  }
+]

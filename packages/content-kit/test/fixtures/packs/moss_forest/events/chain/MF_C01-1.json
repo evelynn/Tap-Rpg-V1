@@ -1,0 +1,18 @@
+{
+  "id": "MF_C01-1",
+  "name": "이끼 표식",
+  "category": "chain",
+  "chain": {
+    "id": "MF_C01",
+    "stage": 1
+  },
+  "locations": [
+    "MF_H1"
+  ],
+  "weight": 5,
+  "condition": {
+    "not": {
+      "flag": "life.mf_marked_MF_H1"
+    }
+  }
+}

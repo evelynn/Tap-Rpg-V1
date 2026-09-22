@@ -1,0 +1,8 @@
+{
+  "id": "moss_forest",
+  "name": "이끼숲",
+  "version": "0.1.0",
+  "requires": [
+    "base"
+  ]
+}

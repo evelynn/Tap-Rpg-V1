@@ -1,0 +1,7 @@
+{
+  "id": "base",
+  "name": "기반 축소판(실제 스키마)",
+  "version": "0.1.0",
+  "requires": [],
+  "_note": "balance.json은 테스트가 packages/core/test/schema/world/fixtures/balance.json을 복사해 넣는다. 여기 정의는 그 balance가 가리키는 ID를 채운 최소 묶음이다"
+}

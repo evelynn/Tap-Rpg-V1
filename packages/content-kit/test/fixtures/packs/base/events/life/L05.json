@@ -1,0 +1,14 @@
+{
+  "id": "L05",
+  "name": "소문",
+  "category": "life",
+  "locations": [
+    "T00"
+  ],
+  "weight": 4,
+  "cooldown_min": 30,
+  "tags": [
+    "old",
+    "rumor"
+  ]
+}

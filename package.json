@@ -11,7 +11,9 @@
     "test": "node --import tsx --test \"packages/*/test/**/*.test.ts\" \"tools/*/test/**/*.test.ts\"",
     "lint:ids": "tsx packages/content-kit/src/scripts/check-core-ids.ts",
     "lint:docs": "python docs/design/tools/lint_docs.py",
-    "check": "pnpm typecheck && pnpm test && pnpm lint:ids && pnpm lint:docs",
+    "content:check": "tsx packages/content-kit/src/cli.ts check content/base",
+    "content:schema": "tsx packages/content-kit/src/cli.ts schema content/schemas",
+    "check": "pnpm typecheck && pnpm test && pnpm lint:ids && pnpm lint:docs && pnpm content:check",
     "sim": "tsx tools/sim/src/cli.ts"
   },
   "pnpm": {

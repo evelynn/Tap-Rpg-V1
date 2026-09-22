@@ -1,0 +1,8 @@
+{
+  "id": "missing_req",
+  "name": "없는 선행 팩",
+  "version": "0.1.0",
+  "requires": [
+    "nowhere"
+  ]
+}

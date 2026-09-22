@@ -1,0 +1,16 @@
+{
+  "id": "L01", "name": "돌탑", "category": "life", "location_match": { "kinds": ["hunting_ground"] },
+  "triggers": ["after_encounter"], "condition": { "not": { "flag": "life.l01_marked_{place}" } }, "weight": 5,
+  "allow_serious_injury": false, "hold": "none",
+  "intro": { "lines": ["길가에 돌탑이 있었다", "돌 하나가 흔들렸다"], "tag": "adventure" },
+  "choices": [
+    {
+      "id": "careful", "label": "돌을 하나씩 살핀다", "short": "돌을 살폈다", "tags": ["safe"], "risk": "none",
+      "outcomes": { "always": { "effects": [{ "type": "set_flag", "key": "life.l01_marked_{place}" }] } }
+    },
+    {
+      "id": "pass", "label": "그냥 지나간다", "short": "지나갔다", "tags": ["rest"], "risk": "none",
+      "outcomes": { "always": { "effects": [] } }
+    }
+  ]
+}

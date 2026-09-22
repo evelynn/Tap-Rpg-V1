@@ -1,0 +1,10 @@
+[
+  {
+    "id": "EN01", "name": "들늑대", "family": "wolf", "level": 1, "rank": "normal",
+    "hp": 10, "ac": 10, "hit": 2, "damage": [1, 2], "xp": 9, "coins": 5, "specials": [],
+    "sprite_family": "wolf", "palette_id": "wolf_gray",
+    "lines": ["들늑대가 으르렁거렸다", "들늑대가 달려들었다", "들늑대가 물러섰다"],
+    "victory_lines": ["들늑대를 쫓아냈다", "들늑대가 달아났다"],
+    "exit_line": "들늑대가 숲으로 사라졌다"
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "id": "MF_H1", "name": "이끼숲 가장자리", "kind": "hunting_ground", "level_range": [4, 9], "level_mid": 6, "travel_sec": 40,
+    "unlock": { "any": [{ "visited": "H1" }, { "level_gte": 4 }] }, "tags": ["field", "forest"], "rescuers": "field",
+    "background_id": "bg_field",
+    "encounters": [{ "enemy_id": "MF_EN01", "weight": 60 }, { "enemy_id": "EN01", "weight": 40 }],
+    "pair_chance": 0.1, "event_check": 0.2
+  }
+]

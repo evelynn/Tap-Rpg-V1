@@ -1,0 +1,20 @@
+{
+  "id": "T00",
+  "name": "여울 마을",
+  "kind": "town",
+  "unlock": true,
+  "tags": [
+    "town"
+  ],
+  "background_id": "bg_town",
+  "facilities": [
+    {
+      "id": "inn",
+      "name": "여관",
+      "npc_id": "N01",
+      "services": [
+        "inn"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "id": "dup_region",
+  "name": "중복",
+  "version": "0.1.0",
+  "requires": [
+    "base"
+  ]
+}

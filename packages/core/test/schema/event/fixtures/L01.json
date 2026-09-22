@@ -1,0 +1,82 @@
+{
+  "id": "L01",
+  "name": "여울가 약초 무더기",
+  "category": "life",
+  "locations": ["H1", "H2", "A1"],
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "seasons": ["spring", "summer", "autumn"],
+  "condition": true,
+  "weight": 8,
+  "weight_mods": [ { "when": { "flag": "life.l01_marked_{place}" }, "mult": 3 } ],
+  "cooldown_min": 25,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "intro": {
+    "lines": [ "바위 틈에 약초가 무더기로 났다", "{name:이/가} 약초 향을 맡았다" ],
+    "detail": "물가 바위 틈에 잎이 둥근 약초가 무더기로 자라 있다. 몇 포기는 독풀과 잎 모양이 닮았다. 미루의 잡화점에 가져가면 값을 쳐줄 것이다.",
+    "tag": "hunt",
+    "animation": [ { "action": "discover" }, { "action": "interact", "props": ["herb_basket"] } ]
+  },
+  "choices": [
+    {
+      "id": "careful", "label": "가려서 캔다", "short": "약초를 가려 캤다",
+      "tags": ["safe", "reward"], "risk": "low",
+      "check": { "kind": "forage", "dc_offset": 0,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "flag": "life.l01_marked_{place}" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "skill_use", "skill": "search", "count": 1 },
+            { "type": "add_fatigue", "value": -2, "when": { "has_trait": "TI08" } },
+            { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } }
+          ],
+          "line": "약초만 골라 담았다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "add_coins", "units": 1 },
+            { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } }
+          ],
+          "line": "독풀을 몇 포기 섞어 버렸다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_coins", "units": 0.5 },
+            { "type": "add_fatigue", "value": 3 },
+            { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } }
+          ],
+          "line": "헷갈려서 반은 버렸다"
+        }
+      }
+    },
+    {
+      "id": "grab", "label": "몽땅 뜯어 담는다", "short": "약초를 몽땅 뜯었다",
+      "tags": ["reward"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "add_coins", "units": 1 },
+            { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } },
+            { "type": "set_flag", "key": "life.l01_marked_{place}", "when": { "has_trait": "TI03" } }
+          ],
+          "line": "한 아름 뜯었다. 반은 잡초였다"
+        }
+      }
+    },
+    {
+      "id": "mark", "label": "자리에 돌탑을 쌓아 둔다", "short": "돌탑을 쌓아 두었다",
+      "tags": ["info"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "set_flag", "key": "life.l01_marked_{place}" },
+            { "type": "on_town_return", "effects": [ { "type": "shop_discount", "ratio": 0.05, "uses": 1, "facility": "general_store" } ] }
+          ],
+          "line": "약초 자리에 돌탑을 쌓았다"
+        }
+      }
+    }
+  ]
+}

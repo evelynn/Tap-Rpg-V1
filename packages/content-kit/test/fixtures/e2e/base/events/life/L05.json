@@ -1,0 +1,11 @@
+{
+  "id": "L05", "name": "소문", "category": "life", "locations": ["T00"], "triggers": ["town_return"], "condition": true,
+  "weight": 4, "cooldown_min": 30, "allow_serious_injury": false, "hold": "none",
+  "intro": { "lines": ["여관에 소문이 돌았다", "귀를 기울였다"], "tag": "town" },
+  "choices": [
+    {
+      "id": "listen", "label": "끝까지 듣는다", "short": "소문을 들었다", "tags": ["info"], "risk": "none",
+      "outcomes": { "always": { "effects": [{ "type": "add_time", "sec": 30 }] } }
+    }
+  ]
+}

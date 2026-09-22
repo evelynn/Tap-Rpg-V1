@@ -1,0 +1,32 @@
+[
+  {
+    "target": {
+      "kind": "region",
+      "id": "NOPE"
+    },
+    "op": "merge",
+    "value": {
+      "tags": []
+    }
+  },
+  {
+    "target": {
+      "kind": "event",
+      "id": "L05"
+    },
+    "op": "replace",
+    "value": {
+      "weight": 1
+    }
+  },
+  {
+    "target": {
+      "kind": "region",
+      "id": "T00"
+    },
+    "op": "merge",
+    "value": {
+      "id": "T01"
+    }
+  }
+]

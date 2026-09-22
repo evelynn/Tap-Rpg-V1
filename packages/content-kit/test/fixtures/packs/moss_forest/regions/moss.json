@@ -1,0 +1,64 @@
+[
+  {
+    "id": "MF_H1",
+    "name": "이끼숲 가장자리",
+    "kind": "hunting_ground",
+    "level_range": [
+      4,
+      9
+    ],
+    "level_mid": 6,
+    "travel_sec": 40,
+    "unlock": {
+      "discovery_found": "A1-1"
+    },
+    "tags": [
+      "field",
+      "forest"
+    ],
+    "rescuers": "field",
+    "background_id": "bg_field",
+    "encounters": [
+      {
+        "enemy_id": "MF_EN01",
+        "weight": 60
+      },
+      {
+        "enemy_id": "EN01",
+        "weight": 40
+      }
+    ],
+    "pair_chance": 0.1,
+    "event_check": 0.2
+  },
+  {
+    "id": "MF_A1",
+    "name": "이끼숲 오솔길",
+    "kind": "adventure_route",
+    "level_range": [
+      5,
+      10
+    ],
+    "level_mid": 7,
+    "travel_sec": 45,
+    "unlock": {
+      "visited": "MF_H1"
+    },
+    "tags": [
+      "forest"
+    ],
+    "rescuers": "field",
+    "background_id": "bg_river_path",
+    "scenes": [
+      3,
+      5
+    ],
+    "encounters": [
+      {
+        "enemy_id": "MF_EN01",
+        "weight": 100
+      }
+    ],
+    "pair_chance": 0.1
+  }
+]

@@ -1,0 +1,19 @@
+{
+  "id": "MF_C01-1", "name": "이끼 표식", "category": "chain", "chain": { "id": "MF_C01", "stage": 1 },
+  "locations": ["MF_H1"], "triggers": ["after_encounter"], "condition": { "not": { "flag": "life.l01_marked_MF_H1" } },
+  "weight": 5, "allow_serious_injury": false, "hold": "none",
+  "intro": { "lines": ["나무에 이끼 표식이 있었다", "누군가 남긴 것 같았다"], "tag": "discovery" },
+  "choices": [
+    {
+      "id": "follow", "label": "표식을 따라간다", "short": "표식을 따라갔다", "tags": ["new_path"], "risk": "low",
+      "outcomes": { "always": { "effects": [
+        { "type": "advance_chain", "chain_id": "MF_C01", "stage": 1 },
+        { "type": "set_flag", "key": "life.l01_marked_{place}" }
+      ] } }
+    },
+    {
+      "id": "leave", "label": "그대로 둔다", "short": "표식을 두고 왔다", "tags": ["safe"], "risk": "none",
+      "outcomes": { "always": { "effects": [] } }
+    }
+  ]
+}
