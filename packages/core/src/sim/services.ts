@@ -214,8 +214,11 @@ function reveal(w: EventWorld, ports: EventPorts, id: string, scope: EventScope)
 
 // ── 조립 ──
 
+// 포트 교체분. 함수를 주면 기본 어댑터를 받아 그 위에 덮는다(09 §6.2 헌납 유물처럼 기본 구현을 감싸야 할 때)
+export type PortOverride = Partial<EventPorts> | ((base: EventPorts) => Partial<EventPorts>)
+
 export interface ServiceOptions {
-  ports?: Partial<EventPorts> // 구현이 생긴 포트를 바꿔 끼운다(T8 출정, T10 계승)
+  ports?: PortOverride // 구현이 생긴 포트를 바꿔 끼운다(T8 출정, T10 계승)
 }
 
 // 세계 하나가 쓰는 사건 포트 묶음을 만든다
@@ -405,6 +408,6 @@ export function createServices(world: EventWorld, opts: ServiceOptions = {}): Si
     discovery: { reveal: (w, id, scope) => reveal(w, ports, id, scope) },
   }
 
-  const ports: EventPorts = { ...base, ...opts.ports }
+  const ports: EventPorts = { ...base, ...(typeof opts.ports === 'function' ? opts.ports(base) : opts.ports) }
   return { ports, deferred }
 }

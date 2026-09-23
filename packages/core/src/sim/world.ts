@@ -12,7 +12,7 @@ import { characterOf, constantConditionTest, type ConditionTest, type RuleContex
 import { applyAging, type AgingChange } from '../rules/growth'
 import type { EventPorts, EventWorld } from '../events/index'
 import { createNewFamilyState, rngStates, type NewFamilyInput } from './create'
-import { createServices, type SimServices } from './services'
+import { createServices, type PortOverride, type SimServices } from './services'
 
 // 해석기가 행동 시작 때 확정하는 부분(seq·kind·시작 시점·applied는 World가 채운다)
 export type ResolvedDraft = Omit<ResolvedAction, 'seq' | 'kind' | 'started_eff_min' | 'applied'>
@@ -33,12 +33,14 @@ export function registerActionResolver(kind: ActionKind, resolver: ActionResolve
 
 export interface WorldOptions {
   test?: ConditionTest // 조건 평가기(makeConditionTest). 사건 포트는 제 scope로 다시 만들어 쓴다
-  ports?: Partial<EventPorts> // 사건 포트 교체(출정 진행·계승이 제 구현을 넣는다)
+  ports?: PortOverride // 사건 포트 교체(출정 진행·계승이 제 구현을 넣는다)
   resolvers?: Partial<Record<ActionKind, ActionResolver>> // 없으면 ACTION_RESOLVERS
   // 다음 행동(04 행동 결정). 행동과 행동 사이에만 부른다. 할 일이 없을 때의 대기도 길이가 정해진 행동이다
   decide?: (world: World) => ActionKind
   // 나이가 바뀐 직후(노화 이정표 적용 뒤). 나이 기록·은퇴 나이·생애 단계 경계를 여기서 받는다. 인물을 없애지 않는다
   onAge?: (world: World, fromAge: number, toAge: number, changes: AgingChange[]) => void
+  // 판단 지점(04 §2.3): 행동 결과를 모두 적용한 직후, 다음 행동을 고르기 전. 생애 훅(나이 알림·생애 종료·계승)이 여기 붙는다
+  onPoint?: (world: World) => void
 }
 
 // 유효 진행 시계가 멈추는 상태
@@ -59,6 +61,7 @@ export class World implements RuleContext, EventWorld {
   private readonly resolvers: Partial<Record<ActionKind, ActionResolver>>
   private readonly decide: (world: World) => ActionKind
   private readonly onAge: WorldOptions['onAge']
+  private readonly onPoint: WorldOptions['onPoint']
 
   constructor(
     readonly content: Content,
@@ -72,6 +75,7 @@ export class World implements RuleContext, EventWorld {
       throw new Error('행동 결정기가 없다(WorldOptions.decide)')
     })
     this.onAge = opts.onAge
+    this.onPoint = opts.onPoint
     this.services = createServices(this, { ...(opts.ports ? { ports: opts.ports } : {}) })
   }
 
@@ -140,7 +144,7 @@ export class World implements RuleContext, EventWorld {
     return (start - budget) / 1000
   }
 
-  // 확정 결과 적용: 기록(id·시점은 지금, 적용 전 인물) → 해석기 apply → applied.
+  // 확정 결과 적용: 기록(id·시점은 지금, 적용 전 인물) → 해석기 apply → applied → 판단 지점 훅.
   // 기록을 먼저 남겨야 apply가 인물을 없애거나(사망·은퇴) 바꿔도 그 행동의 기록이 원래 인물에 붙는다
   applyAction(action: ResolvedAction): void {
     if (action.applied) return
@@ -149,6 +153,7 @@ export class World implements RuleContext, EventWorld {
     for (const draft of action.journal) addJournal(this, draft)
     resolver.apply(this, action)
     action.applied = true
+    this.onPoint?.(this)
     this.syncRng()
   }
 

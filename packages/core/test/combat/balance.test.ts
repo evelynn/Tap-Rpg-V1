@@ -81,9 +81,8 @@ describe('밸런스 — EB03 관문(07 §4.4)', () => {
         rounds += r.round_count
       }
       const p = win / N
-      // 07 §4.4 표는 회복약을 마신 라운드에도 인물이 공격한다고 본 검산이다. 05 §7.7(공격 생략)을 지키면
-      // 일반 등급에서 승률이 6~9%p 낮게 나온다(같은 회복약 처리를 쓰면 표와 ±3%p 안에서 맞는다).
-      assert.ok(p >= row.win - 0.1 && p <= row.win + 0.05, `승률 ${(p * 100).toFixed(1)}% (문서 ${(row.win * 100).toFixed(0)}%)`)
+      // 관문·보스에서는 회복약을 마신 라운드에도 공격한다(05 §7.7, D55). 07 §4.4 표와 ±3%p 안에서 맞는다.
+      assert.ok(Math.abs(p - row.win) <= 0.05, `승률 ${(p * 100).toFixed(1)}% (문서 ${(row.win * 100).toFixed(0)}%)`)
       assert.ok(Math.abs(rounds / N - row.rounds) <= 2, `평균 라운드 ${(rounds / N).toFixed(1)} (문서 ${row.rounds})`)
     })
   }

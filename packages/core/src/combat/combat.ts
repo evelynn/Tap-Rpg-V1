@@ -239,14 +239,18 @@ export function resolveCombat(world: RuleContext & { rng: { combat: Rng } }, spe
 
     if (r === 1 && b.initiative === 'enemy') {
       // 매복 실패: 1라운드 인물 공격 없음
-    } else if (potionReserved) {
-      const p = potions.filter((x) => (potionMax.get(x.id) ?? 0) > 0).pop()!
-      potionMax.set(p.id, potionMax.get(p.id)! - 1)
-      drunk.push(p.id)
-      b.hp = Math.min(maxHpV, b.hp + p.amount)
-      potionReserved = false
-      potionUses++
-    } else charAttack()
+    } else {
+      if (potionReserved) {
+        // 급히 한 모금: 마신 라운드에도 공격한다(05 §7.7)
+        const p = potions.filter((x) => (potionMax.get(x.id) ?? 0) > 0).pop()!
+        potionMax.set(p.id, potionMax.get(p.id)! - 1)
+        drunk.push(p.id)
+        b.hp = Math.min(maxHpV, b.hp + p.amount)
+        potionReserved = false
+        potionUses++
+      }
+      charAttack()
+    }
 
     if (!aliveFoes().length) {
       outcome = 'win'

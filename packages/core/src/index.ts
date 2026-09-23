@@ -43,5 +43,33 @@ export * from './items/index'
 export * from './economy/index'
 // 사건 엔진(조건·효과·선택지·연속·운명)과 포트
 export * from './events/index'
-// 시뮬레이션 세계와 행동 골격, 사건 포트 조립
+// 행동 결정(04 §3~§6): 위험 등급, 후보 필터, 활동 가중치·장소 점수, 다음 출정 선택
+export * from './ai/index'
+// 활동(04 §7·§8, 07): 출정 진행, 사냥·던전·모험, 현장 판단, 마을 루틴, 상태 기계.
+// 은퇴·긴 잠 도래 판정은 생애 쪽 lifeEndDue 한 벌뿐이다(활동 쪽 retirePending은 없앴다, I08)
+export * from './activity/index'
+// 이름이 겹치는 것은 먼저 있던 쪽을 그대로 두고 새 쪽에 별칭을 준다(I08)
+export { riskCap } from './events/index'
+export { type Region, lifeStage, line } from './schema/index'
+export { type Candidate } from './state/index'
+export { type Candidate as PlaceCandidate, type Region as PlaceDef, lifeStage as aiLifeStage, riskCap as placeRiskCap } from './ai/index'
+export { line as activityLine } from './activity/index'
+// 생애(09): 나이·노화, 은퇴와 역할, 사망 기록, 흡혈귀 변이, 시스템 사건 발화.
+// 은퇴·긴 잠 도래는 lifeEndDue/retirePending 한 벌이 단일 출처다. EndKind는 활동 쪽 이름을 쓴다(I08)
+export {
+  type AgeTick, type CauseLines, type EarlyRetire, type LetterKind, type LetterState, type LifeEndDue, type LifeEndFire,
+  type LongSleepCause, type MutationSpec, type PolicyRow, type RelicOffer, type RetireRolePick, type Retiree, type RoleScore,
+  type SystemPhase, type ThirstStage, type FireOptions,
+  AGE_DETAIL, CHILDHOOD_DETAIL, NEW_NAME_DETAIL, RELIC_NOTICE_AGE, RELIC_NOTICE_LETHAL, RELIC_WARN, THIRST_MAX, THIRST_MIN,
+  addThirst, ageNotices, ageOf, ageTick, appearanceStage, applyBloodRest, applyMutation, atThirstLimit, autoDrinkDue,
+  bloodRestPlan, causeLines, cellarRestSec, currentAge, deathNotice, defaultRelicOffer, drinkThirstConsumable, earlyRetireCheck,
+  familyChoice, fateItemPort, fireLifeEnd, fireSuccession, fireSystemEvent, letterChoice, letterState, lethalRelicNotice,
+  lifeEndChoice, lifeEndDue, lifeEndEvent, lifeStageOf, livingRetirees, longSleepAgeFor, longSleepDue, mutationSpec,
+  nextGenPolicies, nightRatio, pickFamilyForm, pickRetireRole, registerRetiree, relicOfferCandidates, retireAgeOf, retirePending,
+  retireRoleScores, retireeHeirEvents, retireeModSources, showNoticeOnce, stageBoundaries, systemEvents, textLine, thirst,
+  thirstConsumable, thirstFromProgress, thirstOnSortieStart, thirstOnWin, thirstStage, thirstStages, visibleChoiceIds,
+} from './life/index'
+// 계승(12): 선천 특성 유전, 동반자·자녀 후보, 유품, 정산, 가문 기록, 5단계 계승
+export * from './succession/index'
+// 시뮬레이션 세계와 행동 골격, 사건 포트 조립, 생애 루프
 export * from './sim/index'

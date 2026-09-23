@@ -51,14 +51,16 @@ export function restPoint(ctx: RuleContext): RestResult {
 }
 
 // 마을 휴식(여관·길드 숙소): 1회 = 최대 HP × 회복 계수 × 휴식 배수, 피로 0. 한 번 쉰 뒤에도 HP < 90%면 한 번 더(최대 2회, 04 §8).
-// 여관은 회당 비용을 내고, 낼 돈이 없으면 쉬지 않는다. 여관 휴식 카운터(TA04)를 올린다. 쉰 횟수와 걸린 초를 돌려준다
-export function townRest(ctx: RuleContext, kind: 'inn' | 'lodging'): { times: number; hp: number; coins: number; sec: number } {
+// 여관은 회당 비용을 내고, 낼 돈이 없으면 쉬지 않는다. 여관 휴식 카운터(TA04)를 올린다. 쉰 횟수와 걸린 초를 돌려준다.
+// maxTimes를 주면 그만큼만 쉰다(행동 길이를 먼저 확정하는 마을 루틴이 1회씩 부른다, 13 §8.2)
+export function townRest(ctx: RuleContext, kind: 'inn' | 'lodging', maxTimes?: number): { times: number; hp: number; coins: number; sec: number } {
   const b = ctx.content.balance
   const spec = kind === 'inn' ? b.recovery.inn : b.recovery.lodging
   const sec = (kind === 'inn' ? b.actions.inn.sec : b.actions.guild_lodging.sec)[0]
+  const limit = Math.min(maxTimes ?? spec.max_times, spec.max_times)
   const ch = characterOf(ctx)
   const out = { times: 0, hp: 0, coins: 0, sec: 0 }
-  while (out.times < spec.max_times && (out.times === 0 || ch.hp < maxHp(ctx) * b.recovery.town_rest_when.hp_ratio_lt)) {
+  while (out.times < limit && (out.times === 0 || ch.hp < maxHp(ctx) * b.recovery.town_rest_when.hp_ratio_lt)) {
     if (kind === 'inn') {
       const cost = innFee(ctx)
       if (ch.coins < cost) break

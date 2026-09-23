@@ -34,9 +34,12 @@ export const SELECTOR_HANDLERS: Record<string, Selector> = {
     })
     const toNext = rng.chance(params.chain_next_chance)
     if (toNext && next.length) return { rumor_place: next[0]! }
-    const places = w.content.list('region').filter((r) => r.kind !== 'town' && test(r.unlock)
-      && (!ch.visited.includes(r.id) || (r.kind === 'adventure_route' && r.discoveries.some((d) => !ch.discoveries.includes(d.id)))))
-    const pick = places.length ? places[rng.bounded(places.length)]!.id : ch.location
+    // 남은 곳이 없으면 이미 다녀온 해금 장소를 쓴다. 인물이 선 자리(마을 귀환 사건이면 마을)로 떨어뜨리면
+    // set_destination이 마을을 출정 목적지로 잡아 조우 표가 없다는 예외가 난다(I53). 난수 소비량은 그대로다
+    const known = w.content.list('region').filter((r) => r.kind !== 'town' && test(r.unlock))
+    const places = known.filter((r) => !ch.visited.includes(r.id)
+      || (r.kind === 'adventure_route' && r.discoveries.some((d) => !ch.discoveries.includes(d.id))))
+    const pick = places.length ? places[rng.bounded(places.length)]!.id : known[0]?.id ?? ch.location
     return { rumor_place: pick }
   },
   // 해금 사냥터 중 위험 등급 ≤ max_risk인 곳 가운데 권장 중앙값이 가장 높은 곳

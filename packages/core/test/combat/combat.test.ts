@@ -156,6 +156,9 @@ describe('전투 — 적 특수능력(07 §4)', () => {
     const r = resolveCombat(w, { enemies: [{ id: 'EB03' }], regionLevel: 25, kind: 'boss_gate', ambush: false, stealth: false, flee: false })
     assert.ok(r.potions.length <= w.content.balance.combat.gate_potion.uses)
     if (r.potions.length) assert.deepEqual(r.potions, ['CP05'])
+    // 급히 한 모금(D55): 마신 라운드에도 공격하므로 인물 공격이 매 라운드 1회다
+    assert.ok(r.potions.length)
+    assert.equal(r.rounds.filter((x) => x.actor === 'char').length, r.round_count)
   })
 })
 

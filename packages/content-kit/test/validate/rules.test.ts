@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { enemyStats, registerTextSlot, type ContentKind } from '../../src/core'
+import { enemyStats, registerTextSlot, textSlots, type ContentKind } from '../../src/core'
 import { buildIndex } from '../../src/pack/index-defs'
 import type { RawDef } from '../../src/pack/read'
 import { KIND_SCHEMAS } from '../../src/validate/kind-schemas'
@@ -107,6 +107,9 @@ const WORLD = [
   event('L01'),
   def('text', { id: 'journal.test.slot', variants: ['{name:이/가} 쉬었다'] }),
   def('flag', { id: 'life.l01_marked_{place}', scope: 'life', value: 'bool', family: { place: 'region' }, set_by: 'L01', read_by: 'L01' }),
+  // 코어 규칙 층(활동·생애)이 등록한 문형도 번들에 없으면 V2다. 자리값 한 줄로 채운다
+  ...textSlots.list().map((s) => s.pattern).filter((id) => id !== 'journal.test.slot')
+    .map((id) => def('text', { id, variants: ['한 줄'] })),
 ]
 
 describe('runSemanticChecks — 기본 세계', () => {
@@ -172,7 +175,8 @@ describe('V2 참조 무결성', () => {
 
   it('코어가 부르는 문형 id와 첫 출정 보장 사건 선택지', () => {
     const r = run([...WORLD.filter((d) => d.kind !== 'text' && d.id !== 'L01'), event('L01', { choices: [choice('rest')] })])
-    assert.deepEqual(r, ['V2 #', 'V2 balance/balance.json#/first_sortie/guaranteed_event/choice'])
+    // 등록된 슬롯(시험용 1개 + 코어 규칙 층이 등록한 것) 전부가 빠진다
+    assert.deepEqual(r, [...textSlots.list().map(() => 'V2 #'), 'V2 balance/balance.json#/first_sortie/guaranteed_event/choice'])
   })
 })
 

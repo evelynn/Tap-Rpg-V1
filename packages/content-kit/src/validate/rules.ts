@@ -236,13 +236,12 @@ export function runSemanticChecks(index: DefIndex, schemas: Record<ContentKind, 
     }
   }
 
-  // 코어가 부르는 문형 id(V2)
-  for (const s of textSlots.list()) {
-    if (!index.get('text')?.has(s.pattern)) issues.push(issue('V2', { pack: '', file: '' }, `코어가 쓰는 문형 id가 없다: ${s.pattern}`))
-  }
-
-  // 첫 출정 보장 사건의 선택지(V2)
+  // 코어가 부르는 문형 id와 첫 출정 보장 사건의 선택지(V2).
+  // 둘 다 완성된 세계(balance가 있는 팩 묶음)에만 묻는다. balance가 없으면 그 자체가 위의 V2다(I19)
   if (balance) {
+    for (const s of textSlots.list()) {
+      if (!index.get('text')?.has(s.pattern)) issues.push(issue('V2', { pack: '', file: '' }, `코어가 쓰는 문형 id가 없다: ${s.pattern}`))
+    }
     const ge = balance.first_sortie.guaranteed_event
     const ev = get('event', ge.event)?.value as Event | undefined
     if (ev && !ev.choices.some((c) => c.id === ge.choice)) {
