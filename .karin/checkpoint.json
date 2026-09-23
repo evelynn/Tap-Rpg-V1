@@ -1,8 +1,8 @@
 {
   "karin_version": "1.3.0",
-  "session": 1,
+  "session": 2,
   "feature": "텝 마일스톤 1 — 코어·콘텐츠 기반 + 아트 제작 지시서",
-  "phase": "build",
+  "phase": "build-complete",
   "complexity": "Complex",
   "level": "Dynamic",
   "plan_file": "C:/Users/hansol/.claude/plans/reflective-floating-lovelace.md",
@@ -10,31 +10,122 @@
   "stack": "Tauri 2 + TypeScript (pnpm 모노레포, 오프라인 설치). M1은 UI 없이 packages/core + packages/content-kit + tools/{sim,demo,art-check}",
   "design_docs": "docs/design/00~18 (단일 출처: 01 수치·ID, 00 §2.4 규칙 소유표, 00 §3 결정 D01~), docs/dev/{CONTENT_SCHEMA,ARCHITECTURE,IMPL_DECISIONS,CONTENT_GUIDE,BALANCE_BACKLOG}",
   "tasks": [
-    {"id": "T1", "subject": "저장소 골격", "status": "completed", "priority": "high"},
-    {"id": "T2", "subject": "콘텐츠 스키마·팩 로더·검증기", "status": "completed", "priority": "high"},
-    {"id": "T3", "subject": "base 정적 콘텐츠", "status": "completed", "priority": "high"},
-    {"id": "T4", "subject": "코어 기초(rng·time·인물·판정·템플릿·일지·resolved_action)", "status": "completed", "priority": "high"},
-    {"id": "T5", "subject": "전투·부상·회복", "status": "completed", "priority": "high"},
-    {"id": "T6", "subject": "아이템·경제·자동 구매", "status": "completed", "priority": "high"},
-    {"id": "T7", "subject": "사건 엔진", "status": "completed", "priority": "high"},
-    {"id": "T8", "subject": "행동 결정·활동", "status": "completed", "priority": "high"},
-    {"id": "T9", "subject": "사건 콘텐츠 41개 이식", "status": "completed", "priority": "high"},
-    {"id": "T10", "subject": "생애·계승", "status": "completed", "priority": "high"},
-    {"id": "T11", "subject": "저장·오프라인 정산", "status": "in_progress", "priority": "medium"},
-    {"id": "T12", "subject": "헤드리스 시뮬레이터·밸런스 리포트", "status": "in_progress", "priority": "medium"},
-    {"id": "T13", "subject": "확장성 증명 팩·콘텐츠 작성 가이드", "status": "in_progress", "priority": "medium"},
-    {"id": "T14", "subject": "데모 실행기(터미널 생애 재생)", "status": "in_progress", "priority": "medium"},
-    {"id": "A1", "subject": "1차 스프라이트 검토와 제작 지시서·검사기", "status": "in_progress", "priority": "high"},
-    {"id": "M2", "subject": "Tauri 창·스프라이트 재생기(03 문서)", "status": "pending", "priority": "high"},
-    {"id": "M3", "subject": "생애의 책 구현(18 문서)", "status": "pending", "priority": "medium"}
+    {
+      "id": "T1",
+      "subject": "저장소 골격",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T2",
+      "subject": "콘텐츠 스키마·팩 로더·검증기",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T3",
+      "subject": "base 정적 콘텐츠",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T4",
+      "subject": "코어 기초(rng·time·인물·판정·템플릿·일지·resolved_action)",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T5",
+      "subject": "전투·부상·회복",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T6",
+      "subject": "아이템·경제·자동 구매",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T7",
+      "subject": "사건 엔진",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T8",
+      "subject": "행동 결정·활동",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T9",
+      "subject": "사건 콘텐츠 41개 이식",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T10",
+      "subject": "생애·계승",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "T11",
+      "subject": "저장·오프라인 정산",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "id": "T12",
+      "subject": "헤드리스 시뮬레이터·밸런스 리포트",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "id": "T13",
+      "subject": "확장성 증명 팩·콘텐츠 작성 가이드",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "id": "T14",
+      "subject": "데모 실행기(터미널 생애 재생)",
+      "status": "completed",
+      "priority": "medium"
+    },
+    {
+      "id": "A1",
+      "subject": "1차 스프라이트 검토와 제작 지시서·검사기",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "A2",
+      "subject": "이미지 생성 P0 에셋(PROMPTS.md 진행표 §6)",
+      "status": "in_progress",
+      "priority": "high"
+    },
+    {
+      "id": "M2",
+      "subject": "Tauri 창·스프라이트 재생기(03 문서)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "M3",
+      "subject": "생애의 책 구현(18 문서)",
+      "status": "pending",
+      "priority": "medium"
+    }
   ],
-  "current_task": "워크플로 2개 진행 중 (m1-wave5-finish, art-review-orders)",
-  "next_action": "완료 알림 수신 → pnpm check 확인 → 작업별 커밋 → 데모 실행 확인 → 밸런스 조정 루프 → M2 착수 전 네트워크 허용 확인",
+  "current_task": "M1 마감 확인(독립 재검증) · 아트 P0 v04 검토 대기",
+  "next_action": "독립 검증자 재확인(반례 0) → 밸런스 조정 루프(BALANCE_BACKLOG, content/base/balance.json) → M2 착수 전 네트워크 허용 확인",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능(I01·I02). M2의 Tauri·crates 설치에는 사용자의 네트워크 허용이 필요",
     "샌드박스 우회(dangerouslyDisableSandbox)는 거부됨 — 우회 금지"
   ],
-  "last_commit": "3f8f533",
-  "verify_state": "pnpm check 통과 — 테스트 960, lint:ids 0, content:check 0, 문서 검사 0 (2026-09-23)",
-  "last_updated": "2026-09-23T00:00:00+09:00"
+  "last_commit": "1250727",
+  "verify_state": "pnpm check 통과 — 테스트 1051, lint:ids 0, content:check 0, 문서 검사 0 (2026-09-23). 마지막 독립 검증의 반례는 모두 수정·회귀 테스트, 확인용 재검증은 아직",
+  "last_updated": "2026-09-23T23:00:00+09:00"
 }
