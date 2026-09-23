@@ -88,12 +88,22 @@ export function addThirst(ctx: RuleContext, delta: number): { value: number; jou
   const after = thirstStage(ctx)
   const journal: JournalDraft[] = []
   if (after && after.id !== beforeStage?.id && after.line !== undefined) {
-    journal.push({
-      tag: after.from >= THIRST_MAX - 10 ? 'important' : 'trait',
-      line: renderTemplate(after.line, { name: ch.name }),
-    })
+    const tag = after.from >= THIRST_MAX - 10 ? 'important' : 'trait'
+    if (tag === 'important' || firstReactionThisSortie(ctx, after.id)) journal.push({ tag, line: renderTemplate(after.line, { name: ch.name }) })
   }
   return { value: ch.mutation.thirst, journal }
+}
+
+// 같은 특성 반응은 출정당 1회만 기록한다(14 §2). 경계에서 오르내려 같은 단계에 다시 들어가도 한 번이다.
+// 표식은 출정 uid 일련번호(family.next_uid.sortie는 출정을 열 때만 오른다)를 카운터에 둔다. 출정 밖(마을)은 늘 남긴다
+function firstReactionThisSortie(ctx: RuleContext, stageId: string): boolean {
+  if (!ctx.state.current_activity.sortie) return true
+  const ch = characterOf(ctx)
+  const key = `thirst_line.${stageId}`
+  const mark = ctx.state.family.next_uid.sortie
+  if (ch.counters[key] === mark) return false
+  ch.counters[key] = mark
+  return true
 }
 
 // 출정 중 유효 진행 1분마다(09 §7.5). 마을·대기 중에는 부르지 않는다

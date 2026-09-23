@@ -3,7 +3,6 @@ import { effectiveLevel, gateCleared, gateRiskOk } from '../ai/index'
 import { retreatHpRatio } from '../combat/index'
 import { earnCoins } from '../economy/earn'
 import { addJournal, addToBundle, bundleRow } from '../journal/index'
-import { considerPickup } from '../items/bag'
 import { materializeItem, rollDrop } from '../items/roll'
 import { checkBonus, checkDc, evaluateCheck, recordCheckUse, regionDc, rollCheck, successChance, type CheckRoll } from '../rules/check'
 import { characterOf, type RuleContext } from '../rules/context'
@@ -17,7 +16,7 @@ import { emptyScope, rewardUnits, runJudgment } from '../events/index'
 import { ROOM_KINDS, type Effect } from '../schema/index'
 import type { JournalDraft } from '../state/journal'
 import type { World, ActionResolver, ResolvedDraft } from '../sim/world'
-import { applyEncounterStep, resolveEncounterStep, rollEnemies, runSavedEffects, type EncounterOutcome, type EncounterSpec } from './encounter'
+import { applyEncounterStep, pickupLoot, resolveEncounterStep, rollEnemies, runSavedEffects, type EncounterOutcome, type EncounterSpec } from './encounter'
 import { tickSortieBody } from './field'
 import { addPendingSec, fieldPoint, takePendingSec } from './judgment'
 import { DROP_TABLE } from './hunt'
@@ -429,7 +428,7 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
           gen: ch.generation, char_uid: ch.uid, age: ageAt(ch.eff_min, b.time), location: place, source: 'chest',
         })
         s.loot.item_uids.push(inst.uid)
-        for (const d of considerPickup(world, inst.uid, { mainPlace: place }).journal) addJournal(world, d)
+        pickupLoot(world, inst.uid, place)
       }
       break
     }

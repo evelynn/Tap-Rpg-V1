@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { maxHp, statCap } from '../../src/index'
+import { maxHp, startSortie, statCap, type World } from '../../src/index'
 import {
   addThirst, applyBloodRest, applyMutation, atThirstLimit, autoDrinkDue, drinkThirstConsumable, longSleepAgeFor,
   longSleepDue, mutationSpec, nightRatio, thirst, thirstConsumable, thirstFromProgress, thirstOnSortieStart, thirstOnWin,
@@ -104,6 +104,20 @@ describe('흡혈귀 변이 TM01(09 §7)', () => {
     assert.equal(r.cured, 1)
     assert.deepEqual(ch.injuries.map((i) => i.grade), ['light'])
     assert.equal(thirst(w), 20)
+  })
+
+  it('같은 갈증 단계의 [특성] 기록은 출정당 1회만 남긴다(14 §2)', () => {
+    const w = vampire()
+    const go = (world: World) => startSortie(world, {
+      activity: 'hunt', location_id: 'H1', time_of_day: 'night', weather: 'clear', source: 'weighted', forced_nearby: false, low_cap_only: false,
+    })
+    const count = (drafts: { tag: string }[][]) => drafts.flat().filter((d) => d.tag === 'trait').length
+    go(w)
+    // 40 경계에서 오르내려도(분당 +2, 밤 승리 −3) 목마름 기록은 한 번이다
+    assert.equal(count([addThirst(w, 40).journal, addThirst(w, -3).journal, addThirst(w, 4).journal, addThirst(w, -3).journal, addThirst(w, 4).journal]), 1)
+    // 다음 출정에서는 다시 남긴다
+    go(w)
+    assert.equal(count([addThirst(w, -3).journal, addThirst(w, 4).journal, addThirst(w, -3).journal, addThirst(w, 4).journal]), 1)
   })
 
   it('CP08은 갈증을 25 내리고, 자동 사용 기준은 출정 60·마을 40이다', () => {

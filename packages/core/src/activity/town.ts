@@ -9,6 +9,7 @@ import { addFatigue } from '../rules/fatigue'
 import { innFee } from '../rules/cost'
 import { maxHp } from '../rules/derived'
 import { camp, tickInjuries, townRest } from '../recovery/index'
+import { fieldSoldLine } from '../items/bag'
 import { modValue } from '../rules/modifiers'
 import type { JournalDraft } from '../state/journal'
 import type { ActionResolver, ResolvedDraft, World } from '../sim/world'
@@ -80,6 +81,11 @@ export const travelResolver: ActionResolver = {
     tickSortieBody(world, action.duration_sec / 60)
     if (back) {
       closeBundle(world) // 출정 종료: 열린 묶음을 마을 기록보다 먼저 남긴다(14 §4)
+      // 현장 정리 기록은 출정마다 묶어서 한 줄(08 §9.3 3)
+      const ch = characterOf(world)
+      const sold = ch.counters[COUNTERS.fieldSold] ?? 0
+      if (sold) addJournal(world, fieldSoldLine(sold))
+      ch.counters[COUNTERS.fieldSold] = 0
       arriveTown(world)
       return
     }

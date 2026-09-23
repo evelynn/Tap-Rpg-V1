@@ -101,12 +101,15 @@ describe('사망 원인 기록(09 §5.4)과 다음 세대 방침(09 §5.5)', () 
     assert.deepEqual(rows.filter((r) => r.highlight).map((r) => r.key), ['risk_cap', 'lethal_allowed', 'destination'])
   })
 
-  it('기본 창 한 줄과 원인 세 줄을 기록 초안으로 만든다', () => {
+  it('사망 기록(07 §8.2)의 한 줄은 장소의 사망 문장이고 원인 세 줄을 상세로 단다. S04 한 줄(등불)과 겹치지 않는다', () => {
     const w = lifeWorld()
     const d = death()
-    const draft = deathNotice(d, causeLines(w, d))
+    const draft = deathNotice(w, d, causeLines(w, d))
     assert.equal(draft.tag, 'death')
-    assert.equal(draft.line, '해솔의 등불이 꺼졌다')
+    assert.equal(draft.line, '부서진 종 아래에서 눈을 감았다.')
     assert.equal(draft.detail!.split('\n').length, 3)
+    // 장소에 사망 문장이 없으면 09 §5.4 머리줄(이름·나이·레벨·장소)
+    const other = deathNotice(w, death({ location: 'H1' }), causeLines(w, d))
+    assert.equal(other.line, '해솔 (63세 · Lv27) — 여울가 풀밭')
   })
 })

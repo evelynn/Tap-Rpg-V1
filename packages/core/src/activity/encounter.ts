@@ -6,7 +6,7 @@ import {
 } from '../combat/index'
 import { earnCoins } from '../economy/earn'
 import { addJournal } from '../journal/index'
-import { considerPickup } from '../items/bag'
+import { considerPickup, stowLoot } from '../items/bag'
 import { guaranteedDrop, materializeItem, rollEncounterDrop, type DropSpec } from '../items/roll'
 import { thirstOnWin } from '../life/index'
 import { characterOf, type RuleContext } from '../rules/context'
@@ -159,8 +159,7 @@ export function applyEncounterStep(world: World, spec: EncounterSpec, out: Encou
       gen: ch.generation, char_uid: ch.uid, age: ageAt(ch.eff_min, world.content.balance.time), location: spec.place, source: 'drop',
     })
     if (sortie) sortie.loot.item_uids.push(inst.uid)
-    const r = considerPickup(world, inst.uid, { mainPlace: spec.place })
-    for (const d of r.journal) addJournal(world, d)
+    pickupLoot(world, inst.uid, spec.place)
   }
   // 의뢰 진행(L06): 같은 장소·같은 적을 쓰러뜨리면 센다
   if (sortie && sortie.quest_wins !== null && ch.quest) {
@@ -184,6 +183,22 @@ export function applyEncounterStep(world: World, spec: EncounterSpec, out: Encou
     ch.counters[COUNTERS.sortieDefeats] = (ch.counters[COUNTERS.sortieDefeats] ?? 0) + 1
     if (out.defeat.rescuer) addJournal(world, { tag: 'injury', line: out.defeat.rescuer.line, refs: { location_id: spec.place } })
   }
+}
+
+// 출정 중 얻은 장비(08 §8·§9.3): 개선이면 바로 차고, 아니면 가방에 넣는다(가득 차면 현장 정리).
+// 현장에서 판 수는 출정마다 모아 귀환 때 한 줄로 남긴다. 제안한 장비를 그 자리에서 팔았으면 제안 기록은 남기지 않는다
+export function pickupLoot(world: World, uid: string, place: string): void {
+  const ch = characterOf(world)
+  const r = considerPickup(world, uid, { mainPlace: place })
+  let sold = r.fieldSold
+  let journal = r.journal
+  if (!r.equipped) {
+    sold += stowLoot(world, uid).fieldSold
+    const inv = world.state.inventory
+    if (!inv.bag.includes(uid) && !inv.pending_box.includes(uid)) journal = []
+  }
+  if (sold) ch.counters[COUNTERS.fieldSold] = (ch.counters[COUNTERS.fieldSold] ?? 0) + sold
+  for (const d of journal) addJournal(world, d)
 }
 
 // 판단 지점 앞 숨 고르기(07 §2). 관문 앞에서는 하지 않는다

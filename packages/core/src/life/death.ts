@@ -53,12 +53,15 @@ export function missingCauseLines(content: Content): CauseLines {
   return { risk_line: t, injury_line: t, final_check_line: t }
 }
 
-// 기본 창 한 줄(09 §5.2)과 원인 기록. 사건(S04)이 상세를 채우므로 여기서는 요약만 남긴다
-export function deathNotice(d: DeathRecord, lines: CauseLines): JournalDraft {
+// 사망 기록(07 §8.2)과 원인 기록(09 §5.4). 한 줄은 장소의 사망 문장(치명 관문 lines.death_line)이고,
+// 없으면 09 §5.4 머리줄(이름·나이·레벨·장소)을 쓴다. `{name}의 등불이 꺼졌다`는 S04 한 줄(11)이 소유하므로 여기서 쓰지 않는다
+export function deathNotice(ctx: { content: Content }, d: DeathRecord, lines: CauseLines): JournalDraft {
+  const region = ctx.content.has('region', d.location) ? ctx.content.get('region', d.location) : null
+  const deathLine = region && 'gate' in region ? region.gate?.lines.death_line : undefined
   return {
     tag: 'death',
     importance: 'family',
-    line: `${d.name}의 등불이 꺼졌다`,
+    line: deathLine ?? `${d.name} (${d.age}세 · Lv${d.level}) — ${region?.name ?? d.location}`,
     detail: [`진입 위험 : ${lines.risk_line}`, `누적 부상 : ${lines.injury_line}`, `결정적 순간 : ${lines.final_check_line}`].join('\n'),
     refs: { location_id: d.location },
   }

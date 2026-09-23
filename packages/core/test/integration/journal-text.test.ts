@@ -19,9 +19,7 @@ function scan(where: string, text: string | undefined, hits: Hit[]): void {
 
 // 두 생애를 끝까지 돌리며 새 기록과 선택 창 문장을 모은다(생애가 끝나면 일상 기록이 지워지므로 그때그때 본다)
 // 같은 태그·같은 한 줄이 연달아 나오면 14 §4 묶음이 빠진 것이다. 묶음 기록끼리(던전 3개 방 묶음이 이어짐)만 허용한다.
-// 알려진 남은 결함(이 가드 담당 밖, 보고함): [특성] 흡혈귀 갈증 반응이 출정당 1회(14 §2)를 넘어 되풀이된다(life/vampire),
-// [사망] 원인 기록(life/death.deathNotice)과 S04 한 줄이 같은 문장이다
-const KNOWN_REPEAT_TAGS = new Set(['trait', 'death'])
+// 흡혈귀 갈증 반응은 출정당 1회(14 §2), [사망] 원인 기록(07 §8.2)은 S04 한 줄과 다른 문장이다
 function playTwoLives(world: World): { hits: Hit[]; long: Hit[]; repeats: Hit[]; lines: number; lives: number } {
   const lineMax = world.content.balance.ui.line_max
   const hits: Hit[] = []
@@ -42,7 +40,7 @@ function playTwoLives(world: World): { hits: Hit[]; long: Hit[]; repeats: Hit[];
       scan(`${where} 이유`, e.reason, hits)
       if ([...e.line].length > lineMax) long.push({ where, text: e.line })
       const bundle = (e.bundle_count ?? 1) >= 2
-      if (prev && prev.tag === e.tag && prev.line === e.line && !(prev.bundle && bundle) && !KNOWN_REPEAT_TAGS.has(e.tag)) repeats.push({ where, text: e.line })
+      if (prev && prev.tag === e.tag && prev.line === e.line && !(prev.bundle && bundle)) repeats.push({ where, text: e.line })
       prev = { tag: e.tag, line: e.line, bundle }
     }
     const p = world.state.pending_choice
@@ -75,8 +73,8 @@ const seedOf = (n: number) => (0x7000 + n).toString(16).padStart(16, '0')
 describe('일지 문장 가드: 세 태도 × 여러 시드 × 두 생애', () => {
   const cases = [
     ...['stable', 'adventurous', 'challenging'].flatMap((attitude) => [0, 1, 2].map((n) => ({ attitude, seed: seedOf(n), lethal: false }))),
-    // 치명 허용으로 첫 생애가 사망(S04 편지·사망 원인 줄)으로 끝나는 시드. 행동 길이·판단 순서가 바뀌면 다시 고른다
-    { attitude: 'challenging', seed: '0000000000005020', lethal: true },
+    // 치명 허용으로 첫 생애가 사망(S04 편지·사망 원인 줄)으로 끝나는 시드. 흡혈귀 갈증 기록도 나온다. 행동 길이·판단 순서가 바뀌면 다시 고른다
+    { attitude: 'challenging', seed: '0000000000005061', lethal: true },
   ]
   for (const c of cases) {
     it(`${c.attitude} ${c.seed}${c.lethal ? ' 치명 허용' : ''}`, () => {

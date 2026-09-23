@@ -20,6 +20,7 @@ export const COUNTERS = {
   sortieDefeats: 'sortie_defeats', // 이번 출정에서 쓰러진 횟수(무사 귀환 판정)
   townStep: 'town_step', // 마을 루틴 진행 단계(0 = 완료)
   pendingSec: 'pending_sec', // 사건이 더한 연출 시간(add_time)을 다음 행동으로 넘긴다
+  fieldSold: 'field_sold', // 이번 출정에서 현장 정리로 판 장비 수(08 §9.3, 귀환 때 한 줄로 남긴다)
 } as const
 
 // 사건이 더한 연출 시간(add_time)·회복약 연출 시간은 다음 행동 길이로 넘긴다(저장 칸이 없어 카운터로 둔다, I44 후보)
@@ -112,6 +113,7 @@ export function startSortie(world: World, choice: SortieChoice): Sortie {
   ca.state = 'travel'
   ca.next_sortie_override = null
   ch.counters[COUNTERS.sortieDefeats] = 0
+  ch.counters[COUNTERS.fieldSold] = 0
   ch.counters[COUNTERS.townStep] = 0
   ch.decision_seq += 1
 
