@@ -172,7 +172,7 @@ function hold(w: EventWorld, occ: EventOccurrence): EventResult {
     preview_rendered: {
       body,
       ...(ev.preview?.note !== undefined ? { note: render(ev.preview.note, vals) } : {}),
-      choices: Object.fromEntries(choices.map((c) => [c.id, { label: c.label, ...(c.preview ? renderPreview(c.preview) : {}) }])),
+      choices: Object.fromEntries(choices.map((c) => [c.id, { label: render(c.label, vals), ...(c.preview ? renderPreview(c.preview) : {}) }])),
     },
   }
   ca.state = 'awaiting_choice'

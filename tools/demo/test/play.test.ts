@@ -67,7 +67,8 @@ describe('데모 재생', () => {
   })
 
   it('파이프 입력(줄 수 < 선택 수)으로 기본 실행하면 입력이 끝난 뒤 자동으로 넘어가 한 생애를 끝까지 본다', async () => {
-    const args = parseArgs(['--fast', '--plain', '--seed', '3'])
+    // 시드는 "한 생애에 선택이 2번 이상 온다"를 재현하는 값이다. 난수 순서가 바뀌면 다시 고른다
+    const args = parseArgs(['--fast', '--plain', '--seed', '1'])
     const world = createDemoWorld(content, args)
     let raw = ''
     const lines: string[] = []

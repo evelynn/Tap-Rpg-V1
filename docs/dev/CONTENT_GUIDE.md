@@ -284,7 +284,7 @@ pnpm sim --content content/base content/my-pack --attitude stable --seeds 1-20
 | 〃 | `parent_call` `sleep_age` `weapon` `partner` `job` `child` `parent_name` `relic` | 상태에 값이 있을 때만. `parent_call` 2대부터, `sleep_age` 변이 뒤, `weapon` 무기를 찼을 때, `partner`·`job` S01 `create_partner` 뒤, `child` 자녀 후보가 있을 때(막내), `parent_name` 부모가 연대기에 있을 때, `relic` 물려받은 유품(생애 종료 단계 사건이면 넘길 유품 1위, 없으면 `남은 배낭`) |
 | 〃 | `item` `loot` | 장비를 주는 효과(`add_item`·`add_random_item`·`open_chest`·`offer_purchase`)나 `add_coins`가 있는 사건만. `item` = 산·받은 장비, `loot` = 받은 장비(없으면 `동전 N개`). 도입에서부터 보여 줄 물건은 `offer_item` 선택자로 고른다 |
 | 선택 창(`preview.body`·`variants`·`note`, 선택지 `preview`) | 위 + `n` `m` `luck_after` `sleep_age` | `n`·`m` = 근접·탐색 단계(자동 전문화 사건), `luck_after` = 사건의 `life_stat_add luk` 적용 뒤 행운, `sleep_age` = 아직 변이 전이면 `mutate` 뒤 예정 나이 |
-| 생애 종료 단계 사건(S03·S04·S08) | 위 + `risk_line` `injury_line` `final_check_line` | 사망 원인 기록이 있을 때 부르는 쪽이 넣는다 |
+| 생애 종료 단계 사건(S03·S04·S08) | 위 + `risk_line` `injury_line` `final_check_line` | 사망이면 부르는 쪽이 넣는다. 사망 원인 기록이 없으면 세 값 모두 `journal.death.cause_missing`(00 D60) |
 | 계승 단계 사건(S05) | 위 + `heir` `first_page` | `first_page` = 이전 인물의 가장 이른 발견·유품·인연 이름(없으면 `{name}의 이름`) |
 | 의뢰 정산 문장(`accept_quest.lines`) | `coins` `place`만 | 다른 변수는 채우지 않는다 |
 | 선택 이유(`balance.choice_ai.reason_lines`) | `attitude`(태도 `reason_label`) `choice_short` `trait_reason` `trait_name` | 이유 종류별 |

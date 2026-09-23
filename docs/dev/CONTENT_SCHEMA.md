@@ -396,7 +396,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `remove_consumable` 신설 | `carry_groups: ref("carry_group")[]`, `count: posInt` | 나열 순서대로 가진 묶음 하나에서 뺀다. L09 식량 나누기, 05 §6.4 곤란 3(식량 또는 붕대) |
 | `add_material` 신설 | `material_id: ref("material")`, `count: posInt` | 사건 결과의 재료(채집물 등) |
 | `open_chest` 신설(T9) | 없음 | 보물 방 상자 내용(07 §5.3: 장비 1개 `drops.treasure_chest` + 동전 `dungeon.chest.coin_units` + 재료 `dungeon.chest.material`, 현재 장소 기준)을 받는다. 잠김·함정 판정은 하지 않는다(사건 판정이 대신한다). L17·L20 `보물 상자 1개` |
-| `offer_purchase` | `pool: {facilities: ref("facility")[], slots: slot[]}`, `tier: "character"\|tier`, `grade_weights`, `price_mult: number`, `defect?: modifier[]`, `exempt_discount_cap?: bool = true`, `respect_auto_buy?: bool = true` | 후보는 그 시설에 `shop`을 선언한 장비(5.5) |
+| `offer_purchase` | `pool: {facilities: ref("facility")[], slots: slot[]}`, `tier: "character"\|tier`, `grade_weights`, `price_mult: number`, `defect?: modifier[]`, `exempt_discount_cap?: bool = true`, `respect_auto_buy?: bool = true` | 후보는 그 시설에 `shop`을 선언한 장비(5.5). 사건에 `{item}`(`offer_item`, 4.5)이 있으면 엔진이 그 물건을 `item_id`로 넘기고 포트는 후보 중 그 물건만 판다(없으면 불발) |
 
 **특성·생애**
 
@@ -524,6 +524,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `travel_sec_add.{region}` 신설 | number(초) | | 07 A2-3: `travel_sec_add.A2` −10 등 그 장소까지 이동 |
 | `descend_sec_add.{region}` 신설 | number(초) | | 07 A3-5: `descend_sec_add.D2`·`.D3`·`.A4` −10(A4는 D3 하강을 거친다) |
 | `return_travel_time_mult` 신설 | number | | X03 |
+| `return_travel_sec_add` 신설 | number(초) | | 사건 `sortie_mod.return_travel_sec_add`가 출정 수정자로 건다(L19 −30, 무너지는 발판 +20). 등록이 빠져 이 수정자가 걸린 출정을 저장하면 K4로 읽지 못했다(I70) |
 | `travel_fatigue_add` 신설 | number | | 눈 +1 |
 | `discovery_chance_add` / `discovery_chance_mult` | number | O | R02, 안개 |
 | `trap_encounter_add` | number | O | TI06 +0.10. **상대 가산**: 함정 방 가중치 × (1 + 합)(00 D53) |
@@ -577,7 +578,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 
 ### 4.5 사건 변수 선택자 (`contextSelectors`, W4)
 
-`event.context_vars: {var, selector, params?}[]` — **배열이고 선언 순서대로 평가한다**. 뒤 항목의 `params`는 앞 항목이 채운 변수를 이름으로 가리킬 수 있다. 선택자 이름은 코드 등록부다(엔진이 계산). 수치·기준은 이름에 박지 않고 `params`로 준다. `var`는 16 §1.4.3에서 `값 = 사건`인 것만 쓸 수 있다.
+`event.context_vars: {var, selector, params?}[]` — **배열이고 선언 순서대로 평가한다**. 뒤 항목의 `params`는 앞 항목이 채운 변수를 이름으로 가리킬 수 있다. 선택자 이름은 코드 등록부다(엔진이 계산). 수치·기준은 이름에 박지 않고 `params`로 준다. `var`는 16 §1.4.3에서 `값 = 사건`인 것만 쓸 수 있다. **예외 2개**: `item`(`offer_item`)과 `coins`(`coin_amount`)는 16 §1.4.3에서 `값 = 문맥`이지만, 도입이 결과보다 먼저 그 값을 보여 줘야 하는 사건(L02·L10·L12)에 한해 선택자로 채운다(IMPL_DECISIONS I68). 그 사건 안에서는 선택자 값이 문맥 값보다 먼저다.
 
 | 선택자 | params | 고르는 것 | 채우는 변수 | 쓰는 사건 |
 | --- | --- | --- | --- | --- |
@@ -586,6 +587,8 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 | `main_enemy_of` | `{place_var: string}` | 앞서 채운 장소 변수의 조우 표에서 가중치가 가장 큰 적 | `{enemy}` | L06 |
 | `random_friend_name` | 없음 | 02 이름 풀에서 가문 인물과 겹치지 않는 이름(`life` 난수 흐름) | `{friend}` | L22 |
 | `offered_relic` | 없음 | F02 헌납 후보(희귀 이상 유물 중 선택 창에서 고름) | `{relic_name}` `{relic_note}` | F02 |
+| `offer_item` | `{facilities: ref("facility")[], slots: slot[]}` | 특가 구매 도입에 보이는 물건: 인물 레벨 기준 단계의 그 시설·슬롯 판매 장비(저주 제외) 중 무작위(`event` 흐름). `offer_purchase` 효과가 이 값을 `item_id`로 포트에 넘기고, 포트는 **그 물건만** 판다(효과의 `pool`에 없으면 팔지 않는다, I70) | `{item}` | L02, L10 |
+| `coin_amount` | `{units: number}` | 그 장소 동전 단위 × `units`(10 §6.1, 반올림). `add_coins`의 `units`와 같은 식이라 도입에 보인 금액과 받는 금액이 같다 | `{coins}` | L12 |
 
 ```json
 { "context_vars": [

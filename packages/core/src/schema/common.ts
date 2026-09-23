@@ -543,6 +543,7 @@ for (const [pattern, value, doc] of [
   ['travel_sec_add.{region}', 'number', '그 장소까지 이동 시간 가산(초)'],
   ['descend_sec_add.{region}', 'number', '입구에서 그 층까지 하강 시간 가산(초)'],
   ['return_travel_time_mult', 'number', '귀환 이동 시간'],
+  ['return_travel_sec_add', 'number', '귀환 이동 시간 가산(초). 사건 sortie_mod가 출정 수정자로 건다'],
   ['travel_fatigue_add', 'number', '이동 구간 피로 가산'],
   ['discovery_chance_add', 'number', '발견 확률 가산'],
   ['discovery_chance_mult', 'number', '발견 확률 배수'],

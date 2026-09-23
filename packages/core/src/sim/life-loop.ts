@@ -20,7 +20,7 @@ import {
 } from '../activity/index'
 import {
   ageNotices, ageTick, causeLines, deathNotice, familyChoice, fireLifeEnd, fireSystemEvent, letterChoice, letterState,
-  longSleepDue, pickRetireRole, registerRetiree, retireeHeirEvents, systemEvents, type SystemPhase,
+  longSleepDue, missingCauseLines, pickRetireRole, registerRetiree, retireeHeirEvents, systemEvents, type SystemPhase,
 } from '../life/index'
 import { endLife, startHeir, successionPorts, type HeirChoice, type SuccessionPlan } from '../succession/index'
 import type { NewFamilyInput } from './create'
@@ -92,9 +92,10 @@ function runLifeEnd(world: World, end: PendingEnd): void {
   if (end.kind === 'died') {
     const d = end.death
     const place = d?.location ?? ch.location
-    const lines = d ? causeLines(world, d) : null
-    if (d && lines) addJournal(world, deathNotice(d, lines))
-    fireLifeEnd(world, { kind: 'died', place, ...(lines ? { vars: { ...lines } } : {}) }, world.ports)
+    // 사망 기록이 없어도 S04 원인 세 줄은 채운다(11 S04 대체 문형, D60). 기본 창 원인 기록은 기록이 있을 때만 남긴다
+    const lines = d ? causeLines(world, d) : missingCauseLines(world.content)
+    if (d) addJournal(world, deathNotice(d, lines))
+    fireLifeEnd(world, { kind: 'died', place, vars: { ...lines } }, world.ports)
     st.succession = endLife(world, { kind: 'died', place, ...(d ? { cause: causeOf(d) } : {}) })
     return
   }

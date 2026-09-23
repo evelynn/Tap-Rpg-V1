@@ -1,9 +1,11 @@
 // 데모 검증(600분·3000분 2세대 실행)에서 나온 결함의 회귀 테스트:
-// 생애 요약 카운터(12 §7.1), 가문 수첩의 발견(07 §6.5), 중상 치료 기록(14 §5.1), 계승 대기·나이 알림 저장(C31).
+// 생애 요약 카운터(12 §7.1), 가문 수첩의 발견(07 §6.5), 중상 치료 기록(14 §5.1), 계승 대기·나이 알림 저장(C31),
+// 여관 문장 변형, 특가 구매 물건(11 L02·L10), 사망 기록 없는 S04, 부모 없는 별칭(12 §7.5).
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  COUNTERS, loadGameWorld, makeSaveRoot, pendingSuccession, sceneResolver, serializeSave, startSortie, succeed, TOWN_STEPS,
+  applyOccurrence, COUNTERS, createItemInstance, lifeLoopOf, loadGameWorld, makeSaveRoot, pendingSuccession, pickEpithet,
+  prepareOccurrence, sceneResolver, serializeSave, startSortie, succeed, TOWN_STEPS,
   loadSave, type ResolvedAction, type SaveBody, type World,
 } from '../../src/index'
 import { rollCheck } from '../../src/rules/check'
@@ -173,5 +175,139 @@ describe('판단 지점으로 미룬 생애 진행의 저장(CONTENT_SCHEMA §6 
     assert.ok(loaded.ok, loaded.ok ? '' : `${loaded.code} ${loaded.message}`)
     assert.deepEqual(loaded.root.body.current_activity.life_loop, { age_ticks: [], pending_end: null, succession: null })
     assert.deepEqual(loaded.root.body.family.discovery_points, [])
+  })
+})
+
+// ── 남은 결함: 여관 문장 변형, 특가 물건 일치, 사망 기록 없는 S04, 부모 없는 별칭 ──
+
+describe('여관 휴식 문장 변형(14 §5.1 [휴식])', () => {
+  it('묵을 때마다 같은 문장만 나오지 않는다(seq로 고른다)', () => {
+    const lines = (seed: string) => {
+      const world = makeGame({ seed })
+      const ch = world.state.character!
+      const out: string[] = []
+      for (let i = 0; i < 6; i++) {
+        ch.coins = 10_000
+        ch.counters[COUNTERS.sorties] = i
+        world.state.current_activity.state = 'town_idle'
+        ch.counters[COUNTERS.townStep] = TOWN_STEPS.rest
+        const start = world.state.journal.length
+        world.applyAction(world.startAction('inn'))
+        out.push(...world.state.journal.slice(start).filter((e) => e.tag === 'rest').map((e) => e.line))
+      }
+      return out
+    }
+    const got = lines(seedOf(8))
+    assert.equal(got.length, 6)
+    assert.ok(new Set(got).size > 1, got.join(' / '))
+    assert.deepEqual(lines(seedOf(8)), got, '같은 저장이면 같은 문장')
+  })
+})
+
+describe('특가 구매는 도입의 물건을 산다(11 L02·L10)', () => {
+  const bought = (world: World, before: Set<string>) =>
+    Object.values(world.state.item_instances).find((i) => !before.has(i.uid))
+
+  it('L02: 산 물건 = 도입의 {item}', () => {
+    for (let n = 20; n < 28; n++) {
+      const world = makeGame({ seed: seedOf(n) })
+      world.state.character!.coins = 1_000_000
+      const before = new Set(Object.keys(world.state.item_instances))
+      const occ = prepareOccurrence(world, 'L02', 'T00', world.ports, { choiceId: 'buy' })
+      applyOccurrence(world, occ, world.ports)
+      const inst = bought(world, before)
+      assert.ok(inst, `#${n} 사지 않았다`)
+      assert.equal(inst.def_id, occ.vars.item, `#${n}`)
+    }
+  })
+
+  it('L10: 산 물건 = 도입의 {item}, 실패작 보정은 그 물건의 슬롯을 따른다', () => {
+    const slots = new Set<string>()
+    for (let n = 30; n < 40; n++) {
+      const world = makeGame({ seed: seedOf(n) })
+      world.state.character!.coins = 1_000_000
+      const before = new Set(Object.keys(world.state.item_instances))
+      const occ = prepareOccurrence(world, 'L10', 'T00', world.ports, { choiceId: 'buy' })
+      applyOccurrence(world, occ, world.ports)
+      const inst = bought(world, before)
+      assert.ok(inst, `#${n} 사지 않았다`)
+      assert.equal(inst.def_id, occ.vars.item, `#${n}`)
+      const slot = world.content.get('item', inst.def_id).slot
+      slots.add(slot)
+      // TI04 손재주는 실패작 보정을 없앤다(11 L10 특성 반응)
+      const handy = world.state.character!.traits.some((t) => t.id === 'TI04')
+      assert.deepEqual(inst.defect?.map((m) => m.target), handy ? undefined : [slot === 'weapon' ? 'hit' : 'ac'], `#${n} ${slot}`)
+    }
+    assert.deepEqual([...slots].sort(), ['armor', 'weapon'], '무기·방어구 둘 다 나오는 시드 범위가 아니다')
+  })
+
+  it('도입의 물건이 효과 풀에 없으면 다른 물건을 사지 않는다', () => {
+    const world = makeGame({ seed: seedOf(40) })
+    world.state.character!.coins = 1_000_000
+    const armor = world.content.list('item').find((d) => d.slot === 'armor' && d.tier === 1 && (d.shop ?? []).some((s) => s.facility === 'smithy'))!
+    const p = { pool: { facilities: ['smithy'], slots: ['weapon'] }, tier: 'character', grade_weights: { common: 1 }, price_mult: 1, item_id: armor.id }
+    assert.equal(world.ports.economy.offerPurchase(world, p, { place: 'T00', vars: {} }), null)
+  })
+})
+
+describe('사망 기록이 없는 S04(11 S04, 09 §5.4)', () => {
+  it('원인 세 줄은 대체 문장으로 채워 렌더 예외 없이 계승 대기로 간다', () => {
+    const world = makeGame({ seed: seedOf(9) })
+    lifeLoopOf(world).pending_end = { kind: 'died', death: null }
+    const start = world.state.journal.length
+    run(world, { steps: 20 })
+    assert.equal(world.state.current_activity.state, 'awaiting_succession')
+    const fallback = world.content.get('text', 'journal.death.cause_missing').variants[0]!
+    const s04 = world.state.journal.slice(start).find((e) => e.tag === 'death' && /진입 위험/.test(e.detail ?? ''))
+    assert.ok(s04, 'S04 원인 상세가 없다')
+    assert.ok((s04.detail ?? '').includes(`진입 위험 : ${fallback}`), s04.detail)
+    assert.ok(!/[{}]/.test(s04.detail ?? ''), s04.detail)
+  })
+})
+
+describe('부모가 필요한 별칭(12 §7.5 1순위)', () => {
+  it('앞 세대가 없으면 {parent_call} 별칭을 건너뛴다', () => {
+    const world = makeGame({ seed: seedOf(10) })
+    const ch = world.state.character!
+    assert.equal(ch.parent_call, null)
+    ch.mutation = { trait_id: 'TM01', since_age: 40, long_sleep_age: 98, thirst: 0 }
+    const r04 = createItemInstance(world.content, world.state, 'R04', undefined, {
+      gen: 0, char_uid: ch.uid, age: 18, location: 'T00', source: 'test',
+    })
+    r04.inherited_from_gen = 0
+    world.state.inventory.bag.push(r04.uid)
+    const epithet = pickEpithet(world, { place: 'T00', vars: {} })
+    assert.equal(epithet, `달그늘의 ${ch.name}`)
+    // 앞 세대가 있으면 1순위 그대로
+    ch.parent_call = '어머니'
+    assert.equal(pickEpithet(world, { place: 'T00', vars: {} }), `어머니의 잔을 비운 ${ch.name}`)
+  })
+})
+
+// 위 수정으로 난수 순서가 바뀌며 가드·강제 종료 시험이 새로 밟은 결함
+describe('선택 창 선택지 이름도 렌더한다(11 F03 `{parent_call}의 잠에 대해 묻는다`)', () => {
+  it('변수가 든 선택지 이름이 날 템플릿으로 남지 않는다', () => {
+    const world = makeGame({ seed: seedOf(11) })
+    const fam = world.state.family
+    fam.flags['fam.f03_accepted'] = true
+    fam.flag_meta['fam.f03_accepted'] = { set_gen: fam.generation - 1 }
+    world.state.character!.parent_call = '어머니'
+    world.state.policies.fate_handling = 'hold'
+    applyOccurrence(world, prepareOccurrence(world, 'F03', 'A4', world.ports), world.ports)
+    const r = world.state.pending_choice!.preview_rendered as { choices: Record<string, { label: string }> }
+    assert.equal(r.choices.ask_sleep?.label, '어머니의 잠에 대해 묻는다')
+  })
+})
+
+describe('출정 수정자 return_travel_sec_add의 저장(11 L19, 07 무너지는 발판)', () => {
+  it('sortie_mod가 건 귀환 시간 수정자가 있어도 저장을 다시 읽는다', () => {
+    const world = makeGame({ seed: seedOf(12) })
+    startSortie(world, {
+      activity: 'hunt', location_id: 'H1', time_of_day: 'day', weather: 'clear', source: 'weighted', forced_nearby: false, low_cap_only: false,
+    })
+    world.ports.sortie.sortieMod(world, { return_travel_sec_add: -30 }, { place: 'H1', vars: {} })
+    assert.equal(world.state.current_activity.sortie!.temp_mods.at(-1)?.modifier.target, 'return_travel_sec_add')
+    const loaded = reload(world)
+    assert.equal(loaded.state.current_activity.sortie!.temp_mods.at(-1)?.modifier.value, -30)
   })
 })

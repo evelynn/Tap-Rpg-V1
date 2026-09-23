@@ -133,7 +133,10 @@ export const innResolver: ActionResolver = {
     const kind = action.outcome === 'inn' ? 'inn' : 'lodging'
     const first = townRest(world, kind, 1)
     const r = first.times === 0 && kind === 'inn' ? townRest(world, 'lodging', 1) : first
-    addJournal(world, { tag: 'rest', line: line(world.content, 'rest_inn') })
+    // 문장 변형은 마을 귀환 수 + 여관 숙박 수로 고른다(같은 저장이면 같은 문장, 한 귀환에 두 번 묵어도 바뀐다)
+    const ch = characterOf(world)
+    const seq = (ch.counters[COUNTERS.sorties] ?? 0) + (ch.counters.inn_rests ?? 0)
+    addJournal(world, { tag: 'rest', line: line(world.content, 'rest_inn', {}, seq) })
     tickInjuries(world, action.duration_sec / 60)
     if (r.hp === 0 || !needsRest(world)) setStep(world, TOWN_STEPS.prep)
   },

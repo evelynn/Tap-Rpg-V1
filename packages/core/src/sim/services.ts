@@ -350,8 +350,10 @@ export function createServices(world: EventWorld, opts: ServiceOptions = {}): Si
         const tier = p.tier === 'character' ? levelTier(w.content, ch.level) : p.tier
         const cands = w.content.list('item').filter((d) =>
           !d.cursed && d.tier === tier && p.pool.slots.includes(d.slot) && (d.shop ?? []).some((s) => p.pool.facilities.includes(s.facility)))
-        if (!cands.length) return null
-        const def = cands[w.rng.loot.bounded(cands.length)]!
+        // 도입이 보여 준 물건(offer_item 선택자, 효과가 item_id로 넘김)을 판다. 이 효과의 풀에 없으면 팔지 않는다(11 L10 슬롯별 보정)
+        const offered = typeof p0.item_id === 'string' ? p0.item_id : null
+        const def = offered !== null ? cands.find((d) => d.id === offered) : cands.length ? cands[w.rng.loot.bounded(cands.length)] : undefined
+        if (!def) return null
         const { grade, named } = pickGradeWeighted(w.rng.loot, p.grade_weights)
         const effects = rollEffects(w.content, w.rng.loot, def, grade, named)
         const candidate = { def_id: def.id, grade, effects }

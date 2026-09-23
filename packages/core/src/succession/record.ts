@@ -8,21 +8,23 @@ import { registerTextSlot, type END_KINDS } from '../schema/index'
 import type { Character } from '../state/character'
 import type { LifeRecord } from '../state/family'
 import type { JournalDraft } from '../state/journal'
-import { renderTemplate } from '../text/index'
+import { renderTemplate, templateVars } from '../text/index'
 import { textLine } from '../life/text'
 import { ageAt } from '../time/index'
 
 type EndKind = (typeof END_KINDS)[number]
 
-// 12 §7.5: priority가 작은 것부터 첫 참 하나. 생애 종료 2단계에서 한 번 준다
+// 12 §7.5: priority가 작은 것부터 첫 참 하나. 생애 종료 2단계에서 한 번 준다.
+// {parent_call}을 쓰는 별칭(1순위 "이전 인물의 R04를 받음")은 앞 세대가 없으면 건너뛴다(빈 호칭으로 "의 잔을 비운"이 되지 않게)
 export function pickEpithet(w: EventWorld, scope: EventScope): string {
   const ch = w.state.character
   if (!ch) throw new Error('별칭을 줄 인물이 없다')
   const test = makeConditionTest(w, scope)
+  const values: Record<string, string> = { name: ch.name, ...(ch.parent_call !== null ? { parent_call: ch.parent_call } : {}) }
   const list = [...w.content.list('epithet')].sort((a, b) => a.priority - b.priority)
-  const hit = list.find((e) => test(e.condition))
+  const hit = list.find((e) => templateVars(e.template).every((v) => v in values) && test(e.condition))
   if (!hit) return ch.name
-  return renderTemplate(hit.template, { name: ch.name, parent_call: ch.parent_call ?? '' })
+  return renderTemplate(hit.template, values)
 }
 
 export interface AchievementGrant {

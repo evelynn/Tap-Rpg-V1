@@ -1,11 +1,12 @@
 // 사망 처리(09 §5). 최후 판정은 T5(combat/defeat)가 굴리고, 이 파일은 그 결과(DeathRecord)를 받아
 // 원인 기록 세 줄(09 §5.4)과 다음 세대 방침 확인 데이터(09 §5.5)를 만든다.
 import type { DeathRecord } from '../combat/defeat'
+import type { Content } from '../content/index'
 import type { RuleContext } from '../rules/context'
 import { STAT_LABELS } from '../rules/labels'
 import type { ACTIVITY_RISKS } from '../schema/index'
 import type { JournalDraft } from '../state/journal'
-import { INJURY_GRADES } from '../schema/index'
+import { INJURY_GRADES, registerTextSlot } from '../schema/index'
 
 const RISK_LABELS: Record<(typeof ACTIVITY_RISKS)[number], string> = {
   very_low: '매우 낮음', low: '낮음', normal: '보통', high: '높음', reckless: '무모함',
@@ -41,6 +42,15 @@ export function causeLines(ctx: RuleContext, d: DeathRecord): CauseLines {
   const parts = c.parts.map((p) => `${p.label} ${signed(p.value)}`).join(' ')
   const final_check_line = `최후 판정 주사위 ${c.dice}${parts ? ` ${parts}` : ''} = ${c.total} / 난이도 ${c.dc}`
   return { risk_line, injury_line, final_check_line }
+}
+
+// 11 S04(D60): 사망 기록(DeathRecord)을 찾지 못하면 원인 세 줄을 빈칸 대신 이 문형으로 채운다(I51 "원인 없이 끝낸다")
+export const CAUSE_MISSING = 'journal.death.cause_missing'
+registerTextSlot(CAUSE_MISSING, '생애·계승(T10)')
+
+export function missingCauseLines(content: Content): CauseLines {
+  const t = content.get('text', CAUSE_MISSING).variants[0]!
+  return { risk_line: t, injury_line: t, final_check_line: t }
 }
 
 // 기본 창 한 줄(09 §5.2)과 원인 기록. 사건(S04)이 상세를 채우므로 여기서는 요약만 남긴다

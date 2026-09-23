@@ -11,7 +11,7 @@
   "allow_serious_injury": false,
   "blocked_during_aid": true,
   "hold": "none",
-  "_note": "상품(인물 단계 장비 1개, 대장간·잡화점 품목, 일반 70·좋은 30)은 offer_purchase로 적는다. 가격 110%·90%·75%는 할인 상한 예외(08). 도입의 {item}은 offer_item 선택자가 고르고 offer_purchase가 item_id로 받는다(산 물건이 다르면 문장은 산 물건을 쓴다). 구매 불발 문장 '마음에 드는 물건이 없었다'는 엔진 문형 journal.town.no_offer가 결과 한 줄을 대신한다. 소품 짐수레 천막은 prop 정의가 없어 뺐다",
+  "_note": "상품(인물 단계 장비 1개, 대장간·잡화점 품목, 일반 70·좋은 30)은 offer_purchase로 적는다. 가격 110%·90%·75%는 할인 상한 예외(08). 도입의 {item}은 offer_item 선택자가 고르고 offer_purchase가 item_id로 받아 그 물건을 판다. 구매 불발 문장 '마음에 드는 물건이 없었다'는 엔진 문형 journal.town.no_offer가 결과 한 줄을 대신한다. 소품 짐수레 천막은 prop 정의가 없어 뺐다",
   "context_vars": [
     { "var": "item", "selector": "offer_item", "params": { "facilities": ["smithy", "general_store"], "slots": ["weapon", "armor", "accessory", "relic"] } }
   ],
