@@ -6,6 +6,8 @@ IDAT를 `node:zlib`의 `inflateSync`로 푼 뒤 스캔라인 필터(0~4)를 복�
 
 ## 실행
 
+제작 원본(이미지 생성물, `assets/_imagegen/`)은 `inspect`로 사실만 본다. 원본은 규격과 달라도 된다(설계 결정 D56). `check`는 M2 에셋 로더가 정규화한 게임 규격 파일의 합격 판정용이다.
+
 ```bash
 # 매니페스트 전수 검사
 pnpm exec tsx tools/art-check/src/cli.ts check
