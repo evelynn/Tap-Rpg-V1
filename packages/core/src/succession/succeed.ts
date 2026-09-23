@@ -1,0 +1,280 @@
+// 계승 5단계(12 §1.1). 1~2단계는 endLife가, 3~5단계는 startHeir가 맡는다.
+// 사이에 인물 상태는 `계승 대기`이고 유효 진행과 나이가 멈춘다.
+import { closeLifeChains } from '../events/chains'
+import type { EventPorts } from '../events/ports'
+import { emptyScope, type EventWorld } from '../events/scope'
+import { addJournal, purgeDaily } from '../journal/index'
+import { equipItem } from '../items/bag'
+import { characterOf, type RuleContext } from '../rules/context'
+import { maxHp } from '../rules/derived'
+import { skillRank } from '../rules/growth'
+import { SEASONS, SKILLS, SLOTS, STATS, type END_KINDS } from '../schema/index'
+import type { Appearance, Character } from '../state/character'
+import type { Candidate, LifeRecord } from '../state/family'
+import type { JournalDraft } from '../state/journal'
+import { issueUid } from '../state/uid'
+import { seasonAt } from '../time/index'
+import { createItemInstance } from '../sim/create'
+import { fireSuccession } from '../life/events'
+import { NEW_NAME_DETAIL, textLine } from '../life/text'
+import {
+  candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
+} from './candidates'
+import { buildLifeRecord, checkAchievements, closeJournal, pickEpithet } from './record'
+import { ownedItems, relicsToPass, transferRelics } from './relics'
+import { settle, storeKeepsakes, type Settlement } from './settlement'
+
+type EndKind = (typeof END_KINDS)[number]
+export type LifeWorld = EventWorld & RuleContext
+
+export interface LifeEndInput {
+  kind: EndKind
+  place: string
+  cause?: LifeRecord['cause'] // 사망 원인 기록(09 §5.4)
+  roleId?: string | null // 은퇴 역할(09 §4.1)
+  longSleep?: LifeRecord['long_sleep']
+}
+
+export interface SuccessionPlan {
+  record: LifeRecord
+  candidates: Candidate[]
+  defaultHeirUid: string | null
+  relicUids: string[]
+  settlement: Settlement
+  journal: JournalDraft[]
+  timeJump: boolean
+  firstPage: string
+}
+
+// 12 §1.3 상세 기록: 이전 인물 연대기에서 가장 먼저 기록된 발견·유품·인연
+const FIRST_PAGE_TAGS: readonly string[] = ['discovery', 'gear', 'bond']
+
+function firstPageOf(ctx: RuleContext, charUid: string): string {
+  const e = ctx.state.journal.find((j) => j.char_uid === charUid && FIRST_PAGE_TAGS.includes(j.tag))
+  return e?.line ?? ''
+}
+
+// 12 §4.3 시간 도약: 직계 후계자가 생긴 뒤 time_jump_min이 지나기 전에 생애가 끝난 경우
+function timeJumpNeeded(ctx: RuleContext, heir: Candidate | null): boolean {
+  if (!heir || heir.relation !== 'direct') return false
+  const time = ctx.content.balance.time
+  const bornMin = (heir.created_at_parent_age - time.start_age) * time.min_per_year
+  return characterOf(ctx).eff_min - bornMin < ctx.content.balance.inheritance.time_jump_min
+}
+
+// ── 1~2단계 ──
+
+// 생애 종료와 기록 정리. 사건(S03·S04·S08)은 부르는 쪽이 먼저 발화한다(기록이 그 인물에 붙어야 한다)
+export function endLife(w: LifeWorld, input: LifeEndInput): SuccessionPlan {
+  const ctx: RuleContext = w
+  const ch = characterOf(ctx)
+  const journal: JournalDraft[] = []
+
+  // 1단계: 미완 연속 사건 → 후보층 → 넘길 유품 → 정산
+  const unfinished = closeLifeChains(w)
+  if (!heirCandidates(w.state.family, ch).length) createFallbackCandidates(ctx, w.rng.life)
+  const relics = relicsToPass(ctx, input.kind)
+  const relicUids = relics.map((i) => i.uid)
+  const settlement = settle(ctx, input.kind, relicUids)
+
+  // 2단계(12 §1.1, 18 §2.1): 별칭·업적 → 마지막 장 지정 → 책 → 일상 기록 정리.
+  // 업적·미완 기록을 먼저 남겨야 마지막 장과 연대기 주요 기록에 들어간다
+  const scope = { ...emptyScope(input.place), lifeEnd: { kind: input.kind, place: input.place } }
+  const epithet = pickEpithet(w, scope)
+  for (const g of checkAchievements(w, scope)) journal.push(g.journal)
+  for (const line of unfinished) journal.push({ tag: 'house', importance: 'family', line: '끝나지 않은 이야기', detail: line })
+  for (const d of journal) addJournal(w, d)
+  closeJournal(ctx)
+  const received = ownedItems(ctx).filter((i) => i.inherited_from_gen !== undefined).map((i) => i.uid)
+  const record = buildLifeRecord(ctx, {
+    endKind: input.kind,
+    epithet,
+    retireRole: input.roleId ?? null,
+    cause: input.cause ?? null,
+    unfinished,
+    relicsPassed: relicUids,
+    longSleep: input.longSleep ?? null,
+    receivedRelicUids: received,
+  })
+  w.state.family.chronicle.push(record)
+
+  const candidates = heirCandidates(w.state.family, ch)
+  const heir = defaultHeir(w.state.family, ch)
+  const plan: SuccessionPlan = {
+    record,
+    candidates,
+    defaultHeirUid: heir?.uid ?? null,
+    relicUids,
+    settlement,
+    journal,
+    timeJump: timeJumpNeeded(ctx, heir),
+    firstPage: firstPageOf(ctx, ch.uid),
+  }
+  purgeDaily(w.state, ch.uid)
+  w.state.current_activity.state = 'awaiting_succession'
+  w.state.current_activity.resolved_action = null
+  w.state.current_activity.sortie = null
+  return plan
+}
+
+// ── 3~5단계 ──
+
+export interface HeirChoice {
+  uid?: string // 후계자(없으면 기본 후보)
+  name?: string
+  background?: string
+  appearance?: Appearance
+  attitude?: string
+}
+
+// 3~5단계: 후계자 확정 → 유전·유품·돈 이전 → 새 인물 출발. 5단계 사건(S05)은 ports를 주면 함께 발화한다
+export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice = {}, ports?: EventPorts): Character {
+  const { content } = w
+  const state = w.state
+  const fam = state.family
+  const parent = characterOf(w)
+  const parentBest = parentBestStats(parent)
+  const cand = plan.candidates.find((c) => c.uid === (choice.uid ?? plan.defaultHeirUid))
+  if (!cand) throw new Error('후계자 후보가 없다')
+
+  // 4단계: 출신 배경·이름·외형
+  const background = choice.background ?? defaultBackground(content)
+  const bg = content.get('background', background)
+  if (bg.unlock !== null && !fam.unlocks.backgrounds.includes(bg.id)) throw new Error(`출신 배경 '${bg.id}'이 해금되지 않았다`)
+  const stats = candidateStats(content, fam.family_seed, cand, background, parentBest)
+  const call = parentCall(content, w.rng.life, cand.relation)
+
+  // 기념품 전환과 남은 장비 정리(12 §6.1). 넘길 유품만 남긴다
+  storeKeepsakes(w, plan.settlement.keepsakes)
+  const keep = new Set(plan.relicUids)
+  for (const inst of ownedItems(w)) if (!keep.has(inst.uid)) delete state.item_instances[inst.uid]
+  const relics = plan.relicUids.map((u) => state.item_instances[u]).filter((i) => i !== undefined)
+
+  // 출발 계절 = 부모 생애 종료 계절의 다음 계절(12 §1.1 5단계)
+  const time = content.balance.time
+  const endSeason = seasonAt(parent.eff_min, parent.birth_season, time)
+  const order = time.season_order.length ? time.season_order : [...SEASONS]
+  const next = order[(order.indexOf(endSeason) + 1) % order.length]!
+
+  const skills = Object.fromEntries(SKILLS.map((s) => [s, { uses: 0, rank: 0 }])) as Character['skills']
+  if (bg.start_skill) {
+    const uses = content.balance.skills.rank_thresholds[0] ?? 0
+    skills[bg.start_skill] = { uses, rank: skillRank(content, uses) }
+  }
+  if (choice.attitude) state.policies.attitude = choice.attitude
+
+  fam.generation += 1
+  const heir: Character = {
+    uid: cand.uid,
+    name: choice.name ?? cand.name,
+    generation: fam.generation,
+    family_role: cand.relation,
+    parent_uid: parent.uid,
+    parent_call: call,
+    background: bg.id,
+    appearance: choice.appearance ?? cand.appearance,
+    birth_season: next,
+    birth_stats: { ...stats },
+    stats: { ...stats },
+    stat_growth: [],
+    life_stat_mods: [],
+    stat_use_points: Object.fromEntries(STATS.map((s) => [s, 0])) as Character['stat_use_points'],
+    level: 1,
+    xp: 0,
+    skills,
+    traits: cand.traits.map((t) => ({ id: t.id, since_age: time.start_age, source: t.from })),
+    injuries: [],
+    hp: 0,
+    fatigue: 0,
+    eff_min: 0,
+    retire_age: time.base_retire_age,
+    lifespan_extended: false,
+    specialization: 'none',
+    f01_presentations: 0,
+    spec_deferred_until_level: null,
+    mutation: null,
+    guild_rank: [...content.list('guild_rank')].sort((a, b) => a.order - b.order)[0]!.id,
+    coins: content.balance.economy.starting_kit.coins + plan.settlement.transferred,
+    location: parent.location,
+    counters: {},
+    counters_at: {},
+    flags: {},
+    temp_mods: [],
+    quest: null,
+    event_counts: {},
+    event_last_min: {},
+    recent_life_events: [],
+    event_pity: {},
+    npc_relations: {},
+    visited: [],
+    defeated: [],
+    children: [],
+    heir_preferred: null,
+    attitude_log: [{ eff_min: 0, attitude: state.policies.attitude }],
+    last_trip_time: null,
+    guild_aid: { active: false, started_eff_min: null, recovered: false },
+    scheduled_events: [],
+    shop_discounts: [],
+    next_visit_mods: {},
+    line_variant_last: {},
+    discoveries: [],
+    map_fragments: [],
+    discovery_fail_bonus: {},
+    chain_mission: {},
+    deficit: {},
+    decision_seq: 0,
+    miss_streak: 0,
+    activity_streak: null,
+    low_cap_streak: 0,
+  }
+
+  // 후보 목록을 비운다(12 §10: 계승 화면을 다시 열어도 후보가 다시 뽑히지 않는다)
+  fam.candidates = {}
+  state.character = heir
+  state.inventory = {
+    equipped: { weapon: null, armor: null, accessory: null, relic: null },
+    bag: [],
+    pending_box: [],
+    consumables: { ...content.balance.economy.starting_kit.consumables },
+    relic_designations: [],
+    equip_suggestions: [],
+    dismissed_suggestions: [],
+  }
+  state.pending_choice = null
+
+  // 유품 이전 → 자동 장착 판단(저주 장비는 자동 장착하지 않는다, 12 §5.2)
+  const moved = transferRelics(w, relics, parent.generation, parent.name)
+  for (const uid of moved.uids) {
+    const inst = state.item_instances[uid]!
+    const def = content.get('item', inst.def_id)
+    if (!def.cursed && state.inventory.equipped[def.slot] === null) equipItem(w, uid)
+  }
+  // 시작 소지품(01 §9.7): 유품이 채운 슬롯의 장비는 받지 않는다(12 §6.1)
+  for (const id of content.balance.economy.starting_kit.items) {
+    const slot = content.get('item', id).slot
+    if (state.inventory.equipped[slot] !== null) continue
+    const inst = createItemInstance(content, state, id, undefined, {
+      gen: fam.generation, char_uid: heir.uid, age: time.start_age, location: heir.location, source: 'start',
+    })
+    state.inventory.equipped[slot] = inst.uid
+  }
+  heir.hp = maxHp(w)
+  state.current_activity.state = 'town_idle'
+
+  // 5단계 출발 기록
+  if (plan.timeJump) {
+    const guardian = content.get('npc', content.balance.inheritance.fallback_guardian_npc).name
+    addJournal(w, { tag: 'succession', importance: 'family', line: '열여덟 해가 지났다', detail: `${guardian}이 ${heir.name}을 길렀다.` })
+  }
+  for (const d of moved.journal) addJournal(w, d)
+  addJournal(w, {
+    tag: 'house',
+    importance: 'family',
+    line: `${fam.generation}대 ${heir.name}`,
+    detail: textLine(content, NEW_NAME_DETAIL, { generation: fam.generation, name: heir.name }, '수첩에 새 이름이 적혔다. {generation}대 {name}.'),
+  })
+  if (ports) {
+    fireSuccession(w, heir.location, ports, { heir: heir.name, parent_call: call, first_page: plan.firstPage })
+  }
+  return heir
+}
