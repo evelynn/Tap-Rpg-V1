@@ -10,7 +10,7 @@ import type { LevelUp } from '../rules/growth'
 import { autoChoose } from './choice'
 import { rollEventCheck } from './check'
 import { makeConditionTest } from './conditions'
-import { newEffectOutput, runEffects, type EffectOutput, type EffectRun } from './effects'
+import { EVENT_TEXT, newEffectOutput, resultValues, runEffects, type EffectOutput, type EffectRun } from './effects'
 import type { EventPorts } from './ports'
 import { render, ruleContext, textValues, type EventScope, type EventWorld } from './scope'
 import { fillContextVars } from './selectors'
@@ -102,7 +102,7 @@ export interface PrepareOptions {
 // 확정: 변수 선택 → 선택지(방침·자동) → 판정 주사위·chance 미리 굴림(event 흐름). 상태는 바꾸지 않는다
 export function prepareOccurrence(w: EventWorld, eventId: string, place: string, ports: EventPorts, opts: PrepareOptions = {}): EventOccurrence {
   const ev = w.content.get('event', eventId)
-  const vars = fillContextVars(w, ev.context_vars ?? [], ports, makeConditionTest(w, { place, vars: {}, eventId }))
+  const vars = fillContextVars(w, ev.context_vars ?? [], ports, makeConditionTest(w, { place, vars: {}, eventId }), place)
   const scope: EventScope = { place, vars, eventId }
   const test = makeConditionTest(w, scope)
   const visible = visibleChoices(ev, test)
@@ -153,10 +153,12 @@ function hold(w: EventWorld, occ: EventOccurrence): EventResult {
   const b = w.content.balance
   const scope = scopeOf(w, occ)
   const test = makeConditionTest(w, scope)
-  const vals = textValues(w, scope)
+  const vals = textValues(w, scope, holdValues(w, ev))
   const ca = w.state.current_activity
   const body = previewBody(ev, test, vals)
   const choices = visibleChoices(ev, test)
+  const renderPreview = (p: NonNullable<Choice['preview']>) =>
+    Object.fromEntries(Object.entries(p).map(([k, v]) => [k, typeof v === 'string' ? render(v, vals) : v]))
   w.state.pending_choice = {
     kind: ev.hold as PendingChoice['kind'],
     event_id: ev.id,
@@ -170,7 +172,7 @@ function hold(w: EventWorld, occ: EventOccurrence): EventResult {
     preview_rendered: {
       body,
       ...(ev.preview?.note !== undefined ? { note: render(ev.preview.note, vals) } : {}),
-      choices: Object.fromEntries(choices.map((c) => [c.id, { label: c.label, ...c.preview }])),
+      choices: Object.fromEntries(choices.map((c) => [c.id, { label: c.label, ...(c.preview ? renderPreview(c.preview) : {}) }])),
     },
   }
   ca.state = 'awaiting_choice'
@@ -182,6 +184,29 @@ function hold(w: EventWorld, occ: EventOccurrence): EventResult {
   })
   const anim = ev.hold_animation ?? b.events.default_hold_animation
   return result(occ, { held: true, animations: [{ action: anim.action, ...(anim.props ? { props: anim.props } : {}) }] })
+}
+
+// 선택 창 문맥 값(16 §1.4.3): 전문화 창의 숙련 단계 {n}·{m}(05 §8.4 근접·탐색, policyChoice와 같은 두 숙련),
+// 사건 효과를 적용한 뒤의 값 {luck_after}(life_stat_add 행운)·{sleep_age}(mutate, 아직 변이 전일 때)
+function holdValues(w: EventWorld, ev: Event): Record<string, number> {
+  const ch = characterOf(ruleContext(w, () => false))
+  const out: Record<string, number> = {}
+  if (ev.policy_hooks?.auto_specialization_map) {
+    out.n = ch.skills.melee.rank
+    out.m = ch.skills.search.rank
+  }
+  const effects: Effect[] = []
+  const walk = (list: readonly Effect[]) => list.forEach((e) => {
+    effects.push(e)
+    for (const v of Object.values(e)) if (isEffectArray(v)) walk(v)
+  })
+  for (const c of ev.choices) for (const [, o] of outcomesInOrder(c)) walk(o!.effects)
+  const luck = effects.find((e) => e.type === 'life_stat_add' && e.stat === 'luk') as { value: number; floor?: number } | undefined
+  if (luck) out.luck_after = Math.max(luck.floor ?? 0, ch.stats.luk + luck.value)
+  const mut = effects.find((e) => e.type === 'mutate') as { trait_id: string } | undefined
+  const sleep = mut && w.content.get('trait', mut.trait_id).mutation?.sleep
+  if (sleep && !ch.mutation) out.sleep_age = Math.min(sleep.cap, ch.retire_age + sleep.add_years)
+  return out
 }
 
 // 선택 창 본문: 조건이 참인 변형을 after_paragraph번째 문단 뒤(없으면 끝)에 넣는다
@@ -246,11 +271,14 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
   runEffects(run, extra, `${choice.id}/${key}/+`)
   runEffects(run, outcome.effects, `${choice.id}/${key}`)
 
-  // 5 기록: 상세(도입·변형·이유·결과) → 한 줄. 효과가 남긴 기록은 뒤에
-  const vals = textValues(w, scope)
+  // 5 기록: 상세(도입·변형·이유·결과) → 한 줄. 효과가 남긴 기록은 뒤에.
+  // 특가 구매가 불발이면 결과 한 줄 대신 구매 불발 문장(11 L02: 자동 구매 조건을 넘지 못하면 그것으로 끝난다)
+  const vals = textValues(w, scope, resultValues(w, run.out))
   const introIdx = ((ch.line_variant_last[ev.id] ?? -1) + 1) % ev.intro.lines.length
   ch.line_variant_last[ev.id] = introIdx
-  const lines = outcome.line !== undefined ? [outcome.line, ...(outcome.line_variants ?? [])] : [ev.intro.lines[introIdx]!]
+  const missed = run.out.offerMissed && !run.out.lastItemName
+  const lines = missed ? content.get('text', EVENT_TEXT.noOffer).variants
+    : outcome.line !== undefined ? [outcome.line, ...(outcome.line_variants ?? [])] : [ev.intro.lines[introIdx]!]
   const detail = [
     ev.intro.detail,
     ...(ev.intro.family_variants ?? []).filter((v) => test(v.when)).map((v) => v.detail_append),

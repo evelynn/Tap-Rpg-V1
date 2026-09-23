@@ -1,7 +1,7 @@
 // 사건 변수 선택자(CONTENT_SCHEMA §4.5). 사건의 context_vars가 템플릿 변수를 채우는 규칙 이름.
 // 계산은 규칙 층의 SELECTOR_HANDLERS가 같은 이름으로 한다. 수치·기준은 이름이 아니라 params로 준다.
 import { z } from 'zod'
-import { ParamRegistry, activityRisk, obj, ratio } from '../common'
+import { ParamRegistry, activityRisk, obj, ratio, ref, slot, units } from '../common'
 import { templateVars } from './template-vars'
 
 export const contextSelectors = new ParamRegistry('사건 변수 선택자')
@@ -68,4 +68,15 @@ registerContextSelector('offered_relic', {
   yields: ['relic_name', 'relic_note', 'relic_uid'],
   params: obj({}),
   doc: '헌납 후보(희귀 이상 유물 중 선택 창에서 고름)',
+})
+// 문장이 도입에서부터 쓰는 값(11 L02·L10 {item}, L12 {coins})
+registerContextSelector('offer_item', {
+  yields: ['item'],
+  params: obj({ facilities: z.array(ref('facility')).min(1), slots: z.array(slot).min(1) }),
+  doc: '특가 구매 도입에 보이는 물건: 인물 단계의 그 시설·슬롯 판매 장비(저주 제외) 중 무작위(event 흐름). offer_purchase가 item_id로 받는다',
+})
+registerContextSelector('coin_amount', {
+  yields: ['coins'],
+  params: obj({ units }),
+  doc: '그 장소 동전 단위 × units(10 §6.1, 반올림). add_coins units와 같은 식',
 })

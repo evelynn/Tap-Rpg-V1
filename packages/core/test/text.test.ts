@@ -94,7 +94,13 @@ describe('문장 템플릿: 추가 사례', () => {
   it('판정 불가 문자는 병기형', () => {
     assert.equal(one('{x:이/가}', '劍'), '劍이(가)')
     assert.equal(one('{x:을/를}', '🐺'), '🐺을(를)')
-    assert.equal(one('{x:이/가}', ''), '이(가)')
+  })
+
+  it('값이 없거나 빈 값에 조사를 붙이거나 수가 아니면 예외(결함이 조용히 나가지 않게)', () => {
+    assert.throws(() => renderTemplate('{x:이/가} 왔다', {}), /값이 없다/)
+    assert.throws(() => one('{x:이/가}', ''), /빈 값에 조사/)
+    assert.throws(() => one('{x}개', Number.NaN), /수가 아니다/)
+    assert.equal(one('유물{x}', ''), '유물') // 조사 없는 빈 값은 덧붙임 자리(relic_note)라 허용
   })
 
   it('중괄호 이스케이프와 조사 없는 변수', () => {

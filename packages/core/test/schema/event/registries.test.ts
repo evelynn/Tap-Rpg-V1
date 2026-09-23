@@ -65,13 +65,13 @@ const TEMPLATE_VARS_NEW = ['relic_uid']
 const sorted = (xs: readonly string[]) => [...xs].sort()
 
 describe('기본 등록', () => {
-  it('조건 57종·효과 56종·선택자 5종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
+  it('조건 57종·효과 56종·선택자 7종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
     assert.equal(CONDITIONS_16.length, 42)
     assert.equal(EFFECTS_16.length, 50)
     assert.equal(TEMPLATE_VARS_16.length, 78)
     assert.deepEqual(sorted(conditions.names()), sorted([...CONDITIONS_16, ...CONDITIONS_NEW]))
     assert.deepEqual(sorted(effects.names()), sorted([...EFFECTS_16, ...EFFECTS_NEW]))
-    assert.deepEqual(contextSelectors.names(), ['rumor_place', 'best_hunting_ground', 'main_enemy_of', 'random_friend_name', 'offered_relic'])
+    assert.deepEqual(contextSelectors.names(), ['rumor_place', 'best_hunting_ground', 'main_enemy_of', 'random_friend_name', 'offered_relic', 'offer_item', 'coin_amount'])
     assert.deepEqual(selectorYields('offered_relic'), ['relic_name', 'relic_note', 'relic_uid'])
     assert.deepEqual(sorted(templateVars.list().map((v) => v.pattern)), sorted([...TEMPLATE_VARS_16, ...TEMPLATE_VARS_NEW]))
     assert.equal(templateVars.match('rumor_place')?.meta.source, 'event')

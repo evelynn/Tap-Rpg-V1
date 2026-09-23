@@ -2,11 +2,13 @@
 // 전투·장비·부상·경제·생애·출정 구조가 필요한 효과는 포트(ports.ts)로 넘긴다.
 // 한 효과 목록은 결과 적용 순서(10 §9.1: 보상·손실 → 특성 → 생애 플래그 → 가문 플래그 → 기록 → 연출)로 적용한다.
 import type { Effect, Modifier } from '../schema/index'
-import { SKILLS, effectPhase } from '../schema/index'
+import { SKILLS, effectPhase, registerTextSlot } from '../schema/index'
 import type { JournalDraft } from '../state/journal'
 import type { TempMod } from '../state/common'
 import type { ConditionTest, RuleContext } from '../rules/context'
 import { characterOf } from '../rules/context'
+import { itemName } from '../items/bag'
+import { earnCoins } from '../economy/earn'
 import { innFee } from '../rules/cost'
 import { maxHp, roundHalfUp } from '../rules/derived'
 import { addFatigue } from '../rules/fatigue'
@@ -27,10 +29,48 @@ export interface EffectOutput {
   levelUps: LevelUp[]
   // 이 효과 목록에서 마지막으로 준 장비 인스턴스(register_relic this_item). 목록을 벗어나면 남지 않는다
   lastItemUid: string | null
+  lastItemName: string | null // 그 장비 이름({item}·{loot}). 가방이 차서 곧바로 팔려도 이름은 남는다
+  coins: number // add_coins로 얻은 동전({loot} 대체)
+  offerMissed: boolean // offer_purchase가 사지 않았다(11 L02 "마음에 드는 물건이 없었다")
 }
 
 export const newEffectOutput = (): EffectOutput =>
-  ({ journal: [], animations: [], addSec: 0, endSortie: null, reopen: null, levelUps: [], lastItemUid: null })
+  ({ journal: [], animations: [], addSec: 0, endSortie: null, reopen: null, levelUps: [], lastItemUid: null, lastItemName: null, coins: 0, offerMissed: false })
+
+// 사건·효과 문장이 쓰는 문형(14 §5.1). 번들에 없으면 콘텐츠 검사 V2가 잡는다
+export const EVENT_TEXT = {
+  lootCoins: 'journal.event.loot_coins', // {loot}가 동전일 때: 동전 {coins}개
+  noOffer: 'journal.town.no_offer', // 11 L02 구매 불발
+  chronicle: 'journal.house.chronicle', // 14 §5.1 [가문] 한 줄
+  codex: 'journal.discovery.codex', // 14 §5.1 [발견] 도감 한 줄
+  check: { success: 'journal.check.success', partial: 'journal.check.partial', failure: 'journal.check.failure' },
+} as const
+for (const id of [EVENT_TEXT.lootCoins, EVENT_TEXT.noOffer, EVENT_TEXT.chronicle, EVENT_TEXT.codex, ...Object.values(EVENT_TEXT.check)]) {
+  registerTextSlot(id, '사건 효과(events)')
+}
+
+const textVariant = (w: EventWorld, id: string, seq = 0): string => {
+  const v = w.content.get('text', id).variants
+  return v[seq % v.length]!
+}
+
+// 효과 결과가 채우는 문장 값: {item}(산 장비·준 장비)과 {loot}(얻은 물건, 장비가 없으면 동전)
+export function resultValues(w: EventWorld, out: EffectOutput): Record<string, string> {
+  const vals: Record<string, string> = {}
+  if (out.lastItemName) vals.item = vals.loot = out.lastItemName
+  else if (out.coins > 0) vals.loot = render(textVariant(w, EVENT_TEXT.lootCoins), { coins: out.coins })
+  return vals
+}
+
+const runValues = (run: EffectRun) => textValues(run.w, run.scope, resultValues(run.w, run.out))
+
+// 장비 지급 효과의 결과를 남긴다. 인스턴스가 곧바로 팔려 없어도 정의 이름으로 남긴다
+function gotItem(run: EffectRun, uid: string | null, defId?: string): void {
+  run.out.lastItemUid = uid
+  const inst = uid ? run.w.state.item_instances[uid] : undefined
+  const name = inst ? itemName(run.rule, inst) : uid && defId ? run.w.content.get('item', defId).name : null
+  if (name) run.out.lastItemName = name
+}
 
 export interface EffectRun {
   w: EventWorld
@@ -103,7 +143,7 @@ function addTrait(run: EffectRun, id: string): void {
     const old = acquired.find((t) => content.get('trait', t.id).acquired_class === 'cumulative')
     if (old) old.inactive = 'displaced'
   }
-  note(run, 'trait', render(def.lines[0]!, textValues(run.w, run.scope)), { sub: 'trait_gain' })
+  note(run, 'trait', render(def.lines[0]!, runValues(run)), { sub: 'trait_gain' })
 }
 
 function pushTempMod(run: EffectRun, e: Record<string, any>): void {
@@ -131,7 +171,12 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
   // ── 자원·상태 ──
   add_coins: (run, e) => {
     const n = e.amount ?? roundHalfUp(e.units * rewardUnits(run.w, run.scope.place).coins)
-    ch(run).coins += Math.floor(n * run.rewardMult + 1e-9)
+    const got = Math.floor(n * run.rewardMult + 1e-9)
+    // 들어온 동전은 번 동전(12 §7.1 coins_earned)에 센다(I65). 음수는 지출이라 세지 않는다
+    if (got > 0) {
+      earnCoins(run.rule, got)
+      run.out.coins += got
+    } else ch(run).coins += got
   },
   remove_coins: (run, e) => {
     const c = ch(run)
@@ -171,14 +216,19 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
   },
 
   // ── 물건 ──
-  add_item: (run, e) => { run.out.lastItemUid = run.ports.item.addItem(run.w, e, run.scope) },
-  add_random_item: (run, e) => { run.out.lastItemUid = run.ports.item.addRandomItem(run.w, e, run.scope) },
+  add_item: (run, e) => gotItem(run, run.ports.item.addItem(run.w, e, run.scope), e.item_id),
+  add_random_item: (run, e) => gotItem(run, run.ports.item.addRandomItem(run.w, e, run.scope)),
   remove_item: (run, e) => run.ports.item.removeItem(run.w, e, run.scope),
   add_consumable: (run, e) => run.ports.item.addConsumable(run.w, e, run.scope),
   remove_consumable: (run, e) => run.ports.item.removeConsumable(run.w, e, run.scope),
   add_material: (run, e) => run.ports.item.addMaterial(run.w, e, run.scope),
-  open_chest: (run) => { run.out.lastItemUid = run.ports.item.openChest(run.w, run.scope) },
-  offer_purchase: (run, e) => { run.out.lastItemUid = run.ports.economy.offerPurchase(run.w, e, run.scope) },
+  open_chest: (run) => gotItem(run, run.ports.item.openChest(run.w, run.scope)),
+  // 도입의 {item}(offer_item 선택자가 고른 물건)을 넘긴다. 포트가 그 물건을 파는지는 포트 몫이다
+  offer_purchase: (run, e) => {
+    const uid = run.ports.economy.offerPurchase(run.w, run.scope.vars.item ? { ...e, item_id: run.scope.vars.item } : e, run.scope)
+    if (uid) gotItem(run, uid)
+    else run.out.offerMissed = true
+  },
 
   // ── 특성·생애 ──
   add_trait: (run, e) => addTrait(run, e.trait_id),
@@ -301,7 +351,9 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
     const roll = rollEventCheck(run.w, run.rule, e.check as EventCheck, run.scope, dice)
     recordCheckUse(run.rule, roll, { event: true })
     const key = roll.result === 'crit_success' ? 'success' : roll.result === 'crit_failure' ? 'failure' : roll.result
-    note(run, 'check', `${run.w.content.balance.check_kinds[roll.kind]!.name} 판정`, { check: roll.record })
+    // 14 §5.1 [판정] 한 줄은 결과 문장. 판정식은 check 기록이 펼친다(14 §7.1)
+    const line = textVariant(run.w, EVENT_TEXT.check[roll.result === 'partial' ? 'partial' : key === 'success' ? 'success' : 'failure'])
+    note(run, 'check', render(line, { kind: run.w.content.balance.check_kinds[roll.kind]!.name }), { check: roll.record })
     branch(run, e, key === 'partial' && !e.partial ? 'failure' : key, path)
   },
   chance: (run, e, path) => {
@@ -331,9 +383,12 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
     const skill = e.skill === 'lowest_rank' ? SKILLS.reduce((a, s) => (c.skills[s].rank < c.skills[a].rank ? s : a)) : e.skill
     addSkillUses(run.rule, skill, e.count)
   },
-  // 가문 기록 저장소(연대기 문장·인연·도감 키)가 정해지기 전까지 가문 보존 기록으로 남긴다
+  // 가문 기록 저장소(연대기 문장·인연·도감 키)가 정해지기 전까지 가문 보존 기록으로 남긴다.
+  // 한 줄은 14 §5.1 문형([가문] 연대기 / [발견] 도감)이고, 연대기·인연 문장은 상세(편지는 줄마다 80자, D54)에 둔다
   family_record: (run, e) => {
-    note(run, e.kind === 'bond' ? 'bond' : 'house', render(e.text, textValues(run.w, run.scope)), { importance: 'family' })
+    const text = render(e.text, runValues(run))
+    if (e.kind === 'codex') note(run, 'discovery', render(textVariant(run.w, EVENT_TEXT.codex), { item: text }), { importance: 'family' })
+    else note(run, e.kind === 'bond' ? 'bond' : 'house', textVariant(run.w, EVENT_TEXT.chronicle), { detail: text, importance: 'family' })
   },
   unlock_family: (run, e) => {
     const u = run.w.state.family.unlocks
@@ -341,7 +396,7 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
     if (!list.includes(e.id)) list.push(e.id)
   },
   journal: (run, e) => {
-    const vals = textValues(run.w, run.scope)
+    const vals = runValues(run)
     note(run, e.tag, render(e.line, vals), {
       ...(e.detail !== undefined ? { detail: render(e.detail, vals) } : {}),
       ...(e.importance !== undefined ? { importance: e.importance } : {}),

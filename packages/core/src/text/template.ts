@@ -83,12 +83,16 @@ function parse(template: string): (string | Slot)[] {
   return parts
 }
 
+// 값이 없거나, 숫자가 유한수가 아니거나, 빈 값에 조사를 붙이면 예외다(빈 값이면 조사가 병기형 "을(를)"로 남는다)
 export function renderTemplate(template: string, values: TemplateValues): string {
   return parse(template)
     .map((p) => {
       if (typeof p === 'string') return p
-      if (!Object.hasOwn(values, p.name)) throw new Error(`템플릿 변수 값이 없다: {${p.name}}`)
-      const v = String(values[p.name])
+      const raw = Object.hasOwn(values, p.name) ? values[p.name] : undefined
+      if (raw === undefined || raw === null) throw new Error(`템플릿 변수 값이 없다: {${p.name}} — ${template}`)
+      if (typeof raw === 'number' && !Number.isFinite(raw)) throw new Error(`템플릿 변수 값이 수가 아니다: {${p.name}}=${raw} — ${template}`)
+      const v = String(raw)
+      if (p.particle && v === '') throw new Error(`빈 값에 조사를 붙였다: {${p.name}} — ${template}`)
       return p.particle ? v + p.particle[batchimOf(v)] : v
     })
     .join('')

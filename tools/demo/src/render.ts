@@ -32,7 +32,9 @@ export interface EntryView {
 export function renderEntry(e: EntryView, color = false): string {
   const head = `[${e.age}세 ${SEASON_LABEL[e.season] ?? e.season}] [${TAG_LABEL[e.tag] ?? e.tag}]`
   const notable = e.importance !== 'daily'
-  const text = `${notable ? '★ ' : '  '}${head} ${e.line}${notable && e.detail ? ` — ${e.detail}` : ''}`
+  // 여러 줄 상세(정비 펼침·편지)는 이어지는 줄을 들여 써서 다음 기록과 구분한다
+  const detail = e.detail?.split('\n').join('\n      ')
+  const text = `${notable ? '★ ' : '  '}${head} ${e.line}${notable && detail ? ` — ${detail}` : ''}`
   return color && notable ? BOLD + text + RESET : text
 }
 

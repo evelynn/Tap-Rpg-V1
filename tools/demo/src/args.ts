@@ -6,12 +6,13 @@ export interface DemoArgs {
   attitude: string | null // 태도 id(없으면 콘텐츠 기본값)
   name: string
   family: string
-  minutes: number // 최대 유효 진행 분
+  minutes: number | null // 최대 유효 진행 분(null이면 지켜볼 생애가 끝날 때까지, 안전 상한까지)
   gen: number // 지켜볼 생애 수
   fast: boolean // 기다리지 않고 바로 흘린다
   plain: boolean // 커서 제어 없이 줄 단위로만 출력
   auto: boolean // 선택 대기를 사전 방침(자동 선택)으로 처리
   save: boolean // 끝나면 일지를 reports/에 저장
+  content: string[] // 콘텐츠 팩 경로(requires 순서로 정렬해 겹쳐 읽는다)
   help: boolean
 }
 
@@ -21,12 +22,13 @@ export const DEFAULTS: DemoArgs = {
   attitude: null,
   name: '모라',
   family: '조약돌',
-  minutes: 600,
+  minutes: null,
   gen: 1,
   fast: false,
   plain: false,
   auto: false,
   save: false,
+  content: ['content/base'],
   help: false,
 }
 
@@ -37,8 +39,10 @@ export const USAGE = [
   '  --attitude <id>  태도 id (예: stable · adventurous · challenging)',
   '  --name <이름>    첫 인물 이름 (기본 모라)',
   '  --family <가문>  가문 이름 (기본 조약돌)',
-  '  --minutes <분>   최대 유효 진행 분 (기본 600 = 한 생애)',
+  '  --minutes <분>   최대 유효 진행 분 (기본: 지켜볼 생애가 끝날 때까지 · 생애당 안전 상한은 기본 수명의 2배)',
   '  --gen <수>       지켜볼 생애 수 (기본 1)',
+  '  --content <경로...> 콘텐츠 팩 경로 (기본 content/base). 확장 팩은 기반 팩과 함께 준다:',
+  '                   --content content/base content/examples/mist-forest',
   '  --fast           기다리지 않고 끝까지 흘린다',
   '  --plain          커서 제어 없이 줄 단위로만 출력',
   '  --auto           선택 대기를 사전 방침으로 자동 처리',
@@ -66,6 +70,14 @@ export function parseArgs(argv: readonly string[]): DemoArgs {
     const eq = token.indexOf('=')
     const key = (eq === -1 ? token.slice(2) : token.slice(2, eq)) as string
     const inline = eq === -1 ? null : token.slice(eq + 1)
+    // --content 는 다음 옵션(--) 앞까지 경로를 여러 개 받는다(tools/sim 과 같은 모양)
+    if (key === 'content') {
+      const paths = inline !== null ? [inline] : []
+      while (i + 1 < argv.length && !argv[i + 1]!.startsWith('--')) paths.push(argv[++i]!)
+      if (!paths.length || paths.includes('')) throw new Error('--content 경로가 없다')
+      out.content = paths
+      continue
+    }
     if ((FLAGS as readonly string[]).includes(key)) {
       out[key as (typeof FLAGS)[number]] = true
       continue
@@ -87,9 +99,11 @@ export function parseArgs(argv: readonly string[]): DemoArgs {
 export function renderIntro(args: DemoArgs): string {
   const speed = args.fast ? '바로 흘림(--fast)' : `${args.speed}배속`
   const choice = args.auto ? '사전 방침 자동' : '숫자 입력'
+  const until = args.minutes === null ? '생애가 끝날 때까지' : `최대 ${args.minutes}유효분`
   return [
     `텝 데모 — ${args.family} 가문 · ${args.name} · 씨앗 ${args.seed} · ${speed}`,
-    `생애 ${args.gen}회 · 최대 ${args.minutes}유효분 · 선택 ${choice}${args.save ? ' · 일지 저장 켬' : ''}`,
+    `생애 ${args.gen}회 · ${until} · 선택 ${choice}${args.save ? ' · 일지 저장 켬' : ''}`,
+    `콘텐츠: ${args.content.join(' + ')}`,
     '기록이 시간 흐름대로 한 줄씩 쌓인다. 선택 대기가 걸리면 번호를 입력한다. Ctrl+C로 언제든 멈출 수 있다.',
   ].join('\n')
 }

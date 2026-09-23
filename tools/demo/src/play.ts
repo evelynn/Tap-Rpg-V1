@@ -26,6 +26,36 @@ export interface PlayResult {
 
 const TICK_SEC = 0.1 // 실시간 재생 한 걸음
 const CHUNK_SEC = 60 // advance 한 번에 흘리는 최대 유효 진행 초
+const LIFE_CAP_FACTOR = 2 // --minutes 를 주지 않았을 때 생애당 안전 상한 = 기본 수명(시작~은퇴 나이)의 몇 배
+const MAJOR_LINES = 5 // 생애 요약에 싣는 주요 기록 수
+// 생애 요약 바로 위에 이미 찍힌 끝맺음 기록(은퇴·사망·계승·가문 업적)은 주요 기록에서 뺀다
+const SUMMARY_SKIP_TAGS = new Set(['retire', 'death', 'succession', 'house'])
+
+// 이번 실행에서 흘릴 최대 유효 진행 분. --minutes 가 없으면 지켜볼 생애 수만큼의 안전 상한
+export function budgetMinutes(world: World, args: DemoArgs): number {
+  if (args.minutes !== null) return args.minutes
+  const t = world.content.balance.time
+  return args.gen * (t.base_retire_age - t.start_age) * t.min_per_year * LIFE_CAP_FACTOR
+}
+
+// 생애 요약의 주요 기록: 그 인물의 'major' 기록 중 끝맺음 태그를 빼고, 같은 문장은 한 번만,
+// 많으면 생애 앞뒤에 고르게 흩어 limit 개를 고른다(시간 순서 유지)
+export function pickMajorLines(
+  entries: readonly Pick<JournalEntry, 'char_uid' | 'importance' | 'tag' | 'line'>[],
+  charUid: string,
+  limit = MAJOR_LINES,
+): string[] {
+  const seen = new Set<string>()
+  const lines: string[] = []
+  for (const e of entries) {
+    if (e.char_uid !== charUid || e.importance !== 'major' || SUMMARY_SKIP_TAGS.has(e.tag) || seen.has(e.line)) continue
+    seen.add(e.line)
+    lines.push(e.line)
+  }
+  if (lines.length <= limit) return lines
+  if (limit <= 1) return lines.slice(lines.length - limit)
+  return Array.from({ length: limit }, (_, i) => lines[Math.round((i * (lines.length - 1)) / (limit - 1))]!)
+}
 
 function statusOf(world: World): StatusView {
   const ch = world.state.character
@@ -70,7 +100,6 @@ function itemNames(world: World, uids: readonly string[]): string[] {
 
 function lifeViewOf(world: World, plan: SuccessionPlan): LifeView {
   const r = plan.record
-  const byId = new Map(world.state.journal.map((e) => [e.id, e]))
   const cause = r.cause
   return {
     gen: r.gen,
@@ -83,7 +112,7 @@ function lifeViewOf(world: World, plan: SuccessionPlan): LifeView {
     peakLevel: r.peak_level,
     summary: r.summary,
     relicNames: itemNames(world, r.relics_passed),
-    majorLines: r.major_entry_ids.map((id) => byId.get(id)?.line).filter((l): l is string => l !== undefined).slice(-5),
+    majorLines: pickMajorLines([...world.state.journal].sort((a, b) => a.id - b.id), r.char_uid),
   }
 }
 
@@ -130,7 +159,7 @@ export async function play(world: World, args: DemoArgs, deps: PlayDeps): Promis
     }
   }
 
-  const budgetSec = args.minutes * 60
+  const budgetSec = budgetMinutes(world, args) * 60
   let playedSec = 0
   while (playedSec < budgetSec && result.lives < args.gen && !deps.stopped?.()) {
     // 1. 선택 대기: 사전 방침이거나 물어볼 곳이 없으면 자동 선택

@@ -1536,6 +1536,8 @@ V19: 모든 `flag`·`set_*_flag`·`chain_stage`·`num flag.` 키가 등록표의
 | C27 | `sortie.discovery_attempts[discovery_id]` | 한 출정에 발견 지점당 시도 1회 |
 | C28 | `sortie.exclusive_used[group]`, `sortie.fate_offered bool` | 출정당 `exclusive_group`·운명 사건 1회 |
 | C29 | `temp_mod`의 새 scope `next_check`는 16 §5.4 `character.temp_mods`(출정을 넘을 수 있음)에, `next_visit`은 C7에 둔다. 16 §5.7 `sortie.temp_mods` 설명의 `set_trip_flag.modifiers`는 지운다(C13) | 05 §6.4 곤란 4, 4.2 |
+| C30 | `family.discovery_points[discovery_id]` — 가문 수첩에 적힌 발견 지점. 첫 발견 때 `discovery.reveal`이 더한다. 없던 저장은 `[]`(zod default) | 07 §6.5 가문 수첩, 00 D59 다시 찾음 문형. 인물 발견(C17)은 생애 단위라 후손이 지우고 시작한다 |
+| C31 | `current_activity.life_loop {age_ticks[{from, to, changes[{age, stat, delta}], boundary, stage}], pending_end {kind, death}\|null, succession}` — `sim/life-loop`이 판단 지점까지 미룬 상태. `pending_end.death`는 09 §5.4 사망 기록(`combat/defeat` DeathRecord, 저장 검사는 `final_check`만 본다), `succession`은 `succession/succeed` SuccessionPlan 그대로(`record`·`candidates`·`defaultHeirUid`·`relicUids`·`settlement{…, keepsakes[]}`·`journal`·`timeJump`·`firstPage`, 코어 타입 키 이름을 그대로 쓴다). 없던 저장은 빈 값(zod default) | 행동 도중 저장(13 §8.1) 뒤 불러오면 나이 알림(09 §2.1)이 사라졌고, 계승 대기로 저장하면 3~5단계를 잇지 못했다(IMPL_DECISIONS I66) |
 
 ---
 

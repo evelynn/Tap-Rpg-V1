@@ -149,7 +149,19 @@ export const treatmentResolver: ActionResolver = {
     const min = ch.mutation
       ? world.content.get('trait', ch.mutation.trait_id).mutation!.blood_rest.min
       : paid ? inj.clinic_min : inj.free_min
-    return { duration_sec: Math.round(min * 60) + takePendingSec(world), outcome: paid ? 'clinic' : 'free', effects: [], journal: [] }
+    // 치료 기록(14 §5.1 [마을]). 피의 휴식은 변이 쪽이 제 기록을 남긴다
+    const journal: JournalDraft[] = ch.mutation ? [] : [paid
+      ? {
+        tag: 'town',
+        line: line(world.content, 'town_treatment'),
+        detail: line(world.content, 'town_treatment_detail', { name: ch.name, coins: treatmentCost(world, 'serious') }),
+      }
+      : {
+        tag: 'town',
+        line: line(world.content, 'town_treatment_free'),
+        detail: line(world.content, 'town_treatment_free_detail', { name: ch.name }),
+      }]
+    return { duration_sec: Math.round(min * 60) + takePendingSec(world), outcome: paid ? 'clinic' : 'free', effects: [], journal }
   },
   apply(world: World, action): void {
     const ch = characterOf(world)
@@ -186,7 +198,9 @@ function applyPrep(world: World): void {
   const dungeonCandidate = dungeonTargets(world, night, { night }).length > 0
   const r = townPrep(world, world.rng.loot, rt.shop, { dungeonCandidate, mainPlace: world.state.current_activity.sortie?.location_id ?? null })
   for (const d of r.journal) addJournal(world, d)
-  addJournal(world, { tag: 'town', line: line(world.content, 'town_prep', { coins: r.maintenance }) })
+  // 14 §4 마을 정비 묶음: 판매·구매·치료·정비비를 1건으로. 한 줄은 쓴 동전, 펼침은 내역
+  const prep = line(world.content, 'town_prep', { coins: r.spent })
+  addJournal(world, { tag: 'town', line: prep, ...(r.breakdown.length ? { detail: [`${prep}.`, ...r.breakdown].join('\n') } : {}) })
   // 경상 치료 시간(04 §8 2단계, 개당 10초)은 다음 행동으로 넘긴다
   const lightSec = secOf(world.content.balance.activity_ai.town_routine_sec.light_treat_each ?? 0, world.rng.world)
   addPendingSec(world, r.lightTreated * lightSec)

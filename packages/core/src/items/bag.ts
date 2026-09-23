@@ -4,6 +4,7 @@ import { GRADES } from '../schema/index'
 import type { ItemInstance } from '../state/inventory'
 import { characterOf, type RuleContext } from '../rules/context'
 import { renderTemplate } from '../text/index'
+import { earnCoins } from '../economy/earn'
 import { fieldSellPrice, sellPrice } from '../economy/price'
 import { ageAt } from '../time/index'
 import type { Rng } from '../rules/random'
@@ -54,7 +55,6 @@ export function removeSold(ctx: RuleContext, uid: string): void {
 export function stowLoot(ctx: RuleContext, uid: string): { fieldSold: number } {
   const inv = ctx.state.inventory
   const b = ctx.content.balance
-  const ch = characterOf(ctx)
   if (inv.bag.length < b.stats.bag_slots) {
     inv.bag.push(uid)
     return { fieldSold: 0 }
@@ -63,14 +63,14 @@ export function stowLoot(ctx: RuleContext, uid: string): { fieldSold: number } {
   if (pool.length) {
     // 같은 값이면 먼저 든 것(새 장비가 맨 앞)
     const victim = pool.reduce((a, u) => (fieldSellPrice(ctx, instOf(ctx, u)) < fieldSellPrice(ctx, instOf(ctx, a)) ? u : a))
-    ch.coins += fieldSellPrice(ctx, instOf(ctx, victim))
+    earnCoins(ctx, fieldSellPrice(ctx, instOf(ctx, victim)))
     if (victim !== uid) inv.bag.push(uid)
     removeSold(ctx, victim)
     return { fieldSold: 1 }
   }
   const inst = instOf(ctx, uid)
   if (inst.grade === 'common' || inst.grade === 'good') {
-    ch.coins += fieldSellPrice(ctx, inst)
+    earnCoins(ctx, fieldSellPrice(ctx, inst))
     removeSold(ctx, uid)
     return { fieldSold: 1 }
   }
@@ -91,7 +91,7 @@ export function putPending(ctx: RuleContext, uid: string): void {
     const rareIdx = GRADES.indexOf('rare')
     const old = free.find((u) => GRADES.indexOf(instOf(ctx, u).grade) >= rareIdx) ?? free[0]
     if (old !== undefined) {
-      characterOf(ctx).coins += sellPrice(ctx, instOf(ctx, old)) ?? 0
+      earnCoins(ctx, sellPrice(ctx, instOf(ctx, old)) ?? 0)
       removeSold(ctx, old)
     }
   }

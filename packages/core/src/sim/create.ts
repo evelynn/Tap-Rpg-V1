@@ -3,6 +3,7 @@
 import type { Content } from '../content/index'
 import { createRngStreams, RNG_STREAMS, type Pcg32 } from '../rng/index'
 import { SEASONS, SKILLS, STATS, type GRADES } from '../schema/index'
+import { emptyLifeLoop } from '../state/activity'
 import type { Appearance, Character } from '../state/character'
 import type { Family } from '../state/family'
 import type { ItemInstance } from '../state/inventory'
@@ -38,6 +39,7 @@ export function newFamily(input: Pick<NewFamilyInput, 'familyName' | 'familySeed
     chronicle: [],
     codex: { items: {}, enemies: {}, events: {}, locations: {} },
     discovered_locations: [],
+    discovery_points: [],
     bonds: [],
     flags: {},
     flag_meta: {},
@@ -114,6 +116,7 @@ export function createNewFamilyState(content: Content, input: NewFamilyInput, te
     pending_choice: null,
     current_activity: {
       state: 'town_idle', paused_from: null, next_sortie_override: null, sortie: null, pending_town_effects: [], resolved_action: null,
+      life_loop: emptyLifeLoop(),
     },
     rng_state: { algorithm: 'pcg32', streams: rngStates(rng) },
     offline_state: { high_water_utc: input.foundedUtc, last_exit_utc: input.foundedUtc, last_settlement: null, clock_anomalies: [] },

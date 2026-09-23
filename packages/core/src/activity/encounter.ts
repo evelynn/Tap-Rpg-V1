@@ -4,6 +4,7 @@ import {
   applyCombat, applyDefeat, decisiveRounds, resolveCombat, resolveDefeat,
   type CombatEnemySpec, type CombatKind, type CombatResult, type DefeatResult, type LethalContext,
 } from '../combat/index'
+import { earnCoins } from '../economy/earn'
 import { addJournal } from '../journal/index'
 import { considerPickup } from '../items/bag'
 import { guaranteedDrop, materializeItem, rollEncounterDrop, type DropSpec } from '../items/roll'
@@ -147,7 +148,7 @@ export function applyEncounterStep(world: World, spec: EncounterSpec, out: Encou
   const sortie = world.state.current_activity.sortie
   const coins = out.combat.rewards.reduce((s, r) => s + r.coins, 0)
   const xp = out.combat.rewards.reduce((s, r) => s + r.xp, 0)
-  ch.coins += coins
+  earnCoins(world, coins)
   if (sortie) sortie.loot.coins += coins
   if (xp > 0) addXp(world, world.rng.life, xp)
   for (const [id, n] of Object.entries(out.materials)) {

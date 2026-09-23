@@ -1,31 +1,40 @@
 // 데모 실행기 진입점: pnpm demo [옵션]. 터미널 출력·입력과 일지 저장만 맡는다.
 import { mkdirSync, writeFileSync } from 'node:fs'
 import { dirname, join } from 'node:path'
-import { createInterface } from 'node:readline/promises'
 import { setTimeout as delay } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 import { parseArgs, renderIntro, USAGE, type DemoArgs } from './args'
-import { play, type PlayDeps, type PlayResult } from './play'
-import { renderStatus, type ChoiceView, type StatusView } from './render'
+import { createLineSource, makeAsk } from './input'
+import { budgetMinutes, play, type PlayDeps, type PlayResult } from './play'
+import { renderStatus, type StatusView } from './render'
 import { createDemoWorld, loadContent, seedHex } from './world'
 
 const ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 
 // 화면 출력: 터미널이면 상태 줄을 한 줄에 덮어쓰고, --plain이면 줄 단위로만 쓴다
-function makeOut(plain: boolean): { write(text: string): void; status(view: StatusView): void; end(): void } {
+function makeOut(plain: boolean): { write(text: string): void; raw(text: string): void; status(view: StatusView): void; end(): void } {
   const tty = !plain && process.stdout.isTTY === true
   let bar = ''
+  let barShown = false // 커서가 있는 줄에 상태 줄이 그려져 있다
   let mark = ''
   return {
     write(text) {
       if (tty) process.stdout.write('\r\x1b[2K')
       process.stdout.write(text + '\n')
       if (tty && bar) process.stdout.write(bar)
+      barShown = tty && bar !== ''
+    },
+    // 줄바꿈 없이 그대로 쓴다(선택 물음). 상태 줄이 그려져 있으면 먼저 지운다
+    raw(text) {
+      if (barShown) process.stdout.write('\r\x1b[2K')
+      barShown = false
+      process.stdout.write(text)
     },
     status(view) {
       bar = renderStatus(view)
       if (tty) {
         process.stdout.write('\r\x1b[2K' + bar)
+        barShown = true
         return
       }
       // 줄 단위 출력에서는 나이·레벨이 바뀔 때만 상태를 남긴다
@@ -69,39 +78,45 @@ async function main(argv: string[]): Promise<number> {
     return 0
   }
 
-  const world = createDemoWorld(loadContent(), args)
+  let world
+  try {
+    world = createDemoWorld(loadContent(args.content), args)
+  } catch (e) {
+    console.error((e as Error).message)
+    return 1
+  }
   const out = makeOut(args.plain)
   console.log(renderIntro(args))
 
   let stop = false
-  const rl = args.auto ? null : createInterface({ input: process.stdin, output: process.stdout })
+  // 입력 줄은 미리 들어온 것(파이프)까지 차례로 쓴다. 입력이 끝나면 이후 선택은 자동이다
+  const source = args.auto ? null : createLineSource(process.stdin)
   // Ctrl+C: 입력을 기다리던 중이면 물음을 끊고(abort) 루프를 멈춘다
   const abort = new AbortController()
   const onSigint = (): void => {
     stop = true
     abort.abort()
-    rl?.close()
+    source?.close()
   }
   process.on('SIGINT', onSigint)
 
-  const ask = async (view: ChoiceView): Promise<number> => {
-    if (!rl || stop) return 0
-    try {
-      const answer = await rl.question(`번호를 고르세요 (1~${view.options.length}, 그냥 Enter면 자동): `, { signal: abort.signal })
-      return Number(answer.trim())
-    } catch {
-      // 중단(Ctrl+C)이면 자동 선택으로 넘긴다
-      stop = true
-      return 0
-    }
-  }
+  const ask = source
+    ? makeAsk({
+        source,
+        write: (t) => out.raw(t),
+        // 터미널끼리면 입력이 되비치지만, 파이프·파일이 끼면 답과 줄바꿈을 직접 남긴다
+        echo: !(process.stdin.isTTY === true && process.stdout.isTTY === true),
+        signal: abort.signal,
+        stopped: () => stop,
+      })
+    : null
 
   const deps: PlayDeps = {
     write: (t) => out.write(t),
     status: (v) => out.status(v),
     sleep: (ms) => delay(ms),
     stopped: () => stop,
-    ...(rl ? { ask } : {}),
+    ...(ask ? { ask } : {}),
   }
 
   let result: PlayResult
@@ -109,11 +124,14 @@ async function main(argv: string[]): Promise<number> {
     result = await play(world, args, deps)
   } finally {
     process.off('SIGINT', onSigint)
-    rl?.close()
+    source?.close()
     out.end()
   }
 
   console.log(`\n끝. 생애 ${result.lives}회 · 유효 진행 ${Math.round(result.minutes)}분 · 기록 ${result.lines.length}줄`)
+  if (args.minutes === null && result.lives < args.gen && !stop) {
+    console.log(`안전 상한 ${budgetMinutes(world, args)}유효분에 닿아 멈췄다(생애가 끝나지 않았다). --minutes 로 늘릴 수 있다.`)
+  }
   if (args.save) console.log(`일지 저장: ${saveReport(args, result)}`)
   return 0
 }

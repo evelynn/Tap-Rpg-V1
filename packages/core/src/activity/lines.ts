@@ -24,8 +24,13 @@ export const ACTIVITY_TEXT = {
   rest_inn: 'journal.rest.inn',
   potions_detail: 'journal.sortie.potions_detail',
   town_prep: 'journal.town.prep',
+  town_treatment: 'journal.town.treatment',
+  town_treatment_detail: 'journal.town.treatment_detail',
+  town_treatment_free: 'journal.town.treatment_free',
+  town_treatment_free_detail: 'journal.town.treatment_free_detail',
   discovery_place: 'journal.discovery.place',
   discovery_place_detail: 'journal.discovery.place_detail',
+  discovery_place_again_detail: 'journal.discovery.place_again_detail',
   guild_rank: 'journal.growth.guild_rank',
 } as const
 

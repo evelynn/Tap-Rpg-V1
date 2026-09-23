@@ -14,12 +14,19 @@ import { materializeItem, onceKey } from '../items/roll'
 import { levelTier } from '../items/stats'
 import { carryGroupCount } from '../recovery/rest'
 import { isBankrupt } from './aid'
+import { earnCoins } from './earn'
 import { innFee } from '../rules/cost'
 import { consumableBuyPrice, itemBuyPrice, maintenanceFee, sellPrice, treatmentCost } from './price'
 import { consumablesOnSale, restockIfNeeded, seasonKey, visibleOffers, type ShopState, type VisibleOffer } from './shop'
 
-const LINE_SOLD = '쓰지 않는 장비 {count}개를 팔았다. 동전 {coins}개.' // 08 §9.2
-const LINE_MATERIALS = '재료 {count}개를 팔았다. 동전 {coins}개.' // 08 §9.2 1번
+// 마을 정비 묶음의 펼침 내역(14 §4). 판매 두 줄의 문형은 08 §9.2
+const LINE_SOLD = '쓰지 않는 장비 {count}개를 팔았다. 동전 {coins}개.'
+const LINE_MATERIALS = '재료 {count}개를 팔았다. 동전 {coins}개.'
+const LINE_SERIOUS = '치료비로 동전 {coins}개를 냈다.'
+const LINE_LIGHT = '경상 {count}개를 치료했다. 동전 {coins}개.'
+const LINE_SUPPLIES = '소모품 {count}개를 샀다. 동전 {coins}개.'
+const LINE_GEAR = '장비 {count}개를 샀다. 동전 {coins}개.'
+const LINE_MAINTENANCE = '정비비로 동전 {coins}개를 냈다.'
 const LINE_NO_MONEY = '{item:을/를} 살 돈이 모자랐다.' // 08 §8.2
 const SLOT_ORDER: readonly (typeof SLOTS)[number][] = ['weapon', 'armor', 'accessory', 'relic'] // 동률 순서(08 §8)
 
@@ -43,13 +50,15 @@ export interface TownPrepResult {
   swaps: SwapRecord[]
   suggestions: number
   maintenance: number
+  spent: number // 이번 정비에서 쓴 동전(치료·구매·정비비). 마을 정비 묶음 한 줄의 {coins}(14 §4)
+  breakdown: string[] // 묶음 펼침 내역(14 §4): 판매·치료·구매·정비비 한 줄씩
   bankrupt: boolean
-  journal: JournalDraft[]
+  journal: JournalDraft[] // 묶음 밖 기록(장비 교체·제안, 14 §4)
 }
 
 // 0단계 재료 판매(08 §8 재료_주머니_전부_판매, §9.2 1번, 07 §3.3): 재료 주머니를 전부 팔고 비운다.
-// 판매가 0인 재료(mat_trap·mat_forage·mat_vein)는 07 §3.3이 층 동전식으로 환산하라고 하지만,
-// 재료 주머니가 어느 층에서 나왔는지를 저장이 갖고 있지 않아 지금은 0으로 둔다(재료 주머니 구조는 T11)
+// 판매가 0인 재료(함정 부품·채집물·광석)는 07 §3.3의 값을 주운 자리에서 동전으로 이미 받았다.
+// 주머니에서는 비우되 판매 개수에 넣지 않는다(동전 0개 판매 기록을 만들지 않는다, IMPL_DECISIONS I64)
 export function sellMaterials(ctx: RuleContext): { count: number; coins: number } {
   const loot = ctx.state.current_activity.sortie?.loot
   if (!loot) return { count: 0, coins: 0 }
@@ -57,11 +66,12 @@ export function sellMaterials(ctx: RuleContext): { count: number; coins: number 
   let coins = 0
   for (const id of Object.keys(loot.materials).sort()) { // 키 삽입 순서에 기대지 않는다(ARCHITECTURE §3)
     const n = loot.materials[id] ?? 0
-    if (n <= 0) continue
+    const price = ctx.content.get('material', id).sell_price
+    if (n <= 0 || price <= 0) continue
     count += n
-    coins += ctx.content.get('material', id).sell_price * n
+    coins += price * n
   }
-  characterOf(ctx).coins += coins
+  earnCoins(ctx, coins)
   loot.materials = {}
   return { count, coins }
 }
@@ -97,7 +107,7 @@ export function autoSell(ctx: RuleContext, shop: ShopState, opts: EvalOptions = 
     shop.sold.push({ def_id: i.def_id, grade: i.grade })
     removeSold(ctx, u)
   }
-  ch.coins += coins
+  earnCoins(ctx, coins)
   return { count: toSell.length, coins }
 }
 
@@ -185,25 +195,30 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
   const { content, state } = ctx
   const ch = characterOf(ctx)
   const journal: JournalDraft[] = []
+  const breakdown: string[] = []
   restockIfNeeded(ctx, rng, shop)
 
   // 0. 판매(재료 주머니 먼저, 그다음 가방 정리)
   const materials = sellMaterials(ctx)
-  if (materials.count) journal.push({ tag: 'town', line: renderTemplate(LINE_MATERIALS, materials) })
+  if (materials.count) breakdown.push(renderTemplate(LINE_MATERIALS, materials))
   const sold = autoSell(ctx, shop, opts)
   movePendingToBag(ctx)
-  if (sold.count) journal.push({ tag: 'town', line: renderTemplate(LINE_SOLD, sold) })
+  if (sold.count) breakdown.push(renderTemplate(LINE_SOLD, sold))
 
   // 1. 필수 치료(예약금과 무관). 흡혈귀는 피의 휴식, 약초사 치료 없음(09 §7.4)
   let serious: TownPrepResult['serious'] = null
+  let seriousCoins = 0
   if (ch.injuries.some((i) => i.grade === 'serious')) {
     if (ch.mutation) serious = 'blood_rest'
     else if (ch.coins >= treatmentCost(ctx, 'serious')) {
-      ch.coins -= treatmentCost(ctx, 'serious')
+      seriousCoins = treatmentCost(ctx, 'serious')
+      ch.coins -= seriousCoins
       serious = 'clinic'
+      breakdown.push(renderTemplate(LINE_SERIOUS, { coins: seriousCoins }))
     } else serious = 'free'
   }
   let lightTreated = 0
+  let lightCoins = 0
   const lt = content.get('attitude', state.policies.attitude).light_treat
   const lights = ch.injuries.filter((i) => i.grade === 'light')
   if (!ch.mutation && (lights.length >= lt.min_injuries || (lt.if_dungeon_candidate && opts.dungeonCandidate && lights.length))) {
@@ -213,12 +228,18 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
       ch.coins -= cost
       ch.injuries = ch.injuries.filter((i) => i !== inj)
       lightTreated++
+      lightCoins += cost
     }
   }
+  if (lightTreated) breakdown.push(renderTemplate(LINE_LIGHT, { count: lightTreated, coins: lightCoins }))
 
   // 2. 필수 소모품
   const bought: Record<string, number> = {}
+  const beforeSupplies = ch.coins
   buySupplies(ctx, bought)
+  const suppliesCoins = beforeSupplies - ch.coins
+  const boughtCount = Object.values(bought).reduce((a, n) => a + n, 0)
+  if (boughtCount) breakdown.push(renderTemplate(LINE_SUPPLIES, { count: boughtCount, coins: suppliesCoins }))
 
   // 3. 장비 예산
   let budget = ch.coins * (1 - reserveRatio(ctx))
@@ -246,11 +267,17 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
     journal.push({ tag: 'gear', line: renderTemplate(REASON_LINES[c.imp.reason].short, { item: name }), refs: { item_uid: uid } })
   }
 
+  const gear = swaps.filter((w) => w.price > 0)
+  const gearCoins = gear.reduce((a, w) => a + w.price, 0)
+  if (gear.length) breakdown.push(renderTemplate(LINE_GEAR, { count: gear.length, coins: gearCoins }))
+
   // 정비비(08 §2, 04 §8 7단계)
   const maintenance = Math.min(ch.coins, maintenanceFee(ctx))
   ch.coins -= maintenance
+  if (maintenance) breakdown.push(renderTemplate(LINE_MAINTENANCE, { coins: maintenance }))
 
-  return { materials, sold, serious, lightTreated, bought, swaps, suggestions, maintenance, bankrupt: isBankrupt(ctx), journal }
+  const spent = seriousCoins + lightCoins + suppliesCoins + gearCoins + maintenance
+  return { materials, sold, serious, lightTreated, bought, swaps, suggestions, maintenance, spent, breakdown, bankrupt: isBankrupt(ctx), journal }
 }
 
 // 상점 제안 수락(마을, 08 §8.2): 예산을 다시 확인해 사고 장착·잠금. 모자라면 제안을 지우고 기록

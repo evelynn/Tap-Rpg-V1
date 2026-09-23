@@ -8,6 +8,7 @@ import {
   derivedChainFlags,
   enemySpecials,
   enemyStats,
+  eventTextVarsAt,
   extractTemplateVars,
   renderTemplate,
   templateVars,
@@ -90,10 +91,15 @@ export function runSemanticChecks(index: DefIndex, schemas: Record<ContentKind, 
         continue
       }
       let ok = true
+      // 사건 템플릿의 문맥 변수는 그 자리에서 엔진이 채우는 것이어야 한다(EVENT_TEXT_VARS). 못 채우면 렌더가 예외를 낸다
+      const filled = d.kind === 'event' ? eventTextVarsAt(d.value as Event, t.path) : null
       for (const n of names) {
         const source = templateVars.match(n)?.meta.source
         if (!source) report('V5', d, t.path, `등록되지 않은 템플릿 변수 {${n}}`)
         else if (source === 'event' && !eventVars.has(n)) report('V5', d, t.path, `사건 변수 {${n}}는 그 사건 context_vars에 있어야 한다`)
+        else if (source === 'context' && filled && !filled.has(n) && !eventVars.has(n)) {
+          report('V5', d, t.path, `문맥 변수 {${n}}는 이 자리에서 엔진이 채우지 않는다(EVENT_TEXT_VARS, CONTENT_GUIDE '트리거별로 채워지는 변수')`)
+        }
         ok &&= source !== undefined
       }
       if (t.line && balance && longest && ok) {

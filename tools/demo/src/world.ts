@@ -6,8 +6,9 @@ import type { DemoArgs } from './args'
 
 export const BASE_PACK = fileURLToPath(new URL('../../../content/base', import.meta.url))
 
-export function loadContent(dir: string = BASE_PACK): Content {
-  const { bundle, issues } = validateContent([dir])
+// 여러 팩은 requires 순서로 정렬해 겹쳐 읽는다. 기반 팩은 저절로 붙지 않으므로 확장 팩을 볼 때는 기반 팩 경로도 함께 준다
+export function loadContent(dirs: readonly string[] = [BASE_PACK]): Content {
+  const { bundle, issues } = validateContent(dirs)
   if (!bundle) throw new Error(`콘텐츠를 읽지 못했다:\n${issues.map(formatIssue).join('\n')}`)
   return new Content(bundle.defs)
 }

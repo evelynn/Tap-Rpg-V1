@@ -345,6 +345,8 @@ export function applyCombat(ctx: RuleContext, r: CombatResult): RankUp[] {
   }
   for (const c of r.checks) ups.push(...recordCheckUse(ctx, c))
 
+  // 조우 수(12 §7.1 연대기 summary.encounters): 결과와 무관하게 전투 1회 = 조우 1회
+  ch.counters.encounters = (ch.counters.encounters ?? 0) + 1
   if (r.outcome === 'win') ch.counters.wins = (ch.counters.wins ?? 0) + 1
   for (const w of r.rewards) if (w.result === 'defeated' && !ch.defeated.includes(w.enemy_id)) ch.defeated.push(w.enemy_id)
   return ups

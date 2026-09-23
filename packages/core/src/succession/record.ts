@@ -4,11 +4,12 @@ import { makeConditionTest } from '../events/conditions'
 import { emptyScope, type EventScope, type EventWorld } from '../events/scope'
 import { markLastChapter } from '../journal/index'
 import { characterOf, type RuleContext } from '../rules/context'
-import type { END_KINDS } from '../schema/index'
+import { registerTextSlot, type END_KINDS } from '../schema/index'
 import type { Character } from '../state/character'
 import type { LifeRecord } from '../state/family'
 import type { JournalDraft } from '../state/journal'
 import { renderTemplate } from '../text/index'
+import { textLine } from '../life/text'
 import { ageAt } from '../time/index'
 
 type EndKind = (typeof END_KINDS)[number]
@@ -30,6 +31,11 @@ export interface AchievementGrant {
   journal: JournalDraft
 }
 
+// 14 §5.1 [가문] 업적 문장. 조사는 업적 이름을 따라 붙인다(은빛 패를, 첫 관문 돌파를)
+const ACHIEVEMENT_LINE = '{achievement:을/를} 이루었다'
+const ACHIEVEMENT_DETAIL = 'journal.house.achievement_detail'
+registerTextSlot(ACHIEVEMENT_DETAIL, '생애·계승(T10)')
+
 // 12 §8.4: 가문 전체에서 한 번만. 보상은 출신 배경·외형·칭호만 저장 칸이 있다(연대기 장식·가문 탭은 표시 전용)
 export function checkAchievements(w: EventWorld, scope: EventScope = emptyScope(null)): AchievementGrant[] {
   const fam = w.state.family
@@ -48,7 +54,11 @@ export function checkAchievements(w: EventWorld, scope: EventScope = emptyScope(
     out.push({
       id: a.id,
       name: a.name,
-      journal: { tag: 'house', importance: 'family', line: a.line ?? `${a.name}을 이루었다`, detail: `${fam.name} 가문이 ${a.name}을 이루었다.` },
+      journal: {
+        tag: 'house', importance: 'family',
+        line: a.line ?? renderTemplate(ACHIEVEMENT_LINE, { achievement: a.name }),
+        detail: textLine(w.content, ACHIEVEMENT_DETAIL, { family: fam.name, achievement: a.name }, '{family} 가문이 {achievement:을/를} 이루었다.'),
+      },
     })
   }
   return out

@@ -9,7 +9,7 @@ import type { Content } from '../content/index'
 import type { EventPorts } from '../events/index'
 import { addJournal } from '../journal/index'
 import { characterOf } from '../rules/context'
-import type { ResolvedAction } from '../state/activity'
+import { emptyLifeLoop, type LifeLoopState, type ResolvedAction } from '../state/activity'
 import type { Character } from '../state/character'
 import type { LifeRecord } from '../state/family'
 import type { SaveBody } from '../state/save'
@@ -20,7 +20,7 @@ import {
 } from '../activity/index'
 import {
   ageNotices, ageTick, causeLines, deathNotice, familyChoice, fireLifeEnd, fireSystemEvent, letterChoice, letterState,
-  longSleepDue, pickRetireRole, registerRetiree, retireeHeirEvents, systemEvents, type AgeTick, type SystemPhase,
+  longSleepDue, pickRetireRole, registerRetiree, retireeHeirEvents, systemEvents, type SystemPhase,
 } from '../life/index'
 import { endLife, startHeir, successionPorts, type HeirChoice, type SuccessionPlan } from '../succession/index'
 import type { NewFamilyInput } from './create'
@@ -33,24 +33,19 @@ interface PendingEnd {
   death: DeathRecord | null
 }
 
-// 세계마다 드는 생애 진행 상태. 저장에 자리가 없는 값만 든다(I44 후보).
-// plan은 저장되지 않으므로 `계승 대기` 상태로 저장했다가 불러오면 3~5단계를 다시 세워야 한다(저장 칸은 T11 몫)
-export interface LifeLoopState {
-  ticks: AgeTick[] // 다음 판단 지점에서 알릴 나이 변화(09 §2.1)
-  pending: PendingEnd | null // 이번 판단 지점에서 끝낼 생애
-  plan: SuccessionPlan | null // 계승 1~2단계 결과. 3~5단계를 기다린다
-}
-
-const LOOPS = new WeakMap<World, LifeLoopState>()
-
+// 생애 진행 상태는 저장 본문(current_activity.life_loop, CONTENT_SCHEMA §6 C31)에 둔다.
+// 행동 도중(13 §8.1 주기 저장·종료 저장)이나 계승 대기 중에 저장해도 나이 알림·끝낼 생애·계승 계획을 잃지 않는다:
+//   age_ticks    다음 판단 지점에서 알릴 나이 변화(09 §2.1)
+//   pending_end  이번 판단 지점에서 끝낼 생애
+//   succession   계승 1~2단계 결과. 3~5단계를 기다린다
 export function lifeLoopOf(world: World): LifeLoopState {
-  let st = LOOPS.get(world)
-  if (!st) {
-    st = { ticks: [], pending: null, plan: null }
-    LOOPS.set(world, st)
-  }
-  return st
+  return (world.state.current_activity.life_loop ??= emptyLifeLoop())
 }
+
+// 사망 기록은 저장 스키마가 뼈대(final_check)만 본다. 저장 ↔ 코어 타입 사이는 모양이 같아 형만 바꾼다
+type SavedDeath = NonNullable<LifeLoopState['pending_end']>['death']
+const pendingOf = (st: LifeLoopState): PendingEnd | null =>
+  st.pending_end && { kind: st.pending_end.kind, death: st.pending_end.death as unknown as DeathRecord | null }
 
 // ── 사망 검사 ──
 
@@ -100,19 +95,19 @@ function runLifeEnd(world: World, end: PendingEnd): void {
     const lines = d ? causeLines(world, d) : null
     if (d && lines) addJournal(world, deathNotice(d, lines))
     fireLifeEnd(world, { kind: 'died', place, ...(lines ? { vars: { ...lines } } : {}) }, world.ports)
-    st.plan = endLife(world, { kind: 'died', place, ...(d ? { cause: causeOf(d) } : {}) })
+    st.succession = endLife(world, { kind: 'died', place, ...(d ? { cause: causeOf(d) } : {}) })
     return
   }
   if (end.kind === 'retired') {
     const role = pickRetireRole(world)
     fireLifeEnd(world, { kind: 'retired', place: ch.location, roleId: role.id }, world.ports)
     registerRetiree(world, role.id)
-    st.plan = endLife(world, { kind: 'retired', place: ch.location, roleId: role.id })
+    st.succession = endLife(world, { kind: 'retired', place: ch.location, roleId: role.id })
     return
   }
   const cause = longSleepDue(world) ?? 'age'
   fireLifeEnd(world, { kind: 'long_sleep', place: ch.location, cause }, world.ports)
-  st.plan = endLife(world, {
+  st.succession = endLife(world, {
     kind: 'long_sleep',
     place: ch.location,
     longSleep: { cause, sleep_age: ageAt(ch.eff_min, world.content.balance.time) },
@@ -124,11 +119,11 @@ function runLifeEnd(world: World, end: PendingEnd): void {
 // 계승 대기에서 후계자를 확정하고 새 인물을 출발시킨다(12 §1.1 3~5단계). 자동 계승이 켜져 있으면 훅이 부른다
 export function succeed(world: World, choice: HeirChoice = {}): Character {
   const st = lifeLoopOf(world)
-  const plan = st.plan
+  const plan = st.succession
   if (!plan) throw new Error('계승을 기다리는 생애 기록이 없다')
   const heir = startHeir(world, plan, choice, world.ports)
-  st.plan = null
-  st.ticks.length = 0
+  st.succession = null
+  st.age_ticks.length = 0
   // 이전 인물의 확정 결과는 남기지 않는다(새 인물의 유효 진행은 0분부터다)
   world.state.current_activity.resolved_action = null
   const rt = runtimeOf(world)
@@ -142,7 +137,7 @@ export function succeed(world: World, choice: HeirChoice = {}): Character {
 
 // 계승 대기 중인 생애 기록(없으면 null). 계승 화면이 후보·유품·정산을 읽는다
 export function pendingSuccession(world: World): SuccessionPlan | null {
-  return lifeLoopOf(world).plan
+  return lifeLoopOf(world).succession
 }
 
 // ── 시스템 사건 발화(10 §3.3) ──
@@ -185,25 +180,25 @@ function onPoint(world: World): void {
   if (!world.state.character) return
   const st = lifeLoopOf(world)
   // 1. 나이 알림: 능력치는 나이가 오르는 순간 적용하고 알림만 여기로 미룬다(09 §2.1)
-  for (const tick of st.ticks.splice(0)) for (const d of ageNotices(world, tick)) addJournal(world, d)
+  for (const tick of st.age_ticks.splice(0)) for (const d of ageNotices(world, tick)) addJournal(world, d)
   // 2. 사망: 치명 활동의 최후 판정에 지면 귀환하지 않고 그 자리에서 끝난다(04 §2.2)
-  if (!st.pending && !st.plan && characterOf(world).hp <= 0) {
-    st.pending = { kind: 'died', death: deathIn(world.state.current_activity.resolved_action) }
+  if (!st.pending_end && !st.succession && characterOf(world).hp <= 0) {
+    st.pending_end = { kind: 'died', death: deathIn(world.state.current_activity.resolved_action) as unknown as SavedDeath }
   }
   // 3. 생애 종료 사건 + 계승 1~2단계 → 계승 대기(시계 정지)
-  if (st.pending && !st.plan) {
-    const end = st.pending
-    st.pending = null
+  const end = pendingOf(st)
+  if (end && !st.succession) {
+    st.pending_end = null
     runLifeEnd(world, end)
   }
   // 4. 자동 계승이면 3~5단계까지 이어 간다(12 §1.2)
-  if (st.plan && world.state.policies.auto_succession) succeed(world)
+  if (st.succession && world.state.policies.auto_succession) succeed(world)
 }
 
 // 은퇴·긴 잠은 마을 루틴이 끝난 마을 대기에서 알려 온다(04 §2.2, 09 §3.1)
 function markLifeEnd(world: World, kind: EndKind): void {
   const st = lifeLoopOf(world)
-  if (!st.pending && !st.plan) st.pending = { kind, death: null }
+  if (!st.pending_end && !st.succession) st.pending_end = { kind, death: null }
 }
 
 // ── 조립 ──
@@ -215,7 +210,10 @@ export function gameWorldOptions(get: () => World | null, opts: ActivityOptions 
   return {
     ...act,
     ports: (base) => ({ ...over, ...successionPorts(base) }),
-    onAge: (w, from, to, changes) => void lifeLoopOf(w).ticks.push(ageTick(w.content, from, to, changes)),
+    onAge: (w, from, to, changes) => {
+      const tick = ageTick(w.content, from, to, changes)
+      lifeLoopOf(w).age_ticks.push({ ...tick, changes: [...tick.changes] })
+    },
     onPoint,
   }
 }

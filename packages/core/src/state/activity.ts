@@ -1,7 +1,9 @@
-// 선택 대기와 진행 상태(16 §5.7) + C13·C26~C28. 확정 결과(resolved_action)는 13 §8.3.
+// 선택 대기와 진행 상태(16 §5.7) + C13·C26~C28·C31. 확정 결과(resolved_action)는 13 §8.3.
 import { z } from 'zod'
-import { ACTIVITIES, ACTIVITY_STATES, ROOM_KINDS, TIME_OF_DAY, WEATHERS } from '../schema/index'
+import { ACTIVITIES, ACTIVITY_STATES, END_KINDS, LIFE_STAGES, ROOM_KINDS, STATS, TIME_OF_DAY, WEATHERS } from '../schema/index'
 import { defId, effMinV, flagValue, intV, nat, s, savedEffect, scopedFlagKey, tempModSchema, uid } from './common'
+import { candidateSchema, lifeRecordSchema } from './family'
+import { itemInstanceSchema } from './inventory'
 import { journalDraftSchema } from './journal'
 
 export const pendingChoiceSchema = s({
@@ -70,6 +72,36 @@ export const resolvedActionSchema = s({
 })
 export type ResolvedAction = z.infer<typeof resolvedActionSchema>
 
+// C31: 판단 지점으로 미룬 생애 진행(sim/life-loop, 04 §2.3). 행동 도중·계승 대기 중 저장해도 잃지 않는다.
+// 모양은 코어 타입 그대로다: 나이 알림 = life/aging AgeTick(09 §2.1), 끝낼 생애 = 종류 + 사망 기록(09 §5.4),
+// 계승 계획 = succession/succeed SuccessionPlan(12 §1.1 1~2단계 결과, 3~5단계가 읽는다)
+export const ageTickSchema = s({
+  from: intV,
+  to: intV,
+  changes: z.array(s({ age: intV, stat: z.enum(STATS), delta: intV })),
+  boundary: intV.nullable(),
+  stage: z.enum(LIFE_STAGES),
+})
+export const lifeLoopSchema = s({
+  age_ticks: z.array(ageTickSchema),
+  pending_end: s({ kind: z.enum(END_KINDS), death: z.looseObject({ final_check: z.looseObject({}) }).nullable() }).nullable(),
+  succession: s({
+    record: lifeRecordSchema,
+    candidates: z.array(candidateSchema),
+    defaultHeirUid: uid.nullable(),
+    relicUids: z.array(uid),
+    settlement: s({
+      coins: z.number(), soldValue: z.number(), total: z.number(), ratio: z.number(), transferred: z.number(), capped: z.boolean(),
+      keepsakes: z.array(itemInstanceSchema),
+    }),
+    journal: z.array(journalDraftSchema),
+    timeJump: z.boolean(),
+    firstPage: z.string(),
+  }).nullable(),
+})
+export type LifeLoopState = z.infer<typeof lifeLoopSchema>
+export const emptyLifeLoop = (): LifeLoopState => ({ age_ticks: [], pending_end: null, succession: null })
+
 export const currentActivitySchema = s({
   state: z.enum(ACTIVITY_STATES),
   paused_from: z.enum(ACTIVITY_STATES).nullable(), // 일시정지 직전 상태(재개 때 되돌림)
@@ -77,5 +109,6 @@ export const currentActivitySchema = s({
   sortie: sortieSchema.nullable(),
   pending_town_effects: z.array(savedEffect),
   resolved_action: resolvedActionSchema.nullable(),
+  life_loop: lifeLoopSchema.default(emptyLifeLoop), // C31. 이 칸이 없던 저장은 빈 값
 })
 export type CurrentActivity = z.infer<typeof currentActivitySchema>

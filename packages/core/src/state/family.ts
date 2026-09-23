@@ -73,6 +73,8 @@ export const familySchema = s({
     locations: z.record(defId, s({ first_gen: intV })),
   }),
   discovered_locations: z.array(defId),
+  // C30: 가문 수첩에 적힌 발견 지점(07 §6.5, 12 §7.4). 인물의 발견(C17)은 생애 단위라 따로 둔다. 이 칸이 없던 저장은 빈 목록
+  discovery_points: z.array(defId).default([]),
   bonds: z.array(s({ npc_id: defId, gen: intV, key: z.string(), text: z.string() })),
   flags: z.record(scopedFlagKey('fam'), flagValue),
   flag_meta: z.record(scopedFlagKey('fam'), s({ set_gen: intV })), // C12

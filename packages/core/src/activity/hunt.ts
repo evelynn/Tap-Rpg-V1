@@ -8,6 +8,7 @@ import { applyEncounterStep, breather, resolveEncounterStep, rollEnemies, type E
 import { tickSortieBody } from './field'
 import { fieldPoint, takePendingSec } from './judgment'
 import { line } from './lines'
+import { renderTemplate } from '../text/index'
 import { currentSortie } from './sortie'
 
 // 드롭 표 이름은 balance.economy.drops의 키다(I50 (2) 재검토 대상)
@@ -39,7 +40,7 @@ export function encounterJournal(world: World, spec: EncounterSpec, out: Encount
   const seq = s.progress
   return [{
     tag,
-    line: enemy.victory_lines[seq % enemy.victory_lines.length]!,
+    line: renderTemplate(enemy.victory_lines[seq % enemy.victory_lines.length]!, { enemy: enemy.name }),
     detail: line(content, 'hunt_win_detail', { name: characterOf(world).name, place: place.name, enemy: enemy.name, coins }, seq),
     refs: { location_id: spec.place, sortie_id: s.id },
   }]

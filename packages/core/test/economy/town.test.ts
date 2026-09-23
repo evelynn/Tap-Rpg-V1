@@ -114,6 +114,20 @@ describe('08 §8 마을 정비', () => {
     assert.equal(r.bankrupt, false)
   })
 
+  it('묶음 한 줄의 쓴 동전은 치료·소모품·장비 구매·정비비의 합이다(14 §4)', () => {
+    const w = setup(600)
+    const before = w.state.character!.coins
+    const r = townPrep(w, firstRng(), emptyShopState())
+    const income = r.materials.coins + r.sold.coins
+    assert.equal(r.spent, before + income - w.state.character!.coins)
+    assert.ok(r.spent > r.maintenance, `정비비(${r.maintenance})만 적었다: ${r.spent}`)
+    // 펼침 내역: 소모품·장비 구매·정비비가 한 줄씩. 판매·교체 기록은 따로 남지 않는다(교체는 [장비])
+    assert.ok(r.breakdown.some((l) => l.startsWith('소모품 2개를 샀다')))
+    assert.ok(r.breakdown.some((l) => l.startsWith('장비 2개를 샀다')))
+    assert.ok(r.breakdown.some((l) => l.startsWith('정비비로')))
+    assert.ok(!r.journal.some((j) => j.tag === 'town'))
+  })
+
   it('돈이 없으면 아무것도 못 사고, 회복약이 0이면 파산 판정이 선다', () => {
     const w = setup(3) // 가장 싼 소모품(야영 식량 5)도 못 산다
     w.state.inventory.consumables = {}
@@ -278,13 +292,29 @@ describe('08 §8·§9.2 재료 주머니 자동 판매', () => {
     assert.deepEqual(w.state.current_activity.sortie!.loot.materials, {})
   })
 
-  it('townPrep이 장비 판매보다 먼저 재료를 팔고 기록 한 줄을 남긴다', () => {
+  it('townPrep이 장비 판매보다 먼저 재료를 팔고 정비 묶음 펼침에 한 줄을 남긴다(14 §4)', () => {
     const w = baseWorld()
     withLoot(w, { mat_EN01: 2 })
     const r = townPrep(w, firstRng(), emptyShopState())
     assert.equal(r.materials.count, 2)
     assert.ok(r.materials.coins > 0)
-    assert.ok(r.journal.some((d) => d.line.startsWith('재료 2개를 팔았다')))
+    assert.ok(r.breakdown[0]!.startsWith('재료 2개를 팔았다'))
+    assert.ok(!r.journal.some((d) => d.line.startsWith('재료')), '판매는 따로 기록하지 않는다')
+  })
+
+  it('판매가 0인 재료(값은 주울 때 받았다)는 판매 개수·기록에 넣지 않고 주머니만 비운다', () => {
+    const w = baseWorld()
+    const zero = w.content.list('material').filter((m) => m.sell_price === 0).map((m) => m.id)
+    assert.ok(zero.length > 0)
+    withLoot(w, Object.fromEntries(zero.map((id) => [id, 3])))
+    const before = w.state.character!.coins
+    assert.deepEqual(sellMaterials(w), { count: 0, coins: 0 })
+    assert.equal(w.state.character!.coins, before)
+    assert.deepEqual(w.state.current_activity.sortie!.loot.materials, {})
+    withLoot(w, { [zero[0]!]: 2, mat_EN01: 1 })
+    const r = townPrep(w, firstRng(), emptyShopState())
+    assert.equal(r.materials.count, 1)
+    assert.ok(!r.breakdown.some((l) => l.includes('동전 0개')))
   })
 
   it('출정 중이 아니면 팔 재료가 없다', () => {

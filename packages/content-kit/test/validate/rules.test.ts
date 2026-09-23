@@ -249,6 +249,40 @@ describe('V5 템플릿 변수', () => {
     ])
   })
 
+  it('사건 문맥 변수는 그 자리에서 엔진이 채우는 것만(EVENT_TEXT_VARS)', () => {
+    const r = run([
+      ...WORLD,
+      // 장비를 주는 효과가 없는 사건의 {loot}, 선택 창 밖의 {n}, 시스템 단계 밖의 {heir}
+      event('L02', { intro: { lines: ['{loot:을/를} 꺼냈다', '{heir:이/가} 왔다'], tag: 'town', detail: '근접 {n}단계' } }),
+      // 의뢰 정산 문장은 {coins}·{place}만 채운다
+      event('L06', {
+        context_vars: [
+          { var: 'target_place', selector: 'best_hunting_ground', params: { max_risk: 'normal' } },
+          { var: 'enemy', selector: 'main_enemy_of', params: { place_var: 'target_place' } },
+        ],
+        choices: [choice('go', effects({
+          type: 'accept_quest', quest: 'L06', location_var: 'target_place', enemy_var: 'enemy', goal_wins: 5, deadline: 'next_sortie',
+          reward: { coin_units: 6, xp_units: 2 }, settle: 'ratio_floor', cancel_on: 'serious_injury',
+          lines: { complete: '동전 {coins}개를 받았다', partial: '{name:이/가} 절반을 해냈다', cancel: '내려놓았다' },
+        }))],
+      }),
+      // 통과: 장비를 주는 사건의 {loot}, 가족 문맥 {partner}, 선택지 창의 {luck_after}
+      event('L03', {
+        intro: { lines: ['{partner:과/와} 걸었다', '짧다'], tag: 'town' },
+        choices: [choice('go', {
+          preview: { benefit: '행운 {luck_after}', cost: '없음', reversible: true },
+          outcomes: { always: { effects: [{ type: 'add_coins', units: 1 }], line: '{loot:을/를} 찾았다' } },
+        })],
+      }),
+    ], 'V5')
+    assert.deepEqual(r, [
+      'V5 event/L02.json#/intro/lines/0',
+      'V5 event/L02.json#/intro/lines/1',
+      'V5 event/L02.json#/intro/detail',
+      'V5 event/L06.json#/choices/0/outcomes/always/effects/0/lines/partial',
+    ])
+  })
+
   it('context_vars의 place_var는 앞 항목 변수', () => {
     const cv = (order: Obj[]) => event('L06', { context_vars: order })
     const place = { var: 'target_place', selector: 'best_hunting_ground', params: { max_risk: 'normal' } }

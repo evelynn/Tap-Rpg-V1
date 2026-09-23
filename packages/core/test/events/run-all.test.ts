@@ -17,6 +17,13 @@ function placeOf(ev: Event): string {
   return r?.id ?? 'H1'
 }
 
+// 가짜 포트·빈 가문이 만들지 못하는 문장 값(동반자·자녀·부모·사망 원인 줄·지급 장비 등).
+// 실제 세계에서는 포트와 부르는 쪽(fireSystemEvent vars)이 채운다. 실제 값의 검사는 통합 가드(integration/journal-text)가 한다
+const TEXT_VARS: Record<string, string> = {
+  partner: '보리', job: '약초꾼', child: '하온', parent_name: '아린', heir: '하온', first_page: '폐광 지도',
+  risk_line: '치명(보통)', injury_line: '없음', final_check_line: '최후 판정 주사위 3 = 5 / 난이도 15', loot: '들쥐 이빨 목걸이', sleep_age: '98', relic: '종이 달린 짧은 검',
+}
+
 // 어떤 사건이든 후보가 될 수 있는 인물(레벨·나이·소지금이 넉넉하고 줄기가 진행 중)
 function ready(tw: TestWorld, place: string): void {
   const ch = tw.w.state.character!
@@ -28,6 +35,7 @@ function ready(tw: TestWorld, place: string): void {
   ch.location = place
   ch.flags['life.c01_stage'] = 2
   ch.flags['life.c02_stage'] = 2
+  ch.parent_call = '어머니'
   tw.w.state.family.generation = 2
   startSortie(tw, { location_id: place, activity: 'adventure' })
   tw.scope.place = place
@@ -47,6 +55,7 @@ describe('기반 팩 사건 실행(가짜 포트)', () => {
             ready(tw, place)
             const ports = fakePorts({ calls: [], combat })
             const occ = prepareOccurrence(tw.w, ev.id, place, ports, { choiceId: choice.id })
+            occ.vars = { ...TEXT_VARS, ...occ.vars }
             occ.dice[choice.id] = dice
             for (const key of Object.keys(occ.dice)) if (key !== choice.id) occ.dice[key] = dice
             const res = applyOccurrence(tw.w, occ, ports)
@@ -68,7 +77,7 @@ describe('기반 팩 사건 실행(가짜 포트)', () => {
           const tw = makeWorld()
           ready(tw, place)
           const ports = fakePorts()
-          const scope: EventScope = { place, vars: { rumor_place: 'A1', target_place: 'H2', enemy: 'EN03', friend: '누리', relic_name: '유물', relic_note: '', relic_uid: 'it_000001' }, eventId: ev.id }
+          const scope: EventScope = { place, vars: { ...TEXT_VARS, rumor_place: 'A1', target_place: 'H2', enemy: 'EN03', friend: '누리', relic_name: '유물', relic_note: '', relic_uid: 'it_000001' }, eventId: ev.id }
           const test = makeConditionTest(tw.w, scope)
           const run: EffectRun = {
             w: tw.w, ports, scope, test, rule: ruleContext(tw.w, test),

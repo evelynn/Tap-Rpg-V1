@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { DEFAULTS, parseArgs, renderIntro } from '../src/args'
+import { DEFAULTS, parseArgs, renderIntro, USAGE } from '../src/args'
 
 describe('데모 인자', () => {
   it('아무것도 주지 않으면 기본값이다', () => {
@@ -30,6 +30,31 @@ describe('데모 인자', () => {
     assert.throws(() => parseArgs(['--speed', '0']), /0보다 큰 수/)
     assert.throws(() => parseArgs(['--gen', '1.5']), /정수/)
     assert.throws(() => parseArgs(['--seed']), /값이 없다/)
+  })
+
+  it('--minutes 를 주지 않으면 생애가 끝날 때까지 본다(null)', () => {
+    assert.equal(parseArgs([]).minutes, null)
+    assert.equal(parseArgs(['--minutes', '900']).minutes, 900)
+    assert.match(renderIntro(parseArgs([])), /생애가 끝날 때까지/)
+    assert.match(renderIntro(parseArgs(['--minutes', '30'])), /최대 30유효분/)
+  })
+
+  it('--content 는 다음 옵션 앞까지 경로를 여러 개 받는다', () => {
+    assert.deepEqual(parseArgs([]).content, ['content/base'])
+    const a = parseArgs(['--content', 'content/base', 'content/examples/mist-forest', '--fast'])
+    assert.deepEqual(a.content, ['content/base', 'content/examples/mist-forest'])
+    assert.ok(a.fast)
+    assert.deepEqual(parseArgs(['--content=content/base']).content, ['content/base'])
+    assert.throws(() => parseArgs(['--content']), /경로가 없다/)
+    assert.throws(() => parseArgs(['--content', '--fast']), /경로가 없다/)
+    assert.deepEqual(DEFAULTS.content, ['content/base'], '기본값 배열을 건드리지 않는다')
+    assert.match(renderIntro(a), /콘텐츠: content\/base \+ content\/examples\/mist-forest/)
+  })
+
+  it('도움말이 기본 실행 길이와 확장 팩 보는 법을 알려 준다', () => {
+    assert.doesNotMatch(USAGE, /600 = 한 생애/)
+    assert.match(USAGE, /--content <경로\.\.\.>/)
+    assert.match(USAGE, /--content content\/base content\/examples\/mist-forest/)
   })
 
   it('첫 줄 안내에 설정과 조작법이 들어간다', () => {

@@ -1,6 +1,7 @@
 // 던전(07 §5): 방 생성, 예상 손실률과 다음 방 진입 판단, 방 종류별 처리, 관문 도전.
 import { effectiveLevel, gateCleared, gateRiskOk } from '../ai/index'
 import { retreatHpRatio } from '../combat/index'
+import { earnCoins } from '../economy/earn'
 import { addJournal } from '../journal/index'
 import { considerPickup } from '../items/bag'
 import { materializeItem, rollDrop } from '../items/roll'
@@ -21,6 +22,7 @@ import { tickSortieBody } from './field'
 import { addPendingSec, fieldPoint, takePendingSec } from './judgment'
 import { DROP_TABLE } from './hunt'
 import { line } from './lines'
+import { renderTemplate } from '../text/index'
 import { beginReturn, currentSortie } from './sortie'
 
 export type RoomKind = (typeof ROOM_KINDS)[number]
@@ -388,7 +390,7 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
         const id = materialBySource(world, 'trap')
         if (id) s.loot.materials[id] = (s.loot.materials[id] ?? 0) + 1
         const coins = Math.round(payload.parts * rewardUnits(world, place).coins)
-        ch.coins += coins
+        earnCoins(world, coins)
         s.loot.coins += coins
       }
       break
@@ -400,7 +402,7 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
       for (const c of payload.checks) recordCheckUse(world, c)
       runSavedEffects(world, payload.effects, scope)
       if (payload.coins) {
-        ch.coins += payload.coins
+        earnCoins(world, payload.coins)
         s.loot.coins += payload.coins
       }
       if (payload.material) s.loot.materials[payload.material] = (s.loot.materials[payload.material] ?? 0) + b.dungeon.chest.material
@@ -497,7 +499,7 @@ export const gateResolver: ActionResolver = {
     const journal: JournalDraft[] = enc.combat.outcome === 'win'
       ? [{
         tag: 'dungeon', importance: 'major',
-        line: enemy.victory_lines[0]!,
+        line: renderTemplate(enemy.victory_lines[0]!, { enemy: enemy.name }),
         detail: line(world.content, 'dungeon_gate_detail', { enemy: enemy.name, place: r.name }),
         refs: { location_id: s.location_id, sortie_id: s.id },
       }]

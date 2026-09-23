@@ -1,4 +1,5 @@
 // 모험 장면(07 §6): 장면 뽑기, 발견·길 선택·채집·조우·사건 처리.
+import { earnCoins } from '../economy/earn'
 import { addJournal } from '../journal/index'
 import { characterOf, type RuleContext } from '../rules/context'
 import { addFatigue } from '../rules/fatigue'
@@ -116,13 +117,15 @@ function applyScene(world: World, payload: ScenePayload, place: string): void {
       recordCheckUse(world, payload.check)
       s.discovery_attempts.push(payload.discovery)
       if (payload.ok) {
+        // 가문 수첩에 이미 적힌 지점을 후손이 다시 찾으면 '가문 최초'가 아니다(07 §6.5, 12 §7.4)
+        const familyFirst = !world.state.family.discovery_points.includes(payload.discovery)
         world.ports.discovery.reveal(world, payload.discovery, scope)
         addXp(world, world.rng.life, Math.floor(b.adventure.discovery_xp_units * unit.xp))
         const d = routeOf(world, place).discoveries.find((x) => x.id === payload.discovery)!
         addJournal(world, {
           tag: 'discovery',
           line: line(world.content, 'discovery_place', { place: d.name }, s.progress),
-          detail: line(world.content, 'discovery_place_detail', { name: ch.name, place: d.name }, s.progress),
+          detail: line(world.content, familyFirst ? 'discovery_place_detail' : 'discovery_place_again_detail', { name: ch.name, place: d.name }, s.progress),
           refs: { location_id: place },
         })
         if (d.map_fragment) addJournal(world, { tag: 'discovery', line: line(world.content, 'adventure_map_detail', { name: ch.name }) })
@@ -144,7 +147,7 @@ function applyScene(world: World, payload: ScenePayload, place: string): void {
       if (payload.coins > 0) {
         const id = materialBySource(world, 'forage')
         if (id) s.loot.materials[id] = (s.loot.materials[id] ?? 0) + 1
-        ch.coins += payload.coins
+        earnCoins(world, payload.coins)
         s.loot.coins += payload.coins
       }
       if (!payload.ok) runSavedEffects(world, (b.check_kinds[b.adventure.forage.check]?.fail_effects ?? []) as Effect[], scope)
@@ -166,7 +169,7 @@ function applyScene(world: World, payload: ScenePayload, place: string): void {
   }
   // 비전투 장면의 기본 보상(07 §6.1)
   const coins = Math.round(b.adventure.scene_coin_units * unit.coins)
-  ch.coins += coins
+  earnCoins(world, coins)
   s.loot.coins += coins
   addXp(world, world.rng.life, Math.floor(unit.xp * b.xp.activity_mult.adventure))
 }

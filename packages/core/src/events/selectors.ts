@@ -3,8 +3,10 @@
 import type { ConditionTest } from '../rules/context'
 import { characterOf } from '../rules/context'
 import { ACTIVITY_RISKS, chainStageKey } from '../schema/index'
+import { levelTier } from '../items/stats'
+import { roundHalfUp } from '../rules/derived'
 import type { EventPorts } from './ports'
-import { ruleContext, type EventWorld } from './scope'
+import { rewardUnits, ruleContext, type EventWorld } from './scope'
 
 interface SelectorArgs {
   w: EventWorld
@@ -12,6 +14,7 @@ interface SelectorArgs {
   vars: Readonly<Record<string, string>>
   ports: EventPorts
   test: ConditionTest
+  place: string | null // 사건이 일어난 장소({place})
 }
 type Selector = (a: SelectorArgs) => Record<string, string>
 
@@ -75,6 +78,16 @@ export const SELECTOR_HANDLERS: Record<string, Selector> = {
     if (r) out.relic_uid = r.uid
     return out
   },
+  // 특가 구매 도입의 물건(11 L02·L10). 후보 걸러내기는 offer_purchase 포트와 같은 기준(인물 단계·시설·슬롯·저주 제외)
+  offer_item: ({ w, params, test }) => {
+    const tier = levelTier(w.content, characterOf(ruleContext(w, test)).level)
+    const cands = w.content.list('item').filter((d) =>
+      !d.cursed && d.tier === tier && params.slots.includes(d.slot) && (d.shop ?? []).some((s) => params.facilities.includes(s.facility)))
+    if (!cands.length) throw new Error(`offer_item: 단계 ${tier}에 조건에 맞는 판매 장비가 없다`)
+    return { item: cands[w.rng.event.bounded(cands.length)]!.id }
+  },
+  // 동전 단위 × units(add_coins units와 같은 식). 도입이 미리 보여 주는 금액(11 L12)
+  coin_amount: ({ w, params, place }) => ({ coins: String(roundHalfUp(params.units * rewardUnits(w, place).coins)) }),
 }
 
 // 사건 context_vars를 선언 순서대로 채운다
@@ -83,6 +96,7 @@ export function fillContextVars(
   contextVars: readonly { var: string; selector: string; params?: unknown }[],
   ports: EventPorts,
   test: ConditionTest,
+  place: string | null = null,
 ): Record<string, string> {
   const vars: Record<string, string> = {}
   const cache = new Map<string, Record<string, string>>()
@@ -92,7 +106,7 @@ export function fillContextVars(
     if (!got) {
       const sel = SELECTOR_HANDLERS[cv.selector]
       if (!sel) throw new Error(`변수 선택자 핸들러가 없다: ${cv.selector}`)
-      got = sel({ w, params: (cv.params ?? {}) as Record<string, unknown>, vars, ports, test })
+      got = sel({ w, params: (cv.params ?? {}) as Record<string, unknown>, vars, ports, test, place })
       cache.set(key, got)
     }
     Object.assign(vars, got)

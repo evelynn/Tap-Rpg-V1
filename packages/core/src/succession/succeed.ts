@@ -4,11 +4,11 @@ import { closeLifeChains } from '../events/chains'
 import type { EventPorts } from '../events/ports'
 import { emptyScope, type EventWorld } from '../events/scope'
 import { addJournal, purgeDaily } from '../journal/index'
-import { equipItem } from '../items/bag'
+import { equipItem, itemName } from '../items/bag'
 import { characterOf, type RuleContext } from '../rules/context'
 import { maxHp } from '../rules/derived'
 import { skillRank } from '../rules/growth'
-import { SEASONS, SKILLS, SLOTS, STATS, type END_KINDS } from '../schema/index'
+import { SEASONS, SKILLS, SLOTS, STATS, registerTextSlot, type END_KINDS } from '../schema/index'
 import type { Appearance, Character } from '../state/character'
 import type { Candidate, LifeRecord } from '../state/family'
 import type { JournalDraft } from '../state/journal'
@@ -46,12 +46,30 @@ export interface SuccessionPlan {
   firstPage: string
 }
 
-// 12 §1.3 상세 기록: 이전 인물 연대기에서 가장 먼저 기록된 발견·유품·인연
+// 12 §1.3 상세 기록 {first_page}: 이전 인물 연대기에서 가장 먼저 기록된 발견·유품·인연의 이름(명사).
+// 기록 문장이 아니라 기록이 가리키는 것(장비·NPC·발견 지점)의 이름을 쓴다. 하나도 없으면 대체 문형(인물 이름)
 const FIRST_PAGE_TAGS: readonly string[] = ['discovery', 'gear', 'bond']
+export const FIRST_PAGE_FALLBACK = 'journal.succession.first_page_fallback'
+registerTextSlot(FIRST_PAGE_FALLBACK, '생애·계승(T10)')
 
 function firstPageOf(ctx: RuleContext, charUid: string): string {
-  const e = ctx.state.journal.find((j) => j.char_uid === charUid && FIRST_PAGE_TAGS.includes(j.tag))
-  return e?.line ?? ''
+  const { content, state } = ctx
+  const ch = characterOf(ctx)
+  const discoveryName = (route: string | undefined): string | null => {
+    const r = route && content.has('region', route) ? content.get('region', route) : null
+    if (!r || r.kind !== 'adventure_route') return null
+    return r.discoveries.find((d) => ch.discoveries.includes(d.id))?.name ?? null
+  }
+  for (const e of state.journal) {
+    if (e.char_uid !== charUid || !FIRST_PAGE_TAGS.includes(e.tag)) continue
+    const inst = e.refs?.item_uid ? state.item_instances[e.refs.item_uid] : undefined
+    const name = inst ? itemName(ctx, inst)
+      : e.refs?.npc_id && content.has('npc', e.refs.npc_id) ? content.get('npc', e.refs.npc_id).name
+      : e.tag === 'discovery' ? discoveryName(e.refs?.location_id)
+      : null
+    if (name) return name
+  }
+  return textLine(content, FIRST_PAGE_FALLBACK, { name: ch.name }, '{name}의 이름')
 }
 
 // 12 §4.3 시간 도약: 직계 후계자가 생긴 뒤 time_jump_min이 지나기 전에 생애가 끝난 경우

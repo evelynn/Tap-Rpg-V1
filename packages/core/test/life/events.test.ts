@@ -41,9 +41,9 @@ describe('생애 종료 사건 발화(11 S03·S04·S08)', () => {
     assert.equal(res.event_id, 'S04')
     assert.equal(res.choice_id, 'letter_mine') // 종소리 폐광 편지
     assert.equal(w.state.family.flags['fam.death_D3'], true)
-    const letter = w.state.journal.find((e) => e.importance === 'family' && e.line.includes('가문께'))
+    const letter = w.state.journal.find((e) => e.importance === 'family' && (e.detail ?? '').includes('가문께'))
     assert.ok(letter, '길드 편지가 연대기 기록으로 남는다')
-    assert.match(letter!.line, /종이 달린 짧은 검/)
+    assert.match(letter!.detail ?? '', /종이 달린 짧은 검/)
   })
 
   it('긴 잠이면 S08이 골라지고 갈증 한계 변형이 따로 있다(09 §7.6)', () => {

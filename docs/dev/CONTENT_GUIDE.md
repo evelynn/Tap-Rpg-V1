@@ -20,17 +20,19 @@ mkdir -p content/my-pack/events/life
 ```
 
 - `id`는 소문자 snake_case이며 전체에서 고유하다. **폴더 이름은 자유**다(`mist-forest` 폴더의 팩 id는 `mist_forest`).
-- `requires: ["base"]`를 쓰면 기반 팩이 먼저 로드된다. 기반 팩 ID를 가리키려면 반드시 넣는다.
+- `requires: ["base"]`는 "이 팩은 base 뒤에 얹힌다"는 **선언**이다. 기반 팩 ID를 가리키려면 반드시 넣는다.
+- **`requires`가 기반 팩을 대신 불러오지는 않는다.** 검사기·데모·시뮬레이터 모두 받은 경로만 읽으므로, 기반 팩 경로를 **직접 함께 줘야** 한다. 빠뜨리면 P03 오류다(§6). 함께 준 팩끼리는 `requires` 순서로 정렬되므로 인자 순서는 상관없다.
 
 검사:
 
 ```bash
-pnpm content:check                                     # 기반 팩만
+pnpm content:check                                     # 기반 팩만(content/base)
 npx tsx packages/content-kit/src/cli.ts check content/base content/my-pack
 npx tsx packages/content-kit/src/cli.ts check content/base content/my-pack --strict   # 경고도 실패로
+npx tsx packages/content-kit/src/cli.ts check content/my-pack                         # ✗ P03: requires 팩 'base'이(가) 로드 대상에 없다
 ```
 
-종료 코드 0이면 통과다. `--json`을 붙이면 이슈를 기계가 읽는 형태로 낸다.
+종료 코드 0이면 통과다(오류가 있으면 1). `--json`을 붙이면 이슈를 기계가 읽는 형태로 낸다. 팩이 게임 안에서 실제로 나오는지는 §8에서 데모·시뮬레이터로 본다.
 
 ## 2 파일을 어디에 두나
 
@@ -157,6 +159,9 @@ npx tsx packages/content-kit/src/cli.ts check content/base content/my-pack --str
 3. `weight` — **1~10 정수**(V13). 그 밖의 값은 오류다. 세부 조절은 `weight_mods`로 한다.
 4. `hold` — `none`이면 AI가 바로 고른다. `branch`·`fate`면 사람에게 선택 창을 띄우고, 그때는 `preview.body`·`hold_line`·선택지별 `preview{benefit,cost,reversible}`가 **필수**다(V8).
 5. `hold: "none"` 사건은 모든 선택지에 `tags`(1~2개)·`risk`·`short`가 필수다(V7).
+   - 선택지 `tags`에 쓸 수 있는 값은 **8개뿐**이다: `safe`(안전) `thrift`(절약) `rest`(휴식) `kindness`(호의) `info`(정보) `new_path`(새길) `reward`(보상) `bold`(정면). 출처는 코어 `CHOICE_TAGS`(`packages/core/src/schema/common.ts`, 10 §5.1)이고 팩이 새 태그를 더할 수 없다. 그 밖의 값이나 3개 이상은 S01 오류다(`Invalid option: expected one of "safe"|…`, `Too big: expected array to have <=2 items`).
+   - 자동 선택은 이 태그로 선택지 점수를 낸다(태도의 `tag_scores`, 특성의 `choice_tag_bonus`). 그래서 태그는 문장 분위기가 아니라 **그 선택지가 실제로 주는 것**에 붙인다 — 쉬면 `rest`, 동전·장비를 얻으면 `reward`, 모르는 길로 가면 `new_path`.
+   - `risk`는 `none` `low` `medium` `high` 중 하나다(`lethal`은 6번대로 금지).
 6. **어떤 사건이든 `risk`가 `none` 또는 `low`인 선택지가 최소 1개** 있어야 한다(V7). `risk: "lethal"`은 금지다(V10).
 7. `check`가 있으면 `outcomes`에 `success`·`failure`가 필수다. `partial`을 쓰려면 그 판정 종류가 `balance.check_kinds.<종류>.partial: true`여야 한다(V11).
 8. `check.dc` / `dc_offset` — 판정 종류의 `dc.kind`가 `region`이면 `dc_offset`, `fixed`면 생략하거나 `dc`, `event`면 `dc` 또는 `dc_offset` 중 하나가 필수다. `level_formula`·`enemy_ac` 종류는 사건에서 못 쓴다(V20).
@@ -174,7 +179,7 @@ error V2 mist_forest/regions/MF_H1.json#/encounters/0/enemy_id: enemy 'MF_EN09'�
 | 코드 | 뜻 | 대개의 원인 |
 | --- | --- | --- |
 | P01 | `pack.json` 스키마 위반 / 로드할 팩 없음 | `id`가 snake_case가 아니다, 경로를 잘못 줬다 |
-| P03 | `requires` 팩이 로드 대상에 없다 | `check` 인자에 기반 팩을 빠뜨렸다 |
+| P03 | `requires` 팩이 로드 대상에 없다 | `check` 인자(또는 데모·시뮬레이터의 `--content`)에 기반 팩 경로를 빠뜨렸다. `requires`는 자동으로 불러오지 않는다(§1) |
 | P04 | `requires` 순환 | |
 | P05 | 경로·파일 모양 | `events/`에 배열, 파일 이름 ≠ `id`, 폴더 ≠ `category`, 표에 없는 경로 |
 | P06 | `(kind, id)` 중복 | 기반 팩이 이미 정의한 ID를 다시 정의했다 → 패치를 쓰거나 ID를 바꾼다 |
@@ -241,6 +246,25 @@ assert.ok((world.state.character!.event_counts['MY_L01'] ?? 0) > 0)
 - 새 지역이 **후보로 오르는지**는 `decideCandidates(world, false)`로 바로 볼 수 있다. 후보에 없으면 `unlock`(F1)·길드 등급(F2)·위험 상한(F7)을 차례로 의심한다. 위험 등급은 인물 레벨뿐 아니라 **장비 단계**가 유효 레벨에 들어가므로, 레벨만 올린 시험 인물은 새 지역이 `high`로 잡혀 걸러진다.
 - 사건이 안 나면 `weight`·`condition`·`triggers`·`cooldown_min`·`max_per_life`와 장소의 `event_check`를 본다.
 
+### 데모·시뮬레이터로 보기
+
+테스트를 짜기 전에 눈으로 먼저 본다. 둘 다 `--content`에 **기반 팩과 새 팩 경로를 함께** 준다(§1). 경로는 저장소 루트 기준 상대 경로나 저장소 밖 절대 경로 모두 된다.
+
+```bash
+# 데모: 한 생애를 한 줄 기록으로 흘려 본다(--minutes 가 없으면 생애가 끝날 때 멈춘다)
+pnpm demo --content content/base content/my-pack --fast --auto --plain --seed 3
+pnpm demo --content content/base content/examples/mist-forest --fast --auto --plain     # 예시 팩
+pnpm demo --content content/base content/my-pack --fast --auto --save                   # 일지를 reports/demo-<씨앗>.md 로 저장
+
+# 시뮬레이터: 여러 시드로 돌려 밸런스 경보가 새로 뜨지 않는지 본다
+pnpm sim --content content/base content/my-pack --attitude stable --seeds 1-20
+```
+
+- 데모 첫머리 `콘텐츠:` 줄에 읽은 경로가, 시뮬레이터 보고 첫 줄에 `base@0.1.0, my_pack@0.1.0`과 콘텐츠 해시가 찍힌다. 새 팩이 빠져 있으면 경로를 잘못 준 것이다.
+- 데모 기록에서 새 사건은 `intro.lines`가 아니라 **고른 선택지 결과의 `line`**으로 나오고, 일상이 아닌 기록이면 ` — ` 뒤에 `intro.detail`과 방침 사유(`short`)가 붙는다. 찾을 때는 결과 `line` 문장으로 찾는다. §5 예시 사건이면 `★ [18세 겨울] [휴식] 한숨 돌렸다 — 우산처럼 벌어진 갓 아래는 …`.
+- 사건 하나는 한 생애에 몇 번 안 나올 수 있다(§5 예시 사건은 `weight: 10`이어도 씨앗 3 한 생애에 1번 나왔다). 데모 한 번에 안 보였다고 고장은 아니다 — 씨앗을 바꿔 보거나 위 테스트 틀로 `event_counts`를 센다.
+- 시뮬레이터 보고는 태도별 성장·수입·경보(17 §8) **집계**라 사건별 발생 수는 없다. 새 팩을 넣기 전과 후를 같은 시드로 돌려 비교하는 용도다.
+
 ## 9 팩이 할 수 없는 것 (코어 몫)
 
 데이터로 안 되는 것은 코어 등록부에 이름을 더해야 한다(CONTENT_SCHEMA §4). 확장 팩만으로는 다음을 못 한다.
@@ -249,3 +273,24 @@ assert.ok((world.state.character!.event_counts['MY_L01'] ?? 0) > 0)
 - **새 문형 id(`text/`)** — 문형 id는 코어 등록부 `textSlots` 소유다. 코어가 부르지 않는 id를 팩이 더해도 아무도 읽지 않는다. 사건 안 문장은 `line`·`detail`로 직접 쓰면 되므로 보통 문제가 되지 않는다.
 - **기존 장소의 조우 표·기존 사건 수정** — 그 정의의 소유자는 기반 팩이다. 꼭 필요하면 `patches/`를 쓰되, 배열은 통째로 교체되므로 기반이 바뀌면 따라가지 못한다는 점을 안다.
 - **새 에셋** — M2 전까지 기반 팩의 에셋 id만 다시 쓴다.
+
+## 10 트리거별로 채워지는 변수
+
+문장 템플릿의 `{변수}`는 **그 문장이 렌더되는 자리에서 엔진이 값을 채울 때만** 쓸 수 있다. 값이 없는 변수, 빈 값에 붙인 조사(`{partner:과/와}` → `과(와)`)는 빈칸으로 나가지 않고 렌더가 예외를 낸다(I67). 사건 템플릿은 `pnpm content:check`의 V5가 아래 표(코어 `EVENT_TEXT_VARS`)로 미리 본다. 두 생애를 통째로 돌리는 가드 테스트(`packages/core/test/integration/journal-text.test.ts`)가 실제 값을 확인한다.
+
+| 자리 | 채워지는 변수 | 조건·출처 |
+| --- | --- | --- |
+| 사건 문장 전부(도입 한 줄·상세, 결과 한 줄·상세, `journal`·`family_record` 효과, 특성 획득 문장) | `family` `generation` `name` `age` `level` `retire_age` `retire_age_plus10` `luck` `attitude` `place` + 그 사건 `context_vars` 변수(ID면 이름) | 늘 |
+| 〃 | `parent_call` `sleep_age` `weapon` `partner` `job` `child` `parent_name` `relic` | 상태에 값이 있을 때만. `parent_call` 2대부터, `sleep_age` 변이 뒤, `weapon` 무기를 찼을 때, `partner`·`job` S01 `create_partner` 뒤, `child` 자녀 후보가 있을 때(막내), `parent_name` 부모가 연대기에 있을 때, `relic` 물려받은 유품(생애 종료 단계 사건이면 넘길 유품 1위, 없으면 `남은 배낭`) |
+| 〃 | `item` `loot` | 장비를 주는 효과(`add_item`·`add_random_item`·`open_chest`·`offer_purchase`)나 `add_coins`가 있는 사건만. `item` = 산·받은 장비, `loot` = 받은 장비(없으면 `동전 N개`). 도입에서부터 보여 줄 물건은 `offer_item` 선택자로 고른다 |
+| 선택 창(`preview.body`·`variants`·`note`, 선택지 `preview`) | 위 + `n` `m` `luck_after` `sleep_age` | `n`·`m` = 근접·탐색 단계(자동 전문화 사건), `luck_after` = 사건의 `life_stat_add luk` 적용 뒤 행운, `sleep_age` = 아직 변이 전이면 `mutate` 뒤 예정 나이 |
+| 생애 종료 단계 사건(S03·S04·S08) | 위 + `risk_line` `injury_line` `final_check_line` | 사망 원인 기록이 있을 때 부르는 쪽이 넣는다 |
+| 계승 단계 사건(S05) | 위 + `heir` `first_page` | `first_page` = 이전 인물의 가장 이른 발견·유품·인연 이름(없으면 `{name}의 이름`) |
+| 의뢰 정산 문장(`accept_quest.lines`) | `coins` `place`만 | 다른 변수는 채우지 않는다 |
+| 선택 이유(`balance.choice_ai.reason_lines`) | `attitude`(태도 `reason_label`) `choice_short` `trait_reason` `trait_name` | 이유 종류별 |
+| 적 `victory_lines`(사냥·관문 승리 한 줄) | `enemy`만 | 적 `lines`는 아직 기록에 쓰이지 않는다 |
+| 문형(`text/`) | 코어 호출부가 넘기는 값만 | 문형 `_comment`·`_note`와 호출부를 본다. V5는 여기서 자리별 검사를 하지 않는다 |
+
+- 도입 문장이 결과 전에 알아야 하는 값(보여 줄 상품, 주머니 속 동전)은 `context_vars` 선택자로 채운다: `offer_item`(11 L02·L10), `coin_amount`(11 L12).
+- 조사를 붙이지 않은 빈 값은 허용한다(`{relic_note}` 같은 덧붙임 자리). 값이 없을 수 있는 대상을 조사와 함께 쓰려면 `requires`로 선택지를 나눈다(F02 `drink`·`drink_luck`).
+- 특가 구매(`offer_purchase`)가 불발이면 그 결과의 한 줄은 문형 `journal.town.no_offer`(마음에 드는 물건이 없었다)로 바뀐다.

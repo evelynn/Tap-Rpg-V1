@@ -1,6 +1,6 @@
 // 출정 시작·진행·종료(04 §7), 이동과 귀환, 적자 기록(04 §4.3).
 import { chainMissions, type SortieChoice } from '../ai/index'
-import { expectedSpend, sellPrice } from '../economy/index'
+import { earnCoins, expectedSpend, sellPrice } from '../economy/index'
 import { rewardUnits } from '../events/index'
 import { addJournal } from '../journal/index'
 import { thirstOnSortieStart } from '../life/index'
@@ -225,7 +225,7 @@ export function settleQuest(world: World, s: Sortie): void {
   const ratio = cancelled ? 0 : Math.min(1, q.wins / q.goal_wins)
   const coins = Math.floor(ratio * q.reward.coin_units * unit.coins)
   const xp = Math.floor(ratio * q.reward.xp_units * unit.xp)
-  ch.coins += coins
+  earnCoins(world, coins)
   if (xp > 0) addXp(world, world.rng.life, xp)
   const key = cancelled ? 'cancel' : ratio >= 1 ? 'complete' : 'partial'
   const ev = world.content.has('event', q.event_id) ? world.content.get('event', q.event_id) : null

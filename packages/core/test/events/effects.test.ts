@@ -202,7 +202,8 @@ describe('효과 실행기', () => {
     ])
     assert.equal(ch(a).npc_relations.N01, 5)
     assert.ok(Object.values(ch(a).skills).some((s) => s.uses > 0))
-    assert.ok(a.out.journal.some((d) => d.line === '모라가 다리를 고쳤다.' && d.importance === 'family'))
+    // 연대기 문장은 상세에, 한 줄은 14 §5.1 [가문] 문형
+    assert.ok(a.out.journal.some((d) => d.tag === 'house' && d.line === '가문 연대기에 새 장이 열렸다' && d.detail === '모라가 다리를 고쳤다.' && d.importance === 'family'))
     assert.ok(a.tw.w.state.family.unlocks.backgrounds.includes('bg_miner'))
     assert.deepEqual(a.out.animations, [{ action: 'cheer', props: ['book'] }])
   })

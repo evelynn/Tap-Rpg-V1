@@ -100,13 +100,12 @@ describe('무작위 시점 강제 종료 100회(17 §4 단계 6)', () => {
       runTo(resumed, total)
 
       if (journalHash(whole) === journalHash(resumed)) continue
-      // 알려진 한계: 판단 지점으로 미뤄 둔 나이 알림(09 §2.1)은 저장 칸이 없어 행동 도중 종료 시 사라진다
+      // 판단 지점으로 미뤄 둔 나이 알림(09 §2.1)도 저장 칸(C31 current_activity.life_loop)에 있어 사라지지 않는다
       const key = (w: TWorld): string =>
         w.state.journal.filter((e) => e.sub !== 'age').map((e) => `${e.tag}|${e.line}|${e.detail ?? ''}`).join('\n')
       assert.equal(key(resumed), key(whole), `#${i} 나이 알림 밖의 결과가 달라졌다`)
       lostAgeNotices += 1
     }
-    // 이 값이 0이 되면 나이 알림 저장 칸이 생겼다는 뜻이다(보고서 "남은 문제" 1번)
-    assert.ok(lostAgeNotices <= 2, `나이 알림이 사라진 회차 ${lostAgeNotices}/100`)
+    assert.equal(lostAgeNotices, 0, `나이 알림이 사라진 회차 ${lostAgeNotices}/100`)
   })
 })

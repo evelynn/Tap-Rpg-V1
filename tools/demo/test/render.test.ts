@@ -14,6 +14,11 @@ describe('데모 출력', () => {
     assert.ok(renderEntry(view, true).startsWith('\x1b[1m'))
   })
 
+  it('여러 줄 상세는 이어지는 줄을 들여 쓴다', () => {
+    const view = { age: 30, season: 'winter', tag: 'town', importance: 'notable', line: '정비를 마쳤다.', detail: '재료를 팔았다.\n회복약을 샀다.' } as const
+    assert.equal(renderEntry(view), '★ [30세 겨울] [마을] 정비를 마쳤다. — 재료를 팔았다.\n      회복약을 샀다.')
+  })
+
   it('상태 줄에 나이·레벨·체력·동전이 있다', () => {
     const text = renderStatus({ gen: 2, name: '리아', age: 31, season: 'autumn', level: 7, hp: 40, maxHp: 55, coins: 120, place: '늑대 언덕', state: 'hunt' })
     assert.equal(text, '2대 리아 | 31세 가을 | Lv7 | 체력 40/55 | 동전 120 | 늑대 언덕·사냥')

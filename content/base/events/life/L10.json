@@ -11,7 +11,10 @@
   "allow_serious_injury": false,
   "blocked_during_aid": true,
   "hold": "none",
-  "_note": "상품(인물 단계 대장간 무기·방어구 1개, 일반)은 offer_purchase로 적는다. defect는 슬롯을 가리지 못해 무기(명중 −1)·방어구(방어 −1)를 chance 0.5로 나눈다(원문은 비율을 정하지 않음). 가격 40%·60%는 할인 상한 예외(08). 도입의 {item}과 구매 장비를 같은 물건으로 묶는 선택자는 등록부에 없다. 소품 모루·망치는 prop 정의가 없어 뺐다",
+  "_note": "상품(인물 단계 대장간 무기·방어구 1개, 일반)은 offer_purchase로 적는다. defect는 슬롯을 가리지 못해 무기(명중 −1)·방어구(방어 −1)를 chance 0.5로 나눈다(원문은 비율을 정하지 않음). 가격 40%·60%는 할인 상한 예외(08). 도입의 {item}은 offer_item 선택자가 고르고 offer_purchase가 item_id로 받는다(산 물건이 다르면 문장은 산 물건을 쓴다). 사지 못하면 결과 한 줄은 journal.town.no_offer다. 소품 모루·망치는 prop 정의가 없어 뺐다",
+  "context_vars": [
+    { "var": "item", "selector": "offer_item", "params": { "facilities": ["smithy"], "slots": ["weapon", "armor"] } }
+  ],
   "intro": {
     "lines": [ "보름이 실패작을 내밀었다", "모루 옆에 휜 {item:이/가} 있었다" ],
     "detail": "보름이 망치를 내려놓고 모루 옆의 물건을 가리킨다. \"날이 조금 휘었어. 싸게 줄게.\" 망치 소리가 평소보다 작다.",

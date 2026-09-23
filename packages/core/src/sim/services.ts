@@ -22,7 +22,7 @@ import {
   dropCandidates, equipItem, grantItem, itemName, levelTier, materializeItem, NAMED_PREFIX, pickGradeWeighted, placeTier,
   putPending, improvement, rollDrop, rollEffects, rollGrade, stowLoot, suggest, worthSwapping, type Grade,
 } from '../items/index'
-import { appraisal, basePrice, reserveRatio, shopPriceFactor } from '../economy/index'
+import { appraisal, basePrice, earnCoins, reserveRatio, shopPriceFactor } from '../economy/index'
 
 // 아직 구현이 없는 포트 호출. 출정 진행(T8)·계승(T10)이 가져간다
 export interface DeferredPortCall {
@@ -96,10 +96,9 @@ function preCheckMods(w: EventWorld, rule: RuleContext, spec: EventCombatSpec, r
 
 // 적 보상(경험치·동전)은 사건 전투가 준다. 활동 보상과 달리 드롭은 없다
 function grantCombatRewards(w: EventWorld, rule: RuleContext, r: CombatResult, mult: number): void {
-  const ch = characterOf(rule)
   const coins = Math.floor(r.rewards.reduce((s, x) => s + x.coins, 0) * mult + 1e-9)
   const xp = Math.floor(r.rewards.reduce((s, x) => s + x.xp, 0) * mult + 1e-9)
-  ch.coins += coins
+  earnCoins(rule, coins)
   const loot = w.state.current_activity.sortie?.loot
   if (loot) loot.coins += coins
   if (xp > 0) addXp(rule, w.rng.life, xp)
@@ -202,6 +201,8 @@ function reveal(w: EventWorld, ports: EventPorts, id: string, scope: EventScope)
   const ch = characterOf(rule)
   if (ch.discoveries.includes(id)) return
   ch.discoveries.push(id)
+  const noted = w.state.family.discovery_points
+  if (!noted.includes(id)) noted.push(id)
   const d = findDiscovery(w, id)
   if (!d) return
   if (d.map_fragment && !ch.map_fragments.includes(d.map_fragment)) ch.map_fragments.push(d.map_fragment)
@@ -303,7 +304,7 @@ export function createServices(world: EventWorld, opts: ServiceOptions = {}): Si
         const chest = w.content.balance.dungeon.chest
         const place = scope.place ?? ch.location
         const coins = Math.round(chest.coin_units * rewardUnits(w, scope.place).coins)
-        ch.coins += coins
+        earnCoins(rule, coins)
         const loot = w.state.current_activity.sortie?.loot
         if (loot) loot.coins += coins
         const region = w.content.get('region', place)

@@ -22,7 +22,7 @@
     { "var": "relic_name", "selector": "offered_relic" },
     { "var": "relic_note", "selector": "offered_relic" }
   ],
-  "_note": "11 F02, 09 §6, 10 §4.3(50% × 기연 가중, 3회째 확정, F03과 1:1 = 같은 가중치 5). 가문 변형은 12 §7.6 반응 기간을 따라 reaction_active로 건다. dr_f02_drank의 '대가 설명 강조 표시'는 화면 규칙이라 적지 않았다. ask_yuan(12 §7.6 유안에게 묻는다)의 결과 문장은 11에 없어 선택지 이름에서 옮겼다(임시). 마신다 상세 둘째 문장은 유물이 없어 행운을 잃은 경우에도 그대로 나온다",
+  "_note": "11 F02, 09 §6, 10 §4.3(50% × 기연 가중, 3회째 확정, F03과 1:1 = 같은 가중치 5). 가문 변형은 12 §7.6 반응 기간을 따라 reaction_active로 건다. dr_f02_drank의 '대가 설명 강조 표시'는 화면 규칙이라 적지 않았다. ask_yuan(12 §7.6 유안에게 묻는다)의 결과 문장은 11에 없어 선택지 이름에서 옮겼다(임시). 마신다는 희귀 이상 유물 유무로 두 변형(drink = 유물 헌납, drink_luck = 행운 −2)으로 나눴다. 11 원문 한 선택지의 대가 문장·상세 둘째 문장이 유물이 없을 때 빈 {relic_name}으로 깨지기 때문이다(keep·keep_thrift처럼 requires로 하나만 열린다)",
   "hold_line": "별잠 샘 앞에서 결정을 기다린다",
   "preview": {
     "body": "길바뀜의 틈 안쪽, 별빛 문양이 새겨진 돌샘에서 물이 솟는다. 물에 비친 {name}의 얼굴이 조금 젊어 보인다. 샘가에는 다리를 다친 길잡이 유안이 앉아 있다. \"그 물, 한 사람 몫밖에 안 나와요. 나도 여기까지 오느라 다리를 버렸지만.\"",
@@ -45,6 +45,7 @@
   "choices": [
     {
       "id": "drink", "label": "샘물을 마신다", "risk": "none",
+      "requires": { "has_item_where": { "slot": "relic", "grade_gte": "rare" } },
       "preview": {
         "benefit": "은퇴 나이가 10년 늦춰진다({retire_age}세 → {retire_age_plus10}세)",
         "cost": "샘이 유물 하나를 요구한다: {relic_name:을/를} 샘에 바친다{relic_note}. 희귀 이상 유물이 없으면 이번 생애 동안 행운 −2(최저 0)",
@@ -54,9 +55,7 @@
         "always": {
           "effects": [
             { "type": "extend_lifespan", "years": 10 },
-            { "type": "if", "cond": { "has_item_where": { "slot": "relic", "grade_gte": "rare" } },
-              "then": [ { "type": "remove_item", "selector": "chosen_relic" } ],
-              "else": [ { "type": "life_stat_add", "stat": "luk", "value": -2, "floor": 0 } ] },
+            { "type": "remove_item", "selector": "chosen_relic" },
             { "type": "set_family_flag", "key": "fam.f02_drank" },
             { "type": "family_record", "kind": "chronicle", "key": "f02_drank", "text": "별잠 샘물을 마셨다" },
             { "type": "animation", "action": "sit_eat", "props": ["star_spring"] },
@@ -64,6 +63,29 @@
           ],
           "line": "샘물을 마셨다. 은퇴가 10년 멀어졌다",
           "detail": "목을 타고 내려간 물이 별빛처럼 차가웠다. {relic_name:은/는} 샘 바닥으로 천천히 가라앉았다."
+        }
+      }
+    },
+    {
+      "id": "drink_luck", "label": "샘물을 마신다", "risk": "none",
+      "requires": { "not": { "has_item_where": { "slot": "relic", "grade_gte": "rare" } } },
+      "preview": {
+        "benefit": "은퇴 나이가 10년 늦춰진다({retire_age}세 → {retire_age_plus10}세)",
+        "cost": "샘이 유물 하나를 요구한다. 희귀 이상 유물이 없으면 이번 생애 동안 행운 −2(최저 0)",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "extend_lifespan", "years": 10 },
+            { "type": "life_stat_add", "stat": "luk", "value": -2, "floor": 0 },
+            { "type": "set_family_flag", "key": "fam.f02_drank" },
+            { "type": "family_record", "kind": "chronicle", "key": "f02_drank", "text": "별잠 샘물을 마셨다" },
+            { "type": "animation", "action": "sit_eat", "props": ["star_spring"] },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "샘물을 마셨다. 은퇴가 10년 멀어졌다",
+          "detail": "목을 타고 내려간 물이 별빛처럼 차가웠다."
         }
       }
     },
