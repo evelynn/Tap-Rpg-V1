@@ -1,0 +1,15 @@
+{
+  "image_assets": 8,
+  "animation_clips": 39,
+  "animated_cells": 316,
+  "static_cells": 68,
+  "all_local_references_exist": true,
+  "all_frame_rectangles_in_bounds": true,
+  "all_timing_arrays_match_frames": true,
+  "unique_html_element_ids": true,
+  "visual_browser_playback_test": "not run: no connected browser",
+  "final_native_pixel_art_gate": "not passed: see README and quality-report.json",
+  "preview_javascript_syntax_check": "passed: node --check",
+  "equipment_and_consumables_mapped": 34,
+  "reference_palette_colors": 48
+}

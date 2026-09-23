@@ -1,0 +1,7 @@
+{
+  "name": "@tap/art-check",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "픽셀 에셋 자동 검사기 — PNG를 직접 해석해 docs/art/assets.manifest.json 규격과 대조한다."
+}

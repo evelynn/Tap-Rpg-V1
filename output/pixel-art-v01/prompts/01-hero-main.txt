@@ -1,0 +1,16 @@
+Use case: stylized-concept
+Asset type: production-intent pixel-art animation sprite atlas for an original tiny cozy Korean idle fantasy RPG called Tap. Generate ONE exact square 1024x1024 PNG sprite sheet, genuine transparent background with alpha, NOT a checkerboard picture.
+The entire canvas is an invisible EXACT 8 columns x 8 rows regular grid, each cell exactly 128x128 pixels, no gutters or outside margins. One separate full-body sprite per cell, exactly 64 sprites. Each sprite is designed on a virtual 32x32 pixel grid enlarged by exactly 4 using hard square pixels. No antialiasing, blur, gradients, lighting glows, ground scenery, words, labels, row numbers or grid lines.
+Subject in EVERY cell: same small 2.2-head-tall original neutral young adventurer, facing RIGHT in profile/three-quarter right, short chestnut hair HR01, large readable head, fair warm skin, cream quilted tunic A01, brown belt, brown trousers and boots, small brown back pouch. Consistent identity, proportions, equipment and colors all 64 cells. Simple tiny silver straight shortsword W02: SHEATHED at waist in idle/walk/daily actions, HELD only during attack and hurt rows. No cape, no hat, no shield.
+Palette: dark outline #2B2233, hair #7A4E30 #553420, skin #F6D9C2 #E8B89A #C98E72, cloth #F0E6CC, leather #C08A58 #8E5E38 #5E3C24, silver #E8E6E0 #B4B2B0 #7D7B80. Restrained ~16 colors. One virtual-pixel outline.
+Position per cell: foot/root anchor at physical local (60,116), standing height about 104 physical pixels including hair. Same scale and baseline across rows, no drifting. Weapons remain inside cells. Animation must use actual redraws of limbs, shoulders, hair tips, cloth, eyes, not copies moved bodily.
+Frames progress LEFT TO RIGHT. Rows TOP TO BOTTOM:
+1 idle: 8 subtle breathing frames, shoulder lifts one virtual pixel then settles, blink in frames 6/7, exact loop back to frame1.
+2 walk in place RIGHT: 8-frame continuous complete gait, alternating foot contacts, down/passing/up/contact/down/passing/up, opposite arm swing, planted stance foot at baseline, same head size, subtle pouch followthrough, last flows into first.
+3 sword attack RIGHT: 8 frames ready, anticipation, lift, swing starts, extended strike, followthrough, recover, ready. Distinct arc and weight shift. Sword visible all frames. No impact effects baked in.
+4 hurt: 8 frames guard, slight recoil, stronger recoil, wince, settle, rise, regain stance, ready. No gore.
+5 discover: 8 frames look down, pause, look up, eyes widen, lean forward, point, relax, stand. No punctuation.
+6 seated eating: 8 frames seated at baseline, bread down, lift bread, bite, chew, chew, lower, rest. Height 2/3 standing; sword stays sheathed.
+7 sleeping: 8 frames lying horizontally, subtle chest breathing, eyes closed, rolled cream blanket; no Z letters; baseline constant, actual lying pose.
+8 interact/gather: 8 frames slight bend, reach, grasp small herb, pull, inspect, release into pouch, recover, stand.
+All rows are animation sequences of the ONE same character. Every cell occupied, perfectly separated. Clean transparent empty space around each. This is a sprite atlas not a presentation or scene.

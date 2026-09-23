@@ -1,0 +1,7 @@
+[
+  { "id": "life.mf_spirit_met", "scope": "life", "value": "bool",
+    "set_by": "MF_C01-1 기척을 따라간다", "read_by": "MF_C01-2 판정 +2, MF_L02 문장 변형",
+    "_comment": "줄기 파생 키(life.mf_c01_stage·fam.mf_c01_done·fam.mf_c01_bond·fam.mf_c01_parting·fam.mf_c01_unfinished)는 chains 정의에서 로더가 등록한다(CONTENT_SCHEMA §5.8)" },
+  { "id": "life.mf_firefly_marked_{place}", "scope": "life", "value": "bool", "family": { "place": "region" },
+    "set_by": "MF_L02 반딧불 자리를 외워 둔다", "read_by": "같은 장소 MF_L02 가중 ×3·채집 판정 +2" }
+]

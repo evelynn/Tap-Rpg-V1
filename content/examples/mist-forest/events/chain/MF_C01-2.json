@@ -1,0 +1,64 @@
+{
+  "id": "MF_C01-2",
+  "name": "샘가의 말",
+  "category": "chain",
+  "chain": { "id": "MF_C01", "stage": 2 },
+  "locations": ["MF_H1", "MF_A1"],
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "condition": { "all": [ { "chain_stage": { "chain": "MF_C01", "stage": 1 } } ] },
+  "weight": 9,
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "intro": {
+    "lines": [ "이끼 아래로 물소리가 났다", "샘가에 반딧불이 모여 앉았다" ],
+    "detail": "불빛이 물 위에서 사람 모양으로 겹쳤다가 흩어진다. 말이 아니라 물결로 묻는 것 같다.",
+    "tag": "bond",
+    "animation": [ { "action": "interact" } ]
+  },
+  "choices": [
+    {
+      "id": "speak", "label": "이름을 말한다", "short": "샘가에서 이름을 말했다",
+      "tags": ["kindness"], "risk": "low",
+      "check": { "kind": "bond", "dc": 14,
+        "situational": [ { "target": "check.all", "op": "add", "value": 2, "when": { "flag": "life.mf_spirit_met" } } ] },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "MF_C01", "stage": 2 },
+            { "type": "add_xp", "units": 2 }
+          ],
+          "line": "물결이 이름을 따라 흔들렸다"
+        },
+        "partial": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "MF_C01", "stage": 2 },
+            { "type": "add_xp", "units": 1 }
+          ],
+          "line": "물결이 절반만 답했다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "MF_C01", "stage": 2 },
+            { "type": "add_fatigue", "value": 5 }
+          ],
+          "line": "불빛이 흩어졌지만 샘 자리는 외웠다",
+          "_note": "이 사건은 생애 1회(max_per_life)다. 실패도 단계를 올려 줄기가 막히지 않게 한다"
+        }
+      }
+    },
+    {
+      "id": "offer", "label": "약초를 샘에 놓아 둔다", "short": "샘에 약초를 놓아 두었다",
+      "tags": ["kindness", "safe"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "MF_C01", "stage": 2 },
+            { "type": "add_fatigue", "value": -3 }
+          ],
+          "line": "물가에 약초 한 줌을 놓았다"
+        }
+      }
+    }
+  ]
+}

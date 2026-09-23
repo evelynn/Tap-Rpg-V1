@@ -1,0 +1,26 @@
+{
+  "_comment": "권장 레벨 10~18 사냥터. MF_A1-1 발견으로 열리고, 레벨 12면 발견 없이도 열린다",
+  "id": "MF_H1",
+  "name": "반딧불 이끼밭",
+  "kind": "hunting_ground",
+  "level_range": [10, 18],
+  "level_mid": 14,
+  "travel_sec": 75,
+  "unlock": { "any": [ { "discovered": "MF_H1" }, { "level_gte": 12 } ] },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "tags": ["forest", "foggy"],
+  "encounters": [
+    { "enemy_id": "MF_EN01", "weight": 65 },
+    { "enemy_id": "EN03", "weight": 35 }
+  ],
+  "pair_chance": 0.20,
+  "event_check": 0.10,
+  "rescuers": "field",
+  "background_id": "bg_wolf_hill",
+  "feature_words": ["이끼 둔덕", "쓰러진 거목", "반딧불 웅덩이"]
+}

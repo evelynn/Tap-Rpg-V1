@@ -11,3 +11,5 @@ export { formatIssue, zodToIssues, type ContentIssue, type IssueCode, type Sever
 export { validateContent, type ValidateOptions, type ValidateResult } from './validate/index'
 export { collectRefs, type Facts } from './validate/refs'
 export { runSemanticChecks } from './validate/rules'
+// 저장 파일 어댑터(13 §8.2·§8.4·§8.5·§8.6)
+export * from './save/index'

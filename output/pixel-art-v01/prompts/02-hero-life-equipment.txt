@@ -1,0 +1,13 @@
+Use case: stylized-concept
+Asset type: 2D PIXEL ART animation atlas extension. Reference image is the attached adventurer sheet; preserve the SAME character identity and outfit colors, but simplify to strong crisp rectangular pixel clusters for tiny display. Generate a single square sprite atlas, transparent RGBA background, no checkerboard, no text, no numbers.
+EXACTLY 8 columns and 8 rows, one animation frame per uniform square cell. Whole canvas 1024x1024, cells128x128. Invisible grid, no margins/gutters. Keep each subject ENTIRELY inside its cell with 12 pixels clear transparent padding on all sides; ROOT local(64,112); nothing can touch another sprite. Straight horizontal row baselines, same character size across cells. Right-facing two-head tall chestnut-haired adventurer, cream quilted tunic, leather boots, belt, back pouch. No scarf or cape on base character. Original cozy fantasy, NO anti-alias, NO soft painterly textures, no dithering/no subpixel speckles. Enlarged 32x32 logical pixel-art look; pure opaque solid pixels except transparent background.
+8 columns left-to-right are consecutive REDRAWN animation poses. Rows:
+1 CHEER: same cream hero: anticipation squat, deeper squat, rise jump, high jump arms up, apex smile, descend, landing squat, stand. No sword in hand. Feet root only leaves ground during jump.
+2 COLLAPSE: same cream hero: standing, stagger, bend knees, kneel, tip forward, catch self with hands, lie face down, still eyes closed. No blood, NOT grotesque. Last frame held. All within cell.
+3 READ BOOK: same cream hero seated, open brown journal, glance down, read, finger to page corner, lift page, turn page, page settles, read. No mouth eating. Small distinct hand/page movement.
+4 ELDER IDLE: same hero as dignified elder with white hair, wrinkle, slightly stooped, cream tunic; eight subtle breathing and blink frames. No hat, same height.
+5 ELDER WALK: same white-haired elder rightward in-place walking full 8-frame gait, slight stoop, alternating contacts, identical to row4 identity.
+6 A02 LEATHER IDLE: same young chestnut-haired hero wearing pale cream shirt plus warm tan LEATHER VEST, no helmet. Idle8; visibly different from quilted cream body; sword sheathed.
+7 A02 LEATHER WALK: identical tan vest hero full 8-frame walk loop, alternating legs and opposing arms. No sword in hand.
+8 A02 LEATHER ATTACK: same tan vest hero, silver short straight sword: ready, wind up, high raise, forward swing, fully extended strike, followthrough, recovery, ready.
+Keep all 64 cells. Consistent heads, facial features, boots, base palettes and scale. No scene, ground, shadow puddles, props outside cells, labels, borders. Actual transparency.

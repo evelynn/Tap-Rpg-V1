@@ -36,6 +36,15 @@ importers:
         specifier: 4.1.12
         version: 4.1.12
 
+  tools/demo:
+    dependencies:
+      '@tap/content-kit':
+        specifier: workspace:*
+        version: link:../../packages/content-kit
+      '@tap/core':
+        specifier: workspace:*
+        version: link:../../packages/core
+
   tools/sim:
     dependencies:
       '@tap/content-kit':

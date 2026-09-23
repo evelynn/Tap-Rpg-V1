@@ -1,0 +1,17 @@
+{
+  "id": "MF_C01",
+  "name": "이끼 아래의 인연",
+  "stages": 3,
+  "outcomes": ["bond", "parting"],
+  "family_once": true,
+  "inheritable": false,
+  "resume_at": [],
+  "unfinished_line": "끝나지 않은 이야기 — {chain_name}: {last_step_summary}",
+  "stage_summaries": [
+    "이끼 아래에서 무언가의 기척을 따라갔다",
+    "샘가에서 정령과 말을 나눴다",
+    "정령에게 반딧불 등가지를 받았다"
+  ],
+  "major_branch_stage": 3,
+  "_note": "파생 플래그 life.mf_c01_stage·fam.mf_c01_done·fam.mf_c01_bond·fam.mf_c01_parting·fam.mf_c01_unfinished는 로더가 등록한다"
+}

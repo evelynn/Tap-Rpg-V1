@@ -1,0 +1,22 @@
+{
+  "_comment": "줄기 MF_C01 bond 보상. 고유 장비는 reacquire가 필수다(V15). 풀은 기반 팩의 같은 단계 무기",
+  "id": "MF_W01",
+  "name": "반딧불 등가지",
+  "slot": "weapon",
+  "tier": 3,
+  "grade_mode": "fixed",
+  "fixed_grade": "rare",
+  "unique": true,
+  "stat": "dex",
+  "modifiers": [
+    { "target": "check.skill.search", "op": "add", "value": 1 },
+    { "target": "ambush_chance_add", "op": "add", "value": -0.05 }
+  ],
+  "cursed": false,
+  "sources": [ { "kind": "event", "id": "MF_C01-3", "detail": "bond" } ],
+  "reacquire": { "pool": ["W06"], "grade": "rare" },
+  "sellable": false,
+  "visual_group": "V1",
+  "story_template": "{generation}대 {name:이/가} 이끼숲의 샘에서 받았다.",
+  "description": "마른 가지 끝에서 반딧불이 꺼지지 않는다. 탐색 판정 +1, 매복 확률 −5%p"
+}

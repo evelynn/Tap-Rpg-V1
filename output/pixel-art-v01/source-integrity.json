@@ -1,0 +1,14 @@
+{
+  "checked_preexisting_files": 454,
+  "changed": [
+    "packages/core/src/offline/settle.ts",
+    "packages/core/test/offline/settle.test.ts",
+    "tools/sim/src/life.ts"
+  ],
+  "missing": [
+    "packages/core/test/offline/_scratch.ts",
+    "packages/core/test/offline/_scratch2.ts"
+  ],
+  "pass": false,
+  "scope": "git tracked + initial non-ignored untracked files, SHA-256 at task start vs finish"
+}

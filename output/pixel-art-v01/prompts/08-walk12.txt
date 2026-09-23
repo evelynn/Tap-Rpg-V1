@@ -1,0 +1,19 @@
+Use case: stylized-concept
+Asset type: focused 12-frame WALK CYCLE sprite sheet for tiny2D pixel-art game. Use attached image ONLY as character identity reference, NOT layout reference. Same chestnut-haired young adventurer, warm skin, cream quilted tunic, brown belt, brown boots, little brown back pouch, silver short sword sheathed at waist, no cape.
+Create EXACTLY TWELVE separate frames in a FOUR-COLUMN THREE-ROW grid, read row-major: top row frames01-04, middle05-08, bottom09-12. Invisible evenly spaced grid, no text, no labels. Landscape4:3 canvas. Genuine transparent background, no floor/scenery/shadows. The body and boots stay within EACH cell's central80%, never touch adjacent cells.
+Simple genuine tiny32x32 pixel-art design enlarged for viewing, chunky deliberate pixel clusters, dark1-pixel outlines, no smooth gradients, no microtexture, no soft antialiasing.
+This is ONE continuous12-frame IN-PLACE walking cycle facing RIGHT, NOT twelve still standing variations and NOT running. BOTH knees and feet change clearly; arms swing opposite legs. Clear contact/passing poses. Very small1-virtual-pixel vertical bounce. Head SAME size, SAME hair, SAME face, consistent details all12; back pouch lags torso motion slightly.
+Exact motion:
+01 left leg forward extended heel contact, right foot behind on toes, right arm forward.
+02 left knee bends absorbing weight, right heel lifts.
+03 right leg swings through behind, left foot planted under body.
+04 passing pose legs cross, right knee forward rising, left leg straight.
+05 right leg extends forward, left heel starts lifting, left arm moves forward.
+06 right heel just before contact, legs open.
+07 right leg forward extended heel contact, left foot behind on toes; mirror of01 in leg phases but head still RIGHT.
+08 right knee bends absorbing weight, left heel lifts.
+09 left leg swings through behind, right foot planted under body.
+10 passing pose legs cross, left knee forward rising, right leg straight.
+11 left leg extends forward, right heel lifts, right arm forward.
+12 left heel almost contacts, right toes behind; smoothly connects to01 with no repeated pause.
+Keep shared foot baseline at88% each cell height and shared root x50%. Every frame distinct in feet/knees/arms but coherent. No unsheathed sword in hand, no attack poses. Actual full-body12-frame WALK ONLY.

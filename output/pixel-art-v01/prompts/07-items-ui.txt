@@ -1,0 +1,12 @@
+Use case: stylized-concept
+Asset type: original cozy 2D pixel-art inventory and camp props atlas for small idle RPG. Exactly8 columns x8 rows uniform grid,64 separate icons, on actual transparent alpha background. Single square image. No letters, labels, numbers, frames, slots, circles behind icons, gradients, glows or shadows outside object. Each icon centered inside its cell with25% transparent padding, and entirely separated from neighbors. Crisp deliberate square pixels, low-resolution 24x24 aesthetic. Restrained muted palette cream#F0E6CC, dark plum#2B2233, leather#C08A58 #8E5E38 #5E3C24, steel#E8E6E0 #B4B2B0 #7D7B80, bronze#E0B06A #B07A3A, blue#5A7FA8, green#6D8F5A. Don't paint fine textures. Flat chunky shapes with1-pixel outlines. ORIGINAL artwork.
+EXACT object order LEFT TO RIGHT within rows TOP TO BOTTOM:
+row1: rusty short sword; clean silver short sword brown hilt; short dagger green grip; long sword blue grip; miner pickaxe; bone-tipped spear; silver short sword tiny bronze bell pommel; silver longsword with blue vein.
+row2: dark steel sword bronze guard; bell-headed bronze mace; cream quilted tunic; tan leather vest cream sleeves; dark leather armor blue belt; brown miner coat red scarf; dark brown hooded cape; rusty patchwork metal cuirass.
+row3: polished bell-like steel cuirass; simple bone whistle pendant; river stone necklace; blue feather; bronze camping lantern; cracked bell fragment; small bronze return bell; brass compass; starry blue glass water bottle.
+row4: silver chalice; small green potion; medium blue potion; red potion; purple potion; gold potion; bread and travel ration; rolled white bandage.
+row5: dark wine bottle; CLOSED brown travel journal; OPEN brown travel journal; feather quill; sealed cream guild letter; loot sack; CLOSED wooden treasure chest; OPEN wooden treasure chest.
+row6: red spotted mushroom umbrella; rolled sleeping bag; narrow treatment cot; wooden walking cane; noticeboard WITHOUT writing; closed old wooden mine door; open mine door; small mine cart.
+row7: heart full red; heart half red half dark; empty outlined heart; tiny sleepy face; single crossed bandage; crossed swords; walking leather boot; cooking pot.
+row8: four-point golden discovery star; pause two bars; crescent moon; lit little lantern emblem; unlit little lantern emblem; plain brown leather book spine; small wood shelf plank; red ribbon bookmark.
+All64 cells present. Size stable and objects readable as small game graphics. Not a UI mockup. True transparency.

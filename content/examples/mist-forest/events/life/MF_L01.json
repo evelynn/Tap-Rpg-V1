@@ -1,0 +1,61 @@
+{
+  "id": "MF_L01",
+  "name": "거대한 버섯 그늘",
+  "category": "life",
+  "location_match": { "tags": ["foggy"] },
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "condition": true,
+  "weight": 7,
+  "cooldown_min": 30,
+  "max_per_life": 4,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "_note": "장소를 ID로 나열하지 않고 location_match로 잡는다(§1.5 작성 규칙). 같은 tags를 가진 장소가 늘면 그대로 따라온다",
+  "intro": {
+    "lines": [ "사람 키만 한 버섯이 그늘을 드리웠다", "{name:이/가} 갓 아래에서 숨을 골랐다" ],
+    "detail": "우산처럼 벌어진 갓 아래는 안개가 얕고 바람이 없다. 기둥에는 누군가 쉬어 간 자국이 남아 있다.",
+    "tag": "rest",
+    "animation": [ { "action": "discover" }, { "action": "sit_eat" } ]
+  },
+  "choices": [
+    {
+      "id": "rest", "label": "갓 아래에서 쉰다", "short": "버섯 그늘에서 쉬었다",
+      "tags": ["rest", "safe"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "heal", "hp_ratio": 0.15 },
+            { "type": "add_fatigue", "value": -8 },
+            { "type": "add_time", "sec": 40 }
+          ],
+          "line": "버섯 갓 아래에서 한숨 돌렸다"
+        }
+      }
+    },
+    {
+      "id": "harvest", "label": "갓 가장자리를 베어 담는다", "short": "버섯 갓을 베어 담았다",
+      "tags": ["reward"], "risk": "low",
+      "check": { "kind": "forage", "dc_offset": 0 },
+      "outcomes": {
+        "success": {
+          "effects": [
+            { "type": "add_coins", "units": 2 },
+            { "type": "skill_use", "skill": "search", "count": 1 }
+          ],
+          "line": "속이 흰 갓만 골라 담았다"
+        },
+        "partial": {
+          "effects": [ { "type": "add_coins", "units": 1 } ],
+          "line": "무른 갓이 반쯤 섞였다"
+        },
+        "failure": {
+          "effects": [
+            { "type": "add_fatigue", "value": 4 },
+            { "type": "add_coins", "units": 0.5 }
+          ],
+          "line": "포자가 날려 한참을 기침했다"
+        }
+      }
+    }
+  ]
+}

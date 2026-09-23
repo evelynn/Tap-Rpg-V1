@@ -1,0 +1,12 @@
+Use case: precise-object-edit
+Edit target: attached pixel-art items atlas. Keep the same original art style, object designs and transparent background. FIX ONLY GRID/ORDER to EXACTLY8 columns by8 rows =64 icons, NOT9 icons in row3. Every single row must have exactly8 equally spaced icons. Remove quill icon to fit all64. No text. Keep generous empty alpha around each object so no sprites touch neighboring cells. Preserve flat pixel shapes, reduce excessive shine.
+Rows left to right:
+1 rusty short sword, clean silver short sword, green-grip dagger, blue-grip longsword, pickaxe, bone spear, bell-pommel sword, blue-vein silver longsword.
+2 dark steel sword bronze guard, bronze bell mace, cream quilted tunic, tan leather vest, dark leather armor blue belt, miner coat red scarf, brown hooded cape, rusty patchwork cuirass.
+3 polished steel cuirass, bone whistle necklace, river-stone necklace, blue feather, camping lantern, cracked bell fragment, bronze return bell, brass compass. EIGHT objects.
+4 starry blue bottle, silver chalice, green potion, blue potion, red potion, purple potion, gold potion, bread ration. EIGHT objects.
+5 rolled bandage, dark wine bottle, CLOSED travel journal, OPEN travel journal, sealed guild letter, loot sack, CLOSED treasure chest, OPEN treasure chest. EIGHT objects.
+6 mushroom umbrella, sleeping bag, narrow cot, walking cane, blank noticeboard, closed mine door, open mine door, mine cart.
+7 full red heart, half heart, empty outlined heart, sleepy face, crossed bandage, crossed swords, leather boot, cooking pot.
+8 four-point gold star, pause bars, crescent moon, lit lantern emblem, unlit lantern emblem, book spine, shelf plank, red ribbon.
+Uniform spacing cells across whole square canvas. Genuine alpha transparency. No other changes.

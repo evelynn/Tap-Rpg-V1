@@ -7,14 +7,15 @@
     "node": ">=22"
   },
   "scripts": {
-    "typecheck": "tsc -p packages/core && tsc -p packages/core/tsconfig.test.json && tsc -p packages/content-kit && tsc -p tools/sim",
+    "typecheck": "tsc -p packages/core && tsc -p packages/core/tsconfig.test.json && tsc -p packages/content-kit && tsc -p tools/sim && tsc -p tools/demo",
     "test": "node --import tsx --test \"packages/*/test/**/*.test.ts\" \"tools/*/test/**/*.test.ts\"",
     "lint:ids": "tsx packages/content-kit/src/scripts/check-core-ids.ts",
     "lint:docs": "python docs/design/tools/lint_docs.py",
     "content:check": "tsx packages/content-kit/src/cli.ts check content/base",
     "content:schema": "tsx packages/content-kit/src/cli.ts schema content/schemas",
     "check": "pnpm typecheck && pnpm test && pnpm lint:ids && pnpm lint:docs && pnpm content:check",
-    "sim": "tsx tools/sim/src/cli.ts"
+    "sim": "tsx tools/sim/src/cli.ts",
+    "demo": "tsx tools/demo/src/cli.ts"
   },
   "pnpm": {
     "overrides": {

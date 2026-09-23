@@ -1,0 +1,27 @@
+{
+  "_comment": "기존 계열(박쥐)을 다시 쓴다. 스프라이트·팔레트도 기반 팩 에셋(§1.4). 수치는 balance.enemy_formula 레벨 14 값",
+  "id": "MF_EN01",
+  "name": "안개 반딧불나방",
+  "family": "bat",
+  "level": 14,
+  "rank": "normal",
+  "hp": 40,
+  "ac": 14,
+  "hit": 6,
+  "damage": [3, 7],
+  "xp": 48,
+  "coins": 70,
+  "specials": [ { "kind": "erratic_flight", "first_attack_hit_add": -2 } ],
+  "sprite_family": "bat",
+  "palette_id": "bat_bell",
+  "lines": [
+    "{enemy:이/가} 이끼 위로 낮게 떠올랐다.",
+    "{enemy:이/가} 날갯가루를 뿌렸다.",
+    "{enemy:이/가} 반딧불 사이로 숨었다."
+  ],
+  "victory_lines": [
+    "날갯짓이 안개 속으로 흩어졌다.",
+    "반딧불 무리가 조용해졌다."
+  ],
+  "exit_line": "{enemy:이/가} 버섯 그늘로 사라졌다."
+}

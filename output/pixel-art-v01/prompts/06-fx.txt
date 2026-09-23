@@ -1,0 +1,12 @@
+Use case: stylized-concept
+Asset type: 2D pixel-art VFX and animated camp prop sprite atlas for original cozy fantasy idle RPG. TRUE alpha transparent background, no checkerboard drawing. One square PNG with EXACT 8 columns x 8 rows equally sized cells, one independent frame in each cell, 64 cells. Invisible grid, no gaps/margins/labels/text. Keep content within70% cell width and70% cell height with centered anchor identical each frame. Very crisp hard square pixel clusters and restrained colors; pure pixel art, NO blur, NO soft gradients, NO glow haze. All effects use actual changing shapes.
+Rows top-bottom, each row frames left-right:
+1 HIT8: small ivory/gold impact star begins as small dot, short slashes, bright four-point spark, broad angular burst, separated shards, smaller fading shards, two dots, last tiny fleck. Clean hit no blood. Palette #FFFFFF #FFE38A #E0B06A.
+2 HEAL8: mint green three small rising plus-shaped sparks with increasing and decreasing intensity, tiny recovery ring at bottom; full upward drifting sparkle loop, #8FE0A0 #6D8F5A #FFFFFF.
+3 DISCOVERY8: elegant little gold four-point twinkle grows from dot to medium cross to full star then shrinks, loop smooth. #FFE38A #FFFFFF.
+4 LEVEL UP8: two small warm gold light streaks ascend around oval at feet, rise and split into three stars, stars scatter upward and fade. Gold+cream. Keep entire effect in cell.
+5 INJURY8: pale blue sweat droplet above two small golden dizzy stars, drop forms, lengthens, falls, breaks into two pixels, vanishes to one dot, repeats, no blood, #B9C8FF #FFE38A.
+6 MOON/CURSE8: gentle purple-blue crescent particles revolving around narrow foot-level elliptical ring; celestial original fantasy, smooth8-frame loop, #B9C8FF #8E4FA3 #FFFFFF, do not draw text or symbols.
+7 CAMPFIRE8: stationary three-log campfire, orange gold flames varying shape every frame, gentle dancing flame loop, log location identical, sparse tiny embers. Crisp opaque pixels.
+8 LANTERN8: same small brass camping lantern each cell, hanging handle, warm gold light within glass, subtle candle flicker8; lantern shell identical and stationary. Only yellow pixel patches change. No outside glow.
+No characters, no scene, no UI chrome, no lettering or frame numbers, transparent background.

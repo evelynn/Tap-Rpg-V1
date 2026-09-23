@@ -1,0 +1,61 @@
+{
+  "id": "MF_C01-3",
+  "name": "반딧불 등가지",
+  "category": "chain",
+  "chain": { "id": "MF_C01", "stage": 3 },
+  "locations": ["MF_H1", "MF_A1"],
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "condition": { "all": [ { "chain_stage": { "chain": "MF_C01", "stage": 2 } } ] },
+  "weight": 10,
+  "max_per_life": 1,
+  "max_per_family": 1,
+  "allow_serious_injury": false,
+  "hold": "branch",
+  "hold_line": "정령이 내민 가지 앞에서 결정을 기다린다",
+  "hold_animation": { "action": "sit_eat", "props": ["book"] },
+  "preview": {
+    "body": "샘 위로 떠오른 불빛이 마른 가지 하나를 물 밖으로 밀어낸다. 가지 끝마다 반딧불이 붙어 꺼지지 않는다. 받으면 숲이 길을 열어 주지만, 이끼숲 밖으로 가지고 나가는 값은 숲이 정한다고 한다."
+  },
+  "intro": {
+    "lines": [ "샘에서 마른 가지가 떠올랐다", "가지 끝마다 반딧불이 앉았다" ],
+    "detail": "불빛이 손등 위에서 한 번 밝아졌다가 가라앉았다.",
+    "tag": "important"
+  },
+  "choices": [
+    {
+      "id": "bond", "label": "가지를 받는다", "risk": "low",
+      "preview": { "benefit": "반딧불 등가지를 받는다(탐색 판정 +1, 매복 확률 −5%p)", "cost": "숲이 값을 기억한다. 이 생애에 이 이야기는 여기서 끝난다", "reversible": false },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "end_chain", "chain_id": "MF_C01", "outcome": "bond" },
+            { "type": "add_xp", "units": 3 },
+            { "type": "add_item", "item_id": "MF_W01", "to": "bag_or_pending" },
+            { "type": "family_record", "kind": "bond", "key": "mist_forest_spirit", "text": "{name:이/가} {age}세에 이끼숲의 불빛과 이름을 나눴다." },
+            { "type": "animation", "action": "interact" },
+            { "type": "animation", "action": "cheer" }
+          ],
+          "line": "반딧불이 붙은 가지를 받았다",
+          "detail": "가지는 가벼웠고, 불빛은 손을 떠나지 않았다."
+        }
+      }
+    },
+    {
+      "id": "parting", "label": "가지를 물에 돌려놓는다", "risk": "none",
+      "preview": { "benefit": "숲에 빚을 지지 않는다. 정령이 길을 한 번 밝혀 준다", "cost": "등가지는 받지 못한다", "reversible": false },
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "end_chain", "chain_id": "MF_C01", "outcome": "parting" },
+            { "type": "add_xp", "units": 2 },
+            { "type": "add_coins", "units": 3 },
+            { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 1.5 }, "scope": "next_sortie" },
+            { "type": "animation", "action": "walk" }
+          ],
+          "line": "가지를 물에 돌려놓고 돌아섰다",
+          "detail": "불빛이 앞서 걸으며 안개를 조금씩 걷어 주었다."
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+Use case: stylized-concept
+Asset type: actual pixel-art animation atlas for original cozy fantasy RPG, not a painting. Original creature EB03 "The Warden of the Broken Bell": a compact broad ancient stone and bronze golem, HEAD IS A LARGE CRACKED BRONZE CHURCH BELL, no human head, little dark slit under bell rim, chunky grey stone limbs, bronze cuffs, round heavy bronze bell-headed hammer in its right hand. Worn warm bronze #E0B06A #B07A3A #7A4E24 and stone #7D7B80 #4C4A52, dark plum outline #2B2233. Kindly mysterious, not horror, no gore.
+One square transparent PNG. EXACT 8 columns x 6 rows uniform invisible cells across entire canvas, 48 frames, no text, no borders or grid lines. All frames face LEFT. Sprite fits WITHIN 82% of cell width and height with generous transparent empty gap around ALL sides. Same size and foot/root baseline at 90% cell height in every frame. Consistent bell head, identical crack shape until phase-change row. Crisp square pixel clusters, deliberately limited colors and low-resolution48x40 aesthetic, no antialias, no soft glow, no gradients, no subpixel detail.
+Each ROW is its own animation, frames LEFT TO RIGHT:
+1 IDLE8: slow swaying bell head, stone torso breathing, quiet standing, full seamless loop.
+2 HAMMER ATTACK8: ready, crouch anticipation, hammer lift, hammer highest, forceful downstroke, ground strike left, followthrough, recover. Hammer and hands fully visible and contained inside cell. Weight transfers through knees and feet.
+3 BELL SOUND ATTACK8: brace, lean back, bell tilt, build gold light in crack, strongest single restrained circular golden pixel ripple around body, ripple expands but stays inside cell, light dims, ready.
+4 HURT8: ready, small recoil, deeper recoil bell tilt, wince in posture, rebound, settle, recover, ready. No damage dismemberment.
+5 PHASE CHANGE8: standing, brace, fissure subtly grows, gold light peeks through, brighter gold crack, gold tremor, stabilizes, strong calm glowing crack. SAME silhouette.
+6 SHUT DOWN8: bell lowering, knees buckle, kneel, hammer rests on ground, torso lowers, seated still, gold crack dims, seated inert. Never fall outside frame. Peaceful defeat no corpse, no blood.
+No scenery, no floor, no shadow cast into neighboring cell, no labels, true transparent background.

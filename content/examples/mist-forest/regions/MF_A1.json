@@ -1,0 +1,45 @@
+{
+  "_comment": "02 §3 안개 이끼숲. 기반 팩을 패치하지 않고 unlock 조건으로만 잇는다(CONTENT_SCHEMA §1.5). 에셋 id는 기반 팩 것을 다시 쓴다(§1.4)",
+  "id": "MF_A1",
+  "name": "이끼 안개 길",
+  "kind": "adventure_route",
+  "level_range": [10, 18],
+  "level_mid": 14,
+  "travel_sec": 70,
+  "unlock": { "any": [ { "level_gte": 10 }, { "discovered": "MF_A1" } ] },
+  "patrol_zone": false,
+  "fallback": false,
+  "aid_allowed": false,
+  "deficit_exempt": "never",
+  "closes_on_succession": false,
+  "weather_exempt": false,
+  "tags": ["forest", "foggy"],
+  "scenes": [4, 6],
+  "scene_weights": { "discovery": 25, "path": 15, "forage": 20, "encounter": 20, "event": 20 },
+  "encounters": [
+    { "enemy_id": "MF_EN01", "weight": 55 },
+    { "enemy_id": "EN03", "weight": 45 }
+  ],
+  "pair_chance": 0.10,
+  "map_fragments": [
+    { "id": "MF_A1-M1", "name": "버섯 그늘 지도 조각" },
+    { "id": "MF_A1-M2", "name": "샘터 지도 조각" }
+  ],
+  "discoveries": [
+    { "id": "MF_A1-1", "name": "반딧불이 앉는 이끼밭", "condition": true, "dc": { "grade": "normal" },
+      "effects": [ { "type": "unlock_location", "location_id": "MF_H1" } ],
+      "_note": "새 사냥터는 발견으로 연다. unlock_location이 가문 발견에 넣으므로 후손은 레벨 조건 없이 안다(07 §6.5)" },
+    { "id": "MF_A1-2", "name": "거대한 버섯 그늘", "condition": true, "dc": { "grade": "easy" },
+      "map_fragment": "MF_A1-M1",
+      "modifiers": [ { "target": "camp_hp_mult", "op": "mul", "value": 1.10, "when": { "location": ["MF_A1", "MF_H1"] } } ] },
+    { "id": "MF_A1-3", "name": "정령이 앉았던 샘", "condition": { "discovery_found": "MF_A1-1" }, "dc": { "grade": "hard" },
+      "map_fragment": "MF_A1-M2",
+      "event_weight_mult": { "MF_C01-1": 2 },
+      "notebook_line": "이끼 아래로 물소리가 나는 샘을 수첩에 적었다." },
+    { "id": "MF_A1-4", "name": "안개 약초 비탈", "condition": true, "dc": { "grade": "normal" },
+      "modifiers": [ { "target": "forage_reward_mult", "op": "mul", "value": 1.30, "when": { "location": ["MF_A1"] } } ] }
+  ],
+  "rescuers": "field",
+  "background_id": "bg_mist_trail",
+  "feature_words": ["버섯 그늘", "반딧불 무리", "이끼 바위"]
+}

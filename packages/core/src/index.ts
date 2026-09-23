@@ -73,3 +73,7 @@ export {
 export * from './succession/index'
 // 시뮬레이션 세계와 행동 골격, 사건 포트 조립, 생애 루프
 export * from './sim/index'
+// 저장·불러오기(13 §8, 16 §7.1): 정규 JSON·체크섬·스키마 버전과 이전·로드 검사 K1~K7·보정 B1~B15
+export * from './save/index'
+// 오프라인 진행(13 §2·§3·§6). 세계를 쓰므로 sim 다음에 둔다
+export * from './offline/index'

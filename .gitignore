@@ -6,3 +6,6 @@ reports/
 .DS_Store
 Thumbs.db
 __pycache__/
+
+# 스프라이트 패키지 압축본(같은 내용이 폴더로 있음)
+output/**/*.zip

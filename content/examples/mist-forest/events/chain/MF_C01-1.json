@@ -1,0 +1,48 @@
+{
+  "id": "MF_C01-1",
+  "name": "이끼 아래의 기척",
+  "category": "chain",
+  "chain": { "id": "MF_C01", "stage": 1 },
+  "locations": ["MF_H1", "MF_A1"],
+  "triggers": ["after_encounter", "adventure_event_scene"],
+  "condition": { "all": [
+    { "chain_stage": { "chain": "MF_C01", "stage": 0 } },
+    { "not": { "flag": "fam.mf_c01_done" } }
+  ] },
+  "weight": 8,
+  "max_per_life": 1,
+  "allow_serious_injury": false,
+  "hold": "none",
+  "intro": {
+    "lines": [ "발밑 이끼가 혼자 움푹 눌렸다", "{name:이/가} 숨을 죽였다" ],
+    "detail": "자국은 사람의 것도 짐승의 것도 아니다. 안개 너머에서 반딧불 하나가 기다리듯 떠 있다.",
+    "tag": "discovery",
+    "animation": [ { "action": "discover" } ]
+  },
+  "choices": [
+    {
+      "id": "follow", "label": "기척을 따라간다", "short": "기척을 따라갔다",
+      "tags": ["new_path"], "risk": "low",
+      "outcomes": {
+        "always": {
+          "effects": [
+            { "type": "advance_chain", "chain_id": "MF_C01", "stage": 1 },
+            { "type": "set_flag", "key": "life.mf_spirit_met" },
+            { "type": "add_xp", "units": 1 }
+          ],
+          "line": "눌린 이끼 자국을 따라 걸었다"
+        }
+      }
+    },
+    {
+      "id": "wait", "label": "자리에 서서 지켜본다", "short": "자국을 지켜보았다",
+      "tags": ["safe", "info"], "risk": "none",
+      "outcomes": {
+        "always": {
+          "effects": [ { "type": "advance_chain", "chain_id": "MF_C01", "stage": 1 } ],
+          "line": "자국이 안개 속으로 이어지는 것을 보았다"
+        }
+      }
+    }
+  ]
+}

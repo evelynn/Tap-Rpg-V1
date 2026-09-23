@@ -52,6 +52,10 @@ export type Sortie = z.infer<typeof sortieSchema>
 export const ACTION_KINDS = ['encounter', 'room', 'scene', 'gate', 'travel', 'camp', 'inn', 'town', 'treatment', 'event'] as const
 export type ActionKind = (typeof ACTION_KINDS)[number]
 
+// 확정 결과가 담는 조각. 16 §5.7은 effect[]라고만 적었으나 행동 해석기는 콘텐츠 효과(type)와
+// 제 결과 조각(kind: 조우·방·장면·관문 …)을 함께 담는다. 둘 다 받아야 정상 저장이 K4에 걸리지 않는다
+export const resolvedPartSchema = z.union([savedEffect, z.looseObject({ kind: z.string() })])
+
 // 확정 결과: 행동 시작 때 난수를 모두 굴려 담고, 시간이 다 차면 적용한다
 export const resolvedActionSchema = s({
   seq: intV.min(1),
@@ -60,7 +64,7 @@ export const resolvedActionSchema = s({
   duration_sec: nat,
   rounds: z.array(s({ actor: z.string(), dice: intV, total: intV, target_ac: intV, hit: z.boolean(), damage: nat })).optional(),
   outcome: z.string(),
-  effects: z.array(savedEffect),
+  effects: z.array(resolvedPartSchema),
   journal: z.array(journalDraftSchema),
   applied: z.boolean(),
 })
