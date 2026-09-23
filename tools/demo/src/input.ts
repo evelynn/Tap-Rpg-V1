@@ -51,6 +51,7 @@ export interface AskIo {
   source: LineSource
   write(text: string): void // 줄바꿈을 붙이지 않고 그대로 쓴다
   echo: boolean // 입력이 화면에 되비치지 않을 때(파이프·파일) 받은 답과 줄바꿈을 직접 쓴다
+  retry?: boolean // 고를 수 없는 번호면 다시 묻는다(터미널 입력). 아니면(파이프·파일) 안내 뒤 자동 선택
   signal?: AbortSignal
   stopped?(): boolean // Ctrl+C 같은 중단 신호
 }
@@ -58,25 +59,37 @@ export interface AskIo {
 export const EOF_NOTICE = '입력이 끝났다 — 이번과 이후 선택은 사전 방침으로 자동 처리한다.'
 export const AUTO_NOTICE = '(입력 없음 — 사전 방침으로 자동 선택)'
 
-// 번호 1~N 을 돌려준다. 0·NaN 이면 재생 쪽이 자동 선택으로 처리한다
+export const invalidNotice = (answer: string, n: number, retry: boolean): string =>
+  `고를 수 없는 번호다(${answer}) — ${retry ? `1~${n} 중에서 다시 고르세요.` : '이번 선택은 사전 방침으로 자동 처리한다.'}`
+
+// 번호 1~N 을 돌려준다. 0 이면 재생 쪽이 자동 선택으로 처리한다(빈 줄 = 자동).
+// 범위 밖·숫자가 아닌 답은 조용히 넘기지 않는다: 터미널이면 다시 묻고, 파이프·파일이면 안내 뒤 자동 선택
 export function makeAsk(io: AskIo): (view: { options: readonly unknown[] }) => Promise<number> {
   let inputEnded = false
   return async (view) => {
-    if (io.stopped?.()) return 0
-    if (inputEnded) {
-      io.write(AUTO_NOTICE + '\n')
-      return 0
-    }
-    io.write(`번호를 고르세요 (1~${view.options.length}, 그냥 Enter면 자동): `)
-    const line = await io.source.next(io.signal)
-    if (line === null) {
-      io.write('\n')
+    const n = view.options.length
+    for (;;) {
       if (io.stopped?.()) return 0
-      inputEnded = true
-      io.write(EOF_NOTICE + '\n')
-      return 0
+      if (inputEnded) {
+        io.write(AUTO_NOTICE + '\n')
+        return 0
+      }
+      io.write(`번호를 고르세요 (1~${n}, 그냥 Enter면 자동): `)
+      const line = await io.source.next(io.signal)
+      if (line === null) {
+        io.write('\n')
+        if (io.stopped?.()) return 0
+        inputEnded = true
+        io.write(EOF_NOTICE + '\n')
+        return 0
+      }
+      if (io.echo) io.write(line + '\n')
+      const answer = line.trim()
+      if (answer === '') return 0
+      const pick = Number(answer)
+      if (Number.isInteger(pick) && pick >= 1 && pick <= n) return pick
+      io.write(invalidNotice(answer, n, io.retry === true) + '\n')
+      if (!io.retry) return 0
     }
-    if (io.echo) io.write(line + '\n')
-    return Number(line.trim())
   }
 }

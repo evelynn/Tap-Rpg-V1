@@ -10,7 +10,13 @@ import { createDemoWorld, loadContent, seedHex } from '../src/world'
 const content = loadContent()
 
 type Entry = Parameters<typeof pickMajorLines>[0][number]
-const e = (line: string, over: Partial<Entry> = {}): Entry => ({ char_uid: 'c1', importance: 'major', tag: 'discovery', line, ...over })
+let nextId = 0
+const e = (line: string, over: Partial<Entry> = {}): Entry => {
+  nextId += 1
+  return { id: nextId, eff_min: nextId, age: 20, char_uid: 'c1', importance: 'major', tag: 'bond', line, ...over }
+}
+// 사건 분류: F로 시작하면 운명(테스트용 id)
+const opts = { relicUids: ['it_1'], eventCategory: (id: string) => (id.startsWith('F') ? 'fate' : 'life'), clamp: [4, 6] as const, scoreGte: 5 }
 
 describe('데모 재생', () => {
   it('씨앗은 16진 16자리로 바뀐다', () => {
@@ -46,24 +52,34 @@ describe('데모 재생', () => {
     assert.equal(budgetMinutes(world, parseArgs(['--minutes', '45'])), 45)
   })
 
-  it('주요 기록은 그 인물의 major 기록만, 같은 문장은 한 번, 끝맺음(은퇴·가문 업적)은 뺀다', () => {
+  it('주요 기록은 12 §7.1 후보만: 안내·결과가 뒤에 있는 대기 기록·이동·묶음·가문·은퇴는 싣지 않는다', () => {
     const lines = pickMajorLines([
-      e('길을 나섰다'),
-      e('길을 나섰다'),
+      e('여울가 풀밭으로 떠났다', { tag: 'travel' }),
+      e('남길 물건을 정해 두세요', { tag: 'important' }), // 사건이 아닌 [중요] = 안내
+      e('샘 앞에서 결정을 기다린다', { tag: 'important', refs: { event_id: 'F01' } }),
+      e('샘물을 병에 담았다', { tag: 'check', refs: { event_id: 'F01' }, importance: 'daily' }), // 운명 사건 결과(일상 기록이어도 대기 기록을 뺀다)
+      e('샘물을 병에 담아 왔다', { tag: 'check', refs: { event_id: 'F01' } }),
+      e('세나가 이름을 기억해주었다'),
       e('남의 기록', { char_uid: 'c2' }),
-      e('일상', { importance: 'daily' }),
-      e('마지막 장', { importance: 'last_chapter' }),
-      e('관문을 넘었다', { tag: 'dungeon' }),
+      e('10번 싸워 동전 58개를 모았다', { tag: 'hunt', bundle_count: 10 }),
       e('은빛 패를 이루었다', { tag: 'house', importance: 'family' }),
-      e('은빛 패를 이루었다 2', { tag: 'house' }),
-      e('은퇴했다', { tag: 'retire' }),
-    ], 'c1')
-    assert.deepEqual(lines, ['길을 나섰다', '관문을 넘었다'])
+      e('은퇴했다', { tag: 'retire', importance: 'family' }),
+    ], 'c1', opts)
+    assert.deepEqual(lines, ['20세 샘물을 병에 담아 왔다', '20세 세나가 이름을 기억해주었다'])
   })
 
-  it('주요 기록이 많으면 생애 앞뒤에 고르게 흩어 고른다(시간 순서 유지)', () => {
-    const many = Array.from({ length: 9 }, (_, i) => e(`기록 ${i}`))
-    assert.deepEqual(pickMajorLines(many, 'c1', 5), ['기록 0', '기록 2', '기록 4', '기록 6', '기록 8'])
+  it('후보가 많으면 18 §4.1 점수가 높은 것부터 고르고(점수 5 이상이 4개 미만이면 4개), 시간 순서로 싣는다', () => {
+    const many = [
+      e('처음 보는 길을 찾았다', { tag: 'discovery' }), // 첫 [발견] 3+3
+      e('길을 잃은 아이를 도왔다', { tag: 'important', refs: { event_id: 'L01' } }), // [중요] 첫 기록 1+3
+      e('다른 제안을 받았다', { tag: 'important', refs: { event_id: 'L02' } }), // 1
+      e('또 다른 제안을 받았다', { tag: 'important', refs: { event_id: 'L03' } }), // 1
+      e('세나가 이름을 기억해주었다'), // [인연] 7+3
+      e('종이 달린 짧은 검을 손에 넣었다', { tag: 'gear', refs: { item_uid: 'it_1' } }), // 유품 1+3+3
+    ]
+    assert.deepEqual(pickMajorLines(many, 'c1', opts), [
+      '20세 처음 보는 길을 찾았다', '20세 길을 잃은 아이를 도왔다', '20세 세나가 이름을 기억해주었다', '20세 종이 달린 짧은 검을 손에 넣었다',
+    ])
   })
 
   it('파이프 입력(줄 수 < 선택 수)으로 기본 실행하면 입력이 끝난 뒤 자동으로 넘어가 한 생애를 끝까지 본다', async () => {

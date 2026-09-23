@@ -2,7 +2,7 @@
 import { dungeonTargets } from '../ai/index'
 import { endGuildAidIfDue, isBankrupt, startGuildAid, townPrep, treatmentCost } from '../economy/index'
 import { fireScheduledEvents, runJudgment, runTownReturnEffects } from '../events/index'
-import { addJournal } from '../journal/index'
+import { addJournal, closeBundle } from '../journal/index'
 import { characterOf } from '../rules/context'
 import { applyBloodRest, cellarRestSec } from '../life/index'
 import { addFatigue } from '../rules/fatigue'
@@ -46,7 +46,7 @@ export function updateGuildRank(world: World): boolean {
   for (const r of ranks) if (world.test(r.condition)) best = r.id
   if (content.get('guild_rank', best).order <= content.get('guild_rank', ch.guild_rank).order) return false
   ch.guild_rank = best
-  addJournal(world, { tag: 'growth', line: line(content, 'guild_rank', { rank: content.get('guild_rank', best).name }) })
+  addJournal(world, { tag: 'growth', sub: 'rank', line: line(content, 'guild_rank', { rank: content.get('guild_rank', best).name }) })
   return true
 }
 
@@ -79,6 +79,7 @@ export const travelResolver: ActionResolver = {
     addFatigue(world, b.actions.travel_leg.fatigue + modValue(world, 'travel_fatigue_add', 0))
     tickSortieBody(world, action.duration_sec / 60)
     if (back) {
+      closeBundle(world) // 출정 종료: 열린 묶음을 마을 기록보다 먼저 남긴다(14 §4)
       arriveTown(world)
       return
     }
@@ -97,7 +98,7 @@ export const campResolver: ActionResolver = {
       duration_sec: sec,
       outcome: 'camp',
       effects: [],
-      journal: [{ tag: 'rest', line: line(world.content, 'rest_camp', {}, currentSortie(world).camps) }],
+      journal: [{ tag: 'rest', line: line(world.content, 'rest_camp', {}, currentSortie(world).camps), refs: { location_id: currentSortie(world).location_id } }],
     }
   },
   apply(world: World, action): void {
@@ -136,7 +137,7 @@ export const innResolver: ActionResolver = {
     // 문장 변형은 마을 귀환 수 + 여관 숙박 수로 고른다(같은 저장이면 같은 문장, 한 귀환에 두 번 묵어도 바뀐다)
     const ch = characterOf(world)
     const seq = (ch.counters[COUNTERS.sorties] ?? 0) + (ch.counters.inn_rests ?? 0)
-    addJournal(world, { tag: 'rest', line: line(world.content, 'rest_inn', {}, seq) })
+    addJournal(world, { tag: 'rest', line: line(world.content, 'rest_inn', {}, seq), refs: { location_id: ch.location } })
     tickInjuries(world, action.duration_sec / 60)
     if (r.hp === 0 || !needsRest(world)) setStep(world, TOWN_STEPS.prep)
   },
@@ -202,7 +203,8 @@ function applyPrep(world: World): void {
   const r = townPrep(world, world.rng.loot, rt.shop, { dungeonCandidate, mainPlace: world.state.current_activity.sortie?.location_id ?? null })
   for (const d of r.journal) addJournal(world, d)
   // 14 §4 마을 정비 묶음: 판매·구매·치료·정비비를 1건으로. 한 줄은 쓴 동전, 펼침은 내역
-  const prep = line(world.content, 'town_prep', { coins: r.spent })
+  // 쓴 동전이 없으면 동전 구절을 뺀 문형(14 §4, "동전 0개" 금지)
+  const prep = line(world.content, r.spent > 0 ? 'town_prep' : 'town_prep_no_coins', { coins: r.spent })
   addJournal(world, { tag: 'town', line: prep, ...(r.breakdown.length ? { detail: [`${prep}.`, ...r.breakdown].join('\n') } : {}) })
   // 경상 치료 시간(04 §8 2단계, 개당 10초)은 다음 행동으로 넘긴다
   const lightSec = secOf(world.content.balance.activity_ai.town_routine_sec.light_treat_each ?? 0, world.rng.world)

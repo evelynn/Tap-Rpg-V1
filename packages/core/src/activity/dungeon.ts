@@ -2,7 +2,7 @@
 import { effectiveLevel, gateCleared, gateRiskOk } from '../ai/index'
 import { retreatHpRatio } from '../combat/index'
 import { earnCoins } from '../economy/earn'
-import { addJournal } from '../journal/index'
+import { addJournal, addToBundle, bundleRow } from '../journal/index'
 import { considerPickup } from '../items/bag'
 import { materializeItem, rollDrop } from '../items/roll'
 import { checkBonus, checkDc, evaluateCheck, recordCheckUse, regionDc, rollCheck, successChance, type CheckRoll } from '../rules/check'
@@ -23,6 +23,7 @@ import { addPendingSec, fieldPoint, takePendingSec } from './judgment'
 import { DROP_TABLE } from './hunt'
 import { line } from './lines'
 import { renderTemplate } from '../text/index'
+import { ageAt } from '../time/index'
 import { beginReturn, currentSortie } from './sortie'
 
 export type RoomKind = (typeof ROOM_KINDS)[number]
@@ -343,6 +344,18 @@ export function materialBySource(ctx: RuleContext, source: 'trap' | 'forage' | '
   return ctx.content.list('material').find((m) => m.source === source)?.id ?? null
 }
 
+// 지금 방(s.progress)의 문 여는 기록
+function roomDoorJournal(world: World): JournalDraft {
+  const s = currentSortie(world)
+  const depth = s.progress + 1
+  return {
+    tag: 'dungeon',
+    line: line(world.content, 'dungeon_room', { depth }, s.progress),
+    detail: line(world.content, 'dungeon_room_detail', { name: characterOf(world).name, place: world.content.get('region', s.location_id).name, depth }, s.progress),
+    refs: { location_id: s.location_id, sortie_id: s.id },
+  }
+}
+
 // 방 1개를 확정한다
 export function resolveRoom(world: World): { payload: RoomPayload; sec: number; journal: JournalDraft[]; outcome: string } {
   const b = world.content.balance
@@ -351,20 +364,15 @@ export function resolveRoom(world: World): { payload: RoomPayload; sec: number; 
   if (!('rooms' in s.plan)) throw new Error('던전 출정이 아니다')
   const kind = s.plan.rooms[s.progress]!
   const sec = world.rng.world.int(b.actions.dungeon_room.sec[0], b.actions.dungeon_room.sec[1]) + b.actions.breather.sec[0]
-  const name = world.content.get('region', place).name
-  const journal: JournalDraft[] = [{
-    tag: 'dungeon',
-    line: line(world.content, 'dungeon_room', { depth: s.progress + 1 }, s.progress),
-    detail: line(world.content, 'dungeon_room_detail', { name: characterOf(world).name, place: name, depth: s.progress + 1 }, s.progress),
-    refs: { location_id: place, sortie_id: s.id },
-  }]
+  const journal = [roomDoorJournal(world)]
   if (kind === 'combat') {
     const spec: EncounterSpec = {
       place, enemies: rollEnemies(world, place), activity: 'dungeon_room', roomIndex: s.progress,
       coinMult: b.dungeon.room_coin_mult, dropTable: DROP_TABLE.dungeon, step: String(s.progress + 1),
     }
     const enc = resolveEncounterStep(world, spec)
-    return { payload: { kind: 'combat', enc, spec }, sec, journal, outcome: enc.combat.outcome }
+    // 전투 방은 문 여는 기록을 바로 남기지 않고 적용 때 묶는다(14 §4 연속 전투 방 3개까지)
+    return { payload: { kind: 'combat', enc, spec }, sec, journal: [], outcome: enc.combat.outcome }
   }
   if (kind === 'trap') return { payload: trapPayload(world, place), sec, journal, outcome: 'trap' }
   if (kind === 'treasure') return { payload: treasurePayload(world, place), sec, journal, outcome: 'treasure' }
@@ -378,9 +386,19 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
   const s = currentSortie(world)
   const scope = emptyScope(place)
   switch (payload.kind) {
-    case 'combat':
+    case 'combat': {
+      // 방을 먼저 묶음에 넣어야 이 방의 드롭·성장(B 이상) 기록이 이 방까지 담은 묶음을 닫는다(14 §4)
+      const c = payload.enc.combat
+      addToBundle(world, {
+        tag: 'dungeon',
+        single: roomDoorJournal(world),
+        coins: c.rewards.reduce((a, r) => a + r.coins, 0),
+        depth: s.progress + 1,
+        row: bundleRow(world.content, world.content.get('enemy', payload.spec.enemies[0]!.id).name, c.round_count, c.hp_start - c.hp_end),
+      })
       applyEncounterStep(world, payload.spec, payload.enc)
       break
+    }
     case 'trap': {
       for (const c of payload.checks) recordCheckUse(world, c)
       runSavedEffects(world, payload.effects, scope)
@@ -408,7 +426,7 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
       if (payload.material) s.loot.materials[payload.material] = (s.loot.materials[payload.material] ?? 0) + b.dungeon.chest.material
       if (payload.drop) {
         const inst = materializeItem(world, payload.drop, {
-          gen: ch.generation, char_uid: ch.uid, age: 0, location: place, source: 'chest',
+          gen: ch.generation, char_uid: ch.uid, age: ageAt(ch.eff_min, b.time), location: place, source: 'chest',
         })
         s.loot.item_uids.push(inst.uid)
         for (const d of considerPickup(world, inst.uid, { mainPlace: place }).journal) addJournal(world, d)
@@ -498,7 +516,7 @@ export const gateResolver: ActionResolver = {
     const enemy = world.content.get('enemy', spec.enemies[0]!.id)
     const journal: JournalDraft[] = enc.combat.outcome === 'win'
       ? [{
-        tag: 'dungeon', importance: 'major',
+        tag: 'dungeon', importance: 'major', ...(cleared ? {} : { sub: 'gate_first' as const }),
         line: renderTemplate(enemy.victory_lines[0]!, { enemy: enemy.name }),
         detail: line(world.content, 'dungeon_gate_detail', { enemy: enemy.name, place: r.name }),
         refs: { location_id: s.location_id, sortie_id: s.id },

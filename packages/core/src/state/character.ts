@@ -56,7 +56,7 @@ export const characterSchema = s({
   specialization: z.enum(SPECIALIZATIONS),
   f01_presentations: nat,
   spec_deferred_until_level: intV.nullable(),
-  mutation: s({ trait_id: defId, since_age: intV, long_sleep_age: intV, thirst: nat }).nullable(),
+  mutation: s({ trait_id: defId, since_age: intV, long_sleep_age: intV, thirst: z.number().min(0) }).nullable(), // 갈증: 분당 증가를 소수로 누적(I73)
   guild_rank: defId,
   coins: nat,
   location: defId,

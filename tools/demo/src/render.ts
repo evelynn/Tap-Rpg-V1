@@ -1,4 +1,5 @@
 // 화면 문자열 만들기. 입출력을 하지 않는 순수 함수라 단위 테스트로 검사한다(16 §6.9 태그표).
+import { renderTemplate } from '@tap/core'
 
 export const TAG_LABEL: Record<string, string> = {
   hunt: '사냥', adventure: '모험', dungeon: '던전', travel: '이동', rest: '휴식', town: '마을', gear: '장비',
@@ -126,7 +127,7 @@ const RELATION_LABEL: Record<string, string> = { founder: '창시자', direct: '
 
 export function renderHeir(v: HeirView): string {
   return [
-    `── 계승 → ${v.gen}대 ${v.name} (${RELATION_LABEL[v.relation] ?? v.relation}${v.parentCall ? `, 부모를 ${v.parentCall}라 부른다` : ''}) ──`,
+    `── 계승 → ${v.gen}대 ${v.name} (${RELATION_LABEL[v.relation] ?? v.relation}${v.parentCall ? `, ${renderTemplate('부모를 {call:이라/라} 부른다', { call: v.parentCall })}` : ''}) ──`,
     `유전 특성: ${v.traitNames.length ? v.traitNames.join(', ') : '없음'}`,
     `물려받은 유품: ${v.relicNames.length ? v.relicNames.join(', ') : '없음'} · 이전 동전 ${v.coins}${v.capped ? ' (상한)' : ''}`,
     '',

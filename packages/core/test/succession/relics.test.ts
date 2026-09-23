@@ -1,8 +1,11 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { defaultRelicOffer, relicOfferCandidates } from '../../src/life/index'
-import { autoPickRelics, childhoodNote, designateRelic, dormantOpened, relicScore, relicsToPass } from '../../src/succession/index'
+import { autoPickRelics, childhoodNote, designateRelic, dormantOpened, relicScore, relicsToPass, transferRelics } from '../../src/succession/index'
 import { give, lifeWorld, setAge, stripStartingKit, withFamily } from './fixture'
+
+// 한글 음절 받침 유무(14 §6). 조사 기대값을 이름에 맞춰 고른다
+const hasFinal = (word: string): boolean => (word.codePointAt(word.length - 1)! - 0xac00) % 28 !== 0
 
 describe('유품 자동 선택(12 §5.3)', () => {
   it('점수는 등급·고유·단계·사연을 더하고, 저주 장비는 후보에서 빠진다', () => {
@@ -52,7 +55,23 @@ describe('잠재 상태 개방(12 §5.5)', () => {
     const opened = dormantOpened(w, 11, 12)
     assert.equal(opened.length, 1)
     assert.match(opened[0]!.line, /손에 맞기 시작했다/)
+    const name = w.content.get('item', w.state.item_instances[uid]!.def_id).name
+    assert.ok(opened[0]!.line.includes(`${hasFinal(name) ? '이' : '가'} 손에 맞기`), opened[0]!.line)
     assert.equal(w.state.item_instances[uid]!.history.at(-1)!.kind, 'potential_opened')
+  })
+})
+
+describe('유품 이전 문장의 조사(14 §6)', () => {
+  it('앞 세대 이름과 장비 이름의 받침에 맞춰 조사를 고른다(누리가 남겼다, 하준이 남겼다)', () => {
+    for (const parent of ['누리', '하준']) {
+      const w = lifeWorld()
+      const uid = give(w, 'W07', 'rare', 'bag')
+      const inst = w.state.item_instances[uid]!
+      const name = w.content.get('item', inst.def_id).name
+      const r = transferRelics(w, [inst], 1, parent)
+      assert.equal(inst.history.at(-1)!.text, `${parent}${hasFinal(parent) ? '이' : '가'} 남겼다`)
+      assert.match(r.journal[0]!.line, new RegExp(`${hasFinal(name) ? '을' : '를'} 물려받았다$`))
+    }
   })
 })
 

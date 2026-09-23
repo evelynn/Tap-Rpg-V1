@@ -5,8 +5,8 @@ import assert from 'node:assert/strict'
 import { submitPendingAuto, succeed, type World } from '../../src/index'
 import { baseContent, makeGame } from './life-fixture'
 
-// 빈 값이 조사를 만나면 병기형, 빈 변수 자리는 겹친 공백·날 중괄호로 남는다
-const BAD = ['을(를)', '이(가)', '은(는)', '과(와)', '(으)로', '{', '}', '  ', 'undefined', 'NaN']
+// 빈 값이 조사를 만나면 병기형, 빈 변수 자리는 겹친 공백·날 중괄호로 남는다. 0개는 동전 구절을 빼는 문형을 쓴다(14 §4·§5.1)
+const BAD = ['을(를)', '이(가)', '은(는)', '과(와)', '(으)로', '{', '}', '  ', 'undefined', 'NaN', '동전 0개']
 // 문장 전체가 값으로 들어가면 조사가 마침표 뒤에 붙는다("찼다.가 있었다")
 const PARTICLE_AFTER_SENTENCE = /[.!?]["”]?(이|가|을|를|은|는|과|와|으로|로)(\s|$)/
 
@@ -18,10 +18,16 @@ function scan(where: string, text: string | undefined, hits: Hit[]): void {
 }
 
 // 두 생애를 끝까지 돌리며 새 기록과 선택 창 문장을 모은다(생애가 끝나면 일상 기록이 지워지므로 그때그때 본다)
-function playTwoLives(world: World): { hits: Hit[]; long: Hit[]; lines: number; lives: number } {
+// 같은 태그·같은 한 줄이 연달아 나오면 14 §4 묶음이 빠진 것이다. 묶음 기록끼리(던전 3개 방 묶음이 이어짐)만 허용한다.
+// 알려진 남은 결함(이 가드 담당 밖, 보고함): [특성] 흡혈귀 갈증 반응이 출정당 1회(14 §2)를 넘어 되풀이된다(life/vampire),
+// [사망] 원인 기록(life/death.deathNotice)과 S04 한 줄이 같은 문장이다
+const KNOWN_REPEAT_TAGS = new Set(['trait', 'death'])
+function playTwoLives(world: World): { hits: Hit[]; long: Hit[]; repeats: Hit[]; lines: number; lives: number } {
   const lineMax = world.content.balance.ui.line_max
   const hits: Hit[] = []
   const long: Hit[] = []
+  const repeats: Hit[] = []
+  let prev: { tag: string; line: string; bundle: boolean } | null = null
   let lastId = 0
   let lines = 0
   let lives = 0
@@ -35,6 +41,9 @@ function playTwoLives(world: World): { hits: Hit[]; long: Hit[]; lines: number; 
       scan(`${where} 상세`, e.detail, hits)
       scan(`${where} 이유`, e.reason, hits)
       if ([...e.line].length > lineMax) long.push({ where, text: e.line })
+      const bundle = (e.bundle_count ?? 1) >= 2
+      if (prev && prev.tag === e.tag && prev.line === e.line && !(prev.bundle && bundle) && !KNOWN_REPEAT_TAGS.has(e.tag)) repeats.push({ where, text: e.line })
+      prev = { tag: e.tag, line: e.line, bundle }
     }
     const p = world.state.pending_choice
     if (p) {
@@ -58,7 +67,7 @@ function playTwoLives(world: World): { hits: Hit[]; long: Hit[]; lines: number; 
     world.advance(600)
   }
   collect()
-  return { hits, long, lines, lives }
+  return { hits, long, repeats, lines, lives }
 }
 
 const seedOf = (n: number) => (0x7000 + n).toString(16).padStart(16, '0')
@@ -77,6 +86,7 @@ describe('일지 문장 가드: 세 태도 × 여러 시드 × 두 생애', () =
       assert.ok(r.lines > 300, `기록이 너무 적다: ${r.lines}`)
       assert.deepEqual(r.hits, [], `빈 변수·병기 조사 흔적 ${r.hits.length}건`)
       assert.deepEqual(r.long, [], `한 줄 ${baseContent().balance.ui.line_max}자 초과 ${r.long.length}건(14 §1)`)
+      assert.deepEqual(r.repeats, [], `같은 한 줄 연속 ${r.repeats.length}건(14 §4 묶음)`)
     })
   }
 })

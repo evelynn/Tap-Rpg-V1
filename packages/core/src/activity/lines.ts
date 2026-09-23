@@ -7,6 +7,7 @@ import { registerTextSlot } from '../schema/index'
 export const ACTIVITY_TEXT = {
   hunt_win: 'journal.hunt.win',
   hunt_win_detail: 'journal.hunt.win_detail',
+  hunt_win_detail_no_coins: 'journal.hunt.win_detail_no_coins',
   hunt_enemy_first_detail: 'journal.hunt.enemy_first_detail',
   adventure_scene: 'journal.adventure.scene',
   adventure_scene_detail: 'journal.adventure.scene_detail',
@@ -24,6 +25,7 @@ export const ACTIVITY_TEXT = {
   rest_inn: 'journal.rest.inn',
   potions_detail: 'journal.sortie.potions_detail',
   town_prep: 'journal.town.prep',
+  town_prep_no_coins: 'journal.town.prep_no_coins',
   town_treatment: 'journal.town.treatment',
   town_treatment_detail: 'journal.town.treatment_detail',
   town_treatment_free: 'journal.town.treatment_free',

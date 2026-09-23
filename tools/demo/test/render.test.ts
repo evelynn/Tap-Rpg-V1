@@ -55,4 +55,13 @@ describe('데모 출력', () => {
     assert.match(text, /유전 특성: 튼튼한 체질/)
     assert.match(text, /이전 동전 300 \(상한\)/)
   })
+
+  it('가족 호칭의 받침에 맞춰 조사를 고른다(부모님이라, 어머니라)', () => {
+    const heir = (parentCall: string) => renderHeir({ gen: 2, name: '리아', relation: 'adopted', parentCall, traitNames: [], relicNames: [], coins: 0, capped: false })
+    assert.match(heir('부모님'), /부모를 부모님이라 부른다/)
+    assert.match(heir('스승님'), /부모를 스승님이라 부른다/)
+    assert.match(heir('삼촌'), /부모를 삼촌이라 부른다/)
+    assert.match(heir('큰 어른'), /부모를 큰 어른이라 부른다/)
+    assert.match(heir('아버지'), /부모를 아버지라 부른다/)
+  })
 })

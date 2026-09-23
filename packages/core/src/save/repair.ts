@@ -6,6 +6,7 @@ import type { SaveBody } from '../state/save'
 import { statCap } from '../rules/derived'
 import { constantConditionTest } from '../rules/context'
 import { xpToNext } from '../rules/growth'
+import { familyHeldItems } from '../items/roll'
 
 // 시계 이상 기록 보관 수(16 §7.1 B12)
 const CLOCK_ANOMALY_KEEP = 20
@@ -146,9 +147,12 @@ export function repairSave(content: Content, state: SaveBody): SaveDiagnostic[] 
     inv.relic_designations = keep
   }
 
-  // B9 고유 장비는 가문 안에 1개. 오래된 것만 남기고 나머지 인스턴스를 지운다
+  // B9 고유 장비는 가문 안에 1개. 오래된 것만 남기고 나머지 인스턴스를 지운다.
+  // 가문이 지금 가진 것(familyHeldItems)만 센다: 판매 기록·빈 병 기념품은 가문에 없는 것이다(08 §9.5, I75)
+  const held = new Set(familyHeldItems(state).map((i) => i.uid))
   const byDef = new Map<string, string[]>()
   for (const uid of Object.keys(state.item_instances).sort()) {
+    if (!held.has(uid)) continue
     const def = content.get('item', state.item_instances[uid]!.def_id)
     if (!def.unique) continue
     const list = byDef.get(def.id) ?? []

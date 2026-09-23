@@ -6,6 +6,7 @@ import type { ItemInstance } from '../state/inventory'
 import type { JournalDraft } from '../state/journal'
 import { itemName } from '../items/bag'
 import { isDormant } from '../items/stats'
+import { renderTemplate } from '../text/index'
 import { ageAt } from '../time/index'
 
 type EndKind = (typeof END_KINDS)[number]
@@ -100,11 +101,11 @@ export function transferRelics(ctx: RuleContext, items: readonly ItemInstance[],
       char_name: parentName,
       age: inst.acquired.age,
       kind: 'inherited',
-      text: `${parentName}이 남겼다`,
+      text: renderTemplate('{name:이/가} 남겼다', { name: parentName }),
     })
     if (!inv.bag.includes(inst.uid)) inv.bag.push(inst.uid)
     uids.push(inst.uid)
-    journal.push({ tag: 'succession', line: `${itemName(ctx, inst)}을 물려받았다`, refs: { item_uid: inst.uid } })
+    journal.push({ tag: 'succession', line: renderTemplate('{item:을/를} 물려받았다', { item: itemName(ctx, inst) }), refs: { item_uid: inst.uid } })
   }
   return { uids, journal }
 }
@@ -121,7 +122,7 @@ export function dormantOpened(ctx: RuleContext, beforeLevel: number, afterLevel:
       kind: 'potential_opened',
       text: '손에 맞기 시작했다',
     })
-    out.push({ tag: 'gear', line: `${itemName(ctx, inst)}이 손에 맞기 시작했다`, refs: { item_uid: inst.uid } })
+    out.push({ tag: 'gear', line: renderTemplate('{item:이/가} 손에 맞기 시작했다', { item: itemName(ctx, inst) }), refs: { item_uid: inst.uid } })
   }
   return out
 }

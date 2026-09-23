@@ -48,6 +48,16 @@ export const sortieSchema = s({
   discovery_attempts: z.array(defId), // C27
   exclusive_used: z.array(z.string()), // C28
   fate_offered: z.boolean(),
+  // C32: 아직 닫히지 않은 일지 묶음(14 §4 사냥 조우·던전 전투 방). 닫히면 기록 1개가 되고 칸을 지운다.
+  // single = 1개로 닫힐 때 그대로 남길 개별 기록, rows = 펼침 내역(최대 10줄)
+  journal_bundle: s({
+    tag: z.enum(['hunt', 'dungeon']),
+    count: intV.min(1),
+    coins: nat,
+    depth: nat,
+    rows: z.array(z.string()),
+    single: journalDraftSchema,
+  }).optional(),
 })
 export type Sortie = z.infer<typeof sortieSchema>
 

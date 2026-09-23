@@ -4,7 +4,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  applyOccurrence, COUNTERS, createItemInstance, lifeLoopOf, loadGameWorld, makeSaveRoot, pendingSuccession, pickEpithet,
+  addJournal, applyOccurrence, COUNTERS, createItemInstance, lifeLoopOf, loadGameWorld, makeSaveRoot, pendingSuccession, pickEpithet,
   prepareOccurrence, sceneResolver, serializeSave, startSortie, succeed, TOWN_STEPS,
   loadSave, type ResolvedAction, type SaveBody, type World,
 } from '../../src/index'
@@ -191,6 +191,8 @@ describe('여관 휴식 문장 변형(14 §5.1 [휴식])', () => {
         ch.counters[COUNTERS.sorties] = i
         world.state.current_activity.state = 'town_idle'
         ch.counters[COUNTERS.townStep] = TOWN_STEPS.rest
+        // 귀환마다 다른 기록이 사이에 있다(연속 휴식은 한 기록으로 묶이므로, 14 §4)
+        addJournal(world, { tag: 'travel', line: '여울가 풀밭으로 떠났다' })
         const start = world.state.journal.length
         world.applyAction(world.startAction('inn'))
         out.push(...world.state.journal.slice(start).filter((e) => e.tag === 'rest').map((e) => e.line))

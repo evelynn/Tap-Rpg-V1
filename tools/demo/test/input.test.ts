@@ -2,7 +2,7 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { Readable } from 'node:stream'
 import { setImmediate as tick } from 'node:timers/promises'
-import { AUTO_NOTICE, createLineSource, EOF_NOTICE, makeAsk } from '../src/input'
+import { AUTO_NOTICE, createLineSource, EOF_NOTICE, invalidNotice, makeAsk } from '../src/input'
 
 const view = { options: ['a', 'b', 'c'] }
 
@@ -46,6 +46,35 @@ describe('데모 입력', () => {
     out = ''
     assert.equal(await ask(view), 0, '그 뒤로는 묻지 않고 자동')
     assert.equal(out, `${AUTO_NOTICE}\n`)
+  })
+
+  it('파이프 입력의 범위 밖 번호는 조용히 넘기지 않고 안내한 뒤 자동 선택하고, 다음 줄은 다음 선택에 쓴다', async () => {
+    let out = ''
+    const ask = makeAsk({ source: createLineSource(Readable.from(['9\nabc\n0\n2\n'])), write: (t) => void (out += t), echo: true })
+    assert.equal(await ask(view), 0)
+    assert.ok(out.includes(invalidNotice('9', 3, false)), out)
+    out = ''
+    assert.equal(await ask(view), 0, '숫자가 아니어도 안내')
+    assert.ok(out.includes(invalidNotice('abc', 3, false)), out)
+    out = ''
+    assert.equal(await ask(view), 0, '0도 고를 수 없는 번호')
+    assert.ok(out.includes(invalidNotice('0', 3, false)), out)
+    assert.equal(await ask(view), 2, '다음 선택은 다음 줄')
+  })
+
+  it('터미널 입력이면 범위 밖 번호에 안내하고 다시 묻는다', async () => {
+    let out = ''
+    const ask = makeAsk({ source: createLineSource(Readable.from(['9\n3\n'])), write: (t) => void (out += t), echo: false, retry: true })
+    assert.equal(await ask(view), 3)
+    assert.ok(out.includes(invalidNotice('9', 3, true)), out)
+    assert.equal(out.split('번호를 고르세요').length - 1, 2, '두 번 물었다')
+  })
+
+  it('빈 줄(그냥 Enter)은 안내 없이 자동 선택이다', async () => {
+    let out = ''
+    const ask = makeAsk({ source: createLineSource(Readable.from(['\n'])), write: (t) => void (out += t), echo: true, retry: true })
+    assert.equal(await ask(view), 0)
+    assert.doesNotMatch(out, /고를 수 없는/)
   })
 
   it('터미널끼리면 답을 다시 쓰지 않는다(터미널이 되비친다)', async () => {

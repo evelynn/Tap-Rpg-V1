@@ -83,14 +83,22 @@ export function pickGradeWeighted(rng: Rng, weights: Partial<Record<Grade, numbe
   return namedRare(pool[weightedPick(rng, pool.map((x) => weights[x]!))]!)
 }
 
-// 가문 안에 그 정의가 있는가(착용·가방·수령 대기함). 쓴 1회용(빈 병 기념품)은 없는 것으로 본다(08 §9.5)
+// 가문이 지금 가진 장비(착용·가방·수령 대기함. 넘길 유품도 계승 전까지 여기 있다). 쓴 1회용(빈 병 기념품)과
+// 판매·분실한 희귀 이상·고유의 기록(08 §13.3, 어느 칸에도 없다)은 가문에 없는 것으로 본다(08 §9.5).
+// 고유 장비 1개 규칙의 단일 정의: 재획득 대체·상점·로드 보정 B9가 함께 쓴다(I75)
+export function familyHeldItems(state: RuleContext['state']): ItemInstance[] {
+  const inv = state.inventory
+  const out: ItemInstance[] = []
+  for (const u of [...Object.values(inv.equipped), ...inv.bag, ...inv.pending_box]) {
+    const inst = u ? state.item_instances[u] : undefined
+    if (inst && !inst.used) out.push(inst)
+  }
+  return out
+}
+
+// 가문 안에 그 정의가 있는가(familyHeldItems)
 export function familyHasItem(ctx: Pick<RuleContext, 'state'>, defId: string): boolean {
-  const inv = ctx.state.inventory
-  const uids = [...Object.values(inv.equipped), ...inv.bag, ...inv.pending_box]
-  return uids.some((u) => {
-    const inst = u ? ctx.state.item_instances[u] : undefined
-    return inst?.def_id === defId && !inst.used
-  })
+  return familyHeldItems(ctx.state).some((i) => i.def_id === defId)
 }
 
 // 생애 1회 제한 카운터 키(08 §6.1 J05 once_per_life, §5.1 생애 1개 구매)

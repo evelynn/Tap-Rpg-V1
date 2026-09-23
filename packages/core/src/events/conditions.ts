@@ -122,9 +122,11 @@ export const CONDITION_EVAL: Record<string, Eval> = {
     return v !== undefined && v !== false && v !== 0 && !(Array.isArray(v) && v.length === 0)
   }),
   has_item: (id, c) => ownedItems(c).some((i) => i.def_id === id),
+  // 쓴 1회용(빈 병 기념품)은 효과가 없고 가문에 없는 것으로 본다(08 §9.5). F02 헌납 후보(life/fate)와 같은 기준(I74)
   has_item_where: (f, c) => ownedItems(c).some((i) => {
     const d = c.w.content.get('item', i.def_id)
-    return (f.slot === undefined || d.slot === f.slot)
+    return !i.used
+      && (f.slot === undefined || d.slot === f.slot)
       && (f.grade_gte === undefined || GRADES.indexOf(i.grade) >= GRADES.indexOf(f.grade_gte))
       && (f.tier_gte === undefined || d.tier >= f.tier_gte)
       && (f.unique === undefined || d.unique === f.unique)

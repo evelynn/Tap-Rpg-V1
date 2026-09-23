@@ -1,8 +1,8 @@
 // 재생 루프: 유효 진행 시간을 흘리며 새 기록을 한 줄씩 내보내고, 선택 대기·생애 종료·계승을 다룬다.
 // 입출력은 모두 deps로 받아 테스트에서는 화면 없이 돌린다.
 import {
-  ageAt, maxHp, pendingSuccession, seasonAt, submitChoice, submitPendingAuto, succeed,
-  type JournalEntry, type SuccessionPlan, type World,
+  ageAt, chronicleMajor, maxHp, pendingSuccession, seasonAt, submitChoice, submitPendingAuto, succeed,
+  type ChronicleEntry, type ChronicleOptions, type JournalEntry, type SuccessionPlan, type World,
 } from '@tap/core'
 import type { DemoArgs } from './args'
 import {
@@ -27,9 +27,6 @@ export interface PlayResult {
 const TICK_SEC = 0.1 // 실시간 재생 한 걸음
 const CHUNK_SEC = 60 // advance 한 번에 흘리는 최대 유효 진행 초
 const LIFE_CAP_FACTOR = 2 // --minutes 를 주지 않았을 때 생애당 안전 상한 = 기본 수명(시작~은퇴 나이)의 몇 배
-const MAJOR_LINES = 5 // 생애 요약에 싣는 주요 기록 수
-// 생애 요약 바로 위에 이미 찍힌 끝맺음 기록(은퇴·사망·계승·가문 업적)은 주요 기록에서 뺀다
-const SUMMARY_SKIP_TAGS = new Set(['retire', 'death', 'succession', 'house'])
 
 // 이번 실행에서 흘릴 최대 유효 진행 분. --minutes 가 없으면 지켜볼 생애 수만큼의 안전 상한
 export function budgetMinutes(world: World, args: DemoArgs): number {
@@ -38,23 +35,21 @@ export function budgetMinutes(world: World, args: DemoArgs): number {
   return args.gen * (t.base_retire_age - t.start_age) * t.min_per_year * LIFE_CAP_FACTOR
 }
 
-// 생애 요약의 주요 기록: 그 인물의 'major' 기록 중 끝맺음 태그를 빼고, 같은 문장은 한 번만,
-// 많으면 생애 앞뒤에 고르게 흩어 limit 개를 고른다(시간 순서 유지)
+// 생애 요약의 주요 기록 = 12 §7.1 연대기 주요 기록(코어 chronicleMajor: 후보 → 18 §4.1 선별 점수 상위 4~6개, 시간 순서).
+// 안내·제시 대기·이동 같은 일상 문장은 후보가 아니다. 12 §7.1 예처럼 나이를 붙이고, 같은 문장은 한 번만 싣는다
 export function pickMajorLines(
-  entries: readonly Pick<JournalEntry, 'char_uid' | 'importance' | 'tag' | 'line'>[],
+  entries: readonly (ChronicleEntry & Pick<JournalEntry, 'line' | 'age'>)[],
   charUid: string,
-  limit = MAJOR_LINES,
+  opts: ChronicleOptions,
 ): string[] {
   const seen = new Set<string>()
   const lines: string[] = []
-  for (const e of entries) {
-    if (e.char_uid !== charUid || e.importance !== 'major' || SUMMARY_SKIP_TAGS.has(e.tag) || seen.has(e.line)) continue
+  for (const e of chronicleMajor(entries, charUid, opts)) {
+    if (seen.has(e.line)) continue
     seen.add(e.line)
-    lines.push(e.line)
+    lines.push(`${e.age}세 ${e.line}`)
   }
-  if (lines.length <= limit) return lines
-  if (limit <= 1) return lines.slice(lines.length - limit)
-  return Array.from({ length: limit }, (_, i) => lines[Math.round((i * (lines.length - 1)) / (limit - 1))]!)
+  return lines
 }
 
 function statusOf(world: World): StatusView {
@@ -98,6 +93,18 @@ function itemNames(world: World, uids: readonly string[]): string[] {
   })
 }
 
+// 연대기 선별 입력: 넘기는 유품 + 이 인물이 물려받은 유품, 사건 분류, 개수 기준(balance)
+function chronicleOptions(world: World, plan: SuccessionPlan): ChronicleOptions {
+  const inherited = Object.values(world.state.item_instances).filter((i) => i.inherited_from_gen !== undefined).map((i) => i.uid)
+  const cfg = world.content.balance.inheritance.chronicle_major
+  return {
+    relicUids: [...plan.record.relics_passed, ...inherited],
+    eventCategory: (id) => (world.content.has('event', id) ? world.content.get('event', id).category : undefined),
+    clamp: cfg.clamp,
+    scoreGte: cfg.score_gte,
+  }
+}
+
 function lifeViewOf(world: World, plan: SuccessionPlan): LifeView {
   const r = plan.record
   const cause = r.cause
@@ -112,7 +119,7 @@ function lifeViewOf(world: World, plan: SuccessionPlan): LifeView {
     peakLevel: r.peak_level,
     summary: r.summary,
     relicNames: itemNames(world, r.relics_passed),
-    majorLines: pickMajorLines([...world.state.journal].sort((a, b) => a.id - b.id), r.char_uid),
+    majorLines: pickMajorLines(world.state.journal, r.char_uid, chronicleOptions(world, plan)),
   }
 }
 

@@ -106,6 +106,8 @@ async function main(argv: string[]): Promise<number> {
         write: (t) => out.raw(t),
         // 터미널끼리면 입력이 되비치지만, 파이프·파일이 끼면 답과 줄바꿈을 직접 남긴다
         echo: !(process.stdin.isTTY === true && process.stdout.isTTY === true),
+        // 터미널 입력이면 잘못 친 번호를 다시 묻는다. 파이프·파일은 다음 줄이 다음 선택의 답이라 다시 묻지 않는다
+        retry: process.stdin.isTTY === true,
         signal: abort.signal,
         stopped: () => stop,
       })
