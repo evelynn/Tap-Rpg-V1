@@ -64,5 +64,8 @@
     "trip_modifiers": [ { "target": "hit_vs.kobold", "op": "add", "value": 1 } ] },
   { "id": "trip.a3_kind", "scope": "trip", "value": "bool",
     "set_by": "L18 문을 닫는다", "read_by": "다음 A3 장면 발견 확률 +10%",
-    "trip_modifiers": [ { "target": "discovery_chance_mult", "op": "mul", "value": 1.1 } ] }
+    "trip_modifiers": [ { "target": "discovery_chance_mult", "op": "mul", "value": 1.1 } ] },
+  { "id": "trip.forced_next_scene", "scope": "trip", "value": "bool",
+    "set_by": "모험 길 선택 지름길 성공(07 §6.2, 엔진)", "read_by": "다음 장면을 발견 장면으로 확정",
+    "_note": "사건 효과가 아니라 엔진(activity/adventure.ts)이 세우고 읽는다. 수정자 없음" }
 ]
