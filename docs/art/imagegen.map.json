@@ -27,6 +27,21 @@
     { "name": "hair_actions18_48", "source": "18-hair-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
     { "name": "sword_actions18_48", "source": "20-sword-actions18-48-r2.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
     {
+      "name": "derived_actions18_48",
+      "role": "derived",
+      "ref": "ref_actions18_48",
+      "subtract": ["body_actions18_48", "hair_actions18_48"],
+      "order": ["body_actions18_48", "cloth", "hair_actions18_48", "weapon"],
+      "match_distance": 100,
+      "reach": 3,
+      "min_core": 3,
+      "min_recompose": 0.98,
+      "classes": [
+        { "name": "weapon", "core": ["metal", "hair_white"], "extra": ["bronze", "leather", "outline", "#2F2420"], "place": "outside", "compare": "sword_actions18_48" },
+        { "name": "cloth", "core": ["#F0E6CC"], "extra": ["leather", "bronze", "outline", "#2F2420"], "loose": ["leather", "bronze"], "place": "inside" }
+      ]
+    },
+    {
       "name": "rat18_48",
       "source": "08-rat18-48-r3.png",
       "role": "reference",

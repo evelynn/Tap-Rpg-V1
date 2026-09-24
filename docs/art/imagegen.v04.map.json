@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "root": "../..",
+  "source_dir": "assets/_imagegen/v04",
+  "out_dir": "assets/game/v04",
+  "key": "#FF00FF",
+  "key_tolerance": 90,
+  "alpha_threshold": 128,
+  "key_despill": 60,
+  "entries": [
+    {
+      "name": "ref_walk12_48",
+      "source": "00-ref-a-walk12-48.png",
+      "role": "reference",
+      "grid": [6, 2],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "walk", "frames": 6 },
+        { "action": "walk_b", "frames": 6 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
+    },
+    {
+      "name": "ref_d_hit_discover_interact11_48",
+      "source": "c01-ref-d-hit-discover-interact11-48.png",
+      "role": "reference",
+      "grid": [6, 3],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "hit", "frames": 3 },
+        { "action": "discover", "frames": 4 },
+        { "action": "interact", "frames": 4 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
+    },
+    { "name": "body_d_48", "source": "c03-body-ref-d-48.png", "role": "layer", "ref": "ref_d_hit_discover_interact11_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    { "name": "sword_hit3_48", "source": "c13-sword-hit3-48.png", "role": "layer", "ref": "ref_d_hit_discover_interact11_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    {
+      "name": "derived_d_48",
+      "role": "derived",
+      "ref": "ref_d_hit_discover_interact11_48",
+      "subtract": ["body_d_48"],
+      "order": ["body_d_48", "cloth", "weapon"],
+      "match_distance": 100,
+      "classes": [
+        { "name": "weapon", "core": ["metal", "hair_white"], "extra": ["bronze", "leather", "outline", "#2F2420"], "place": "outside", "compare": "sword_hit3_48" },
+        { "name": "cloth", "core": ["#F0E6CC"], "extra": ["leather", "bronze", "outline", "#2F2420"], "loose": ["leather", "bronze"], "place": "inside" }
+      ]
+    },
+    {
+      "name": "ref_e_cheer_collapse9_48",
+      "source": "c02-ref-e-cheer-collapse9-48-r2.png",
+      "role": "reference",
+      "grid": [6, 2],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "cheer", "frames": 4 },
+        { "action": "collapse", "frames": 5 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
+    },
+    { "name": "body_e_48", "source": "c03-body-ref-e-48.png", "role": "layer", "ref": "ref_e_cheer_collapse9_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    {
+      "name": "derived_e_48",
+      "role": "derived",
+      "ref": "ref_e_cheer_collapse9_48",
+      "subtract": ["body_e_48"],
+      "order": ["body_e_48", "cloth", "weapon"],
+      "match_distance": 100,
+      "classes": [
+        { "name": "weapon", "core": ["metal", "hair_white"], "extra": ["bronze", "leather", "outline", "#2F2420"], "place": "outside" },
+        { "name": "cloth", "core": ["#F0E6CC"], "extra": ["leather", "bronze", "outline", "#2F2420"], "loose": ["leather", "bronze"], "place": "inside" }
+      ]
+    },
+    {
+      "name": "npc11_48",
+      "source": "n01-npc-ref-48.png",
+      "role": "reference",
+      "grid": [4, 3],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "npc_a", "frames": 4 },
+        { "action": "npc_b", "frames": 4 },
+        { "action": "npc_c", "frames": 3 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
+    },
+    {
+      "name": "wolf18_48",
+      "source": "w01-wolf18-48.png",
+      "role": "reference",
+      "grid": [4, 5],
+      "cell": [48, 32],
+      "rows": [
+        { "action": "idle", "frames": 4 },
+        { "action": "move", "frames": 4 },
+        { "action": "attack", "frames": 4 },
+        { "action": "hit", "frames": 2 },
+        { "action": "exit", "frames": 4 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "ext_enemy"],
+      "align": { "mode": "ground", "bottom": 27, "center_x": 23 }
+    }
+  ],
+  "preview": {
+    "character": "ref_walk12_48",
+    "layers": [],
+    "enemy": "wolf18_48",
+    "props": [],
+    "compare": [],
+    "field": []
+  }
+}

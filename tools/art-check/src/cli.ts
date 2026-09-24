@@ -3,15 +3,16 @@
 //   tsx tools/art-check/src/cli.ts inspect <파일·폴더...> [--manifest <경로>] [--json]
 //   tsx tools/art-check/src/cli.ts normalize [<대응표>] [--name <이름>] [--json]
 //   tsx tools/art-check/src/cli.ts preview   [<대응표>]
+//   tsx tools/art-check/src/cli.ts derive    [<대응표>] [--name <파생>] [--min-recompose 0.98] [--json]
 //   tsx tools/art-check/src/cli.ts layers    <기준> <레이어...> [--clothing <레이어>] [--min-containment 0.95] [--max-shift 1] [--max-skin 0.03] [--json]
 import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { checkFile, imageFacts, type FileResult, type FileSource } from './checks'
-import { findEntry, loadMap, referenceOf, type LoadedMap } from './imagegen-map'
+import { findEntry, loadMap, referenceOf, type DerivedEntry, type LoadedMap, type SourceEntry } from './imagegen-map'
 import { DEFAULT_REGISTRATION, measureRegistration, type CellRegistration } from './layers'
 import { formatHex, loadManifest, resolveFiles, type Manifest } from './manifest'
-import { Normalizer, skinColors, writeResult, type EntryResult } from './pipeline'
+import { Normalizer, runDerived, skinColors, writeDerived, writeResult, type EntryResult } from './pipeline'
 import { renderPreviews } from './preview'
 import { renderFindings, renderSummary, renderTable, summarize } from './report'
 import { decodePng, PngError } from './png'
@@ -25,18 +26,22 @@ export const USAGE = `사용법
   art-check inspect   <파일·폴더...> [--manifest <경로>] [--json]
   art-check normalize [<대응표>] [--name <이름>] [--manifest <경로>] [--json]
   art-check preview   [<대응표>] [--manifest <경로>]
+  art-check derive    [<대응표>] [--name <파생>] [--min-recompose 0.98] [--manifest <경로>] [--json]
   art-check layers    <기준> <레이어...> [--map <대응표>] [--clothing <레이어>] [--min-containment 0.95] [--max-shift 1] [--max-skin 0.03] [--json]
 
 check     매니페스트가 정한 규격과 실제 PNG를 대조한다. 오류가 하나라도 있으면 종료 코드 1.
           --allow-empty는 아직 안 그린 칸(M6 빈 칸)을 경고로 낮춘다. 한 시트를 카드 여러 장이 나눠 채우는 동안 쓴다.
 inspect   매니페스트에 없는 PNG의 사실만 센다(크기·알파·색 수·격자 나눗셈). 읽기 실패만 종료 코드 2.
 normalize 생성 원본을 대응표(기본 docs/art/imagegen.map.json)대로 게임 규격 시트로 바꿔 out_dir에 PNG와 보고 JSON을 쓴다.
-preview   정규화 결과로 ×4 검수 확대본(시트·520×64 창 모형·320×48 축소 창·레이어 정합·32/48 비교)을 out_dir/_preview에 쓴다.
+preview   정규화 결과로 ×4 검수 확대본(시트·520×64 창 모형·320×48 축소 창·레이어 정합·파생 재합성·32/48 비교)을 out_dir/_preview에 쓴다.
+derive    대응표의 derived 항목마다 기준 시트 화소에서 옷·무기 같은 부류 레이어를 골라 out_dir/<파생>_<부류>.png와
+          <파생>.json을 쓴다. 빼는 레이어와 부류를 그리기 순서대로 쌓은 재합성이 한 칸이라도 기준 시트와
+          min_recompose(기본 0.98) 미만으로 같으면 종료 코드 1.
 layers    레이어가 기준 시트에 정합하는지 칸마다 잰다. 기준·레이어는 대응표 이름이고, 레이어는 원본 PNG 경로도 된다
           (경로면 기준 시트의 변환으로 정규화한다). 한 칸이라도 기준을 넘으면 종료 코드 1.`
 
 export interface Args {
-  command: 'check' | 'inspect' | 'normalize' | 'preview' | 'layers' | 'help'
+  command: 'check' | 'inspect' | 'normalize' | 'preview' | 'derive' | 'layers' | 'help'
   manifest: string
   root: string | null
   priority: string | null
@@ -51,9 +56,11 @@ export interface Args {
   minContainment: number
   maxShift: number
   maxSkin: number
+  /** null = 대응표 값 */
+  minRecompose: number | null
 }
 
-const COMMANDS = ['check', 'inspect', 'normalize', 'preview', 'layers'] as const
+const COMMANDS = ['check', 'inspect', 'normalize', 'preview', 'derive', 'layers'] as const
 
 export function parseArgs(argv: string[]): Args {
   const args: Args = {
@@ -72,6 +79,7 @@ export function parseArgs(argv: string[]): Args {
     minContainment: DEFAULT_REGISTRATION.minContainment,
     maxShift: DEFAULT_REGISTRATION.maxShift,
     maxSkin: DEFAULT_REGISTRATION.maxSkin,
+    minRecompose: null,
   }
   let i = 0
   const first = argv[0]
@@ -112,6 +120,7 @@ export function parseArgs(argv: string[]): Args {
       case '--min-containment': args.minContainment = num(name, next()); break
       case '--max-shift': args.maxShift = num(name, next()); break
       case '--max-skin': args.maxSkin = num(name, next()); break
+      case '--min-recompose': args.minRecompose = num(name, next()); break
       case '--help':
       case '-h': args.command = 'help'; break
       default:
@@ -119,8 +128,8 @@ export function parseArgs(argv: string[]): Args {
         args.paths.push(a)
     }
   }
-  // normalize·preview는 위치 인자 하나를 대응표 경로로 받는다
-  if ((args.command === 'normalize' || args.command === 'preview') && args.paths.length > 0) {
+  // normalize·preview·derive는 위치 인자 하나를 대응표 경로로 받는다
+  if ((args.command === 'normalize' || args.command === 'preview' || args.command === 'derive') && args.paths.length > 0) {
     if (args.paths.length > 1) throw new Error(`${args.command}는 대응표 하나만 받는다`)
     args.map = args.paths[0]!
     args.paths = []
@@ -290,7 +299,9 @@ const rel = (p: string): string => relative(process.cwd(), p).split('\\').join('
 
 function runNormalize(args: Args): number {
   const { lm, manifest } = openMap(args)
-  const entries = args.names.length > 0 ? args.names.map((n) => findEntry(lm.map, n)) : lm.map.entries
+  const picked = args.names.length > 0 ? args.names.map((n) => findEntry(lm.map, n)) : lm.map.entries
+  // 파생 항목은 원본이 없다 — derive가 만든다
+  const entries = picked.filter((e): e is SourceEntry => e.role !== 'derived')
   const norm = new Normalizer(lm, manifest)
   const reports = []
   for (const e of entries) {
@@ -319,6 +330,60 @@ function runPreview(args: Args): number {
   return 0
 }
 
+const pct = (n: number): string => `${(n * 100).toFixed(1)}%`
+
+function runDerive(args: Args): number {
+  const { lm, manifest } = openMap(args)
+  const all = lm.map.entries.filter((e): e is DerivedEntry => e.role === 'derived')
+  const entries = args.names.length > 0 ? args.names.map((n) => {
+    const e = findEntry(lm.map, n)
+    if (e.role !== 'derived') throw new Error(`${n}은 파생(derived) 항목이 아니다`)
+    return e
+  }) : all
+  if (entries.length === 0) throw new Error('대응표에 derived 항목이 없다')
+  const norm = new Normalizer(lm, manifest)
+  let failed = false
+  const out = []
+  const NL = '\n'
+  for (const e of entries) {
+    const run = runDerived(norm, e, args.minRecompose ?? undefined)
+    const { files, json } = writeDerived(lm, run)
+    if (!run.pass) failed = true
+    out.push({ name: e.name, pass: run.pass, options: run.options, cells: run.cells, recompose: run.recompose, overlap: run.overlap })
+    if (args.json) continue
+    const bad = run.recompose.filter((c) => !c.pass)
+    process.stdout.write(
+      `${e.name} ← ${e.ref} − [${e.subtract.join(', ')}] · 순서 ${e.order.join(' → ')}${NL}` +
+      `    허용 거리 ${run.options.matchDistance} · 붙이기 ${run.options.reach}걸음 · 재합성 기준 ${pct(run.options.minRecompose)}: ` +
+      `${bad.length === 0 ? '통과' : `실패 ${bad.length}칸`}${NL}`,
+    )
+    run.cells.forEach((c, i) => {
+      const r = run.recompose[i]!
+      const residual = c.residual_no_class + c.residual_blocked + c.residual_unreached + c.residual_rejected
+      const groups = Object.entries(c.residual_groups).sort((a, b) => b[1] - a[1]).slice(0, 4).map(([g, n]) => `${g} ${n}`).join(', ')
+      process.stdout.write(
+        `    (${c.col},${c.row}) 재합성 ${pct(r.rate).padStart(6)} (같은 색 ${pct(r.exact_rate)}) · 기준 ${c.ref_pixels} · 남음 ${c.leftover}` +
+        ` · ${Object.entries(c.assigned).map(([k, n]) => `${k} ${n}`).join(' · ')} · 모호 ${c.ambiguous}` +
+        ` · 잔여 ${residual}${groups === '' ? '' : ` (${groups})`} 중 1화소 어긋남 ${c.residual_offset} · 빠짐 ${r.missing} 넘침 ${r.extra} 색 ${r.color_off}` +
+        (r.pass ? '' : '  ✗') + NL,
+      )
+    })
+    for (const o of run.overlap) {
+      const both = o.cells.reduce((s, c) => s + c.both, 0)
+      const d = o.cells.reduce((s, c) => s + c.derived, 0)
+      const t = o.cells.reduce((s, c) => s + c.other, 0)
+      process.stdout.write(`    ${o.class} ↔ ${o.compare}: 파생 ${d} · 비교 ${t} · 겹침 ${both} (정밀 ${pct(d === 0 ? 1 : both / d)} · 재현 ${pct(t === 0 ? 1 : both / t)})${NL}`)
+      for (const c of o.cells) {
+        if (c.derived === 0 && c.other === 0) continue
+        process.stdout.write(`      (${c.col},${c.row}) 파생 ${c.derived} · 비교 ${c.other} · 정밀 ${c.precision.toFixed(3)} · 재현 ${c.recall.toFixed(3)}${NL}`)
+      }
+    }
+    process.stdout.write(`    → ${files.map(rel).join(' · ')} · ${rel(json)}${NL}`)
+  }
+  if (args.json) process.stdout.write(JSON.stringify({ derived: out }, null, 2) + NL)
+  return failed ? 1 : 0
+}
+
 function runLayers(args: Args): number {
   if (args.paths.length < 2) throw new Error('기준 시트 이름과 레이어를 하나 이상 적어라')
   const { lm, manifest } = openMap(args)
@@ -331,7 +396,7 @@ function runLayers(args: Args): number {
   let failed = false
   const results: { layer: string; clothing: boolean; skin: string[]; cells: CellRegistration[] }[] = []
   for (const name of layerArgs) {
-    const mapped = lm.map.entries.find((e) => e.name === name)
+    const mapped = lm.map.entries.find((e): e is SourceEntry => e.name === name && e.role !== 'derived')
     let layer: EntryResult
     if (mapped !== undefined) {
       if (referenceOf(lm.map, mapped).name !== refEntry.name) throw new Error(`${name}의 기준 시트는 ${refName}이 아니다`)
@@ -384,6 +449,7 @@ export function main(argv: string[]): number {
       case 'inspect': return runInspect(args)
       case 'normalize': return runNormalize(args)
       case 'preview': return runPreview(args)
+      case 'derive': return runDerive(args)
       case 'layers': return runLayers(args)
     }
   } catch (e) {

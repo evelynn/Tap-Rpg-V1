@@ -46,7 +46,48 @@ export interface LayerEntry {
   clothing?: boolean
 }
 
-export type MapEntry = ReferenceEntry | LayerEntry
+export interface DerivedClassEntry {
+  /** 부류 이름. 산출 파일은 <파생 항목 이름>_<부류 이름>.png */
+  name: string
+  /** 씨앗 색: 팔레트 묶음 이름 또는 '#RRGGBB'. 부류끼리 겹치면 안 된다 */
+  core: string[]
+  /** 씨앗에 붙을 수만 있는 색(부류끼리 겹쳐도 된다) */
+  extra?: string[]
+  /** outside = 실루엣 밖에 닿는 덩어리만 가진다(무기) · inside = 몸 안의 떨어진 조각도 가진다(옷) */
+  place: 'inside' | 'outside'
+  /** inside 부류가 씨앗 없이 떨어진 조각을 가지려면 조각 화소 절반 이상이 core 또는 이 색이어야 한다(예: 허리끈 가죽) */
+  loose?: string[]
+  /** 겹침을 보고할 비교 레이어(같은 기준 시트의 layer 항목, 예: 합격한 추출 검) */
+  compare?: string
+}
+
+/**
+ * 파생 레이어: 기준 시트의 화소 가운데 빼는 레이어로 설명되지 않는 것을 부류별로 골라 낸다(새 화소를 그리지 않는다).
+ * `derive` 명령이 만들고, 쌓아 다시 합친 그림이 기준 시트와 칸마다 min_recompose 이상 같아야 한다.
+ */
+export interface DerivedEntry {
+  name: string
+  role: 'derived'
+  ref: string
+  /** 빼는 레이어(같은 기준 시트의 layer 항목) */
+  subtract: string[]
+  /** 그리기 순서(뒤 → 앞, 15 §3.1). subtract 이름과 부류 이름을 모두 한 번씩 */
+  order: string[]
+  classes: DerivedClassEntry[]
+  /** 빼는 레이어 색과 이 가중 거리 이하면 설명된 화소(재합성 비교도 같은 값). 기본 100 */
+  match_distance?: number
+  /** 씨앗에서 extra 색을 붙이는 걸음 수. 기본 3 */
+  reach?: number
+  /** core 덩어리 최소 화소. 기본 3 */
+  min_core?: number
+  /** 재합성 칸별 합격 비율. 기본 0.98 */
+  min_recompose?: number
+}
+
+export type MapEntry = ReferenceEntry | LayerEntry | DerivedEntry
+
+/** 원본 PNG가 있는 항목(정규화 대상) */
+export type SourceEntry = ReferenceEntry | LayerEntry
 
 export interface PreviewSpec {
   /** 창 모형에 세울 캐릭터 기준 시트 */
@@ -113,6 +154,7 @@ export function validateMap(m: ImagegenMap, manifest: Pick<Manifest, 'palettes' 
     const where = `entries.${e.name}`
     if (names.has(e.name)) fail(where, '이름이 중복이다')
     names.set(e.name, e)
+    if (e.role === 'derived') continue
     if (typeof e.palette === 'string') {
       if (manifest.palette_sets[e.palette] === undefined) fail(where, `매니페스트에 없는 팔레트 키다: ${e.palette}`)
     } else {
@@ -133,15 +175,16 @@ export function validateMap(m: ImagegenMap, manifest: Pick<Manifest, 'palettes' 
       }
       if (e.scale !== undefined && !(e.scale > 0)) fail(where, 'scale은 양수여야 한다')
     } else if (e.role !== 'layer') {
-      fail(where, `role은 reference 또는 layer다: ${(e as { role: string }).role}`)
+      fail(where, `role은 reference·layer·derived 가운데 하나다: ${(e as { role: string }).role}`)
     }
   }
   for (const e of m.entries) {
-    if (e.role !== 'layer') continue
+    if (e.role === 'reference') continue
     const ref = names.get(e.ref)
     if (ref === undefined) fail(`entries.${e.name}`, `없는 기준 시트를 가리킨다: ${e.ref}`)
     if (ref.role !== 'reference') fail(`entries.${e.name}`, `기준은 reference여야 한다: ${e.ref}`)
   }
+  for (const e of m.entries) if (e.role === 'derived') validateDerived(e, names, manifest)
   const p = m.preview
   for (const n of [p.character, p.enemy, ...p.layers, ...p.props, ...p.compare.flat(), ...p.field]) {
     if (!names.has(n)) fail('preview', `대응표에 없는 이름이다: ${n}`)
@@ -158,6 +201,54 @@ export function loadMap(path: string, manifest: Pick<Manifest, 'palettes' | 'pal
   validateMap(data, manifest)
   const root = resolve(dirname(path), data.root)
   return { map: data, root, sourceDir: resolve(root, data.source_dir), outDir: resolve(root, data.out_dir) }
+}
+
+function validateDerived(e: DerivedEntry, names: Map<string, MapEntry>, manifest: Pick<Manifest, 'palettes' | 'palette_sets'>): void {
+  const where = `entries.${e.name}`
+  const sameRefLayer = (n: string, what: string): void => {
+    const l = names.get(n)
+    if (l === undefined) fail(where, `${what}이 대응표에 없다: ${n}`)
+    if (l.role !== 'layer' || l.ref !== e.ref) fail(where, `${what}은 기준 ${e.ref}의 layer여야 한다: ${n}`)
+  }
+  if (!Array.isArray(e.subtract) || e.subtract.length === 0) fail(where, 'subtract가 비었다')
+  for (const n of e.subtract) sameRefLayer(n, '빼는 레이어')
+  if (!Array.isArray(e.classes) || e.classes.length === 0) fail(where, 'classes가 비었다')
+  const seenCore = new Map<string, string>()
+  const clsNames = new Set<string>()
+  for (const c of e.classes) {
+    const cw = `${where}.classes.${c.name}`
+    if (!/^[a-z][a-z0-9_]*$/.test(c.name)) fail(cw, '부류 이름은 영문 소문자·숫자·_이다')
+    if (clsNames.has(c.name)) fail(cw, '부류 이름이 중복이다')
+    clsNames.add(c.name)
+    if (names.has(`${e.name}_${c.name}`)) fail(cw, `산출 이름 ${e.name}_${c.name}이 다른 항목과 겹친다`)
+    if (c.place !== 'inside' && c.place !== 'outside') fail(cw, `place는 inside 또는 outside다: ${String(c.place)}`)
+    if (!Array.isArray(c.core) || c.core.length === 0) fail(cw, 'core가 비었다')
+    for (const color of [...c.core, ...(c.extra ?? []), ...(c.loose ?? [])]) {
+      if (color.startsWith('#')) {
+        if (!HEX.test(color)) fail(cw, `색 표기가 잘못됐다: ${color}`)
+      } else if (manifest.palettes[color] === undefined) fail(cw, `매니페스트에 없는 팔레트 묶음이다: ${color}`)
+    }
+    for (const color of c.core) {
+      const other = seenCore.get(color)
+      if (other !== undefined) fail(cw, `core 색 ${color}이 부류 ${other}와 겹친다`)
+      seenCore.set(color, c.name)
+    }
+    if (c.compare !== undefined) sameRefLayer(c.compare, '비교 레이어')
+  }
+  const want = [...e.subtract, ...clsNames].sort()
+  const got = [...e.order].sort()
+  if (want.length !== got.length || want.some((n, i) => n !== got[i])) {
+    fail(where, `order는 subtract와 부류 이름을 모두 한 번씩 담아야 한다: ${e.order.join(', ')}`)
+  }
+  if (e.match_distance !== undefined && !(e.match_distance >= 0)) fail(where, 'match_distance는 0 이상이다')
+  if (e.reach !== undefined && !(Number.isInteger(e.reach) && e.reach >= 0)) fail(where, 'reach는 0 이상 정수다')
+  if (e.min_core !== undefined && !(Number.isInteger(e.min_core) && e.min_core >= 1)) fail(where, 'min_core는 1 이상 정수다')
+  if (e.min_recompose !== undefined && !(e.min_recompose >= 0 && e.min_recompose <= 1)) fail(where, 'min_recompose는 0~1이다')
+}
+
+/** 파생 항목의 부류별 산출 이름 */
+export function derivedOutputs(e: DerivedEntry): string[] {
+  return e.classes.map((c) => `${e.name}_${c.name}`)
 }
 
 /** 이름으로 항목을 찾는다. 레이어면 기준 항목도 함께 */

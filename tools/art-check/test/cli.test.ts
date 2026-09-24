@@ -42,6 +42,15 @@ describe('명령줄 인자', () => {
     assert.throws(() => parseArgs(['preview', 'a.json', 'b.json']), /하나만/)
   })
 
+  it('derive는 위치 인자를 대응표로, --min-recompose를 수로 받는다', () => {
+    const a = parseArgs(['derive', 'x/v04.map.json', '--name', 'derived_d_48', '--min-recompose=0.9'])
+    assert.equal(a.command, 'derive')
+    assert.equal(a.map, 'x/v04.map.json')
+    assert.deepEqual(a.names, ['derived_d_48'])
+    assert.equal(a.minRecompose, 0.9)
+    assert.equal(parseArgs(['derive']).minRecompose, null)
+  })
+
   it('layers는 기준·레이어와 기준값 옵션을 받는다', () => {
     const a = parseArgs(['layers', 'ref', 'hair', 'a/b.png', '--clothing', 'a/b.png', '--max-shift=2', '--min-containment', '0.9', '--max-skin', '0.05'])
     assert.deepEqual(a.paths, ['ref', 'hair', 'a/b.png'])

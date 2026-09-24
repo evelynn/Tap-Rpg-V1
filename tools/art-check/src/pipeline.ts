@@ -1,12 +1,24 @@
 // 대응표 + 매니페스트 → 정규화 실행. 기준 시트를 먼저 정규화하고 그 변환을 레이어에 물려준다.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { referenceOf, type LoadedMap, type MapEntry, type PaletteRef, type ReferenceEntry } from './imagegen-map'
+import { findEntry, referenceOf, type DerivedEntry, type LoadedMap, type PaletteRef, type ReferenceEntry, type SourceEntry } from './imagegen-map'
 import type { Manifest } from './manifest'
+import {
+  compareOverlap,
+  compareRecompose,
+  DEFAULT_DERIVE,
+  deriveLayers,
+  stackLayers,
+  type DeriveCellReport,
+  type DeriveOptions,
+  type OverlapCell,
+  type RecomposeCell,
+  type StackSlot,
+} from './derive'
 import { colorDistance, normalizeSheet, Snapper, type KeyOptions, type NormalizeResult, type PaletteEntry, type SheetReport } from './normalize'
 import { decodePng } from './png'
 import { encodeIndexedPng } from './png-write'
-import { hexRgb } from './raster'
+import { hexRgb, type Raster } from './raster'
 
 export function paletteFor(manifest: Manifest, ref: PaletteRef): PaletteEntry[] {
   const out: PaletteEntry[] = []
@@ -41,7 +53,7 @@ export function keyOptions(lm: LoadedMap): KeyOptions {
 }
 
 export interface EntryResult extends NormalizeResult {
-  entry: MapEntry
+  entry: SourceEntry
   sourcePath: string
 }
 
@@ -50,7 +62,7 @@ export class Normalizer {
   private readonly done = new Map<string, EntryResult>()
   constructor(readonly lm: LoadedMap, readonly manifest: Manifest) {}
 
-  run(entry: MapEntry): EntryResult {
+  run(entry: SourceEntry): EntryResult {
     const hit = this.done.get(entry.name)
     if (hit !== undefined) return hit
     const ref = referenceOf(this.lm.map, entry)
@@ -63,11 +75,11 @@ export class Normalizer {
   /** 대응표에 없는 원본을 기준 시트의 변환으로 정규화한다(레이어 정합 검사용) */
   runAdHoc(path: string, ref: ReferenceEntry, palette: PaletteRef): EntryResult {
     const refResult = this.run(ref)
-    const entry: MapEntry = { name: path, source: path, role: 'layer', ref: ref.name, palette }
+    const entry: SourceEntry = { name: path, source: path, role: 'layer', ref: ref.name, palette }
     return this.normalizeFile(entry, resolve(path), ref, refResult)
   }
 
-  private normalizeFile(entry: MapEntry, sourcePath: string, ref: ReferenceEntry, refResult: EntryResult | undefined): EntryResult {
+  private normalizeFile(entry: SourceEntry, sourcePath: string, ref: ReferenceEntry, refResult: EntryResult | undefined): EntryResult {
     const img = decodePng(readFileSync(sourcePath))
     const snapper = new Snapper(paletteFor(this.manifest, entry.palette))
     const spec = { grid: ref.grid, cell: ref.cell, rows: ref.rows, align: ref.align, scale: ref.scale }
@@ -103,4 +115,114 @@ export function writeResult(lm: LoadedMap, r: EntryResult): { png: string; json:
   }
   writeFileSync(json, JSON.stringify(report, null, 2) + '\n')
   return { png, json, report }
+}
+
+/** 기준 시트의 내용 칸 여부(행 우선) */
+export function filledCells(ref: ReferenceEntry): boolean[] {
+  const out: boolean[] = []
+  for (const r of ref.rows) for (let col = 0; col < ref.grid[0]; col++) out.push(col < r.frames)
+  return out
+}
+
+export interface DerivedRun {
+  entry: DerivedEntry
+  ref: EntryResult
+  /** 부류 순서 */
+  classes: { name: string; output: string; raster: Raster }[]
+  /** 그리기 순서대로 쌓은 재합성 */
+  recomposed: Raster
+  options: DeriveOptions & { minRecompose: number }
+  cells: DeriveCellReport[]
+  recompose: RecomposeCell[]
+  overlap: { class: string; compare: string; cells: OverlapCell[] }[]
+  pass: boolean
+}
+
+/** 파생 항목 하나를 계산한다(쓰지 않는다). minRecompose를 주면 대응표 값보다 앞선다 */
+export function runDerived(norm: Normalizer, e: DerivedEntry, minRecompose?: number): DerivedRun {
+  const map = norm.lm.map
+  const refEntry = findEntry(map, e.ref) as ReferenceEntry
+  const ref = norm.run(refEntry)
+  const layer = (n: string): EntryResult => norm.run(findEntry(map, n) as SourceEntry)
+  const groupOf = new Map<number, string>()
+  for (const p of paletteFor(norm.manifest, refEntry.palette)) groupOf.set((p.r << 16) | (p.g << 8) | p.b, p.group)
+  const options = {
+    matchDistance: e.match_distance ?? DEFAULT_DERIVE.matchDistance,
+    reach: e.reach ?? DEFAULT_DERIVE.reach,
+    minCore: e.min_core ?? DEFAULT_DERIVE.minCore,
+    minRecompose: minRecompose ?? e.min_recompose ?? 0.98,
+  }
+  const clsIndex = new Map(e.classes.map((c, k) => [c.name, k]))
+  const order: StackSlot[] = e.order.map((n) => {
+    const k = clsIndex.get(n)
+    return k !== undefined ? { cls: k } : { layer: n, raster: layer(n).raster }
+  })
+  const filled = filledCells(refEntry)
+  const result = deriveLayers(
+    {
+      ref: ref.raster,
+      cell: refEntry.cell,
+      grid: refEntry.grid,
+      filled,
+      order,
+      classes: e.classes.map((c) => ({ name: c.name, core: c.core, extra: c.extra ?? [], place: c.place, loose: c.loose ?? [] })),
+      groupOf: (rgb) => groupOf.get(rgb),
+    },
+    options,
+  )
+  const stack = order.map((s) => ('raster' in s ? s.raster : result.layers[s.cls]!))
+  const recomposed = stackLayers(ref.raster.width, ref.raster.height, stack)
+  const recompose = compareRecompose(ref.raster, recomposed, refEntry.cell, refEntry.grid, filled, options.matchDistance, options.minRecompose)
+  const overlap = e.classes.flatMap((c, k) =>
+    c.compare === undefined ? [] : [{ class: c.name, compare: c.compare, cells: compareOverlap(result.layers[k]!, layer(c.compare).raster, refEntry.cell, refEntry.grid, filled) }],
+  )
+  return {
+    entry: e,
+    ref,
+    classes: e.classes.map((c, k) => ({ name: c.name, output: `${e.name}_${c.name}`, raster: result.layers[k]! })),
+    recomposed,
+    options,
+    cells: result.cells,
+    recompose,
+    overlap,
+    pass: recompose.every((c) => c.pass),
+  }
+}
+
+/** 부류별 out_dir/<파생>_<부류>.png(인덱스 색)와 out_dir/<파생>.json(보고) */
+export function writeDerived(lm: LoadedMap, run: DerivedRun): { files: string[]; json: string } {
+  mkdirSync(lm.outDir, { recursive: true })
+  const files: string[] = []
+  for (const c of run.classes) {
+    const png = join(lm.outDir, `${c.output}.png`)
+    writeFileSync(png, encodeIndexedPng(c.raster.width, c.raster.height, c.raster.rgba))
+    files.push(png)
+  }
+  const json = join(lm.outDir, `${run.entry.name}.json`)
+  const e = run.entry
+  const recomposeByCell = new Map(run.recompose.map((r) => [`${r.col},${r.row}`, r]))
+  const report = {
+    name: e.name,
+    role: 'derived',
+    ref: e.ref,
+    subtract: e.subtract,
+    order: e.order,
+    classes: e.classes,
+    outputs: run.classes.map((c) => c.output),
+    options: run.options,
+    pass: run.pass,
+    totals: {
+      ref_pixels: run.cells.reduce((s, c) => s + c.ref_pixels, 0),
+      leftover: run.cells.reduce((s, c) => s + c.leftover, 0),
+      assigned: Object.fromEntries(e.classes.map((c) => [c.name, run.cells.reduce((s, x) => s + (x.assigned[c.name] ?? 0), 0)])),
+      ambiguous: run.cells.reduce((s, c) => s + c.ambiguous, 0),
+      residual: run.cells.reduce((s, c) => s + c.residual_no_class + c.residual_blocked + c.residual_unreached + c.residual_rejected, 0),
+      recompose_min: Math.min(...run.recompose.map((r) => r.rate)),
+      recompose_mean: Math.round((run.recompose.reduce((s, r) => s + r.rate, 0) / Math.max(1, run.recompose.length)) * 10000) / 10000,
+    },
+    cells: run.cells.map((c) => ({ ...c, recompose: recomposeByCell.get(`${c.col},${c.row}`) ?? null })),
+    overlap: run.overlap,
+  }
+  writeFileSync(json, JSON.stringify(report, null, 2) + '\n')
+  return { files, json }
 }

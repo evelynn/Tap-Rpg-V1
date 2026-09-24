@@ -3,10 +3,12 @@
 //   window.x4.png            520 × 64 기본 창 모형(03 §2.2) — 대기(+걷기) 프레임마다 한 줄
 //   window-small.x4.png      320 × 48 축소 창(03 §3) — 배경 아래 48줄, 적은 x 56~92
 //   layers.x4.png            칸마다 [기준 | 레이어 합성 | 차이] (빨강 = 기준 실루엣 밖 레이어, 파랑 = 레이어가 안 덮은 기준)
+//   derived-<파생>.x4.png     칸마다 [기준 | 재합성 | 파생 부류만 | 차이] (derive를 먼저 돌린 파생 항목만)
 //   <48>_vs_<32>.x1.png/.x2.png  32·48 실크기·2배 비교
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { findEntry, referenceOf, type LoadedMap, type ReferenceEntry } from './imagegen-map'
+import { derivedOutputs, findEntry, referenceOf, type DerivedEntry, type LoadedMap, type ReferenceEntry } from './imagegen-map'
+import { colorDistance } from './normalize'
 import { decodePng } from './png'
 import { encodeRgbaPng } from './png-write'
 import { blit, createRaster, crop, fillRect, hexRgb, upscale, type Raster } from './raster'
@@ -198,6 +200,55 @@ function layersPreview(ref: Sheet, layers: Sheet[]): Raster {
   return upscale(out, 4)
 }
 
+function loadRaster(lm: LoadedMap, name: string): Raster {
+  const png = decodePng(readFileSync(join(lm.outDir, `${name}.png`)))
+  return { width: png.width, height: png.height, rgba: png.rgba }
+}
+
+/**
+ * (d') 파생 항목: 칸마다 [기준 | 재합성(그리기 순서) | 파생 부류만 | 차이].
+ * 차이: 회색 = 같음(허용 거리 안), 주황 = 색이 허용 거리를 넘게 다름, 파랑 = 기준에만 있음(빠짐), 빨강 = 재합성에만 있음(넘침)
+ */
+function derivedPreview(lm: LoadedMap, e: DerivedEntry): Raster {
+  const ref = loadSheet(lm, e.ref)
+  const outputs = new Map(e.classes.map((c, k) => [c.name, derivedOutputs(e)[k]!]))
+  const stack = e.order.map((n) => loadRaster(lm, outputs.get(n) ?? n))
+  const classes = e.classes.map((c) => loadRaster(lm, outputs.get(c.name)!))
+  const matchDistance = e.match_distance ?? 100
+  const [cw, ch] = ref.entry.cell
+  const [cols, rows] = ref.entry.grid
+  const gap = 6
+  const tw = cw * 4 + gap
+  const out = checker(cols * tw, rows * (ch + gap))
+  for (const [col, row] of filledCells(ref)) {
+    const x = col * tw
+    const y = row * (ch + gap)
+    const r = cellOf(ref, col, row)
+    const comp = createRaster(cw, ch)
+    for (const l of stack) blit(comp, crop(l, col * cw, row * ch, cw, ch), 0, 0)
+    const only = createRaster(cw, ch)
+    for (const l of classes) blit(only, crop(l, col * cw, row * ch, cw, ch), 0, 0)
+    const diff = createRaster(cw, ch)
+    for (let j = 0; j < ch; j++) {
+      for (let i = 0; i < cw; i++) {
+        const o = (j * cw + i) * 4
+        const inRef = r.rgba[o + 3]! > 0
+        const inComp = comp.rgba[o + 3]! > 0
+        if (inRef && inComp) {
+          const d = colorDistance(r.rgba[o]!, r.rgba[o + 1]!, r.rgba[o + 2]!, comp.rgba[o]!, comp.rgba[o + 1]!, comp.rgba[o + 2]!)
+          fillRect(diff, i, j, 1, 1, d <= matchDistance ? [150, 146, 140] : [236, 150, 40])
+        } else if (inComp) fillRect(diff, i, j, 1, 1, [224, 80, 74])
+        else if (inRef) fillRect(diff, i, j, 1, 1, [70, 110, 220])
+      }
+    }
+    blit(out, r, x, y)
+    blit(out, comp, x + cw, y)
+    blit(out, only, x + cw * 2, y)
+    blit(out, diff, x + cw * 3, y)
+  }
+  return upscale(out, 4)
+}
+
 /** (e) 48 시트와 32 시트의 내용 칸을 위·아래 줄로 */
 function comparePreview(a: Sheet, b: Sheet): Raster {
   const rowOf = (s: Sheet): Raster => {
@@ -222,10 +273,14 @@ export function renderPreviews(lm: LoadedMap): string[] {
   const written: string[] = []
   const p = lm.map.preview
 
-  // (a) 정규화된 모든 시트
+  // (a) 정규화된 모든 시트(파생 부류 시트 포함)
   for (const e of lm.map.entries) {
-    if (!existsSync(join(lm.outDir, `${e.name}.png`))) continue
-    written.push(save(dir, `${e.name}.x4.png`, sheetPreview(loadSheet(lm, e.name))))
+    for (const name of e.role === 'derived' ? derivedOutputs(e) : [e.name]) {
+      if (!existsSync(join(lm.outDir, `${name}.png`))) continue
+      const png = decodePng(readFileSync(join(lm.outDir, `${name}.png`)))
+      const sheet: Sheet = { name, raster: { width: png.width, height: png.height, rgba: png.rgba }, entry: referenceOf(lm.map, e) }
+      written.push(save(dir, `${name}.x4.png`, sheetPreview(sheet)))
+    }
   }
 
   const character = loadSheet(lm, p.character)
@@ -249,6 +304,12 @@ export function renderPreviews(lm: LoadedMap): string[] {
   // (d) 레이어 정합
   if (p.layers.length > 0) {
     written.push(save(dir, 'layers.x4.png', layersPreview(character, p.layers.map((n) => loadSheet(lm, n)))))
+  }
+
+  // (d') 파생 재합성
+  for (const e of lm.map.entries) {
+    if (e.role !== 'derived' || !derivedOutputs(e).every((n) => existsSync(join(lm.outDir, `${n}.png`)))) continue
+    written.push(save(dir, `derived-${e.name}.x4.png`, derivedPreview(lm, e)))
   }
 
   // (e) 32·48 비교
