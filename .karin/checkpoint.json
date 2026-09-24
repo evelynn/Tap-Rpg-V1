@@ -102,7 +102,7 @@
     },
     {
       "id": "A2",
-      "subject": "이미지 생성 P0 에셋(PROMPTS.md 진행표 §6)",
+      "subject": "이미지 생성 아트(규격 고정 절차·v05 요청 묶음)",
       "status": "in_progress",
       "priority": "high"
     },
@@ -119,13 +119,13 @@
       "priority": "medium"
     }
   ],
-  "current_task": "M1 마감 확인(독립 재검증) · 아트 P0 v04 검토 대기",
-  "next_action": "독립 검증자 재확인(반례 0) → 밸런스 조정 루프(BALANCE_BACKLOG, content/base/balance.json) → M2 착수 전 네트워크 허용 확인",
+  "current_task": "아트 v05 납품 대기 → 검토(art:gate·normalize·derive·preview)",
+  "next_action": "v05 납품 검토 → 합격본 보관(.gitignore ! 줄) → 배경 H1 시범 판정 후 전 장소 확대 → 밸런스 조정 루프 → M2 착수 전 네트워크 허용 확인",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능(I01·I02). M2의 Tauri·crates 설치에는 사용자의 네트워크 허용이 필요",
     "샌드박스 우회(dangerouslyDisableSandbox)는 거부됨 — 우회 금지"
   ],
-  "last_commit": "1250727",
-  "verify_state": "pnpm check 통과 — 테스트 1051, lint:ids 0, content:check 0, 문서 검사 0 (2026-09-23). 마지막 독립 검증의 반례는 모두 수정·회귀 테스트, 확인용 재검증은 아직",
-  "last_updated": "2026-09-23T23:00:00+09:00"
+  "last_commit": "c0c5e4f",
+  "verify_state": "pnpm check 통과 — 테스트 1114(정산 시간 테스트 CPU 시간 측정으로 교체), 콘텐츠·문서 검사 0 (2026-09-24)",
+  "last_updated": "2026-09-24T23:00:00+09:00"
 }
