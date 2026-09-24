@@ -1,6 +1,7 @@
 # P2_world — 세계 쪽 에셋 프롬프트 (적·보스·배경·장소 소품·날씨·효과·소품·아이콘·책 UI·초상)
 
-버전 1.3 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.4 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.4(배경만): 장소 × 계절 × 시간대를 기본 장면 편집으로 모두 그린다(D72). §4 전면 교체(템플릿 `bg_strip` 수치, 기본 15·패널 37, 계절·시간대·세대 특징·색조 편집, 먼 층 FILL, 점등 7), §5 장소 소품 없앰, C-BG 수치·C-BGP 추가, §0·§13 W7·§14 w10~w16·§16 배경 줄 갱신.
 1.3: 배경 품질 기준 v04 네 지역 합성(D71). C-BG에서 평탄·저대비·오른쪽 절반 비움 문장 삭제, §4를 띠 자르기 → 이음 판 → 불 끈 판 → 층 떼기로 교체.
 1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24, 권장안) 반영 — 48 규격만(D64), 배경 가로 이음·장면 떨림은 두 번 실패 뒤 정규화가 자르기·옮기기(D66), 장소 소품 20·정예 깃발 16 × 16·입자 스프라이트·흰빛 덮기 파일 없음·박쥐 색·변형 둘째 톤·마을 중간 층 승인, 종추 별도 파일 없음.
 1.1: PROMPTS v1.2 정합 — D-BG를 PROMPTS §1로 옮김, 표시용 D-MARK 추가, SW에 색 유지 문장, NPC 정체성 블록(NB)을 PROMPTS §7로 합치고 NPC 초상은 NPC 전신 기준 시트 `n01`에서 만듦, 호각은 나무, 같은 소품의 색을 카드(AO-19·49·50)에 맞춤, 진행표·확인 필요를 PROMPTS §6.3·`OPEN_DECISIONS.md`로 옮김.
@@ -19,8 +20,8 @@
 | --- | --- | --- | --- |
 | 적 4계열 · 적 소품 · 변형·정예 | 72 · 22 | AO-31~36 | §2 |
 | 보스 EB03 | 35 | AO-37·38 | §3 |
-| 배경 타일 · 점등 겹침 | 10장 | AO-39~42 | §4 |
-| 배경 장소 소품 | 약 20 → **20 확정안** | AO-43 | §5 |
+| 배경 그림 · 점등 겹침(D72) | 456(띠 149 · 패널 307) · 7 | AO-39~42 | §4 |
+| 배경 장소 소품 | 0(D72, 기본 장면에 그린다) | AO-43 | §5 |
 | 날씨 | (8.3 날씨 입자) | AO-45 | §6 |
 | 공용 효과 6종 | 32 | AO-46~48 | §7 |
 | 소품 24종 | 43 | AO-49·50 | §8 |
@@ -29,7 +30,7 @@
 | 책 UI 부품 | 3 | AO-59 | §11 |
 | 초상(부품 25 + NPC 11) × 2크기 | 72 | AO-60~62 | §12 |
 
-- 팔레트·변환표(AO-36·44 등)와 `fx_lantern_glow`(P1 c20)는 여기서 그리지 않는다. 계절·낮밤은 **변환표(LUT)로 처리하므로 기본 팔레트 그림 한 벌만** 만든다(15 §8.3).
+- 팔레트(AO-36 등)와 `fx_lantern_glow`(P1 c20)는 여기서 그리지 않는다. 배경의 계절·시간대는 변환표 없이 **기본 장면을 편집해 모두 그린다**(15 §8, D72).
 
 ### 0.2 이 문서의 다섯 가지 요청
 
@@ -43,8 +44,7 @@
 
 원칙은 PROMPTS §0.2와 같다. **같은 이미지에서 나온 것끼리만 위치가 맞는다.** 그래서
 - 적 변형·정예 소품은 계열 기준 시트를 **편집**해 입히고, 입힌 결과에서 **뗀다**(계열 시트와 칸이 맞는다).
-- 배경 층·점등 겹침·장소 겹침(폐허·폐광 D2·D3)은 **한 장의 합성 장면**에서 뗀다.
-- 장소 소품은 기본 장면에 **더하는 편집**으로 그려 크기·색·접지를 장면에 맞춘 뒤 뗀다.
+- 배경은 장소마다 **기본 장면 한 장**을 그리고 계절·시간대 변형을 그 편집으로 만든다. 층은 기본에서 한 번 떼고, 변형은 도구가 기본의 층 마스크로 자른다. 점등 겹침은 켠 편집과의 차이로 뗀다(§4, D72).
 - 두 상태 소품(상자·문·함정 등)은 첫 상태를 생성하고 **상태 편집**으로 둘째 상태를 만든다.
 
 ### 0.3 저장
@@ -65,8 +65,8 @@ PROMPTS §0.3 그대로. 파일 이름은 `assets/_imagegen/{판}/w{번호}-{이
 | 격자·정렬 | 칸 나누기, 지면선·가로 중심 맞춤(`align`), 장소 소품·효과의 bbox 자르기. 무기는 넓힌 무기 셀 80 × 64(15 §12.2) |
 | 색 | 등록 팔레트로 양자화, 인덱스 배정(표지 색 → 전용 인덱스, P1 §1.5와 같은 방식) |
 | 알파 | 2값화. 반투명이 허용된 파일(그림자·빛 원·안개)은 **불투명으로 받은 뒤** 알파를 준다 |
-| 팔레트·변환표 | 변형 팔레트 12, 계절·낮밤 LUT 16, 장소 팔레트 7(OD-23 결정, 어둡게 하는 변환은 L\* 30에서 멈춘다), 책등 3 |
-| 가로 이음 | A17 검사. 먼저 다시 생성한다. 같은 합성이 두 번 어긋나면 그 합성을 C-BG의 `4:1`·`256 blocks wide`를 `5:1`·`320 blocks wide`로 바꿔 다시 생성하고, 정규화가 좌우 끝이 맞는 256 폭 구간을 골라 **모든 층에 같은 구간으로** 자른다(15 §12.2, D66, OD-07 결정). 새 화소는 그리지 않는다 |
+| 팔레트 | 변형 팔레트 12, 책등 3. 배경 변환표·장소 팔레트는 없다(D72) |
+| 가로 이음 | A17 검사. 먼저 다시 생성한다. 같은 기본 장면이 두 번 어긋나면 캔버스 1920 × 1024, 띠 1920 × 384(320 블록, S = 6 그대로, 같은 y 320~703)로 다시 생성하고, 정규화가 좌우 끝이 맞는 256 폭 구간을 골라 **모든 층과 모든 변형에 같은 구간으로** 자른다(15 §12.2, D66, OD-07 결정). 변형은 기본을 편집하므로 이음을 다시 맞추지 않는다. 새 화소는 그리지 않는다 |
 
 ---
 
@@ -121,11 +121,18 @@ LAYOUT: exactly {N} portraits in {COLS} equal columns and {ROWS} equal rows of i
 BACKGROUND: one single flat #FF00FF magenta color everywhere outside the busts, the exact same value in every pixel. No backdrop, vignette, halo or gradient.
 ```
 
-**C-BG 배경 띠** (PROMPTS §3.5의 띠 문장 + 배경 외곽선 규칙을 한 블록으로)
+**C-BG 배경 띠** (PROMPTS §3.5의 띠 문장 + 배경 외곽선 규칙을 한 블록으로. v1.4: 템플릿 `bg_strip` 수치, §4.0)
 
 ```
-LAYOUT: a single wide horizontal pixel-art strip with an exact 4:1 aspect ratio, filling the full canvas width and placed in the vertical middle of the canvas; the area above and below the strip is one flat #FF00FF color. The strip is one side-view scene, logically 256 blocks wide and 64 blocks high. The walkable ground surface is one perfectly straight horizontal line at 7/8 of the strip height. The leftmost and rightmost columns continue into each other so the strip tiles: no object touches or crosses the left or right edge, and the horizon and the ground meet both edges at the same height and colour.
+LAYOUT: canvas 1536 x 1024 pixels. The scene is ONE horizontal pixel-art strip exactly 1536 x 384 pixels, from y 320 to y 703, full canvas width; every pixel above y 320 and below y 703 is one flat #FF00FF color and nothing is drawn there. One logical block is 6 x 6 pixels, so the strip is one side-view scene 256 blocks wide and 64 blocks high. The walkable ground surface is one perfectly straight horizontal line at block row 56 (image y 656) across the whole strip. The leftmost and rightmost columns continue into each other so the strip tiles: no object touches or crosses the left or right edge, and the horizon and the ground meet both edges at the same height and colour.
 DETAIL AND STYLE: match the attached quality reference exactly in pixel-block size, detail density and rendering: clustered foliage with several shades, visible material texture on walls, roofs, wood and stone, overlapping terrain layers with depth, deliberate small pixel details (flowers, pebbles, planks, crystals). Spread interesting shapes across the WHOLE strip; do not leave empty halves. Shading uses darker shades of the same hue; small dark accents are fine, but no pure black and no large area darker than {DARKEST}. Do not place a long row of large brown rounded shapes right above the ground line at character height (they swallow a brown-haired character standing in front).
+```
+
+**C-BGP 배경 패널 두 장** (v1.4, 발견 지점·던전 특수 방, §4.6)
+
+```
+LAYOUT: canvas 1536 x 1024 pixels. One horizontal band exactly 1536 x 384 pixels, from y 320 to y 703; every pixel above y 320 and below y 703 is one flat #FF00FF color and nothing is drawn there. One logical block is 6 x 6 pixels. The band holds TWO separate finished side-view scenes side by side, each 768 x 384 pixels (128 x 64 blocks): scene L fills x 0-767 and scene R fills x 768-1535, meeting at a hard vertical cut at x 768; nothing crosses the cut and the two scenes share no objects. In each scene the walkable ground surface is one straight horizontal line at image y 656, and the floor in front stays open: no tall object stands on the ground line between blocks 16 and 120 of that scene; large features stand behind, in the upper part, or at the scene's outer edge.
+DETAIL AND STYLE: match the attached quality reference exactly in pixel-block size, detail density and rendering: clustered foliage or rock with several shades, visible material texture, overlapping layers with depth, deliberate small pixel details. Shading uses darker shades of the same hue; no pure black and no large area darker than {DARKEST}.
 ```
 
 **C-FREE 자유 배치** (크기가 서로 다른 물체 몇 개를 한 장에)
@@ -353,112 +360,242 @@ A bell's sound shockwave, 4 frames, 120 ms each: three thin concentric arcs, eac
 
 ---
 
-## 4 배경 (AO-39~42, 15 §8) — v1.3: 품질 기준 합성에서 출발 (D71)
+## 4 배경 (AO-39~42, 15 §8) — v1.4: 장소 × 계절 × 시간대, 기본 장면 + 편집 (D72)
+
+규칙과 수량은 15 §8·§13.1이 가진다. 이 절은 문장과 순서만 가진다. 장소마다 **기본 장면(`여름 · 낮`) 한 장**을 생성하고, 계절과 시간대는 기본을 **편집**해 그린다. 색 변환표는 쓰지 않는다. 층 마스크는 기본에서 한 번 떼고 변형은 도구가 그 마스크로 자른다(15 §8.5).
 
 ### 4.0 공통
 
-- **품질 기준**: `assets/_imagegen/v04/bg-four-regions-quality-r2.png`(위에서부터 마을·들판·폐광·틈, 사용자 지정 기준 `output/pixel-art-v01/images/bg_four_regions_draft.png` 이상). 모든 배경 요청에 이 그림을 **품질·화풍 참고 입력**으로 넣는다: `Input image role: quality and style reference: match its pixel-block size, detail density, shading and colour richness.` v1.2까지의 "평탄·저대비·오른쪽 절반 비움" 방식(v04 `00-field-composite`)은 품질 미달로 폐기했다.
-- **네 장면은 이미 합성본이다.** 순서:
-  1. **띠 자르기(게임 도구, D66)**: 품질 기준 그림을 네 띠로 자른다. 띠마다 4:1에 가깝다.
-  2. **이음 판**: 띠가 좌우로 이어지지 않으면, 그 띠를 입력으로 SW + `Make this strip seamlessly tileable left to right: rework only the leftmost and rightmost eighth so they continue into each other; keep everything else exactly.`로 편집한다. 두 번 어긋나면 §0.5 이음 절차(5:1 재생성 → 도구가 구간 선택해 자르기, D66).
-  3. **불 끈 판**: 마을 창·폐광 등불이 켜져 있으면 SW + `Turn every lit window and lantern flame dark and unlit (window panes #6E6862, lantern glass #7D7B80). Change nothing else.` → 이것이 기본 판이다. 켠 판과 끈 판의 **차이 화소를 도구가 골라** 점등 겹침(`bg_town_window_lit`, `bg_mine_lantern_lit`)으로 쓴다(옷·무기 레이어와 같은 방식).
-  4. **층 떼기**: 기본 판에서 X 머리말로 먼 층·중간 층·가까운 층을 뗀다(아래 표). 먼 층만 가려진 곳을 이어 그린다. 뗀 세 층을 다시 겹쳐 기본 판과 같은지 도구가 확인한다.
-- **판독 검사**(15 §2.3, D71): 도구가 캐릭터 대기 프레임을 타일 전체에 밀며 명도 대비를 잰다. 미달 구간이 폭의 10%를 넘으면 그 층을 SW 편집(`Darken/lighten ONLY the {shape} behind the character height band by one shade`)으로 고친다.
-- **계절·낮밤은 그리지 않는다.** LUT(AO-44, 게임). 불빛은 3의 겹침 파일로만.
+**품질 기준 입력** — 모든 기본 장면 생성에 `assets/_imagegen/v04/bg-four-regions-quality-r2.png`를 넣고 본문 앞에 붙인다(편집에는 넣지 않는다. 입력 그림이 기본 장면이다):
 
-### 4.1 층 떼기 표
+```
+Input image role: quality and style reference only: match its pixel-block size, detail density, shading and colour richness. Do not copy its layout or objects.
+```
 
-| 장면 | 먼 층 `Keep ONLY …` | 중간 층 `Keep ONLY …` | 가까운 층 `Keep ONLY …` |
-| --- | --- | --- | --- |
-| 마을 | `the sky, clouds, distant mountains, far hills and the far village with its tower` | `the acorn-roofed inn, the timber shop with the water wheel, the stone bridge and river, the big trees, banners, lamp posts, notice board, barrels, fences and flower boxes` | `the dirt road with its grass edge and the cobble strip below it` |
-| 들판 | `the sky, clouds, distant mountains, rolling hills, far trees and the far village` | `the willow tree, the river, the plank bridge, the wooden fences, boulders and tall grass clumps` | `the grass strip with flowers, the dirt path and the cobble strip below it` |
-| 폐광 | `the rock wall, the cave depth with its pale stalactites, and the blue crystal clusters on the wall` | `the timber support frames, the mine entrance with its cart, the hanging lanterns (unlit), the crates, barrels and tools` | `the rail track and the cobble floor` |
-| 틈 | `the violet cave wall, the glowing star crack and the floating stones` | `the ruined stone arches, the stairs, the thorny vines with black roses and the boulders` | `the cobble floor` |
+**수치 블록** — C-BG(띠)·C-BGP(패널, §1.2)의 LAYOUT 줄이 이 값을 가진다. 템플릿 `docs/art/templates/bg_strip.*`와 같다.
 
-- 틈의 중간·가까운 층은 15 §8.3대로 폐광 것을 써도 된다. 기준 그림의 틈 전용 아치·계단은 장소 소품(§5)으로 옮길 수 있다(OD-09 20개 안에서 교체).
-- 합격: E4 E7 E8 E11 + W5 W6 W7 + **품질 기준과 나란히 놓았을 때 밀도가 같거나 높다**(사람 눈) + 판독 검사 통과.
-
-### 4.5 계절·낮밤·장소 팔레트 (그림 없음)
-
-| 무엇 | 처리 | 이 문서가 할 일 |
+| 값 | 띠 | 패널 |
 | --- | --- | --- |
-| 봄·여름·가을·겨울 × 낮·밤 16 | 게임 LUT(AO-44) | 없음. 기본 타일의 풀·나무 색이 **서로 다른 색**이어야 LUT가 따로 바꿀 수 있다: 풀 `#6D8F5A`, 언덕 `#8FC06A` `#5E9A4A`, 나뭇잎 `#6D8F5A` `#4D6A3E`는 들판 합성에서 이미 나뉜다 |
-| 밤 창·등불 | 겹침 파일 w11·w14 | 위 |
-| 장소 팔레트 7(H1 밝은 연두, H3 황갈, H4 채도 −50%, A2 −15%, A3 채도 −40%, D2 청회, D3 −40%) | 게임 변환(15 §13.1 팔레트·변환표 약 76에 포함) | 없음(OD-23 결정) |
+| 캔버스 | 1536 × 1024 | 같음 |
+| 그림 자리 | y 320~703, 전체 폭 1536 × 384 | 같은 자리를 왼쪽 x 0~767, 오른쪽 x 768~1535 두 장으로 |
+| 배율 S | 6(1블록 = 6 × 6 화소), 256 × 64 블록 | 6, 한 장 128 × 64 블록 |
+| 지면선 | 논리 y 56 = 이미지 y 656, 한 줄로 곧게 | 장마다 이미지 y 656 |
+| 그림 밖 | `#FF00FF` 한 색. 아무것도 그리지 않는다 | 같음. 짝 없는 패널은 오른쪽 절반도 `#FF00FF` |
+| 이음 | 좌우 끝이 이어진다 | 없음(x 768에서 딱 끊는다) |
+| 비울 바닥 | 없음(흐르므로 판독 검사로 지킨다) | 장마다 캐릭터 x 16~64, 적·소품 x 72~120 앞 바닥에 키 큰 물체 없음 |
+
+- `{DARKEST}` = `#4C4A52`(L* 약 32. 외곽선 `#2B2233` L* 약 15보다 15 이상 밝다, 15 §2.3). 모든 배경 공통.
+- **관문 검사**: 생성·편집 결과마다 `pnpm art:gate <결과 PNG> --spec bg_strip`(패널 두 장은 `--spec bg_panel2`, 짝 없는 패널은 `--spec bg_panel1`)을 돌려 통과해야 다음 편집으로 간다. 캔버스 크기, 그림 자리 밖이 `#FF00FF` 한 색인지, 지면선 높이, 띠 좌우 이음(패널은 x 768 끊는 선)을 본다. 명령 형식은 `tools/art-check` `gate`(`--spec <시트>`)를 따르고, 배경 시트 이름 셋은 도구 쪽 `template-spec`에 들어올 이름이다(임시).
+- **D-BG 변형**(PROMPTS §1 D-BG가 막는 것을 그려야 할 때만, 해당 단어만 뺀 판):
+
+| 블록 | 쓰는 곳 | 문장 |
+| --- | --- | --- |
+| D-BG | 기본 장면(A2 제외), 계절 편집, 먼 층 채움, 세대 특징(`bats` 제외) | PROMPTS §1 D-BG 그대로 |
+| D-BG-SKY | 시간대 편집, A2 기본 장면(안개 띠), 틈 색조 | `Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light rays, lens flare, bloom, soft glow halos, gradients, vignette. Output only the finished strip.` |
+| D-BG-LIT | 점등 편집(마을 창, 폐광 등불) | `Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, light rays, bloom, glow or halo outside a window or lantern frame, gradients, vignette. Output only the finished strip.` |
+| D-BG-BAT | D1 세대 특징 `bats` | D-BG에서 `animals, `를 `animals other than the small hanging bats, `로 바꾼 판 |
+
+- **KEEP 문장** — 계절·시간대·색조 편집의 문장 끝에 붙인다:
+
+```
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+```
+
+### 4.1 기본 장면 15 (띠) — 생성
+
+조립: A(`{256x64}`) + 품질 기준 입력 문장 + C-BG + `SCENE:` 문장 + `Summer, full daylight. All windows and lanterns are unlit.` + D-BG(A2는 D-BG-SKY). 운명 장소 둘은 `Summer, full daylight` 대신 `Cool dim underground light.`, 폐광·틈은 `Cool even underground light, lantern hooks unlit.`을 붙인다.
+
+| 세트 | 장소 | `SCENE:` 문장 | 층 마스크(먼 / 중간 / 가까운) |
+| --- | --- | --- | --- |
+| `bg_town` | T00 | `Acorn Ford village beside a shallow ford. Five buildings spread evenly across the whole strip, each about 40 blocks wide: an inn with a round brown acorn-cap roof and flower boxes; a guild outpost with a green banner showing a plain forked-road mark and a blank notice board; a clinic made of a white canvas tent beside a small hut and a wooden water wheel; a smithy with a black chimney, an anvil and a sword on the wall; a general store with bundles of dried herbs under its eave and a short clothesline. Behind them a low stone bridge over the ford, trees and layered hills.` | 야외 |
+| `bg_river_meadow` | H1 | `Ford-side meadow where every adventurer first fights. Ankle-high bright yellow-green grass with clover, a shallow sparkling ford across the midground with flat stepping stones, reeds at the water's edge, a short wooden fence, a small pile of acorns by a burrow. Rolling hills and a tiny far village behind.` | 야외 |
+| `bg_willow_bank` | H2 | `Willow embankment. Two weeping willows with drooping leaf curtains, a raised earthen dike path with a sloping bank, a wooden water wheel beside a broken sluice gate, duckweed on still water.` | 야외 |
+| `bg_wolf_hill` | H3 | `Wolf hill: a windy rocky hilltop with tufts of silver grass, round boulders and a ruined stone beacon tower; the distant ridge line sits higher than on lowland maps; cloud shadows on the slopes. Tawny yellow-brown grass.` | 야외 |
+| `bg_slag_valley` | H4 | `Slag valley: grey heaps of mine slag like small hills, rusty rails on wooden sleepers, a collapsed wooden ore-sorting shed, an abandoned handcart tilted on one wheel, a few tiny yellow flowers. Desaturated grey-brown colours, dusty air in the distance.` | 야외 |
+| `bg_mine_gate` | H5 | `Inside the old main entrance of the bell mine. A huge half-collapsed wooden mine gate, broken timber supports, a mine cart half buried in black dust, one blank rusty warning plate. Near the right end of the far wall a tall opening shows daylight outside and the silhouette of a distant empty bell tower; the opening does not touch the strip edge.` | 지하 |
+| `bg_river_path` | A1 | `Ford field road around the village: a dirt country road, a wooden signpost with blank arms, a small water mill, a small stone wayside shrine with a little roof, a hill of wildflowers, a small wooden footbridge over a brook.` | 야외 |
+| `bg_mist_trail` | A2 | `Misty mountain trail on a steep slope: pine trees, a moss-covered stone milestone, a rope suspension bridge between two cliffs, the chimney of the old mine on a far ridge, pale flat mist bands in the far layer with hard stepped edges. Cool dark greens.` | 야외 |
+| `bg_miner_village` | A3 | `Abandoned miners' village in the mountains: houses with caved-in roofs and empty window frames, a round stone well, an empty stone bell tower with no bell, a blank miners' roster board, a rusty pickaxe in a yard, tall grass overgrowing the walls. Dusty desaturated colours.` | 야외 |
+| `bg_mine_upper` | D1 | `Upper level of the bell mine, still showing human care: timber support frames, cart rails on wooden sleepers along the floor, empty lantern hooks, small broken bronze bell shards on the floor, a side tunnel branching off into darkness.` | 지하 |
+| `bg_mine_mid` | D2 | `Middle level of the bell mine, a wide excavation hall: an underground stream in a stone channel, rusty metal pipes along the wall, a cold stone hearth with no fire, an ore wagon, streaks of blue ore #5A7FA8 in the rock. Blue-grey colours.` | 지하 |
+| `bg_mine_deep` | D3 | `Deep level of the bell mine where lantern light does not reach far: deep shadows, blue crystal veins, a giant broken bronze bell fragment lying on its side, a stone pillar carved with rows of short notches, a jagged crack in the ceiling. The darkest map, still no colour darker than {DARKEST}.` | 지하 |
+| `bg_rift` | A4 | `The Pathshift Rift beyond a collapsed deep mine wall: blue-violet cave walls, a slender jagged crack leaking starlight with a tiny star-speckled sky inside, small stone shards floating in the air, a ruined stone arch, thorny vines with small black roses.` | 지하 |
+| `bg_star_spring` | 별잠 샘(F02) | `The edge of the Starsleep ruins inside the rift: a clear spring in a round stone basin carved with star patterns, small stone shards floating above it, a starlight crack in the wall behind, very still.` | 한 장 |
+| `bg_moonshade_cellar` | 달그늘 지하(F03) | `The cellar beneath the Moonshade estate: stone steps coming down at the left, a long wooden table, cold unlit candlesticks, thorny vines with black roses on the stone walls, a cool dim stillness.` | 한 장 |
+
+- 별잠 샘은 소품 `prop_star_spring`(§8, w24)이 합격했으면 그것을 **모양 참고 입력**으로 더 넣는다(`Input image role: the spring basin must match this prop's shape and colours.`). P3 ES10·ES11·ES19는 이 두 띠를 장소 입력으로 쓴다.
+- T00 시설 다섯은 15 §8.3대로 띠 전체에 나눈다. 갈색 둥근 지붕은 여관 하나뿐이다(C-BG 마지막 문장).
+
+**층 떼기** (기본 장면만. 변형은 도구가 마스크로 자른다)
+
+| 묶음 | 중간 층 X 문장 `Keep ONLY …` | 가까운 층 X 문장 `Keep ONLY …` | 먼 층 FILL `{FAR}` |
+| --- | --- | --- | --- |
+| 야외 | `the buildings, trees, bridges, fences, rocks, water and all objects standing between the distant background and the walking path` | `the walking path from the ground line down to the strip bottom, with its edge grass and stones` | `the sky, clouds, distant mountains, far hills, far trees and far buildings` |
+| 지하 | `the support frames, gates, carts, posts, pipes, pillars, crystals, arches, vines and all objects standing in front of the back wall` | `the floor band from the ground line down to the strip bottom, with its rails and stones` | `the back cave wall, the ceiling, the deep cave silhouettes, and for H5 the daylight opening with the distant bell tower` |
+
+- 조립: 중간·가까운 층은 X(PROMPTS §3.2) + 문장. 먼 층은 아래 FILL 머리말.
+
+**FILL 먼 층 채움 머리말** (기본 장면과 모든 변형에 한 번씩)
+
+```
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: {FAR}. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. Everything that is not far layer becomes the same flat #FF00FF. No new objects.
+```
+
+- 도구는 FILL 결과에서 **기본의 중간·가까운 층 마스크 안 화소만** 가져온다. 나머지 먼 층 화소는 변형 그림에서 마스크로 자른다(15 §8.5).
+
+### 4.2 계절 편집 3 × 야외 8 — 입력 = 그 장소의 기본 장면
+
+조립: SW(§1.4) + 계절 문장 + KEEP + D-BG. 여름은 기본 그대로다.
+
+| 계절 | 문장 |
+| --- | --- |
+| 봄 `spring` | `Make it early spring: grass and leaves turn fresh light green #8FC06A, tree crowns look lighter and younger, small white and pale pink blossoms appear on the trees, and small wildflowers dot the meadow and verges.` |
+| 가을 `autumn` | `Make it autumn: tree leaves turn orange, amber and brown (#C8783A, #B8A04A, #8E5E38), grass turns golden #B8A04A, a thin layer of fallen leaves lies on the ground surface and on roof tops.` |
+| 겨울 `winter` | `Make it winter: snow #E8EEF2 with #FFFFFF highlights covers the ground surface, roof tops, wall tops, rocks and fences; tree foliage becomes snow-laden, white on top of the existing leaf clusters; water turns darker and freezes at the edges. No falling snow.` |
+
+### 4.3 시간대 편집 3 × 계절 4 × 야외 8, 그리고 H5 — 입력 = 그 계절의 낮 그림
+
+조립: SW + 시간대 문장 + KEEP + D-BG-SKY. **순서: 계절 먼저, 시간대 나중**(기본 → 계절 낮 → 계절 시간대). 편집 두 번을 넘기지 않는다. 낮은 계절 편집 결과 그대로다.
+
+| 시간대 | 야외 문장 | H5 문장(바깥 빛 구멍만) |
+| --- | --- | --- |
+| 새벽 `dawn` | `Make it dawn: the sky turns pale pink and gold near the horizon, fading to soft blue above; the distant layers become cooler and paler with one thin flat mist band low in the far layer; only the tops of shapes catch a faint warm light from the left. Windows and lanterns stay unlit.` | `Only the daylight opening changes: it shows a pale pink and gold dawn sky, and the rock right around it catches a faint warm light. Everything else stays exactly as it is.` |
+| 해질녘 `dusk` | `Make it dusk: the sky turns orange and warm purple with a few lit cloud edges, the distant hills turn violet, the tops of shapes catch warm orange light and the rest is one shade darker. A few tiny distant windows in the far layer may glow warm; windows and lanterns in the middle and near layers stay unlit.` | `Only the daylight opening changes: it shows an orange and purple dusk sky, and the cave inside is one shade darker.` |
+| 밤 `night` | `Make it night: the sky becomes deep blue with a small round moon and scattered one-block stars; everything is lit by cool moonlight, one to two shades darker and bluer, but the band from the ground line up to character height stays readable and no colour is darker than {DARKEST}. A few tiny distant windows in the far layer glow warm; windows and lanterns in the middle and near layers stay unlit.` | `Only the daylight opening changes: it shows a deep blue night sky with a small moon and stars, and the cave inside is one shade darker, still no colour darker than {DARKEST}.` |
+
+- H5는 계절이 없다. 입력 = H5 기본 장면(낮).
+- 밤이 판독 검사(15 §2.3, 명도 −15% 캐릭터)에 걸리면 SW + `Lighten ONLY the {shape} in the band from the ground line up to character height by one shade.`로 고친다.
+
+### 4.4 세대 특징 9(D1~D3)과 틈 색조 2(A4) — 입력 = 그 층·틈의 기본 장면
+
+조립: SW + 문장 + D-BG(`bats`는 D-BG-BAT, 색조는 D-BG-SKY). 특징 편집은 받침목·벽·바닥 같은 면 위에 물체를 더하고, 층 경계를 넘지 않게 **중간 층 물체 앞이나 벽면 안**에 둔다. 02 §2.3 흔적 문장에서 옮겼고, 원문에 없는 모습은 `임시`다.
+
+| 변형 | 02 §2.3 | 문장 |
+| --- | --- | --- |
+| D1 `bats` | 박쥐 둥지가 늘었다 | `ADD a colony of small hanging bats clustered on the ceiling rock and the timber beams, folded wings, dark purple-brown #7A5A6E #4A3F55, no glowing eyes.` |
+| D1 `storeroom` | 버려진 창고가 드러났다 | `ADD a fallen wooden shelf and a few stacked wooden crates against the back wall, #C08A58 #8E5E38.` |
+| D1 `ladder` | 사다리가 무너졌다 | `ADD a broken wooden ladder lying against the wall and a rope strung between two timber posts as a makeshift handrail, wood #C08A58 #8E5E38, rope #F0E6CC.` |
+| D2 `flood` | 지하수가 차올랐다 | `ADD ankle-deep still water over the floor surface: a flat band two blocks high on the ground line with thin light ripples #5A7FA8 #B9C8FF, and a few drops falling from the ceiling.` |
+| D2 `restroom` | 광부 휴게실이 열렸다 | `ADD two old wooden chairs and a small table beside the cold stone hearth, #C08A58 #8E5E38.` (탁자 임시) |
+| D2 `clang` | 쇳소리가 울린다 | `ADD loose metal chains and short pipes hanging from the ceiling beams, #7D7B80 #B4B2B0.` (임시: 소리를 그림으로 옮김) |
+| D3 `crystal` | 수정 광맥이 드러났다 | `ADD larger blue crystal clusters bursting from the back wall and along the floor edge, #5A7FA8 #B9C8FF, flat colours, no glow halo.` |
+| D3 `shadow` | 그림자가 짙어졌다 | `Make the back wall and the ceiling one shade darker, except a small round area under each lantern hook; no colour darker than {DARKEST}. Change nothing else.` |
+| D3 `toll` | 종의 울림이 새어 나온다 | `ADD thin falls of dust from cracks in the ceiling and a second bronze bell fragment half buried in the back wall, #E0B06A #B07A3A.` (임시: 소리를 그림으로 옮김) |
+| A4 `tint2` | 틈 색조(02 §2.2) | `Shift the whole rift's colour mood from blue-violet to deep teal: the walls turn teal-grey, the star crack edge turns pale cyan; the black roses stay deep red-purple.` + KEEP (임시) |
+| A4 `tint3` | 〃 | `Shift the whole rift's colour mood from blue-violet to dusky rose-violet: the walls take a muted rose tint, the star crack edge turns pale pink; the black roses stay deep red-purple.` + KEEP (임시) |
+
+- A4 기본 장면이 `tint1`(청보라)이다. 세대 특징 기본 장면(D1~D3)은 게임에서 보이지 않는 마스크 원본이다(15 §8.3).
+
+### 4.5 점등 겹침 7 — 입력 = 불 꺼진 변형
+
+조립: SW + 문장 + D-BG-LIT. 켠 판과 입력의 **차이 화소를 도구가 떼어** 겹침으로 쓴다(옷·무기 레이어와 같은 방식). 가까운·중간 층 창·등불은 모든 변형에서 꺼진 색(`#6E6862` 창, `#7D7B80` 등불 유리)이다.
+
+| 겹침 | 입력 | 문장 |
+| --- | --- | --- |
+| `bg_town_lit_dawn` | `bg_town` 여름 · 새벽 | `Light only three windows (one in the inn, one in the smithy, one in the store): panes #FFE38A with one inner shade #C8783A, flat, no glow outside the frame. Change nothing else.` |
+| `bg_town_lit_dusk` | 여름 · 해질녘 | `Light most windows and the lamp posts: panes and flames #FFE38A with one inner shade #C8783A, flat, no glow outside the frame. Change nothing else.` |
+| `bg_town_lit_night` | 여름 · 밤 | `Light every window, lamp post and lantern: panes and flames #FFE38A with one inner shade #C8783A, flat, no glow outside the frame. Change nothing else.` |
+| `bg_{mine_gate,mine_upper,mine_mid,mine_deep}_lantern_lit` 1칸 | 그 띠의 기본 장면 | `Hang a small lit lantern on every empty lantern hook, matching the attached lantern prop: flame #FFE38A with core #C8783A, frame #B07A3A. Change nothing else.` (P1 c18 등불을 모양 입력으로) |
+| 〃 2칸 | 1칸 결과 | `Make every lantern flame one block shorter and leaning one block left. Change nothing else.` |
+
+- 마을 겹침 셋은 창 자리가 모든 변형에서 같으므로 네 계절에 같이 쓴다. 낮에는 겹침이 없다(15 §8.6).
+- 폐광 등불 겹침은 H5·D1~D3 띠마다 하나(2프레임). 세대 특징 변형도 같은 겹침을 쓴다. 패널의 등불은 패널 기본 장면에 켜진 채 그린다.
+
+### 4.6 패널 37 — 발견 지점 25 · 던전 특수 방 12
+
+조립(기본): A(`{128x64}`) + 품질 기준 입력 문장 + C-BGP + `SCENE L:` 문장 + `SCENE R:` 문장 + 조명 문장 + D-BG. 야외 패널은 `Summer, full daylight.`, 지하 패널은 `Cool dim underground light; lanterns may be lit.`(D-BG에서 `light sources, lit windows, flames, glow, `를 뺀다). 야외 패널 짝 9장은 §4.2·§4.3의 계절·시간대 편집을 **짝째로** 한다(한 편집이 두 장을 함께 바꾼다). 먼 층 채움은 없다(흐르지 않는다).
+
+**발견 지점**(07 §6.3 지점 이름, 02 §6 키워드. 원문에 없는 모습은 `임시`)
+
+| 짝 | 칸 | 지점 | `SCENE` 문장 |
+| --- | --- | --- | --- |
+| P1 | L | A1-1 물레방아 터 | `The site of an old water mill: a mossy stone foundation and a broken wooden water wheel half in a brook.` (임시) |
+| P1 | R | A1-2 버드나무 둑 가는 길 | `A path opening between reeds toward a row of weeping willows on a distant dike.` |
+| P2 | L | A1-3 늑대 발자국 언덕 | `A grassy slope rising toward rocky hills, a line of wolf paw prints pressed into the mud of the path.` |
+| P2 | R | A1-4 오래된 이정표 | `An old weathered wooden signpost with blank arms leaning at a fork in the road, moss on its post.` |
+| P3 | L | A1-5 여울 다리 아래 | `Under the stone bridge of the ford: the arch overhead, shallow sparkling water, and the largest round stone lying below the bridge.` |
+| P3 | R | A1-6 도토리 숲 샘터 | `A small spring among oak trees, acorns on the ground, a ring of stones around clear water, a flat spot for a camp.` (임시) |
+| P4 | L | A2-1 폐광 입구 | `A mine entrance framed with old timber in the misty mountainside, rails running into the dark, the mine chimney above.` |
+| P4 | R | A2-2 안개 속 돌탑 | `A tall cairn of stacked stones standing alone in thick flat mist bands on the trail.` |
+| P5 | L | A2-3 산양 길 | `A narrow goat path along a steep cliff ledge, small hoof prints, pine roots gripping the rock.` (발자국 임시) |
+| P5 | R | A2-4 버려진 순찰 초소 | `An abandoned wooden patrol hut with a sagging roof and a small lookout platform, a cold stone fire ring.` (임시) |
+| P6 | L | A2-5 종소리 들리는 절벽 | `A cliff edge above a misty gorge, the old mine's chimney and slag far below.` (임시) |
+| P6 | R | A2-6 약초 비탈 | `A sunny slope thick with herbs and small flowers among rocks.` |
+| P7 | L | A3-1 광부 조합 회관 | `The miners' guild hall: a larger stone building with a broken double door, a blank sign board and empty lantern hooks by the door.` (임시) |
+| P7 | R | A3-2 세나의 옛집 | `A small empty miner's house with rows of child height marks cut into the door frame, a tiny garden gone wild.` |
+| P8 | L | A3-3 무너진 선광장 | `A collapsed ore-sorting shed: fallen roof beams over wooden sorting chutes and heaps of grey ore.` |
+| P8 | R | A3-4 광부 묘지 | `A miners' graveyard on a slope: rows of small plain stones with no writing, a rusty pickaxe planted beside one.` (곡괭이 임시) |
+| P9 | L | A1-7 이름 없는 무덤 | `A small nameless grave mound under a lone tree, one plain stone with no writing, wildflowers.` |
+| P9 | R | A3-6 광부들의 노래비 | `A standing stone monument carved with rows of short notches instead of words, wild grass around it.` |
+| Q1 | L | A4-1 별빛이 새는 틈 | `A close view of the starlight crack: a tall jagged fissure showing a star-speckled night sky, hard pale-blue edge blocks.` |
+| Q1 | R | A4-2 달그늘 지하 계단 | `Stone steps descending into darkness, thorny vines with black roses along the walls, a cold candlestick on a ledge.` |
+| Q2 | L | A4-3 떠도는 폐허 파편 | `Fragments of ancient ruins floating in the air: broken columns and carved stones with star patterns.` |
+| Q2 | R | A4-4 검은 장미 덩굴 | `A cave wall entirely covered with thick thorny vines of black roses.` |
+| Q3 | L | A4-5 거꾸로 흐르는 물줄기 | `A thin stream of water flowing upward from a still pool into a crack in the ceiling.` |
+| Q3 | R | A4-6 길바뀜의 중심 | `The heart of the Pathshift: several stone-slab paths meet and twist around a hazy circle, floating stones and faint starlight.` (임시) |
+| Q10 | L | A3-5 우물 속 갱도 | `Inside the village well: the round stone shaft opens sideways into an old mine tunnel, a rope hangs from above, wet stone.` 오른쪽 절반 비움 |
+
+**던전 특수 방**(층마다. 07 §5.3 방 종류, 02 §6.3 키워드. 보물 상자·문·가시 함정 소품은 게임이 얹으므로 그리지 않는다)
+
+| 짝 | 칸 | 방 | `SCENE` 문장 |
+| --- | --- | --- | --- |
+| Q4 | L | D1 보물 `treasure` | `A small side chamber of the upper mine: timber supports, a patch of ore vein in the wall, an empty floor spot in front.` |
+| Q4 | R | D1 함정 `trap` | `A narrow timber-braced passage: loose rocks on a cracked ceiling beam, uneven floor planks with small holes.` |
+| Q5 | L | D1 휴식 지점 `rest` | `An abandoned miners' shelter: a wooden bench, a lit lantern on a hook, a cold fire ring.` |
+| Q5 | R | D1 관문 `gate` | `A wide dead-end chamber at the end of a branching tunnel, heavy timber frames and piles of scrap wood and stone.` (임시) |
+| Q6 | L | D2 보물 | `A side chamber with a thick streak of blue ore #5A7FA8 in the wall and an old ore wagon.` |
+| Q6 | R | D2 함정 | `A passage of creaking floorboards over a gap, loose rocks overhead, a thin bell cord strung across at knee height.` |
+| Q7 | L | D2 휴식 지점 | `The miners' rest room: a cold stone hearth, old wooden chairs, a water channel along the wall, a lit lantern.` |
+| Q7 | R | D2 관문 | `A wide excavation hall with ore wagons on rails, streaks of blue ore and a lantern post.` (임시) |
+| Q8 | L | D3 보물 | `A crystal grotto: large blue crystal clusters in the walls, an empty floor spot in front.` |
+| Q8 | R | D3 함정 | `A dark passage with a slot in the wall for a rusty saw blade and a crumbling floor edge.` |
+| Q9 | L | D3 휴식 지점 | `A dry niche in the rock with a flat stone bench and one small lit lantern, darkness around.` (임시) |
+| Q9 | R | D3 관문 `gate` | `The bell chamber: a vast dark hall with a huge empty timber bell frame at the back where the great bell once hung, bronze fragments on the floor, stone pillars carved with rows of short notches.` |
+
+- D3 관문은 보스(64 × 56, 풍경 x 64~128, 15 §7.3)가 설 자리 바닥을 비운다. ES20(P3)은 이 패널을 장소 입력으로 쓴다.
+- 짝 없는 Q10의 오른쪽 절반은 `#FF00FF`로 둔다(`SCENE R:` 대신 `The right half x 768-1535 is flat #FF00FF.`).
+
+### 4.7 제작 순서와 수량
+
+「선행」이 `art:gate`와 §13 합격 기준을 통과해야 다음 줄로 간다. 호출 = 생성·편집 요청 한 번.
+
+| 번호 | 무엇 | 요청 | 호출 | 결과 | 선행 |
+| --- | --- | --- | --- | --- | --- |
+| w10 | 야외 8곳 기본 장면 → 중간·가까운 X, 먼 층 FILL | 생성 8, 떼기 16, FILL 8 | 32 | 기본 8, 층 마스크 8 | 품질 기준(있음). H1 먼저(AO-39 들판을 대신) |
+| w11 | 야외 계절 편집 → 시간대 편집 | 편집 24 + 96 | 120 | 변형 120 | w10 그 장소 |
+| w12 | 야외 변형 먼 층 FILL, 마을 점등 | FILL 120, 편집 3 | 123 | 층 타일 128 × 3, 마을 겹침 3 | w11 |
+| w13 | 폐광 띠 H5·D1·D2·D3: 기본 → X·FILL → H5 시간대 3·세대 특징 9 → FILL | 생성 4, 떼기 8, FILL 4 + 12, 편집 12 | 40 | 기본 4 + 변형 12 | 품질 기준 |
+| w14 | 폐광 등불 겹침 | 편집 8 | 8 | 겹침 4(각 2칸) | w13, P1 c18 |
+| w15 | 틈 A4 기본 → X·FILL → 색조 2 → FILL, 운명 장소 2 | 생성 3, 떼기 2, FILL 3, 편집 2 | 10 | 띠 3 + 한 장 띠 2 | w13 |
+| w16 | 패널: 야외 발견 짝 9 → 계절·시간대 편집, 지하 발견·특수 방 짝 10 | 생성 19, 편집 9 × 15 | 154 | 패널 307 | w10(야외 색), w13(지하 색), w24 별잠 샘물(선택) |
+| 합계 | | | **487** | 그림 456, 층 타일 441, 패널 307, 점등 겹침 7 | |
+
+- 수량 대조(15 §13.1): 띠 149 = 기본 15 + 변형 134(야외 120, H5 3, 세대 특징 9, 색조 2). 패널 307 = 야외 발견 18 × 16 + 지하 발견 7 + 특수 방 12. 층 타일 441 = 층을 나누는 띠 147 × 3.
+- 다시 생성은 호출 수에 넣지 않았다. 한 줄이 두 번 실패하면 세 번째 전에 원인 한 줄과 다른 방법을 적는다(§14 끝).
+- 합격: 생성 E4 E7 E11 + W5 W7 W8 + 품질 기준과 나란히 놓아 밀도가 같거나 높다(사람 눈). 편집 E4 E11 E21 + W3(차이가 편집한 곳에만) + 15 §8.5 검사 세 가지(겹침 = 원본, 층 경계 차이 1% 이하, 판독 검사). 떼기 E8 E10 E11 + W6. 패널은 판독 검사를 x 16~64에서만 잰다.
 
 ---
 
-## 5 배경 장소 소품 20종 확정안 (AO-43) — w12·w16
+## 5 배경 장소 소품 — 없앰 (AO-43, D72)
 
-AO-43 표에는 이름이 32개여서 「20개를 넘기지 않는다」와 맞지 않았고, 크기가 「32 × 32 또는 48 × 32에서 고른다」로 미정이었다. **아래 20개와 크기로 확정한다**(사용자 승인 2026-09-24, OD-09. 카드 AO-43과 `assets.manifest.json`의 `bg_prop_*` 항목에 옮겼다)(48 규격 논리 화소, 폭 × 높이). 지면선 y 56에 바닥을 두고, 위 끝은 y 16 아래(축소 창)에 들어오게 **높이 40 이하**로 잡았다. 15 §8.3의 H1 「여울 물줄기 띠·작은 나무다리」가 카드에 빠져 있어 넣었다.
+D70의 장소 소품 20개(v1.3 확정안)는 **각 장소의 기본 장면에 그린다**(15 §8.3, D72). 장소마다 기본 장면이 따로 있으니 공용 장면에 소품을 더해 장소를 구분할 필요가 없어졌고, 따로 뗀 소품은 계절·시간대 변형과 색이 맞지 않는다. 파일은 0개다. 옛 소품이 어느 기본 장면으로 갔는지:
 
-| # | 파일 `bg_prop_…` | 장소 | 크기 | 층 | 합성 | 내용 · 줄이며 합친 것 |
-| ---: | --- | --- | --- | --- | --- | --- |
-| 1 | `smithy` | T00 | 48 × 40 | 중간 | PC-T | 대장간: 검은 굴뚝(연기 없음), 모루, 벽에 건 칼 |
-| 2 | `store` | T00 | 64 × 40 | 중간 | PC-T | 잡화점: 약초 다발 처마 + **빨랫줄**(합침) |
-| 3 | `stream` | H1 | 96 × 12 | 가까운 | PC-H1 | 여울 물줄기 띠 + **징검다리·갈대**(합침) |
-| 4 | `footbridge` | H1 · A1 | 48 × 16 | 가까운 | PC-H1 | 작은 나무다리(A1 「작은 다리」 공용) |
-| 5 | `acornpile` | H1 | 24 × 12 | 가까운 | PC-H1 | 도토리 무더기(L04 들쥐 굴) |
-| 6 | `willow` | H2 | 48 × 40 | 중간 | PC-H2 | 늘어진 버드나무. 두 번 놓아 「2그루」 |
-| 7 | `watermill` | H2 | 64 × 40 | 중간 | PC-H2 | 물레방아 + **부서진 수문과 둑 경사**(합침) |
-| 8 | `beacon` | H3 | 32 × 40 | 중간 | PC-H3 | 무너진 봉화대 |
-| 9 | `rocks` | H3 | 48 × 24 | 중간 | PC-H3 | 둥근 바위 무리 + 억새 |
-| 10 | `slagheap` | H4 | 64 × 32 | 중간 | PC-H4 | 회색 광재 더미 + 노란 꽃 몇 송이 |
-| 11 | `cart` | H4 | 32 × 24 | 중간 | PC-H4 | 버려진 나무 손수레(기울어짐) |
-| 12 | `brokengate` | H5 | 64 × 40 | 중간 | PC-H5 | 반쯤 무너진 큰 나무 갱도 문 + 글자 없는 녹슨 경고판 |
-| 13 | `outerlight` | H5 | 24 × 40 | 먼 | PC-H5 | 먼 층 오른쪽 끝의 바깥 빛 구멍. 흰 한 색, 밤은 팔레트로 `#B9C8FF` |
-| 14 | `belltower` | A3 · H5 | 32 × 40 | 중간(A3) · 먼(H5) | PC-A3 | 종 없는 빈 돌 종탑. H5 먼 실루엣은 같은 파일을 옅은 팔레트로 |
-| 15 | `milestone` | A1 · A2 | 16 × 24 | 중간 | PC-A1 | 이끼 낀 돌 이정석 + 글자 없는 나무 팔 |
-| 16 | `shrine` | A1 | 32 × 32 | 중간 | PC-A1 | 작은 돌 사당 |
-| 17 | `conifer` | A2 | 32 × 40 | 중간 | PC-A2 | 소나무. 여러 번 놓는다 |
-| 18 | `ruin` | A3 | 256 × 64 | 중간 대체 | PC-A3 | 마을 중간 층의 폐허판: 내려앉은 지붕, 빈 창틀, 무성한 풀, 돌 우물 |
-| 19 | `mine_d2` | D2 | 256 × 64 | 중간 겹침 | PC-D2 | 금속 파이프, 식은 화로, 종 파편, 청 광맥 조각 |
-| 20 | `mine_d3` | D3 | 256 × 64 | 중간 겹침 | PC-D3 | 거대한 종 조각, 이름 새긴 기둥(글자 대신 새김 홈), 무너진 천장 틈 |
-
-카드 목록에서 빠진 것과 대신 쓰는 것:
-
-| 카드 이름 | 처리 |
+| 옛 `bg_prop_…` | 이제 그리는 곳(§4.1) |
 | --- | --- |
-| `noticeboard` | `prop_notice_board`(§8, AO-50)를 쓴다 |
-| `steppingstones`·`reeds` / `clothesline` / `brokensluice` | 3 `stream` / 2 `store` / 7 `watermill`에 합침 |
-| `roundrock` | 9 `rocks` |
-| `belltower_far`·`belltower_empty` | 14 `belltower` 하나 + 팔레트 |
-| `fog` | `fx_weather_fog`(§6) — A2 안개 띠와 날씨 안개가 같은 규격(흰 띠 40%, 4 px/초)이다 |
-| `well` | 18 `ruin`에 합침 |
-| `pipe`·`bellshard`·`coldhearth`·`bridge` | 19 `mine_d2`에 합침. 갱도 다리(C01-3)는 P3 ES05가 장면으로 그린다 |
-| `giantbell`·`namepillar` | 20 `mine_d3`에 합침 |
-| `starspring` / `candlestick` | `prop_star_spring`(§8) / `bg_rift_far`(§4.4) |
+| `smithy` `store` | `bg_town`(시설 다섯 중 둘) |
+| `stream` `footbridge` `acornpile` | `bg_river_meadow`(징검다리 여울·도토리 무더기), `bg_river_path`(작은 다리) |
+| `willow` `watermill` | `bg_willow_bank` |
+| `beacon` `rocks` | `bg_wolf_hill` |
+| `slagheap` `cart` | `bg_slag_valley` |
+| `brokengate` `outerlight` | `bg_mine_gate`(바깥 빛은 시간대 편집, §4.3) |
+| `belltower` | `bg_miner_village`(빈 종탑), `bg_mine_gate`(먼 실루엣) |
+| `milestone` `shrine` | `bg_river_path`(이정표·사당), `bg_mist_trail`(이정석) |
+| `conifer` | `bg_mist_trail` |
+| `ruin` | `bg_miner_village` |
+| `mine_d2` `mine_d3` | `bg_mine_mid`, `bg_mine_deep` |
 
-- 1~17은 게임이 bbox를 잘라 위 크기 셀에 넣고 x 0~120 안에 자유롭게 놓는다. 18~20은 **타일과 같은 256 × 64 겹침**이라 합성 장면과 칸이 맞아야 하므로 기본 장면을 편집해 만든다. 18~20의 반투명(ASSET_ORDERS §0.7의 `bg_prop_ruin`)은 쓰지 않는다 — 폐허판은 중간 층을 **대신** 그린다.
-- H5의 반쯤 묻힌 광차는 `prop_mine_cart`(§8)를 쓴다. H3 먼 층 y −6 이동은 게임 배치다.
-
-### 5.1 장소 합성 편집 (w12: T·H1~H4·A1·A2, w16: H5·A3·D2·D3)
-
-조립: SW + 문장 + D-BG. 입력 = 합격한 기본 합성(w10 마을, PROMPTS §3.5 들판, w13 폐광). 1~17은 떼기 쉽게 **띠의 오른쪽 절반**에 서로 떨어뜨려 더한다. 색은 그 장면의 색과 배경 확장 묶음만 쓰고 `{DARKEST}`보다 어둡지 않게 한다.
-
-| 합성 | 입력 | 더하는 문장 (SW 뒤) |
-| --- | --- | --- |
-| PC-T | w10 | `ADD in the RIGHT half of the strip, standing on the ground line, well apart: (1) a small smithy, 48 by 40 blocks: stone and timber walls #9A948C #C08A58, a tall chimney #7D7B80 with no smoke, an anvil #7D7B80 by the door and a sword hanging on the wall #B4B2B0; (2) a general store, 64 by 40 blocks: cream walls #F0E6CC, a striped awning #6D8F5A #F0E6CC with bundles of dried herbs #8FC06A hanging from its eave, and a short clothesline beside it with two cloths #F0E6CC #5A7FA8. All windows unlit #6E6862.` |
-| PC-H1 | 들판 | `ADD in the RIGHT half, well apart: (1) a shallow stream, a flat band 96 by 12 blocks lying along the ground line, water #B9C8FF #E8EEF2 with three flat stepping stones #C8C2B8 and a few reeds #8FC06A at both ends; (2) a small wooden footbridge 48 by 16 blocks #C08A58 #8E5E38; (3) a small pile of acorns 24 by 12 blocks #C08A58 #8E5E38.` |
-| PC-H2 | 들판 | `ADD in the RIGHT half, well apart: (1) a weeping willow, 48 by 40 blocks, drooping curtains of leaves #8FC06A #5E9A4A, trunk #8E5E38; (2) a wooden water wheel beside a broken sluice gate on a low earthen dike slope, 64 by 40 blocks, wood #C08A58 #8E5E38, dike #C08A58, water #B9C8FF.` |
-| PC-H3 | 들판 | `ADD in the RIGHT half, well apart: (1) a ruined stone beacon tower, 32 by 40 blocks, crumbled top #C8C2B8 #9A948C; (2) a cluster of round boulders with tufts of silver grass, 48 by 24 blocks, rocks #C8C2B8 #9A948C, grass #E8EEF2 #B8A04A.` |
-| PC-H4 | 들판 | `ADD in the RIGHT half, well apart: (1) a heap of grey mine slag, 64 by 32 blocks, #C8C2B8 #9A948C with a few tiny yellow flowers #FFE38A; (2) an abandoned wooden handcart tilted on one wheel, 32 by 24 blocks, #C08A58 #8E5E38 #7D7B80.` |
-| PC-A1 | 들판 | `ADD in the RIGHT half, well apart: (1) a mossy stone milestone with one blank wooden arm, 16 by 24 blocks, stone #C8C2B8 #9A948C, moss #8FC06A, wood #C08A58; (2) a small stone wayside shrine with a little roof, 32 by 32 blocks, #C8C2B8 #9A948C #8E5E38.` |
-| PC-A2 | 들판 | `ADD in the RIGHT half: one pine tree, 32 by 40 blocks, dark-green needles #5E9A4A #4D6A3E, trunk #8E5E38.` |
-| PC-H5 | w13 | `ADD in the RIGHT half, well apart: (1) a huge half-collapsed wooden mine gate, 64 by 40 blocks: broken timber frame and planks #C08A58 #8E5E38 and one blank rusty warning plate #B0603A #7D7B80 with no writing; (2) at the far right end of the far wall, a tall opening where daylight shows, 24 by 40 blocks, one flat white #FFFFFF shape.` |
-| PC-A3 | w10 | ① 폐허판: `Turn the village into an abandoned miners' village: keep every building in exactly the same place and size, but cave the roofs in, leave the window frames empty, tear the tent, remove the banner cloth (bare pole), grow tall grass #8FC06A over the wall, and add a small round stone well #C8C2B8 #9A948C just right of the clinic, still inside the left half.` ② 같은 결과를 다시 SW + `ADD in the RIGHT half: a small empty stone bell tower with no bell, 32 by 40 blocks, #C8C2B8 #9A948C #8E5E38.` |
-| PC-D2 | w13 | `ADD inside the left half, between and in front of the timber arches: two rusty metal pipes along the wall #7D7B80 #B0603A, a cold stone hearth with no fire #9A948C #C8C2B8, three small broken bronze bell shards on the floor #E0B06A #B07A3A, and two short streaks of blue ore #5A7FA8 on the wall.` |
-| PC-D3 | w13 | `ADD inside the left half, between and in front of the timber arches: a giant fragment of a broken bronze bell lying on its side #E0B06A #B07A3A #7A4E24, a stone pillar #C8C2B8 #9A948C carved with rows of short notches (no letters), and a jagged crack in the ceiling showing paler rock #C8C2B8.` |
-
-떼기(X 뒤, 입력 = 각 합성 결과):
-
-| 결과 | 문장 |
-| --- | --- |
-| 1~17 | `Keep ONLY the objects added in the right half. Everything else inside and outside the strip becomes flat #FF00FF.` — 게임이 물체별 bbox로 나눠 표의 크기 셀에 넣는다 |
-| 18 `ruin` | 입력 PC-A3 ①. `Keep ONLY the ruined buildings, the bare pole, the notice board, the water wheel, the overgrown grass and the well. Everything else becomes flat #FF00FF.` |
-| 19·20 | `Keep ONLY the objects added in the left half. Everything else becomes flat #FF00FF.` |
-
-- 합격: E4 E7 E8 E10 E11 + W5 W8. 13지역을 조립해 02 §6 풍경 키워드가 읽힌다(AO-43 육안). 20·ES20(P3)의 거대한 종은 보스 종(w34)과 같은 청동·같은 금 모양이다.
+- 소품 목록에서 이미 옮겨 둔 것은 그대로다: 게시판 `prop_notice_board`, 광차 `prop_mine_cart`, 별잠 샘물 `prop_star_spring`(§8), 안개 `fx_weather_fog`(§6).
+- 카드 AO-43과 `assets.manifest.json`의 `bg_prop_*` 항목은 이 결정에 맞춰 거둔다(도구·카드 쪽 작업).
 
 ---
 
@@ -777,8 +914,8 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 | W4 | **보스 덩치·고정**: 코볼트 옆에서 넓고 낮은 덩치가 즉시 읽힌다. 대기 6칸에서 몸은 그대로이고 종만 움직인다. 균열 모양이 31칸 모두 같다 |
 | W5 | **배경 명도**: 어두운 외곽선이 없고 `{DARKEST}`보다 어두운 색이 없다(순흑·자두색 외곽선 없음). 주인공 스프라이트를 x 16~64에 얹어도 묻히지 않는다 |
 | W6 | **층 정합**: 뗀 층을 순서대로 겹치면 합성 장면과 같다. 지면선이 한 줄로 곧고 층마다 같은 높이다 |
-| W7 | **가로 이음(육안)**: 띠 두 장을 이어 붙인 모습을 상상했을 때 지평·지면·하늘이 끊기지 않고, 가장자리에 걸친 물체가 없다. 오른쪽 절반이 조용하다 |
-| W8 | **장소 소품**: 크기가 기본 장면의 나무·울타리와 어울리고 바닥이 지면선에 닿는다. 02 §6 키워드로 무엇인지 읽힌다. 글자가 없다 |
+| W7 | **가로 이음(육안)**: 띠 두 장을 이어 붙인 모습을 상상했을 때 지평·지면·하늘이 끊기지 않고, 가장자리에 걸친 물체가 없다. 패널은 이음 대신 x 768의 끊는 선을 넘는 물체가 없다 |
+| W8 | **장소 키워드**(v1.4, D72로 장소 소품 대신): 기본 장면·패널에서 15 §8.3·P2 §4.1·§4.6이 적은 장소 요소가 모두 보이고 02 §6 키워드로 무엇인지 읽힌다. 크기가 나무·울타리와 어울리고 바닥이 지면선에 닿는다. 글자가 없다 |
 | W9 | **효과 형태**: FX1 가로로 넓음, FX3 세로 4각 별, FX5 마름모, FX2에 기호 없음, 파동은 1블록 두께 원호. 기준점이 칸마다 같다. 붉은색·흐림이 없다 |
 | W10 | **소품 크기·상태**: 손 소품이 주인공 손 크기에 맞고(책·빵 기준), 놓는 소품은 바닥이 지면선에 닿는다. 상태 쌍은 바뀌는 부분만 다르다 |
 | W11 | **아이콘 판독**: 실제 크기(12·16·24px, 100%)에서 하나하나 무엇인지 읽힌다. 단계 아이콘은 색만이 아니라 모양이 다르다. 지정색이 눈으로 맞다 |
@@ -803,13 +940,13 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 | w07 | EN09·EN10 교체 → 모자·투구 떼기 | 교체 ×2, 떼기 ×2 | w03 | w03 | AO-35 | 5 |
 | w08 | EB01·EB02 교체 → 뿔 투구·큰 곡괭이·수염·등불 떼기 | 교체 ×3, 떼기 ×5 | w03, w07a, (P1 c18) | w07(EB01 색 목표만 OD-12 값 대기) | AO-35 | 5 |
 | w09 | 정예 깃발 2 | 생성 | — | — | AO-35 | 5 |
-| w10 | 마을 합성 → 3층 떼기 | 생성, 떼기 ×3 | 들판 합성 합격본 | PROMPTS §3.5 | AO-40 | 5 |
-| w11 | 마을 창 불빛 | 교체, 떼기 | w10 | w10 | AO-40 | 5 |
-| w12 | 장소 합성 PC-T·H1·H2·H3·H4·A1·A2 → 떼기 | 교체 ×7, 떼기 ×7 | w10, 들판 | w10 | AO-43 | 5~6 |
-| w13 | 폐광 합성 → 3층 떼기 | 생성, 떼기 ×3 | 들판 합성 합격본 | PROMPTS §3.5 | AO-41 | 6 |
-| w14 | 폐광 등불 2 | 교체 ×2, 떼기 ×2 | w13, (P1 c18) | w13 | AO-41 | 6 |
-| w15 | 틈 먼 층 | 교체, 떼기 | w13 | w13 | AO-42 | 6 |
-| w16 | 장소 합성 PC-H5·A3(2)·D2·D3 → 떼기 | 교체 ×5, 떼기 ×5 | w13, w10 | w13 | AO-43 | 6 |
+| w10 | 야외 8곳 기본 장면 → 층 떼기(X 2, FILL 1) | 생성 ×8, 떼기 ×16, FILL ×8 | 품질 기준 | — | AO-39·40 | 5 |
+| w11 | 야외 계절 24 → 시간대 96 | 편집 ×120 | w10 | w10 그 장소 | — | 5 |
+| w12 | 야외 변형 먼 층 FILL, 마을 점등 3 | FILL ×120, 편집 ×3 | w11 | w11 | AO-40 | 5 |
+| w13 | 폐광 띠 H5·D1·D2·D3 → 층 떼기 → H5 시간대·세대 특징 → FILL | 생성 ×4, 떼기 ×8, 편집 ×12, FILL ×16 | 품질 기준 | — | AO-41 | 6 |
+| w14 | 폐광 등불 겹침 4(각 2칸) | 편집 ×8 | w13, (P1 c18) | w13 | AO-41 | 6 |
+| w15 | 틈 A4 + 색조 2, 운명 장소 2 | 생성 ×3, 떼기 ×2, 편집 ×2, FILL ×3 | 품질 기준, (w24 별잠 샘물) | w13 | AO-42 | 6 |
+| w16 | 패널 37: 발견 지점 25·특수 방 12 → 야외 짝 9의 계절·시간대 | 생성 ×19, 편집 ×135 | 품질 기준 | w10·w13 | — | 6 |
 | w17 | 날씨 입자·안개 | 생성 ×2 | — | — | AO-45 | 6 |
 | w18 | FX1·FX3 | 생성 ×2 | — | — | AO-46 | 6 |
 | w19 | FX2·FX5 | 생성 ×2 | — | — | AO-47 | 6 |
@@ -852,12 +989,12 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 | 효과 | 32 | 32 | — | FX1 4·FX2 6·FX3 4·FX4 8·FX5 4·FX6 6 |
 | 소품 | 43 | 41 | 책 2 = PROMPTS P0 | ✅ 43 |
 | 이벤트 장면 | 80 | 0 | P3 | 소품·장소 입력은 이 문서가, NPC 입력은 PROMPTS §7.4 `n01`이 준다 |
-| 배경 타일 | 10장 | 7 | 들판 3 = PROMPTS P0 | ✅ 10. 점등 겹침 2장(창·등불)은 15 §13.1 주석으로 따로 센다(OD-28 결정) |
-| 배경 장소 소품 | 20 | **20** | — | §5 확정안(OD-09 승인) |
+| 배경 그림(D72) | 456 | 456 | — | 띠 149(기본 15 + 변형 134) + 패널 307(기본 37 + 변형 270). 층 타일 441, 점등 겹침 7(§4.7) |
+| 배경 장소 소품 | 0 | 0 | — | 기본 장면에 그린다(§5, D72) |
 | 초상 | 72 | 72 | — | 부품 25 + NPC 11 = 36 × 2크기 |
 | UI 아이콘 | 42 | 42 | — | 12 + 8 + 7 + 15 |
 | 책 UI 부품 | 3 | 3 | — | 팔레트 3은 게임 |
-| 팔레트·변환표 | 약 76 | 0 | 게임(D56 8번) | 장소 팔레트 7 포함(OD-23). 변형 색 목표(w06·w07·w08)만 검토용으로 만든다 |
+| 팔레트 | 53 | 0 | 게임(D56 8번) | 배경 변환표·장소 팔레트는 없앴다(D72). 변형 색 목표(w06·w07·w08)만 검토용으로 만든다 |
 | (15에 없음) 아이템 아이콘 | — | 34 | — | 카드 신설(P-04) |
 | (15에 없음) 날씨 | — | 입자 4(+2)·안개 1 | — | AO-45. 흰빛 덮기는 그리지 않는다(OD-26) |
 
