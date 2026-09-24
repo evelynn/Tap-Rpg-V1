@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "root": "../..",
+  "source_dir": "assets/_imagegen/v03",
+  "out_dir": "assets/game",
+  "key": "#FF00FF",
+  "key_tolerance": 90,
+  "alpha_threshold": 128,
+  "key_despill": 60,
+  "entries": [
+    {
+      "name": "ref_actions18_48",
+      "source": "02-ref-b-actions18-48-r4.png",
+      "role": "reference",
+      "grid": [6, 4],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "idle", "frames": 4 },
+        { "action": "attack", "frames": 6 },
+        { "action": "sit_eat", "frames": 4 },
+        { "action": "sleep", "frames": 4 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
+    },
+    { "name": "body_actions18_48", "source": "16-body-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    { "name": "hair_actions18_48", "source": "18-hair-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    { "name": "sword_actions18_48", "source": "20-sword-actions18-48-r2.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    {
+      "name": "rat18_48",
+      "source": "08-rat18-48-r3.png",
+      "role": "reference",
+      "grid": [4, 5],
+      "cell": [32, 24],
+      "rows": [
+        { "action": "idle", "frames": 4 },
+        { "action": "move", "frames": 4 },
+        { "action": "attack", "frames": 4 },
+        { "action": "hit", "frames": 2 },
+        { "action": "exit", "frames": 4 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "ext_enemy"],
+      "align": { "mode": "ground", "bottom": 19, "center_x": 15 }
+    },
+    {
+      "name": "dagger10_48",
+      "source": "05-dagger10-48-r2.png",
+      "role": "reference",
+      "grid": [6, 2],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "attack", "frames": 6 },
+        { "action": "hit_equip", "frames": 4 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "center" }
+    },
+    {
+      "name": "dagger10_32",
+      "source": "05-dagger10-32.png",
+      "role": "reference",
+      "grid": [6, 2],
+      "cell": [32, 32],
+      "rows": [
+        { "action": "attack", "frames": 6 },
+        { "action": "hit_equip", "frames": 4 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "align": { "mode": "center" }
+    }
+  ],
+  "preview": {
+    "character": "ref_actions18_48",
+    "layers": ["body_actions18_48", "hair_actions18_48", "sword_actions18_48"],
+    "enemy": "rat18_48",
+    "props": ["dagger10_48"],
+    "compare": [["dagger10_48", "dagger10_32"]],
+    "field": []
+  }
+}

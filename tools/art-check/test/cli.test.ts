@@ -32,6 +32,26 @@ describe('명령줄 인자', () => {
     assert.deepEqual(a.paths, ['output/a', 'output/b.png'])
   })
 
+  it('normalize·preview는 위치 인자를 대응표로 받는다', () => {
+    const a = parseArgs(['normalize', 'x/map.json', '--name', 'ref'])
+    assert.equal(a.command, 'normalize')
+    assert.equal(a.map, 'x/map.json')
+    assert.deepEqual(a.names, ['ref'])
+    assert.deepEqual(a.paths, [])
+    assert.match(parseArgs(['preview']).map.split('\\').join('/'), /docs\/art\/imagegen\.map\.json$/)
+    assert.throws(() => parseArgs(['preview', 'a.json', 'b.json']), /하나만/)
+  })
+
+  it('layers는 기준·레이어와 기준값 옵션을 받는다', () => {
+    const a = parseArgs(['layers', 'ref', 'hair', 'a/b.png', '--clothing', 'a/b.png', '--max-shift=2', '--min-containment', '0.9', '--max-skin', '0.05'])
+    assert.deepEqual(a.paths, ['ref', 'hair', 'a/b.png'])
+    assert.deepEqual(a.clothing, ['a/b.png'])
+    assert.equal(a.maxShift, 2)
+    assert.equal(a.minContainment, 0.9)
+    assert.equal(a.maxSkin, 0.05)
+    assert.throws(() => parseArgs(['layers', 'ref', '--max-shift', 'x']), /수여야/)
+  })
+
   it('모르는 명령·옵션·빠진 값은 오류다', () => {
     assert.throws(() => parseArgs(['nope']), /모르는 명령/)
     assert.throws(() => parseArgs(['check', '-x']), /모르는 옵션/)
