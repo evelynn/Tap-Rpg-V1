@@ -794,7 +794,7 @@ Ten weapon icons, each weapon alone, laid diagonally with the grip at lower left
 w30:
 
 ```
-Seven armour icons, front view: 1 quilted cream tunic with loose sleeves #F0E6CC #C8C2B8 and three small square patches; 2 SLEEVELESS tan leather vest #C08A58 #8E5E38 with two shoulder straps and a belt, cream undershirt showing two blocks at each shoulder; 3 dark leather armour #8E5E38 #5E3C24 with a blue belt #3E5A7E and a small leather cap above it; 4 heavy brown miner's coat #C08A58 #8E5E38 with a red scarf #B04A42 and a brimmed cap; 5 dark bat-leather hooded cloak #5E3C24 #4A3F55 whose hem is cut into three pointed scallops; 6 mismatched rusty plate #7D7B80 #4C4A52 #B0603A with one oversized pauldron on the left only; 7 BRONZE cuirass #E0B06A #B07A3A #7A4E24 with a bell silhouette on the chest and a one-block rim along its bottom edge, never any silver.
+Seven armour icons, front view: 1 quilted cream tunic with loose sleeves #F0E6CC #C8C2B8 and three small square patches; 2 SLEEVELESS tan leather vest #C08A58 #8E5E38 with two shoulder straps and a belt, grey-blue undershirt #7EA6B8 showing two blocks at each shoulder; 3 dark leather armour #8E5E38 #5E3C24 with a blue belt #3E5A7E and a small leather cap above it; 4 heavy brown miner's coat #C08A58 #8E5E38 with a red scarf #B04A42 and a brimmed cap; 5 dark bat-leather hooded cloak #5E3C24 #4A3F55 whose hem is cut into three pointed scallops; 6 mismatched rusty plate #7D7B80 #4C4A52 #B0603A with one oversized pauldron on the left only; 7 BRONZE cuirass #E0B06A #B07A3A #7A4E24 with a bell silhouette on the chest and a one-block rim along its bottom edge, never any silver.
 ```
 
 w31:
@@ -850,7 +850,7 @@ Front-facing bust of this youthful androgynous adventurer: short chestnut hair (
 | --- | --- | --- |
 | w40 머리 6 | w39 | `Make a sheet of 3 columns by 2 rows of identical 64x64 cells. Every cell shows this exact bust at exactly the same position and size, identical except the hair and, in cells 3, 5 and 6, narrow eyes (two blocks wide, one block tall, slightly slanted). Hair per cell, all in the same chestnut #7A4E30 #553420: 1 HR01 short hair, as the input; 2 HR02 hair tied back in one tail; 3 HR03 chin-length bob; 4 HR04 curly hair; 5 HR05 two braids; 6 HR06 shaggy, messy hair.` |
 | w41 표정 8 | w40 | `Make a sheet of 4 columns by 2 rows. Row 1 repeats cell 1 of the input (round eyes), row 2 repeats cell 3 (narrow eyes), same position and size. Only the eyes, eyebrows and mouth change. Columns: 1 neutral; 2 smile; 3 worry, brows raised in the middle; 4 resolve, determined brows and a firm mouth.` |
-| w42 목깃·나이·장신구 9 | w39 | `Make a sheet of 3 columns by 3 rows, this exact bust in every cell at the same position and size, identical except: 1 the cream quilted cloth collar, as the input; 2 a tan leather vest collar with two straps #C08A58 #8E5E38 over the cream undershirt; 3 a grey metal plate gorget #B4B2B0 #7D7B80; 4 a tall black cloak collar #2E2438 lined with crimson #7A1F33; 5 veteran age: two grey blocks #9A948C at each temple and one wrinkle line at each eye corner; 6 elder: white hair #E8E4DC #C8C2B8, white eyebrows, two wrinkle lines at each eye corner and one on the forehead; 7 an old flat wooden whistle #C08A58 #8E5E38 on a cord around the neck; 8 a leather cord necklace with three pointed ivory rat teeth #F0E6CC; 9 a small broken bronze bell shard #B07A3A #7A4E24 on a cord.` |
+| w42 목깃·나이·장신구 9 | w39 | `Make a sheet of 3 columns by 3 rows, this exact bust in every cell at the same position and size, identical except: 1 the cream quilted cloth collar, as the input; 2 a tan leather vest collar with two straps #C08A58 #8E5E38 over the grey-blue undershirt #7EA6B8; 3 a grey metal plate gorget #B4B2B0 #7D7B80; 4 a tall black cloak collar #2E2438 lined with crimson #7A1F33; 5 veteran age: two grey blocks #9A948C at each temple and one wrinkle line at each eye corner; 6 elder: white hair #E8E4DC #C8C2B8, white eyebrows, two wrinkle lines at each eye corner and one on the forehead; 7 an old flat wooden whistle #C08A58 #8E5E38 on a cord around the neck; 8 a leather cord necklace with three pointed ivory rat teeth #F0E6CC; 9 a small broken bronze bell shard #B07A3A #7A4E24 on a cord.` |
 
 떼기(X 뒤):
 
@@ -868,7 +868,7 @@ Front-facing bust of this youthful androgynous adventurer: short chestnut hair (
 
 ### 12.3 NPC 정체성 (PROMPTS §7로 옮김)
 
-v1.0의 NB-01~NB-09는 P3의 외형표와 합쳐 PROMPTS §7.3 `[ID-N01]`~`[ID-N09]`가 되었다(NB-0n = `[ID-N0n]`). 외형은 거기서만 고친다. 초상에서는 문장의 괄호 `(Full body: …)`를 괄호째 뺀다. 합칠 때 달라진 점: 도담 머리 밤색 `#7A4E30`·피부 밝음, 유안 망토 녹색(길잡이 두건 색), 비엘 머리 은백 `#E8E4DC`(검은 망토 위 윤곽), 토리 모자 `#C08A58` + 윗부분 `#7A4E24`, 호각 나무 `#C08A58` `#8E5E38`, 미루 약초는 캐릭터 48색 안의 녹 `#6D8F5A` `#4D6A3E`. 모두 `임시`이고 사용자가 승인했다(2026-09-24, `OPEN_DECISIONS.md` OD-02).
+v1.0의 NB-01~NB-09는 P3의 외형표와 합쳐 PROMPTS §7.3 `[ID-N01]`~`[ID-N09]`가 되었다(NB-0n = `[ID-N0n]`). 외형은 거기서만 고친다. 초상에서는 문장의 괄호 `(Full body: …)`를 괄호째 뺀다. 합칠 때 달라진 점: 도담 머리 밤색 `#7A4E30`·피부 밝음, 유안 망토 녹색(길잡이 두건 색), 비엘 머리 은백 `#E8E4DC`(검은 망토 위 윤곽), 토리 모자 `#C08A58` + 윗부분 `#7A4E24`, 호각 나무 `#C08A58` `#8E5E38`, 미루 약초는 캐릭터 52색 안의 녹 `#6D8F5A` `#4D6A3E`. 모두 `임시`이고 사용자가 승인했다(2026-09-24, `OPEN_DECISIONS.md` OD-02).
 
 ### 12.4 NPC 초상 11 — w43·w44
 

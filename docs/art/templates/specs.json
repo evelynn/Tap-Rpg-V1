@@ -22,7 +22,7 @@
   },
   "families": {
     "character": {
-      "cell": [48, 48], "cols": 6, "align": "ground", "ground_y": 44, "center_x": 23, "height": 38, "margin": 0,
+      "cell": [48, 48], "cols": 6, "align": "ground", "ground_y": 44, "center_x": 23, "height": 40, "margin": 0, "note": "키 40 = 합격 v03 r4 대기 1의 머리카락 포함 키(D74). 민머리 몸체는 38",
       "placeholder": { "source": "assets/game/ref_actions18_48.png", "cell": [48, 48], "frame": [0, 0] },
       "actions": {
         "idle": { "frames": 4 },
@@ -30,12 +30,12 @@
         "attack": { "frames": 6, "height": null, "note": "합성 기준 시트는 칼이 머리 위로 올라가 키를 재지 않는다" },
         "hit": { "frames": 3 },
         "discover": { "frames": 4 },
-        "sit_eat": { "frames": 4, "height": null, "placeholder": { "frame": [0, 2] }, "note": "ASSET_ORDERS 앉은 키 25와 합격 v03 r4의 35가 다르다 — 결정 전이라 키를 재지 않는다" },
+        "sit_eat": { "frames": 4, "height": 35, "placeholder": { "frame": [0, 2] }, "note": "앉은 키 35 = 합격 v03 r4 실측(D74, 옛 문서 값 25)" },
         "sleep": { "frames": 4, "height": null, "center": false, "placeholder": { "frame": [0, 3] }, "note": "누운 자세: 몸 최하단이 지면선(0.4절), 중심·키 검사 없음" },
         "interact": { "frames": 4 },
-        "cheer": { "frames": 4, "lift": [0, 2, 4, 0], "height": [null, 38, 38, 38], "note": "2·3프레임만 +2·+4 뜬다(15 §12.3 검수 2). 1프레임 웅크림은 키를 재지 않는다" },
-        "collapse": { "frames": 5, "height": [38, null, null, null, null], "center": [true, true, true, false, false], "note": "4·5프레임 엎드림: 몸 최하단이 지면선" },
-        "head_poses": { "frames": 3, "labels": ["basic", "bowed", "lying"], "height": [38, null, null], "center": [true, true, false], "placeholder": { "frames": [[0, 0], [0, 2], [0, 3]] } }
+        "cheer": { "frames": 4, "lift": [0, 2, 4, 0], "height": [null, 40, 40, 40], "note": "2·3프레임만 +2·+4 뜬다(15 §12.3 검수 2). 1프레임 웅크림은 키를 재지 않는다" },
+        "collapse": { "frames": 5, "height": [40, null, null, null, null], "center": [true, true, true, false, false], "note": "4·5프레임 엎드림: 몸 최하단이 지면선" },
+        "head_poses": { "frames": 3, "labels": ["basic", "bowed", "lying"], "height": [40, null, null], "center": [true, true, false], "placeholder": { "frames": [[0, 0], [0, 2], [0, 3]] } }
       }
     },
     "npc": {
@@ -57,7 +57,7 @@
       }
     },
     "rat": {
-      "cell": [32, 24], "cols": 4, "align": "ground", "ground_y": 20, "center_x": 15, "height": 15, "margin": 3,
+      "cell": [32, 24], "cols": 4, "align": "ground", "ground_y": 20, "center_x": 15, "height": 14, "margin": 2,
       "placeholder": { "source": "assets/game/rat18_48.png", "cell": [32, 24], "frame": [0, 0] },
       "actions": {
         "idle": { "frames": 4 }, "move": { "frames": 4 },
@@ -67,7 +67,7 @@
       }
     },
     "wolf": {
-      "cell": [48, 32], "cols": 4, "align": "ground", "ground_y": 28, "center_x": 23, "height": 26, "margin": 3,
+      "cell": [48, 32], "cols": 4, "align": "ground", "ground_y": 28, "center_x": 23, "height": 25, "margin": 2,
       "placeholder": { "source": "assets/game/v04/wolf18_48.png", "cell": [48, 32], "frame": [0, 0] },
       "actions": {
         "idle": { "frames": 4 }, "move": { "frames": 4 },
@@ -77,7 +77,7 @@
       }
     },
     "bat": {
-      "cell": [32, 32], "cols": 4, "align": "ground", "ground_y": 28, "bottom": 16, "center_x": 15, "height": 14, "margin": 3,
+      "cell": [32, 32], "cols": 4, "align": "ground", "ground_y": 28, "bottom": 16, "center_x": 15, "height": 14, "margin": 2,
       "note": "부양 12: 몸 최하단 y 16(0.5절). 그림자는 그리지 않는다",
       "actions": {
         "idle": { "frames": 4 }, "move": { "frames": 4 },
@@ -87,7 +87,7 @@
       }
     },
     "kobold": {
-      "cell": [32, 48], "cols": 4, "align": "ground", "ground_y": 44, "center_x": 15, "height": 30, "margin": 3,
+      "cell": [32, 48], "cols": 4, "align": "ground", "ground_y": 44, "center_x": 15, "height": 30, "margin": 2,
       "actions": {
         "idle": { "frames": 4 }, "move": { "frames": 4 },
         "attack": { "frames": 4, "height": null, "note": "곡괭이가 머리 위로" },

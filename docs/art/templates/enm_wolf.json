@@ -34,7 +34,7 @@
   ],
   "bottom": 27,
   "center_x": 23,
-  "margin": 3,
+  "margin": 2,
   "fill": null,
   "ground_band": false,
   "key_color": "#FF00FF",
@@ -67,10 +67,10 @@
         0
       ],
       "height": [
-        26,
-        26,
-        26,
-        26
+        25,
+        25,
+        25,
+        25
       ]
     },
     {
@@ -90,10 +90,10 @@
         0
       ],
       "height": [
-        26,
-        26,
-        26,
-        26
+        25,
+        25,
+        25,
+        25
       ]
     },
     {
@@ -133,8 +133,8 @@
         0
       ],
       "height": [
-        26,
-        26
+        25,
+        25
       ]
     },
     {
@@ -197,7 +197,7 @@
         330,
         336
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -227,7 +227,7 @@
         618,
         624
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -257,7 +257,7 @@
         906,
         912
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -287,7 +287,7 @@
         1194,
         1200
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -317,7 +317,7 @@
         330,
         336
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -347,7 +347,7 @@
         618,
         624
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -377,7 +377,7 @@
         906,
         912
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -407,7 +407,7 @@
         1194,
         1200
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -557,7 +557,7 @@
         330,
         336
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -587,7 +587,7 @@
         618,
         624
       ],
-      "height": 26,
+      "height": 25,
       "lift": 0,
       "placeholder_frame": [
         0,

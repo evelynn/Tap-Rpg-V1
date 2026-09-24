@@ -20,12 +20,12 @@
         { "action": "sit_eat", "frames": 4 },
         { "action": "sleep", "frames": 4 }
       ],
-      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"],
       "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
     },
-    { "name": "body_actions18_48", "source": "16-body-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
-    { "name": "hair_actions18_48", "source": "18-hair-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
-    { "name": "sword_actions18_48", "source": "20-sword-actions18-48-r2.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    { "name": "body_actions18_48", "source": "16-body-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"] },
+    { "name": "hair_actions18_48", "source": "18-hair-actions18-48-r3.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"] },
+    { "name": "sword_actions18_48", "source": "20-sword-actions18-48-r2.png", "role": "layer", "ref": "ref_actions18_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"] },
     {
       "name": "derived_actions18_48",
       "role": "derived",

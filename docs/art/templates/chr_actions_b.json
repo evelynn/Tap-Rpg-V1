@@ -68,12 +68,12 @@
         0
       ],
       "height": [
-        null,
-        null,
-        null,
-        null
+        35,
+        35,
+        35,
+        35
       ],
-      "note": "ASSET_ORDERS 앉은 키 25와 합격 v03 r4의 35가 다르다 — 결정 전이라 키를 재지 않는다"
+      "note": "앉은 키 35 = 합격 v03 r4 실측(D74, 옛 문서 값 25)"
     },
     {
       "row": 1,
@@ -116,10 +116,10 @@
         0
       ],
       "height": [
-        38,
-        38,
-        38,
-        38
+        40,
+        40,
+        40,
+        40
       ]
     },
     {
@@ -140,9 +140,9 @@
       ],
       "height": [
         null,
-        38,
-        38,
-        38
+        40,
+        40,
+        40
       ],
       "note": "2·3프레임만 +2·+4 뜬다(15 §12.3 검수 2). 1프레임 웅크림은 키를 재지 않는다"
     },
@@ -165,7 +165,7 @@
         0
       ],
       "height": [
-        38,
+        40,
         null,
         null,
         null,
@@ -210,7 +210,7 @@
         284,
         288
       ],
-      "height": null,
+      "height": 35,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -240,7 +240,7 @@
         476,
         480
       ],
-      "height": null,
+      "height": 35,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -270,7 +270,7 @@
         668,
         672
       ],
-      "height": null,
+      "height": 35,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -300,7 +300,7 @@
         860,
         864
       ],
-      "height": null,
+      "height": 35,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -522,7 +522,7 @@
         284,
         288
       ],
-      "height": 38,
+      "height": 40,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -552,7 +552,7 @@
         476,
         480
       ],
-      "height": 38,
+      "height": 40,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -582,7 +582,7 @@
         668,
         672
       ],
-      "height": 38,
+      "height": 40,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -612,7 +612,7 @@
         860,
         864
       ],
-      "height": 38,
+      "height": 40,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -714,7 +714,7 @@
         476,
         480
       ],
-      "height": 38,
+      "height": 40,
       "lift": 2,
       "placeholder_frame": [
         0,
@@ -744,7 +744,7 @@
         668,
         672
       ],
-      "height": 38,
+      "height": 40,
       "lift": 4,
       "placeholder_frame": [
         0,
@@ -774,7 +774,7 @@
         860,
         864
       ],
-      "height": 38,
+      "height": 40,
       "lift": 0,
       "placeholder_frame": [
         0,
@@ -846,7 +846,7 @@
         284,
         288
       ],
-      "height": 38,
+      "height": 40,
       "lift": 0,
       "placeholder_frame": [
         0,

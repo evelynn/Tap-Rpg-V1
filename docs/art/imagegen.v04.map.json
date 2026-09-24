@@ -18,7 +18,7 @@
         { "action": "walk", "frames": 6 },
         { "action": "walk_b", "frames": 6 }
       ],
-      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"],
       "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
     },
     {
@@ -32,11 +32,11 @@
         { "action": "discover", "frames": 4 },
         { "action": "interact", "frames": 4 }
       ],
-      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"],
       "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
     },
-    { "name": "body_d_48", "source": "c03-body-ref-d-48.png", "role": "layer", "ref": "ref_d_hit_discover_interact11_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
-    { "name": "sword_hit3_48", "source": "c13-sword-hit3-48.png", "role": "layer", "ref": "ref_d_hit_discover_interact11_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    { "name": "body_d_48", "source": "c03-body-ref-d-48.png", "role": "layer", "ref": "ref_d_hit_discover_interact11_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"] },
+    { "name": "sword_hit3_48", "source": "c13-sword-hit3-48.png", "role": "layer", "ref": "ref_d_hit_discover_interact11_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"] },
     {
       "name": "derived_d_48",
       "role": "derived",
@@ -60,10 +60,10 @@
         { "action": "cheer", "frames": 4 },
         { "action": "collapse", "frames": 5 }
       ],
-      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"],
       "align": { "mode": "ground", "bottom": 43, "center_x": 23 }
     },
-    { "name": "body_e_48", "source": "c03-body-ref-e-48.png", "role": "layer", "ref": "ref_e_cheer_collapse9_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth"] },
+    { "name": "body_e_48", "source": "c03-body-ref-e-48.png", "role": "layer", "ref": "ref_e_cheer_collapse9_48", "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"] },
     {
       "name": "derived_e_48",
       "role": "derived",

@@ -46,7 +46,7 @@ Input image role: this is the exact character to draw. Copy its head shape, hair
 
 ### G 크기 (생성할 때, C 뒤에)
 
-시트마다 셀 안 인물 크기가 다르면 레이어가 겹치지 않는다. PROMPTS C에는 크기 문장이 없어 여기서 더한다(48 규격 키 38 / 셀 48, 머리 폭 18, 머리 최상단 y 6을 비율로 옮김).
+시트마다 셀 안 인물 크기가 다르면 레이어가 겹치지 않는다. PROMPTS C에는 크기 문장이 없어 여기서 더한다(48 규격 키 40(머리카락 포함) / 셀 48, 머리 폭 18, 머리카락 최상단 y 4를 비율로 옮김, D74).
 
 ```
 SCALE: exactly the figure scale of the input sheet. A standing figure is about four fifths of the cell height, the top of the head about one eighth of the cell height below the cell top, and the head about three eighths of the cell width. Seated, crouched and lying poses keep the same head size.
@@ -151,6 +151,12 @@ The head, hair and face are exactly the same size in all three cells; only the h
 
 - 몸체 44프레임 = REF-B(대기 4·공격 6·앉기 4·잠 4) + REF-A에서 고른 걷기 6 + REF-D 11 + REF-E 9.
 - 합격: E8, E10, E11. 쓰러짐 4·5, 피격 1~3에서 몸체가 잘리지 않았는지 본다.
+- 몸체 속옷은 회청 민소매 `#7EA6B8` `#546E7A`, 바지는 청록 캔버스 `#27978D` `#00766D`다(PROMPTS L1, D73). 뗀 몸체에 크림 `#F0E6CC`나 회색 바지 `#C8C2B8` `#9A948C` 화소가 있으면 불합격이다. 먼저 뗀 v04 `c03-body-ref-d-48`·`c03-body-ref-e-48`은 크림 속옷·회색 바지라 모양만 합격이고, 다음 차례에 새 L1로 다시 뗀다.
+- **바지 색 교체(떼기 전에 한 번)**: 바지는 기준 시트에서 보이는 자리라 파생 도구가 기준 시트 색을 쓴다(D73). 합격한 기준 시트(REF-A·REF-B·REF-C·REF-D·REF-E) 각각에 아래 편집을 한 번 하고, 그 결과를 L1·L4·파생의 입력으로 쓴다.
+
+```
+Use case: precise recolour edit of the provided sprite sheet. Keep every pixel position, shape and the flat #FF00FF background exactly. Recolour ONLY the trousers in every cell: their lit blocks to #27978D and their shaded blocks to #00766D. The tunic hem, waist cord, boots, skin and everything else keep their exact colours.
+```
 
 ### 3.2 얼굴 — 둥근 눈 5 (P0) + 가는 눈 5 (AO-13)
 
@@ -234,7 +240,7 @@ Use case: precise recolour edit of the provided sprite sheet. Keep every pixel p
 
 - 교체 문장: PROMPTS §3.1 REF-C 문장 그대로. REF-D·REF-E에도 같은 문장으로 교체한다(REF-A·REF-B판은 P0 것을 쓴다).
 - 떼기: PROMPTS L5. P0의 가죽 레이어(v03 `15`·`21`)는 소매를 늘려 불합격이므로 REF-C 네 장 모두 새 머리말로 다시 뗀다.
-- 어깨에 보이는 크림 속옷은 가죽 레이어가 가진다(PROMPTS L5, 15 §6.4 A02 「밝은 가죽 + 크림 속옷」). 확인 필요 9는 이것으로 닫았다(`OPEN_DECISIONS.md` OD-48).
+- 어깨에 보이는 회청 속옷 소매(`#7EA6B8`, D73)는 가죽 레이어가 가진다(PROMPTS L5, 15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」). 확인 필요 9는 이것으로 닫았다(`OPEN_DECISIONS.md` OD-48).
 
 ### 5.3 금속 (AO-22) — REF-M
 

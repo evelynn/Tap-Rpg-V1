@@ -43,12 +43,12 @@ describe('매니페스트', () => {
     assert.equal(new Set(files.map((f) => f.path)).size, files.length)
   })
 
-  it('기본 묶음은 15 §2.2의 48색이다', () => {
+  it('기본 묶음은 15 §2.2의 52색이다(48 + 속옷 2 + 바지 2, D73)', () => {
     const m = loadManifest(REAL)
     const base = m.palette_sets['base']!
     const colors = base.flatMap((g) => m.palettes[g]!)
-    assert.equal(colors.length, 48)
-    assert.equal(new Set(colors).size, 48)
+    assert.equal(colors.length, 52)
+    assert.equal(new Set(colors).size, 52)
     assert.ok(!colors.includes('#000000'), '순흑은 등록하지 않는다')
   })
 

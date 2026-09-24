@@ -18,7 +18,7 @@ export type AlignSpec =
 
 /**
  * 스냅할 팔레트. 문자열 = 매니페스트 palette_sets 키, 배열 = 매니페스트 palettes 묶음 이름 목록.
- * 묶음 목록은 기본 48색 안에서 효과 색(fx)처럼 그 시트에 쓰지 않을 묶음을 빼려고 쓴다.
+ * 묶음 목록은 기본 52색 안에서 효과 색(fx)처럼 그 시트에 쓰지 않을 묶음을 빼려고 쓴다.
  */
 export type PaletteRef = string | string[]
 

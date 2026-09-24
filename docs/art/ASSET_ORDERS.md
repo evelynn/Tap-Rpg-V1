@@ -53,7 +53,7 @@
 ```
 assets/
   palettes/
-    pal_master.json                    # 48색 + 확장 묶음. 모든 색의 유일한 등록처
+    pal_master.json                    # 52색 + 확장 묶음. 모든 색의 유일한 등록처
     pal_armor_a01.json … pal_armor_a07.json
     pal_weapon_w01.json … pal_weapon_w10.json
     pal_skin_{light,mid,dark,vampire}.json
@@ -106,12 +106,13 @@ assets/
 ### 0.3 팔레트와 색 수
 
 - 모든 색은 `assets/palettes/pal_master.json`에 등록한다. **등록되지 않은 색은 한 화소도 쓰지 않는다.**
-- 기본 48색(15 §2.2)은 `output/pixel-art-v01/palette.reference.json`의 48개 값과 전수 일치함이 확인되었다. 그대로 씨앗으로 쓴다.
-- 캐릭터·장비는 기본 48색 안에서만 고른다. 적·배경·변이·UI는 확장 묶음까지 쓸 수 있다.
+- 기본 48색(15 §2.2)은 `output/pixel-art-v01/palette.reference.json`의 48개 값과 전수 일치함이 확인되었다. 그대로 씨앗으로 쓴다. 몸체 속옷 2색(`underlayer`)과 몸체 바지 2색(`trousers`)을 그 뒤에 더해 기본 52색이 됐다(D73).
+- 캐릭터·장비는 기본 52색 안에서만 고른다. 속옷 묶음은 몸체 속옷과 A02 어깨 속옷 소매에만, 바지 묶음은 몸체 바지에만 쓴다(D73). 적·배경·변이·UI는 확장 묶음까지 쓸 수 있다.
 
 | 레이어 | 색 수 상한 |
 | --- | ---: |
-| 몸체 + 얼굴 | 6 |
+| 몸체(피부 3·속옷 2·바지 2·장화 1, D73) | 8 |
+| 얼굴(칸마다) | 4 |
 | 머리카락 | 3 |
 | 방어구(몸통 + 투구 한 벌) | 5 |
 | 무기 | 4 |
@@ -132,7 +133,7 @@ assets/
 ### 0.4 기하 — 캐릭터
 
 「지면선」은 **발이 딛는 선**이고, 몸의 가장 아래 불투명 화소는 그 **바로 위** 행이다.
-검산: 48 규격 셀 위쪽이 창 y 12, 캐릭터 머리가 창 y 18(15 §1.1) → 셀 안 머리 최상단 y=6, 높이 38 → 최하단 y=43, 지면선 y=44. 32 규격도 27/30 → 3/28/29로 같은 방식으로 맞는다.
+검산: 48 규격 셀 위쪽이 창 y 12, 민머리 최상단이 창 y 18(15 §1.1) → 셀 안 민머리 최상단 y=6, 민머리 몸체 높이 38 → 최하단 y=43, 지면선 y=44. 머리카락은 민머리 위로 2 더 올라가 최상단 y=4, 키 40이다(합격 v03 r4 실측, D74). 32 규격도 27/30 → 3/28/29로 같은 방식으로 맞는다.
 **0.4~0.6절의 32 규격 열은 비교 기록이다. 32 파일은 만들지 않는다(D64).**
 
 | 항목 | 32 규격 | 48 규격 |
@@ -140,9 +141,10 @@ assets/
 | 셀 | 32 × 32 | 48 × 48 |
 | 지면선 y | 29 | 44 |
 | 몸 최하단 불투명 화소 y | **28** | **43** |
-| 머리 최상단 y | **3** | **6** |
+| 머리 최상단 y | **3** | **6**(민머리) · 머리카락 **4** |
 | 가로 중심 x | 15 | 23 |
-| 실측 높이(투구 제외) | 26 | 38 |
+| 실측 높이(투구 제외) | 26 | **40**(머리카락 포함, D74) · 민머리 몸체 38 |
+| 앉은 키 | — | **35**(y 9~43, D74) |
 | 머리 | 12 × 12 · y 3~14 · x 10~21 | 18 × 17 · y 6~22 · x 15~32 |
 | 몸통 | 높이 8 · y 15~22 · 폭 7 · x 12~18 | 높이 12 · y 23~34 · 폭 11 · x 18~28 |
 | 다리 | 높이 6 · y 23~28 | 높이 9 · y 35~43 |
@@ -162,16 +164,17 @@ assets/
 
 | 대상 | 32 셀 | 32 지면선 y | 32 최하단 y | 32 높이 | 32 중심 x | 48 셀 | 48 지면선 y | 48 최하단 y | 48 높이 | 48 중심 x |
 | --- | --- | ---: | ---: | ---: | ---: | --- | ---: | ---: | ---: | ---: |
-| 들쥐 | 24 × 16 | 13 | 12 | 10 | 11 | 32 × 24 | 20 | 19 | 15 | 15 |
-| 늑대 | 32 × 24 | 21 | 20 | 18 | 15 | 48 × 32 | 28 | 27 | 26 | 23 |
+| 들쥐 | 24 × 16 | 13 | 12 | 10 | 11 | 32 × 24 | 20 | 19 | **14** | 15 |
+| 늑대 | 32 × 24 | 21 | 20 | 18 | 15 | 48 × 32 | 28 | 27 | **25** | 23 |
 | 박쥐 | 24 × 24 | 21 | **13**(부양 8) | 10 | 11 | 32 × 32 | 28 | **16**(부양 12) | 14 | 15 |
 | 코볼트 | 24 × 32 | 29 | 28 | 21 | 11 | 32 × 48 | 44 | 43 | 30 | 15 |
 | 보스 EB03 | 48 × 40 | 39 | 38 | 38 | 23 | 64 × 56 | 55 | 54 | 54 | 31 |
 
-- 코볼트 높이는 캐릭터의 0.8(15 §7.1): 32는 26 × 0.8 ≈ 21, 48은 38 × 0.8 ≈ 30.
+- 코볼트 높이는 캐릭터의 약 0.8(15 §7.1): 32는 26 × 0.8 ≈ 21, 48은 민머리 몸체 38 × 0.8 ≈ 30(머리카락 포함 키 40의 0.75).
+- 48 규격 들쥐 14·늑대 25는 합격 그림(v03 들쥐 r3, v04 늑대 w01)을 정규화해 잰 대기 1프레임 키다(D74, 처음 값 15·26).
 - 보스 어깨 폭은 32 규격 44, 48 규격 58. 종 머리 지름은 32 규격 22, 48 규격 30. 다리 높이는 32 규격 10, 48 규격 14.
 - 박쥐는 몸통을 32 규격 8 × 8 / 48 규격 12 × 12로 **고정**하고 날개만 바꾼다. 그림자는 시트에 그리지 않는다 — 게임이 발밑 그림자(AO-01)를 지면선에 놓는다(AO-33).
-- 안전 여백: 모든 적 셀에서 좌·우·상·하 2px(32) / 3px(48) 이상. 꼬리·귀·곡괭이·날개 끝을 포함한 bbox가 여백 안에 들어와야 한다.
+- 안전 여백: 모든 적 셀에서 좌·우·상·하 2px 이상(32 · 48 모두). 꼬리·귀·곡괭이·날개 끝을 포함한 bbox가 여백 안에 들어와야 한다. 48 규격 값은 처음 3이었지만 합격 들쥐·늑대의 대기 1프레임이 1 넘어 2로 맞췄다(D74). 몸이 가장 긴 공격 칸(합격 들쥐 29, 늑대 45)은 가운데 두어도 2를 1 넘는다 — 새로 그릴 때 그 칸은 몸을 1 줄인다.
 
 ### 0.6 시트 배치
 
@@ -357,7 +360,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 
 - **우선순위**: P0 (다른 모든 카드의 선행 조건)
 - **산출**: `assets/palettes/pal_master.json` · `assets/_tools/check_sprite.py`
-- **규격**: `pal_master.json`은 JSON. 기본 묶음 48색 + 확장 묶음 4묶음.
+- **규격**: `pal_master.json`은 JSON. 기본 묶음 52색(48 + 몸체 속옷 2 + 몸체 바지 2, D73) + 확장 묶음 4묶음.
 - **내용**:
   - `pal_master.json` 구조:
     ```json
@@ -373,6 +376,8 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
         "bronze":   ["#E0B06A","#B07A3A","#7A4E24","#B0603A"],
         "leather":  ["#C08A58","#8E5E38","#5E3C24"],
         "cloth":    ["#F0E6CC","#5A7FA8","#3E5A7E","#6D8F5A","#4D6A3E","#B04A42"],
+        "underlayer": ["#7EA6B8","#546E7A"],
+        "trousers": ["#27978D","#00766D"],
         "fx":       ["#FFFFFF","#FFE38A","#8FE0A0","#B9C8FF","#8E4FA3","#E0504A"]
       },
       "ext": {
@@ -385,14 +390,14 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
       }
     }
     ```
-  - `base` 9묶음의 색 수는 2+9+12+2+4+4+3+6+6 = **48**이어야 한다. 저장 후 검산한다.
+  - `base` 11묶음의 색 수는 2+9+12+2+4+4+3+6+2+2+6 = **52**여야 한다. 저장 후 검산한다.
   - `check_sprite.py`는 0.9절 A1~A18을 인자로 골라 돌리고, 실패 시 **비영 종료 코드**와 실패한 셀 좌표를 출력한다.
 - **색**: 위 목록 외의 색을 추가하지 않는다.
 - **참고**: 15 §2.2, `output/pixel-art-v01/palette.reference.json`(기본 48색 씨앗).
 - **프롬프트**: 없음(코드·데이터 작업).
 - **금지**: 순흑 `#000000` 등록 금지. `content/base/` 아래에 팔레트를 만들지 않는다(보완 제안 P-02).
-- **수용 기준 — 자동**: `base` 색 수 합 = 48 / 중복 색 0 / 모든 값이 `^#[0-9A-F]{6}$` / `check_sprite.py --selftest` 종료 코드 0.
-- **수용 기준 — 육안**: 48색을 8 × 6 격자로 찍은 견본표를 `assets/_preview/pal_master.png`로 내고 묶음 경계가 읽히는지 본다.
+- **수용 기준 — 자동**: `base` 색 수 합 = 52 / 중복 색 0 / 모든 값이 `^#[0-9A-F]{6}$` / `check_sprite.py --selftest` 종료 코드 0.
+- **수용 기준 — 육안**: 52색을 13 × 4 격자로 찍은 견본표를 `assets/_preview/pal_master.png`로 내고 묶음 경계가 읽히는지 본다.
 
 #### AO-01 · 발밑 그림자
 
@@ -418,18 +423,18 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **우선순위**: P0
 - **산출**: `assets/sprites/char/body/chr_body_base_48.png`(288 × 480, 0행만 채움)
 - **규격**: 셀 48 × 48, 10행 × 6열. 대기 = 0행 0~3열. 지속 220 / 220 / 220 / 220 ms, 반복.
-- **내용**: 오른쪽을 보고 선 SD 모험가의 **맨몸체**. 피부 + 팔다리 + 기본 속옷(민소매 짧은 옷)까지만 그린다.
+- **내용**: 오른쪽을 보고 선 SD 모험가의 **맨몸체**. 피부 + 팔다리 + 기본 속옷(회청 리넨 민소매 짧은 옷) + 바지(청록 캔버스) + 장화까지만 그린다(D73).
   - f0 기본: 머리 y 6~22, 몸통 y 23~34, 다리 y 35~43, 최하단 43. 양팔은 몸 옆에 내리고 앞손이 x 29 부근.
   - f1 들숨: f0의 **어깨·가슴 화소 덩어리만** 통째로 −1px 올린다. 머리·다리·손은 f0과 같은 화소.
   - f2: **f0과 화소가 완전히 동일**하다(새로 그리지 않고 복사).
   - f3 주변 보기: f0에서 머리 영역(y 6~22)만 교체해 고개를 1px 오른쪽으로 돌린 형태. 몸통·다리는 f0과 동일.
-  - 얼굴·머리카락은 그리지 않는다. 머리는 민머리 실루엣이고 `face`·`head` 기준점만 둔다.
-- **색**: 피부 3톤 `#E3B48E` `#C88E68` `#A0664A`(중간 계열 기본), 속옷 `#F0E6CC`, 속옷 그늘 `#C8C2B8`, 외곽선 `#2B2233`. 총 6색.
+  - 얼굴·머리카락은 그리지 않는다. 머리는 민머리 실루엣이고 `face`·`head` 기준점만 둔다. 키 38은 민머리 몸체의 키다 — 머리카락을 얹은 합성은 40이다(0.4절, D74).
+- **색**: 피부 3톤 `#E3B48E` `#C88E68` `#A0664A`(중간 계열 기본), 속옷 `#7EA6B8`, 속옷 그늘 `#546E7A`(속옷 묶음), 바지 `#27978D`, 바지 그늘 `#00766D`(바지 묶음), 장화 `#8E5E38`, 외곽선 `#2B2233`. **총 9색**(D73). 속옷과 바지는 어떤 옷 색과도 달라야 한다 — 크림이던 속옷이 A01 누빈 천옷과 같은 색이고 회색이던 바지가 천옷 그늘·잿빛 머리와 같은 색이라 천옷을 벗긴 몸체를 떼어 낼 수 없었다.
 - **참고**: 15 §4 대기 행, §1.1 비율, §2.1 실루엣. 1차 패키지 S1 1행은 **자세 변화가 0**이었다(`ASSET_REVIEW_v01.md` §3.4) — 같은 실수를 반복하지 않는다.
-- **프롬프트(한국어)**: 48 × 48 칸 안에 2.2등신 SD 모험가의 맨몸을 오른쪽 옆모습으로 그린다. 키 38픽셀, 머리 18 × 17, 몸통 높이 12, 다리 높이 9, 발 아래 끝은 y 43이다. 얼굴·머리카락·옷·무기를 그리지 않는다. 피부색 3단계와 크림색 민소매 속옷만 쓴다.
-- **프롬프트(영어)**: `chibi 2.2-head adventurer base body, bare, side view facing right, 38px tall inside a 48x48 cell, head 18x17, no hair, no face, no armor, no weapon, cream sleeveless undershirt only, 6 colors total`
+- **프롬프트(한국어)**: 48 × 48 칸 안에 2.2등신 SD 모험가의 맨몸을 오른쪽 옆모습으로 그린다. 키 38픽셀, 머리 18 × 17, 몸통 높이 12, 다리 높이 9, 발 아래 끝은 y 43이다. 얼굴·머리카락·겉옷·무기를 그리지 않는다. 피부색 3단계, 회청색 민소매 속옷, 청록색 바지, 갈색 장화만 쓴다.
+- **프롬프트(영어)**: `chibi 2.2-head adventurer base body, bare, side view facing right, 38px tall inside a 48x48 cell, head 18x17, no hair, no face, no armor, no weapon, plain grey-blue linen sleeveless undershirt #7EA6B8 #546E7A, teal canvas work trousers #27978D #00766D, brown boots #8E5E38, 9 colors total`
 - **금지**: 머리카락·눈·입·무기·가방·어깨띠·좌우 비대칭 요소 일절 금지. f2를 새로 그리지 않는다.
-- **수용 기준 — 자동**: A1 A2 A3 A4(≤6+1) A5 A6 A7(=43) A8(=23) A15 / 머리 최상단 y = 6 / 전체 높이 = 38 / y 44~47 행에 불투명 화소 0 / **f0과 f2의 화소 diff = 0** / f0↔f1 diff가 y 23~30 영역에만 존재.
+- **수용 기준 — 자동**: A1 A2 A3 A4(≤9+1) A5 A6 A7(=43) A8(=23) A15 / 민머리 최상단 y = 6 / 전체 높이 = 38(민머리) / y 44~47 행에 불투명 화소 0 / **f0과 f2의 화소 diff = 0** / f0↔f1 diff가 y 23~30 영역에만 존재 / `#F0E6CC`·`#C8C2B8`·`#9A948C` 화소 0(속옷은 `#7EA6B8` `#546E7A`, 바지는 `#27978D` `#00766D`만, D73).
 - **수용 기준 — 육안**: V1 V6. 4프레임 반복 재생에서 숨쉬는 느낌이 나고 머리 크기가 흔들리지 않는다.
 
 #### AO-03 · 걷기 6프레임 + 걷기 12 연구본
@@ -458,7 +463,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   - 접지한 발의 화소 좌표는 그 발이 땅에 붙어 있는 동안 **1px도 움직이지 않는다.**
   - 몸 전체를 좌우로 옮기지 않는다. 전진감은 배경 패럴랙스가 낸다(15 §8.2).
   - 수직 변위는 2·5·8·11에서 −1px, 4·10에서 +1px만 쓴다.
-- **색**: AO-02와 동일 6색.
+- **색**: AO-02와 동일 9색.
 - **참고**: 15 §4 걷기 행. `output/pixel-art-v01/ANIMATION.md`의 걷기 12 키포즈 표(표만 쓰고 그림은 쓰지 않는다). 1차 S2는 루프 이음 변화율 0.323으로 순환이 닫히지 않았다.
 - **프롬프트(한국어)**: 48 × 48 칸 12개에 걷기 한 주기를 그린다. 발바닥 아래 끝은 12칸 모두 y 43에 고정하고, 몸의 가로 중심도 12칸 모두 x 23에 고정한다. 접지 칸(1·7)은 다리를 가장 넓게 벌리고, 지나감 칸(4·10)은 다리를 모은다. 1칸과 7칸은 왼발·오른발만 바꾼 같은 자세다.
 - **프롬프트(영어)**: `12-frame side-view walk cycle of a chibi bare base body, feet locked to the same ground row in every frame, body horizontal center identical in every frame, widest stance on frames 1 and 7, legs together on frames 4 and 10, frame 7 is frame 1 with legs and arms swapped, seamless loop from 12 back to 1`
@@ -479,7 +484,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   - f4 따라감: 앞손이 앞 아래(방향 3). 몸 1px 낮음.
   - f5 복귀: f0과 같은 실루엣, 앞손만 대기 위치.
   - 표정은 `찡그림`을 쓴다(얼굴 레이어가 담당).
-- **색**: AO-02와 동일 6색.
+- **색**: AO-02와 동일 9색.
 - **참고**: 15 §4 공격 행. 1차 S1 3행은 타격 뒤 다시 칼을 들어 올렸다(`ASSET_REVIEW_v01.md` §3.3).
 - **프롬프트(한국어)**: 48 × 48 칸 6개에 오른쪽을 향한 휘두르기 한 번을 그린다. 무기는 그리지 않고 앞손의 위치와 각도만 바꾼다. 앞손은 허리 옆 → 머리 위 → 머리 앞 위 → 앞 수평 → 앞 아래 → 허리 옆 순서다. 발바닥 아래 끝은 6칸 모두 y 43이다.
 - **프롬프트(영어)**: `6-frame side-view sword swing, bare body without any weapon, front hand path: hip → above head → forward-high → forward-horizontal → forward-low → hip, torso leans 2px forward on the impact frame, feet locked to one ground row`
@@ -524,16 +529,16 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **우선순위**: P1
 - **산출**: `chr_body_base_48.png` 5행 0~3열
 - **규격**: 4프레임, 300 ms × 4(합 1200), 반복.
-- **내용**: 앉은 자세 고정. 전체 높이는 선 자세의 **2/3 = 25px**(y 19~43). 엉덩이가 y 43에 닿는다.
+- **내용**: 앉은 자세 고정. 전체 높이(머리카락 포함)는 **35px**(y 9~43, 선 키 40의 약 7/8, 합격 v03 r4 실측, D74). 엉덩이가 y 43에 닿는다.
   - f0 빵을 듦(앞손을 가슴 높이로) / f1 한입(머리 1px 앞으로) / f2 씹기(f0과 같은 화소) / f3 볼 부풂(얼굴 레이어가 담당, 몸체는 f0과 같은 화소).
   - **빵은 `prop_bread`(AO-48)가 `hand_f`에 붙인다. 책은 `prop_book`이 같은 자리에 붙는다.**
   - **선택 대기 표현**은 이 행의 f0·f2 몸 프레임을 그대로 쓰고 빵 대신 책을 든다. 전용 몸 프레임을 만들지 않는다(15 §4).
 - **색**: AO-02와 동일.
-- **참고**: 15 §4 앉기와 식사 행, §2.1 「앉기는 높이가 2/3로 낮아짐」. 1차 S3 r3(독서)은 전용 몸 8프레임을 새로 그려 이 구조를 깼다.
-- **프롬프트(한국어)**: 48 × 48 칸 4개에 쭈그려 앉아 먹는 동작을 그린다. 앉은 키는 서 있을 때의 3분의 2인 25픽셀이고 엉덩이가 y 43에 닿는다. 빵·책은 그리지 않고 앞손만 가슴 높이에 둔다.
-- **프롬프트(영어)**: `4-frame sitting-and-eating loop, side view, seated height 25px (two thirds of standing), hips touching the ground row, front hand raised to chest, no bread, no book, no props`
+- **참고**: 15 §4 앉기와 식사 행, §2.1 「앉기는 키가 35로 낮아짐」. 1차 S3 r3(독서)은 전용 몸 8프레임을 새로 그려 이 구조를 깼다.
+- **프롬프트(한국어)**: 48 × 48 칸 4개에 쭈그려 앉아 먹는 동작을 그린다. 앉은 키는 머리카락까지 35픽셀(선 키 40보다 5픽셀 낮음)이고 엉덩이가 y 43에 닿는다. 빵·책은 그리지 않고 앞손만 가슴 높이에 둔다.
+- **프롬프트(영어)**: `4-frame sitting-and-eating loop, side view, seated height 35px including hair (standing is 40px), hips touching the ground row, front hand raised to chest, no bread, no book, no props`
 - **금지**: 소품을 몸체에 그리지 않는다. 독서용 별도 몸 프레임을 만들지 않는다.
-- **수용 기준 — 자동**: A1~A6 / 최하단 y = 43 / 전체 높이 = 25 ± 0 / **f0 = f2 = f3 화소 diff 0**.
+- **수용 기준 — 자동**: A1~A6 / 최하단 y = 43 / 전체 높이 = 35 ± 1(머리카락 포함, 민머리 몸체 레이어는 약 32) / **f0 = f2 = f3 화소 diff 0**.
 - **수용 기준 — 육안**: `prop_book` 2프레임을 붙여 4초마다 한 번 넘기는 재생이 자연스러운지 본다.
 
 #### AO-08 · 잠 4프레임
@@ -558,7 +563,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **산출**: `chr_body_base_48.png` 7행 0~3열
 - **규격**: 4프레임, 150 / 150 / 150 / 250 ms(합 700). 채집·수선은 반복, 문·상자는 1회.
 - **내용**: f0 손 뻗음(`hand_f`를 앞으로 x 34) / f1 잡음(손가락 화소 1px 오므림) / f2 당김(`hand_f`를 x 30으로, 상체 1px 뒤로) / f3 결과(f0 자세로 복귀, 표정 기본).
-  대상물(약초·문·상자)은 `prop_*`가 `hand_f`에 붙는다. 채집 자세는 앉은 높이 25px를 쓰고, 문·상자는 선 자세를 쓴다 — **선 자세만 이 행에 그린다**(앉은 채집은 AO-07 f0·f1 재사용).
+  대상물(약초·문·상자)은 `prop_*`가 `hand_f`에 붙는다. 채집 자세는 앉은 높이 35px를 쓰고, 문·상자는 선 자세를 쓴다 — **선 자세만 이 행에 그린다**(앉은 채집은 AO-07 f0·f1 재사용).
 - **색**: AO-02와 동일.
 - **참고**: 15 §4 상호작용 행. 1차 S1 8행은 8칸 중 3칸이 대기 자세였고 식물이 손과 맞물리지 않았다.
 - **프롬프트(한국어)**: 48 × 48 칸 4개에 앞으로 손을 뻗어 무언가를 잡고 당기는 동작을 그린다. 손이 닿는 대상은 그리지 않는다. 1칸 뻗음, 2칸 잡음, 3칸 당김, 4칸 복귀다.
@@ -573,12 +578,12 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **산출**: `chr_body_base_48.png` 8행 0~3열, 9행 0~4열
 - **규격**: 환호 120 / 120 / 180 / 400 ms(합 820), 1회. 쓰러짐 100 / 120 / 140 / 200 / 유지(합 560 + 유지), 1회 후 마지막 유지.
 - **내용**:
-  - 환호 f0 웅크림: 높이 2/3(25px), 무릎 굽힘, 팔 뒤로. 최하단 43.
+  - 환호 f0 웅크림: 높이는 앉은 키 35 안팎(v04 c02 실측 34, D74), 무릎 굽힘, 팔 뒤로. 최하단 43.
   - 환호 f1 뛰어오름: 몸 전체 **+2px**(최하단 41), 팔이 위로 뻗기 시작.
   - 환호 f2 최고점: 몸 전체 **+4px**(최하단 39), 두 팔 번쩍. 표정 웃음.
   - 환호 f3 착지: 최하단 43 복귀, 무릎 1px 굽힘, 표정 웃음.
   - 쓰러짐 f0 비틀: 몸 중심이 뒤로 2px, 팔 벌려 균형.
-  - 쓰러짐 f1 무릎 꿇음: 높이 2/3, 한 무릎 접지.
+  - 쓰러짐 f1 무릎 꿇음: 높이는 앉은 키 35 안팎(v04 c02 실측 35, D74), 한 무릎 접지.
   - 쓰러짐 f2 앞으로 기욺: 상체 45도, 손이 땅에 닿기 직전.
   - 쓰러짐 f3 엎드림: **배를 바닥에 대고 엎드린 자세**(15 §4 「엎드림」), 머리는 오른쪽이고 얼굴을 옆으로 돌려 한쪽 뺨이 바닥에 닿아 얼굴이 보인다. 다리는 펴고 팔은 몸 가까이. 잠 자세(옆으로 웅크림)와 한눈에 달라야 한다(`OPEN_DECISIONS.md` OD-53).
   - 쓰러짐 f4 정지: f3과 **화소 diff 0**. 얼굴 레이어만 눈감음으로 바뀐다.
@@ -615,7 +620,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   - 키 26, 머리 12 × 12(y 3~14), 몸통 높이 8·폭 7(y 15~22), 다리 높이 6(y 23~28), 최하단 28, 중심 x 15.
   - 32 규격은 **내부 선을 쓰지 않는다.** 면의 색 차이로만 구분하고 바깥 1px 전체를 `#2B2233`으로 두른다(15 §2.3).
   - 얼굴은 눈 2 × 2 + 입 1줄만 들어간다(얼굴 레이어 규격).
-- **색**: 48 규격과 같은 6색.
+- **색**: 48 규격과 같은 9색.
 - **참고**: 15 §1.1, §2.3. O02 비교 시험은 두 규격이 **같은 품질**이어야 공정하다.
 - **프롬프트(한국어)**: 32 × 32 칸에 키 26픽셀, 머리 12 × 12의 SD 맨몸을 오른쪽 옆모습으로 그린다. 바깥 1픽셀 전체를 `#2B2233` 외곽선으로 두르고 내부 선은 쓰지 않는다. 48픽셀 그림을 줄여서 만들지 않는다.
 - **프롬프트(영어)**: `chibi base body redrawn natively at 32x32, 26px tall, head 12x12, full 1px outline #2B2233 on every edge, no interior linework, flat fills only, not a downscale of a larger drawing`
@@ -634,7 +639,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   - 표정 연결(15 §4): 공격·피격 = 찡그림, 발견 = 놀람, 환호 = 웃음, 잠·쓰러짐 f4 = 눈감음, 그 밖 = 기본.
   - 주름 겹침: 숙련기 = 눈가 1px, 노년 = 2px + 흰 눈썹.
   - 새내기 볼 홍조 1px은 얼굴 시트의 전용 인덱스다. 생성 그림에는 표지 색 `#B04A42` 1블록으로 그리고 정규화가 인덱스로 옮긴다. 새내기 팔레트만 색을 주고 그 밖은 투명(15 §5.1, `OPEN_DECISIONS.md` OD-17).
-- **색**: 눈동자 `#2B2233`, 흰자 `#F0E6CC`, 입 `#A0664A`, 눈썹은 머리색 가장 어두운 톤(팔레트 인덱스로 교체 가능하게 전용 인덱스 배정). 주름은 피부 짙은 톤 `#A0664A`. 얼굴 레이어 색 수는 몸체와 합쳐 6 이내.
+- **색**: 눈동자 `#2B2233`, 흰자 `#F0E6CC`, 입 `#A0664A`, 눈썹은 머리색 가장 어두운 톤(팔레트 인덱스로 교체 가능하게 전용 인덱스 배정). 주름은 피부 짙은 톤 `#A0664A`. 얼굴 레이어 색 수는 칸마다 4 이내(몸체 9색과 따로 센다, D73).
 - **참고**: 15 §6.1, §1.1 표정 행. 1차 S1 전 칸은 **입과 눈썹이 없어** 표정 5종을 만들 수 없었다.
 - **프롬프트(한국어)**: 48 × 48 투명 칸 5개에 얼굴 부품만 그린다. 눈 2 × 3픽셀 두 개, 입 2줄, 눈썹 하나씩이다. 표정은 기본·웃음·찡그림·눈감음·놀람 순이고 칸 사이에 눈 위치가 달라지지 않는다.
 - **프롬프트(영어)**: `5 face-part sprites on transparent cells: neutral, smile, grimace, closed eyes, surprise; eyes 2x3 px each, mouth 2 rows, eyebrows; eye position identical across all five`
@@ -778,7 +783,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **참고**: 15 §6.4 표, §3.2 선택 부품.
 - **프롬프트**: 없음(데이터 작업).
 - **금지**: 팔레트 때문에 프레임을 새로 그리지 않는다. 등급을 색으로 표시하지 않는다.
-- **수용 기준 — 자동**: 10파일 전부 존재 / 각 파일 색 수 ≤ 4 + 선택 부품 / 모든 색이 `pal_master.json` 기본 48색 소속 / 팔레트를 적용해 만든 10개 합성 PNG가 A1~A4 통과.
+- **수용 기준 — 자동**: 10파일 전부 존재 / 각 파일 색 수 ≤ 4 + 선택 부품 / 모든 색이 `pal_master.json` 기본 52색 소속 / 팔레트를 적용해 만든 10개 합성 PNG가 A1~A4 통과.
 - **수용 기준 — 육안**: 10종을 32px 실크기로 나란히 놓고 W04·W08·W09가 서로 구분되는지, W01이 목검으로 보이지 않는지 본다.
 
 ### 2.3 방어구와 투구
@@ -808,13 +813,13 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **우선순위**: **P0(16프레임)** → P1(나머지)
 - **산출**: `chr_armor_leather_48.png`(288 × 480) · `.frames.json` · 선택 부품 겹침 `chr_part_clasp_48.png`(A05 망토 연결 고리, 288 × 480, 0.3절)
 - **규격**: AO-20과 동일.
-- **내용**: **민소매 조끼** + 어깨끈 2줄 + 허리띠. 소매가 없어 크림 속옷이 어깨 양옆으로 2px 보인다 — 이것이 천옷과의 실루엣 차이다. **어깨에 보이는 크림 속옷 화소는 가죽 레이어가 가진다**(15 §6.4 A02 「밝은 가죽 + 크림 속옷」, 몸체 속옷은 민소매, `OPEN_DECISIONS.md` OD-48).
-- **색**: 겉 `#C08A58`, 그늘 `#8E5E38`, 허리띠 `#5E3C24`, 속옷 `#F0E6CC`, 외곽선 `#2B2233`. 청색 허리띠(A03)는 허리띠 색을 팔레트로 `#3E5A7E`로 바꾼다. 망토 연결 고리(A05)는 인덱스가 아니라 겹침 파일이다(0.3절).
+- **내용**: **민소매 조끼** + 어깨끈 2줄 + 허리띠. 소매가 없어 회청 속옷 소매가 어깨 양옆으로 2px 보인다 — 이것이 천옷과의 실루엣 차이다. **어깨에 보이는 속옷 소매 화소는 가죽 레이어가 가진다**(15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」, 몸체 속옷은 민소매, `OPEN_DECISIONS.md` OD-48). 색은 몸체 속옷과 같은 속옷 묶음 `#7EA6B8`이다(D73).
+- **색**: 겉 `#C08A58`, 그늘 `#8E5E38`, 허리띠 `#5E3C24`, 속옷 소매 `#7EA6B8`(속옷 묶음, D73), 외곽선 `#2B2233`. 청색 허리띠(A03)는 허리띠 색을 팔레트로 `#3E5A7E`로 바꾼다. 망토 연결 고리(A05)는 인덱스가 아니라 겹침 파일이다(0.3절).
 - **참고**: 15 §6.2 가죽 행(「조끼, 어깨끈, 허리띠」), §6.4 A02·A03·A05. 1차 S8 r2c4는 소매 달린 상의였다.
 - **프롬프트(한국어)**: 48 × 48 투명 칸 44개에 민소매 가죽 조끼 부분만 그린다. 소매가 없어 속옷 소매가 어깨 옆으로 보이고, 세로 어깨끈 2줄과 허리띠 2픽셀이 있다.
-- **프롬프트(영어)**: `44 armor-overlay sprites of a sleeveless leather vest, no sleeves so the undershirt shoulders stay visible, two vertical shoulder straps, 2px belt, tan and dark leather tones, transparent elsewhere`
+- **프롬프트(영어)**: `44 armor-overlay sprites of a sleeveless leather vest, no sleeves so the grey-blue undershirt #7EA6B8 stays visible at the shoulders, two vertical shoulder straps, 2px belt, tan and dark leather tones, transparent elsewhere`
 - **금지**: 소매를 그리지 않는다. 망토를 여기 그리지 않는다(AO-25가 가진다).
-- **수용 기준 — 자동**: AO-20과 동일 / 어깨 영역(48 규격 y 23~25)의 크림 속옷 화소가 가죽 레이어에 있고, 합성에서 소매가 팔로 늘어나지 않는다.
+- **수용 기준 — 자동**: AO-20과 동일 / 어깨 영역(48 규격 y 23~25)의 속옷 소매 화소(`#7EA6B8`)가 가죽 레이어에 있고, 합성에서 소매가 팔로 늘어나지 않는다.
 - **수용 기준 — 육안**: V1 V4. 천옷과 나란히 놓고 3초 안에 다른 옷으로 읽힌다.
 
 #### AO-22 · 방어구 금속 계열
@@ -879,7 +884,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **참고**: 15 §6.4, `ASSET_REVIEW_v01.md` §4.7.
 - **프롬프트**: 없음(데이터 작업).
 - **금지**: 팔레트 때문에 프레임을 새로 그리지 않는다.
-- **수용 기준 — 자동**: 7파일 전부 존재 / 각 파일 색 수 ≤ 5 + 선택 부품 / 모든 색이 기본 48색 소속 / A07 팔레트에 `#E8E6E0`·`#B4B2B0` 없음 / 7종 합성본이 A1~A4 통과 / **A06과 A07 합성본의 32px 알파 마스크 차이 ≥ 20/256px**.
+- **수용 기준 — 자동**: 7파일 전부 존재 / 각 파일 색 수 ≤ 5 + 선택 부품 / 모든 색이 기본 52색 소속 / A07 팔레트에 `#E8E6E0`·`#B4B2B0` 없음 / 7종 합성본이 A1~A4 통과 / **A06과 A07 합성본의 32px 알파 마스크 차이 ≥ 20/256px**.
 - **수용 기준 — 육안**: 7종을 32px 실크기로 나란히 놓고 A06(회색 녹)과 A07(청동 종)이 구분되는지 본다.
 
 #### AO-25 · 망토 부품 (A05 · 흡혈귀 공용)
@@ -961,7 +966,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   - 흰머리는 `pal_hair_white.json`으로 교체한다(`#E8E4DC` `#C8C2B8`). **새 프레임을 그리지 않는다.**
   - 숙련기(50~64)는 머리색 채도 −35% + 관자놀이 흰머리 2px을 **팔레트 인덱스 교체**로 만든다. 프레임을 새로 그리지 않는다. 흰머리 인덱스는 머리 모양마다 두 블록만 흰색으로 바꾼 보조판을 편집으로 만들어 정규화가 원판과의 차이로 잡는다(15 §5.1, `prompts/P1_character.md` §11.3, `OPEN_DECISIONS.md` OD-16).
   - 은퇴 후 계승 대기 장면에서만 `prop_cane`을 `hand_b`에 붙인다.
-- **색**: 기본 몸체와 같은 6색.
+- **색**: 기본 몸체와 같은 9색.
 - **참고**: 15 §5.1 노화 4단계. 1차 S3 r4·r5는 16칸(명세 10칸)이고 흰머리 교체만 있었다.
 - **프롬프트(한국어)**: 48 × 48 칸 10개에 등이 1픽셀 굽은 노년 맨몸의 대기 4프레임과 걷기 6프레임을 그린다. 몸 크기와 머리 크기는 기본 몸체와 같고 머리만 앞으로 1픽셀, 아래로 1픽셀 옮긴다.
 - **프롬프트(영어)**: `10 base-body frames of an elderly chibi adventurer, spine bowed by exactly one pixel, head shifted 1px forward and 1px down, same body size and head size as the standard body, only the head sits 1px lower, idle x4 and walk x6, no hair, no face, no clothing`
@@ -1009,7 +1014,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **우선순위**: **P0**(EN01 여울 들쥐가 15 §1.2 시험 킷에 들어간다)
 - **산출**: `assets/sprites/enemy/enm_rat_48.png`(128 × 120) · `.anchors.json` · `.frames.json`
 - **규격**: 48 규격 셀 32 × 24(시트 128 × 120), 32 규격 셀 24 × 16(시트 96 × 80). 5행 × 4열.
-- **내용**: 네 발 + 긴 꼬리. 둥근 귀 2개. 48 규격 높이 15·최하단 y 19, 32 규격 높이 10·최하단 y 12.
+- **내용**: 네 발 + 긴 꼬리. 둥근 귀 2개. 48 규격 높이 14·최하단 y 19(합격 r3 실측, D74), 32 규격 높이 10·최하단 y 12.
   - 대기: 1 기본 / 2 코 킁킁(코 1px 앞) / 3 기본과 동일 화소 / 4 **볼주머니 부풂**(볼 2 × 2px, 02 §7 귀여움).
   - 이동: 1 앞발 접지 / 2 몸 −1px / 3 뒷발 밀기 / 4 몸 +1px. 꼬리는 한 프레임 늦게 따라온다.
   - 공격: 1 몸 낮춤 / 2 입 벌림(**입 안 붉은 면적 48 규격 3px 이내**) / 3 물기 / 4 복귀.
@@ -1020,7 +1025,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **프롬프트(한국어)**: 32 × 24 칸 18개에 네 발로 선 SD 들쥐를 왼쪽을 보게 그린다. 둥근 귀 2개와 긴 꼬리가 있다. 대기·이동·공격·피격·달아나기 순서이고, 달아나는 마지막 두 칸에서는 도토리를 안고 꼬리를 만다. 피와 상처는 그리지 않는다.
 - **프롬프트(영어)**: `18 sprites of a chibi field rat on all fours facing left inside a 32x24 cell: idle x4 (one frame puffing cheek pouches), move x4, bite attack x4, flinch x2, and flee x4 where it turns, curls its tail and hugs an acorn; no blood, no wounds, no corpse`
 - **금지**: 쓰러지거나 죽은 모습을 그리지 않는다. 혀를 그리지 않는다. 입 안 붉은 면적이 3px(48)/2px(32)을 넘지 않는다.
-- **수용 기준 — 자동**: A1 A2 A3 A4(≤12 + 투명) A5 A6 A7(=19 / =12) A9(여백 ≥ 3 / ≥ 2) A11 A13 / bbox aspect = 32/24 이내 / 붉은 화소 수 ≤ 3(48) / A10.
+- **수용 기준 — 자동**: A1 A2 A3 A4(≤12 + 투명) A5 A6 A7(=19 / =12) A9(여백 ≥ 2 / ≥ 2) A11 A13 / bbox aspect = 32/24 이내 / 붉은 화소 수 ≤ 3(48) / A10.
 - **수용 기준 — 육안**: V1 V2 V5. 32px 실크기에서 늑대·박쥐·코볼트와 실루엣이 겹치지 않는다.
 
 #### AO-32 · 적 늑대
@@ -1028,7 +1033,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **우선순위**: P1
 - **산출**: `enm_wolf_48.png`(192 × 160) · JSON
 - **규격**: 48 규격 셀 48 × 32, 32 규격 셀 32 × 24. 5행 × 4열.
-- **내용**: 네 발 + 갈기 + 부시테일. 뾰족 귀. 48 규격 높이 26·최하단 27, 32 규격 높이 18·최하단 20.
+- **내용**: 네 발 + 갈기 + 부시테일. 뾰족 귀. 48 규격 높이 25·최하단 27(합격 v04 w01 실측, D74), 32 규격 높이 18·최하단 20.
   - 대기: 숨쉬기 1px + 귀 움직임. 3프레임은 1프레임과 동일 화소.
   - 이동: 네 발 걸음 4프레임. 접지 발 고정.
   - 공격: 1 몸 낮춤 / 2 도약(발이 지면선에서 3px 뜸, **그림자 폭 70%로 줄임**) / 3 무는 순간 / 4 착지.
@@ -1037,8 +1042,8 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **참고**: 15 §7.1 늑대 행, §7.2 EN03 `#8A96A6`, 02 §7 「달아날 때 꼬리를 만다」.
 - **프롬프트(한국어)**: 48 × 32 칸 18개에 네 발 늑대를 왼쪽을 보게 그린다. 뾰족한 귀, 가슴의 크림색 러프, 굵은 꼬리가 있다. 공격 2칸에서 3픽셀 도약하고, 달아나는 2칸부터 꼬리를 배 아래로 만다.
 - **프롬프트(영어)**: `18 sprites of a chibi wolf facing left in a 48x32 cell: idle x4, four-legged walk x4, lunge attack x4 leaping 3px off the ground, flinch x2, flee x4 with the tail tucked under the belly; cream chest ruff, pointed ears; no blood, no corpse`
-- **금지**: 혀를 그리지 않는다. 쓰러진 모습 금지. 코볼트와 같은 높이로 그리지 않는다(늑대 ÷ 코볼트 높이비 = 0.87: 늑대 26 ÷ 코볼트 30).
-- **수용 기준 — 자동**: AO-31과 동일 검사 / 최하단 y = 27(48) · 20(32), 공격 2프레임만 예외(−3px) / 퇴장 2~4프레임 bbox 폭이 1프레임보다 3px 이상 좁다 / **늑대 높이 ÷ 코볼트 높이 = 0.87 ± 0.05**(15 §7.1 코볼트 「캐릭터 키 약 0.8」 = 30, 0.5절 높이, `OPEN_DECISIONS.md` OD-55).
+- **금지**: 혀를 그리지 않는다. 쓰러진 모습 금지. 코볼트와 같은 높이로 그리지 않는다(늑대 ÷ 코볼트 높이비 = 0.83: 늑대 25 ÷ 코볼트 30, D74).
+- **수용 기준 — 자동**: AO-31과 동일 검사 / 최하단 y = 27(48) · 20(32), 공격 2프레임만 예외(−3px) / 퇴장 2~4프레임 bbox 폭이 1프레임보다 3px 이상 좁다 / **늑대 높이 ÷ 코볼트 높이 = 0.83 ± 0.05**(15 §7.1 코볼트 「캐릭터 키 약 0.8」 = 30, 0.5절 높이, `OPEN_DECISIONS.md` OD-55).
 - **수용 기준 — 육안**: V1 V2 V5.
 
 #### AO-33 · 적 박쥐
@@ -1424,7 +1429,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   | `prop_letter` | 1 | `hand_f` | 편지 12 × 9. **봉인은 좌우 대칭 원형 1개**(화살표로 읽히는 획 금지) |
 
   - `prop_zzz`는 **알파벳 z가 아니라 지그재그 기호 2개**로 그린다(보완 제안 P-11 승인 → 15 §2.1).
-- **색**: 파일당 3색 이내. 전부 기본 48색.
+- **색**: 파일당 3색 이내. 전부 기본 52색.
 - **참고**: 15 §9.2 소품 표, `content/base/props/props.json`의 `asset_id`.
 - **프롬프트(한국어)**: 48 × 48 투명 칸에 {빵 / 펼친 책과 넘기는 책 / 약병 / 붕대 / 지팡이 / 느낌표 말풍선 / 지그재그 기호 2개 / 몸보다 큰 자루 6프레임 / 버섯 우산 / 나무 호각 / 찢어진 지도 / 봉인된 편지} 하나만 그린다. 사람·손은 그리지 않는다.
 - **프롬프트(영어)**: `a single prop on a transparent 48x48 cell: {bread / open book and page-turn / potion vial / bandage wrap / walking cane / exclamation speech bubble / two zigzag sleep marks / an oversized loot sack in 6 sway frames / mushroom umbrella / flat wooden whistle / torn map / sealed letter with a symmetric round seal}; no hand, no body, no background`
@@ -1617,7 +1622,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 
   - W01은 **목재 갈색을 쓰지 않는다**(1차 S8 r1c1은 목검으로 읽혔다).
   - 종 계열 4종(W07 검 자루 종 / W10 종추 / J05 깨진 조각 / R01 둥근 방울)은 서로 실루엣이 달라야 한다.
-- **색**: 파일당 4색 + 외곽선. 전부 기본 48색.
+- **색**: 파일당 4색 + 외곽선. 전부 기본 52색.
 - **참고**: 15 §6.3 길이 표, §6.4 매핑, `content/base/items/items.json`.
 - **프롬프트(한국어)**: 24 × 24 픽셀 칸 가운데에 {녹슨 검 / 한손검 / 단검 / 장검 / 곡괭이 / 창 / 종 달린 검 / 은빛 광맥 장검 / 강철검 / 종추} 하나를 대각선으로 그린다. 사방 1픽셀을 비우고 날 길이를 각각 16 / 16 / 10 / 22 / 16 / 22 / 16 / 22 / 22 / 18픽셀로 맞춘다. 빛은 왼쪽 위에서 온다.
 - **프롬프트(영어)**: `a single 24x24 pixel item icon of a {rusty sword / arming sword / dagger / longsword / pickaxe / spear / bell-pommel sword / silver-vein longsword / steel sword / bell maul} placed diagonally with 1px margin on all sides, blade length exactly {16/16/10/22/16/22/16/22/22/18} px, light from upper left, 4 colors plus outline`
@@ -1635,7 +1640,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   | ID | 이름 | 형태 | 색 | 식별 단서 |
   | --- | --- | --- | --- | --- |
   | A01 | 누빈 천옷 | 헐렁한 소매 상의 | `#F0E6CC` `#C8C2B8` | 기운 자국 2 × 2 조각 3개 |
-  | A02 | 여울 가죽조끼 | **민소매 조끼** | `#C08A58` `#8E5E38` | 크림 속옷 소매가 어깨 양옆으로 2px + 어깨끈 2줄 + 허리띠 2px |
+  | A02 | 여울 가죽조끼 | **민소매 조끼** | `#C08A58` `#8E5E38` | 회청 속옷 소매 `#7EA6B8`가 어깨 양옆으로 2px + 어깨끈 2줄 + 허리띠 2px |
   | A03 | 순찰대 가죽갑옷 | 가죽 갑옷 + 모자 | `#8E5E38` `#5E3C24` | 청색 허리띠 `#3E5A7E` |
   | A04 | 광부의 두꺼운 외투 | 두꺼운 외투 + 챙 모자 | 가죽 팔레트 | 목도리 `#B04A42` |
   | A05 | 박쥐가죽 망토옷 | 두건 + 망토 | `#5E3C24` `#4A3F55` | **망토 아랫단을 아래가 뾰족한 산 모양 3개로 파낸다**(박쥐 날개) |
@@ -1646,7 +1651,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
 - **색**: 파일당 4색 + 외곽선.
 - **참고**: 15 §6.2·§6.4, `ASSET_REVIEW_v01.md` §4.7.
 - **프롬프트(한국어)**: 24 × 24 픽셀 칸에 {누빈 천옷 / 민소매 가죽 조끼 / 가죽 갑옷 / 두꺼운 외투 / 박쥐가죽 두건 망토 / 녹슨 판금 조각갑 / 청동 흉갑} 하나를 정면으로 그린다. 청동 흉갑은 은색을 전혀 쓰지 않고 가슴에 종 모양을 넣는다.
-- **프롬프트(영어)**: `a single 24x24 pixel armor icon, front view: {quilted cloth tunic / sleeveless leather vest with visible undershirt shoulders / patrol leather armor with a blue belt / heavy miner coat with a red scarf / bat-leather hooded cloak with three pointed hem scallops / mismatched rusty plate with one oversized pauldron / BRONZE cuirass with a bell silhouette on the chest}; bronze piece uses only #E0B06A #B07A3A #7A4E24, never silver`
+- **프롬프트(영어)**: `a single 24x24 pixel armor icon, front view: {quilted cloth tunic / sleeveless leather vest with visible grey-blue undershirt shoulders / patrol leather armor with a blue belt / heavy miner coat with a red scarf / bat-leather hooded cloak with three pointed hem scallops / mismatched rusty plate with one oversized pauldron / BRONZE cuirass with a bell silhouette on the chest}; bronze piece uses only #E0B06A #B07A3A #7A4E24, never silver`
 - **금지**: A07에 은색 금지. A02에 소매 금지. 등급 표시 금지.
 - **수용 기준 — 자동**: AO-55와 동일 / A07 파일에 `#E8E6E0`·`#B4B2B0`·`#A0A0A0`·`#C0C0C0` 화소 0 / **A06과 A07의 16px 축소 마스크 차이 ≥ 20/256px**.
 - **수용 기준 — 육안**: A06과 A07을 나란히 놓고 회색 녹 / 청동 종으로 갈리는지 본다.
@@ -1769,7 +1774,7 @@ no glow, no blur, no drop shadow, no text, no numbers, no arrows, orthographic s
   | N09 | 토리 | 길 잃은 아이. 호각을 가진 광대 집안 막내 | 가장 작은 얼굴, 도토리 모자 같은 털모자, 목에 건 큰 나무 호각 |
 
   - 외형 단서의 출처는 02 §8이고, 세 출처(02·15·이 카드) 어디에도 없는 색·옷 세부는 `PROMPTS.md` §7.2의 `임시` 값을 쓴다. `임시` 외형은 승인되었고(2026-09-24, `OPEN_DECISIONS.md` OD-02) 생성 결과를 보고 고칠 수 있다. 옛 단서(하델 가죽 목깃, 미루 안경 없는 가는 눈, 세나 두 갈래 땋은 머리, 유안 이마 붕대)는 02와 달라 쓰지 않는다(OD-38).
-- **색**: 초상당 20색 이내. 기본 48색 + 흡혈귀 확장(N08만).
+- **색**: 초상당 20색 이내. 기본 52색 + 흡혈귀 확장(N08만). 속옷·바지 묶음은 쓰지 않는다(주인공 몸체 전용, D73).
 - **참고**: 15 §10 NPC 11장, 02 §8, `content/base/npcs/npcs.json`, `PROMPTS.md` §7.
 - **프롬프트**: `prompts/P2_world.md` §12.4(w43 9명, w44 추가 표정 2). 인물 문장은 `PROMPTS.md` §7.3 `[ID-N01]`~`[ID-N09]`.
 - **금지**: 02 §8·`PROMPTS.md` §7.2에 없는 특징을 만들지 않는다. 배경을 그리지 않는다. 투구를 그리지 않는다.

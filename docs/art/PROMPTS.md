@@ -52,9 +52,9 @@ Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lightin
 ### B 주인공 정체성 (캐릭터 시트마다 붙인다)
 
 ```
-SUBJECT AND IDENTITY: one and the same youthful androgynous human adventurer in every cell, chibi proportions about 2.2 heads tall (the head is close to half of the body height). Facing RIGHT in a slight three-quarter side view, never front-facing. Short chestnut hair (HR01) with two flat browns, medium warm skin, round dark eyes, tiny mouth. Cream quilted short tunic with elbow-length sleeves, thin brown waist cord, two or three small square repair patches, muted grey-beige trousers, brown boots. Keep every hair lock, facial feature, garment detail, body proportion and limb thickness identical across all cells. Expressive and charming, not a stiff stick figure.
+SUBJECT AND IDENTITY: one and the same youthful androgynous human adventurer in every cell, chibi proportions about 2.2 heads tall (the head is close to half of the body height). Facing RIGHT in a slight three-quarter side view, never front-facing. Short chestnut hair (HR01) with two flat browns, medium warm skin, round dark eyes, tiny mouth. Cream quilted short tunic with elbow-length sleeves, thin brown waist cord, two or three small square repair patches, muted teal canvas work trousers, brown boots. Keep every hair lock, facial feature, garment detail, body proportion and limb thickness identical across all cells. Expressive and charming, not a stiff stick figure.
 FAR-SIDE LIMBS: the arm and leg farther from the viewer are always one shade darker than the near-side limbs, so left and right steps are distinguishable.
-PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord and boots #8E5E38; trousers #C8C2B8 #9A948C.
+PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord and boots #8E5E38; trousers #27978D #00766D.
 ```
 
 - NPC의 정체성 문장은 §7.3이다.
@@ -224,7 +224,7 @@ ROW 4 SLEEP, 4 frames, 450 ms: lying ON ITS SIDE, back gently curved, knees draw
 합격한 REF-A·REF-B를 각각 **편집 입력**으로 넣고 옷만 바꾼다(v03 동작 시트는 이 방식으로 인물이 유지됐다). 조립: S + 본문 + D.
 
 ```
-Clothing replacement: instead of the cream tunic, a sleeveless tan leather vest #C08A58 #8E5E38 with two vertical shoulder straps and a 2-block belt, the cream undershirt #F0E6CC visible at the shoulders. Everything else (face, hair, trousers, boots, poses) identical to the reference sheet.
+Clothing replacement: instead of the cream tunic, a sleeveless tan leather vest #C08A58 #8E5E38 with two vertical shoulder straps and a 2-block belt, the plain grey-blue linen undershirt #7EA6B8 #546E7A visible at the shoulders. Everything else (face, hair, trousers, boots, poses) identical to the reference sheet.
 ```
 
 ### 3.2 레이어 부품 — 기준 합성 시트를 편집해 떼어 낸다
@@ -237,18 +237,20 @@ Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the 
 
 | 번호 | 카드 | 입력 | 머리말 뒤에 붙일 문장 |
 | --- | --- | --- | --- |
-| L1 | AO-02·03·04·07·08 몸체 | REF-A, REF-B | `Remove the hair, the face (eyes, eyebrows, mouth), the tunic, the belt, the sword and the bread. Where clothing is removed, show the bare base body: skin #E3B48E #C88E68 #A0664A with a plain cream sleeveless undershirt #F0E6CC #C8C2B8 and the same trousers and boots. The head stays as a smooth bald skin-coloured head of the same size and outline.` |
+| L1 | AO-02·03·04·07·08 몸체 | REF-A, REF-B | `Remove the hair, the face (eyes, eyebrows, mouth), the tunic, the belt, the sword and the bread. Where clothing is removed, show the bare base body: skin #E3B48E #C88E68 #A0664A with a plain grey-blue linen sleeveless undershirt #7EA6B8 #546E7A (never cream, never the tunic colours), teal canvas trousers #27978D #00766D (never grey) and the same brown boots. The head stays as a smooth bald skin-coloured head of the same size and outline.` |
 | L2 | AO-13 얼굴 | L7 결과(+ 볼 홍조 표지, P1 §3.3) | `Keep ONLY the eyes, eyebrows and mouth of each figure, and the single #B04A42 cheek block, pixel for pixel as they are. Do not redraw or enlarge them. Remove everything else, including skin, hair and outline.` |
 | L3 | AO-14 머리카락 HR01 | REF-A, REF-B | `Keep ONLY the hair. Remove face, skin, body, clothing, weapon and all other parts.` |
 | L4 | AO-20 천옷 | REF-A, REF-B | `Keep ONLY the cream quilted tunic and its brown waist cord with the repair patches. Remove the body, skin, head, hair, trousers, boots, sword and bread.` |
-| L5 | AO-21 가죽옷 | REF-C | `Keep ONLY the leather vest, its straps and belt, and the cream undershirt visible at the shoulders. Remove everything else.` |
+| L5 | AO-21 가죽옷 | REF-C | `Keep ONLY the leather vest, its straps and belt, and the grey-blue undershirt visible at the shoulders. Remove everything else.` |
 | L6 | AO-16·17 무기 | REF-B 2행(V1), §3.3 교체 결과(V2) | `Keep ONLY the {sword / dagger} in each cell (blade, guard, grip). Remove the character entirely, including the hand holding it.` — V1 v03 위치 합격 |
 | L7 | AO-13 표정 5종 | REF-B 1행 1칸 | 표정 시트를 먼저 만든다: `Keep this exact character, pose and size. Make a 5-cell row of the same frame, identical except the facial expression: neutral, smile, grimace (focused frown), eyes closed, surprise. Only the eyes, eyebrows and mouth change.` 그다음 결과에 L2를 적용해 얼굴만 뗀다 |
 
 - 걷기 부품(v03 `12`~`15`)은 불합격 걷기 시트에서 뗐으므로, 새 REF-A가 합격하면 다시 뗀다.
 - 잠·앉기 행에서 머리카락·옷을 뗄 때도 같은 문장을 쓴다. 칸이 비어 버리면(부품이 없는 포즈) 그 칸은 빈 채로 둔다.
 - 편집 결과를 입력과 겹쳐 봤을 때 남긴 부품의 위치가 1블록이라도 움직였으면 불합격이다(E8). **색이 달라졌어도 불합격이다**(E21, §2.3 머리카락).
-- L5의 어깨 크림 속옷: 15 §6.4 A02 「밝은 가죽 + 크림 속옷」이 가죽 팔레트에 속옷을 넣고, 몸체 속옷은 민소매(L1)이므로 어깨의 크림 화소는 가죽 레이어가 가진다(P1 확인 필요 9 해결, `OPEN_DECISIONS.md`).
+- L5의 어깨 속옷: 15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」가 가죽 팔레트에 속옷을 넣고, 몸체 속옷은 민소매(L1)이므로 어깨의 속옷 화소는 가죽 레이어가 가진다(P1 확인 필요 9 해결, `OPEN_DECISIONS.md`).
+- L1의 속옷은 회청 `#7EA6B8` `#546E7A`(속옷 묶음, D73)이다. 크림이던 속옷이 천옷 `#F0E6CC` `#C8C2B8`와 같은 색이어서 파생 도구가 천옷과 속옷을 가르지 못했다(천옷을 벗기면 구멍 난 천옷이 남았다). 이미 합격한 몸체 레이어(v03 `16-body-actions18-48-r3`, v04 `c03-body-ref-d-48`·`c03-body-ref-e-48`)는 모양만 쓰고, 다음 아트 차례에 이 L1로 다시 뗀다.
+- L1의 바지는 청록 캔버스 `#27978D` `#00766D`(바지 묶음, D73)다. 회색이던 바지 `#C8C2B8` `#9A948C`는 천옷 그늘·잿빛 머리와 같은 색이라 천옷 밑단·머리카락과 갈리지 않았다. 바지는 기준 시트에서도 **보이는** 자리라 파생 도구가 기준 시트의 색을 쓴다 — 그래서 몸체만이 아니라 기준 시트(REF-A~E)의 바지도 색 교체 편집(`prompts/P1_character.md` §3.1)으로 청록으로 바꾼 뒤 L1·L4를 다시 적용한다.
 
 ### 3.3 새로 만드는 부품
 
@@ -403,8 +405,8 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | --- | --- | --- | --- |
 | 기준 인물 동작 | AO-02·04·07·08 | ✅ v03 r4 | — |
 | 걷기 12 | AO-03 | ❌ 인물 불일치 | REF-A를 기준 인물 입력으로 재생성 |
-| 가죽옷 합성 | AO-21 | 🔶 동작 ✅ / 걷기는 새 REF-A 뒤 | 새 REF-A 편집 |
-| 몸체 레이어 | AO-02~08 | 🔶 동작 ✅ / 걷기 재추출 | — |
+| 가죽옷 합성 | AO-21 | 🔶 동작 ✅(어깨 속옷이 크림) / 걷기는 새 REF-A 뒤 | 새 REF-A 편집. 동작 시트는 어깨 속옷을 `#7EA6B8`로 다시 교체(D73) |
+| 몸체 레이어 | AO-02~08 | 🔶 동작 모양 ✅, 속옷·바지 색 ❌(크림·회색, D73) / 걷기 재추출 | 기준 시트 바지 색 교체(P1 §3.1) 뒤 새 L1(회청 속옷·청록 바지)로 다시 떼기 |
 | 머리카락 HR01 | AO-14 | ❌ 동작: 위치 ✅·색 ❌(§2.3) / 걷기 재추출 | 색 유지 머리말로 다시 떼기 |
 | 얼굴 | AO-13 | ❌ | L7 → 볼 홍조 표지(P1 §3.3) → L2 |
 | 천옷 레이어 | AO-20 | ❌ 소매 늘림·배경 | 새 머리말로 재추출 |
@@ -523,7 +525,7 @@ P2 초상(옛 NB-01~NB-09)과 P3 장면(옛 등장인물 외형표·`[ID-…]`·
 - 출처 우선순위: **02 §8 외형 키워드**(인물·세계 소유, 00 §2.4) → 15 §10(초상: 투구 없음, 세나·비엘 표정 추가)·15 §9.3(장면 속 역할 설명) → `ASSET_ORDERS.md` AO-61 외형 단서. 앞 출처와 부딪히는 뒤 출처는 쓰지 않는다.
 - AO-61에서 쓰지 않은 것(02와 부딪힘): 하델 「가죽 목깃」(02: 녹색 길드 조끼), 미루 「안경 없는 가는 눈」(02: 동그란 안경), 세나 「두 갈래 땋은 머리」(02: 짧게 묶은 머리), 유안 「이마 붕대」(02: 붕대 감은 다리). AO-61의 유안 「길잡이 두건 목 스카프」는 02의 길잡이 망토와 부딪히지 않아 「두건을 내려 목에 두름」으로 합쳤다. AO-61에 없던 도담 머릿수건·토리 모자는 02에서 더했다.
 - 세 출처 어디에도 없는 세부(색·옷 모양·키 수치)는 **`임시`**다. **사용자가 승인했다**(2026-09-24, `OPEN_DECISIONS.md` OD-02). 생성 결과를 보고 고칠 수 있고, 고칠 때는 이 절만 고친다.
-- 색은 기본 48색 안에서 고른다(15 §2.2). 비엘만 흡혈귀 확장 묶음을 쓴다(15 §5.2).
+- 색은 기본 52색 안에서 고른다(15 §2.2). 속옷 묶음 `#7EA6B8` `#546E7A`와 바지 묶음 `#27978D` `#00766D`는 주인공 몸체 전용이라 NPC 옷에 쓰지 않는다(D73). NPC의 회베이지 바지 `#C8C2B8` `#9A948C`는 그대로다 — NPC는 한 장 그림이라 레이어를 가르지 않는다. 비엘만 흡혈귀 확장 묶음을 쓴다(15 §5.2).
 - **제작 순서: NPC 전신 기준 시트(`n01`, §7.4) → 초상(P2 w43).** 초상은 `n01`을 정체성 입력으로 넣어 만든다. 주인공 초상(P2 w39)이 스프라이트 마스터에서 나오는 것과 같은 방향이다. 이유: ① `n01`은 마스터만 있으면 지금 만들 수 있다(초상은 w39가 먼저 필요하다). ② 전신 특징(다리 보조대·짝짝이 장화·붕대 감은 다리)은 흉상에 보이지 않으므로, 흉상에서 전신을 만들면 아랫몸을 새로 지어내야 한다. ③ 장면 14개가 `n01`을 직접 입력으로 쓰므로 기준이 하나가 된다. 초상이 합격하면 `n01`과 나란히 놓고 본다(P2 W12). 둘이 다르면 `n01`이 기준이고 초상을 다시 만든다.
 
 ### 7.2 외형표

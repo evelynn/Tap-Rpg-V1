@@ -11,8 +11,11 @@
     "동반 파일: anchors = {이름}.anchors.json, frames = {이름}.frames.json, 9slice = {이름}.9slice.json (0.8절, AO-59).",
     "동반 파일 배정은 각 카드의 '산출' 줄을 따랐다. 0.8절은 방어구 몸통·망토에도 anchors를 요구하지만 AO-20~AO-22·AO-25의 산출 줄은 frames만 적었다 — 본 매니페스트는 카드를 따르고, 이 불일치는 ASSET_ORDERS 쪽에서 정리한다.",
     "max_colors가 null인 파일 12장(배경 타일 11 + 폐광 등불 깜박임 1)은 15에도 ASSET_ORDERS에도 색 수 상한이 없다. 값이 정해지면 채운다.",
-    "palette_sets는 ASSET_ORDERS 0.3절 '캐릭터·장비는 기본 48색 안에서만, 적·배경·변이·UI는 확장 묶음까지'를 그대로 옮긴 것이다.",
+    "palette_sets는 ASSET_ORDERS 0.3절 '캐릭터·장비는 기본 52색 안에서만, 적·배경·변이·UI는 확장 묶음까지'를 그대로 옮긴 것이다.",
     "2026-09-24 사용자 결정 반영(docs/art/OPEN_DECISIONS.md): 32 규격 항목 전부 삭제(O02 = 48, D64), 무기 셀 80×64(D65), 흰빛 덮기·종추 파일 삭제, 날씨 비·눈은 입자 스프라이트, 정예 깃발 16×16, 장소 소품 20개, 선택 부품 겹침 3종, 파동 셀 64×56."
+,
+    "underlayer = 몸체 민소매 속옷 2색, trousers = 몸체 바지 2색(밝음·그늘, D73). 어떤 옷 색과도 겹치지 않게 따로 둔 묶음이다(같은 묶음이면 파생 도구가 같은 재질로 본다). 기본 묶음은 48 + 2 + 2 = 52색.",
+    "몸체 max_colors 9 = 피부 3 + 속옷 2 + 바지 2 + 장화 1 + 외곽선 1(D73). 적 margin 2 = 합격 들쥐·늑대 실측(D74)."
   ],
   "palettes": {
     "outline": ["#2B2233", "#4A3F55"],
@@ -23,6 +26,8 @@
     "bronze": ["#E0B06A", "#B07A3A", "#7A4E24", "#B0603A"],
     "leather": ["#C08A58", "#8E5E38", "#5E3C24"],
     "cloth": ["#F0E6CC", "#5A7FA8", "#3E5A7E", "#6D8F5A", "#4D6A3E", "#B04A42"],
+    "underlayer": ["#7EA6B8", "#546E7A"],
+    "trousers": ["#27978D", "#00766D"],
     "fx": ["#FFFFFF", "#FFE38A", "#8FE0A0", "#B9C8FF", "#8E4FA3", "#E0504A"],
     "ext_enemy": ["#9A8A78", "#6E5A48", "#8A96A6", "#6C6A70", "#7A5A6E", "#3A3050", "#9AA85A", "#C8783A", "#6E7A5A"],
     "ext_bg": ["#8FC06A", "#5E9A4A", "#B8A04A", "#E8EEF2", "#5A6A9A"],
@@ -34,12 +39,12 @@
     ]
   },
   "palette_sets": {
-    "base": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "fx"],
-    "enemy": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "fx", "ext_enemy"],
-    "enemy_elite": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "fx", "ext_enemy", "ext_elite_mutant"],
-    "bg": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "fx", "ext_bg"],
-    "ui": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "fx", "ext_ui"],
-    "portrait": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "fx", "ext_elite_mutant"]
+    "base": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers", "fx"],
+    "enemy": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers", "fx", "ext_enemy"],
+    "enemy_elite": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers", "fx", "ext_enemy", "ext_elite_mutant"],
+    "bg": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers", "fx", "ext_bg"],
+    "ui": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers", "fx", "ext_ui"],
+    "portrait": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers", "fx", "ext_elite_mutant"]
   },
   "defaults": {
     "alpha": [0, 255],
@@ -87,7 +92,7 @@
         { "action": "collapse", "frames": 5 }
       ],
       "frames": 44,
-      "max_colors": 6,
+      "max_colors": 9,
       "palette": "base",
       "companions": ["anchors", "frames"]
     },
@@ -102,7 +107,7 @@
       "grid": [12, 1],
       "rows": [{ "action": "walk12", "frames": 12 }],
       "frames": 12,
-      "max_colors": 6,
+      "max_colors": 9,
       "palette": "base",
       "companions": ["frames"],
       "note": "연구본. 3.1절 프레임 총계에 넣지 않는다."
@@ -121,7 +126,7 @@
         { "action": "walk", "frames": 6 }
       ],
       "frames": 10,
-      "max_colors": 6,
+      "max_colors": 9,
       "palette": "base",
       "companions": ["anchors", "frames"]
     },
@@ -139,7 +144,7 @@
       "max_colors": 6,
       "palette": "base",
       "companions": ["frames"],
-      "note": "칸 순서 = 기본·웃음·찡그림·눈감음·놀람. 색 수는 '몸체와 합쳐 6 이내'를 파일 상한으로 옮긴 값."
+      "note": "칸 순서 = 기본·웃음·찡그림·눈감음·놀람. 색 수 6은 파일 전체 상한이다(칸마다 4, AO-13. 몸체 9색과 따로 센다, D73)."
     },
     {
       "id": "chr_face_wrinkle_48",
@@ -464,7 +469,7 @@
       "frames": 18,
       "max_colors": 12,
       "palette": "enemy",
-      "margin": 3,
+      "margin": 2,
       "companions": ["anchors", "frames"]
     },
     {
@@ -486,7 +491,7 @@
       "frames": 18,
       "max_colors": 12,
       "palette": "enemy",
-      "margin": 3,
+      "margin": 2,
       "companions": ["anchors", "frames"]
     },
     {
@@ -508,7 +513,7 @@
       "frames": 18,
       "max_colors": 12,
       "palette": "enemy",
-      "margin": 3,
+      "margin": 2,
       "companions": ["anchors", "frames"]
     },
     {
@@ -530,7 +535,7 @@
       "frames": 18,
       "max_colors": 12,
       "palette": "enemy",
-      "margin": 3,
+      "margin": 2,
       "companions": ["anchors", "frames"]
     },
     {
