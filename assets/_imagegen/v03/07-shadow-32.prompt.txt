@@ -1,0 +1,7 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x32 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233. Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+One single flat horizontal ellipse, about 40% of the cell width and one twelfth of the cell height, centred horizontally near the bottom of a square transparent cell. One color only: #2B2233 at 35% opacity, the same opacity everywhere. Hard stepped pixel edges, no radial gradient, no blur, nothing else in the image.
+
+32px comparison asset: the ellipse should read as fourteen logical blocks wide and three logical blocks high, about nine-tenths of the way down the square cell. No outline and no additional shapes.

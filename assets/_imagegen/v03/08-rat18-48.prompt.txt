@@ -1,0 +1,21 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x24 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233. Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+Use case: stylized-concept
+Asset type: Tap RPG EN01 field rat pixel-art animation sheet, AO-31 revision.
+Create ONLY an authentic tiny 2D pixel-art sprite sheet on a plain transparent background. EXACTLY 18 sprites in a FOUR-column FIVE-row grid. All cells identical and evenly spaced: rows 1,2,3,5 have four sprites; row 4 has TWO sprites in its first two cells and its final two cells are completely empty. No labels, gridlines, panel decoration or text.
+Subject: the same cute round river field rat in every cell, generally FACING LEFT, a small quadruped with two round ears, a pointed snout, tiny dark eyes, visible cheek pouches, four short paws and a long thin curling tail. Friendly storybook charm in SMALL GAME PIXEL ART. Never a rabbit, hamster without tail, wolf, porcupine, or standing humanlike mouse.
+True native 32x24 logical pixel sprite appearance; body about 15 logical pixels high. Bold legible clusters and single-pixel stair steps. Single logical pixel dark-plum outline. Flat fills, no antialiasing, blurry miniature painting, fur texture, gradients, lighting or glows. Colors limited to outline/eye #2B2233, fur #9A8A78 #6E5A48, belly #C8C2B8, inner ear #C88E68, tooth #F0E6CC, acorn #8E5E38. A maximum three logical pixels #B04A42 inside the mouth only.
+Row1 IDLE4: neutral; nose reaches one pixel forward sniffing; neutral again identical to first; two-pixel cheek pouch puff. Same ground baseline throughout.
+Row2 MOVE4: forepaw contact; body settles one pixel with hind paw lifting; rear paw push with forepaw forward; high passing pose one pixel up. Distinct actual leg articulation, tail follows a frame later; seamless loop.
+Row3 BITE4: crouch anticipating; open mouth a little; short forward bite lunge; recover. No blood, injury, tongue, magic or slash trail.
+Row4 HIT2 then TWO EMPTY CELLS: quick compact flinch with eyes squeezed; weight recoils a pixel back. No white flash painted into fur.
+Row5 FLEE4: look back and begin turning RIGHT; turn right and curl long tail; round-bodied playful tumble holding a tiny acorn between forepaws; smaller curled rat clutching acorn as it escapes. The final row is cute ESCAPE, never dead, wounded or lying as a corpse. Do not paint bushes or a landscape. Acorn only in last two cells, same brown four-by-four logical pixel size.
+Every pose retains same character anatomy, colors, ear size and drawing scale, except deliberately smaller final escape silhouette. Keep lowest paw/body on identical local baseline, full tails inside their own cells with margins. Real transparent background, NO backdrop, ground, vignette, spotlight or checkerboard drawing.
+
+BACKGROUND: genuinely transparent alpha everywhere outside the sprites. If transparency is impossible, one single flat #FF00FF color with no variation. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or semi-transparent fringe around any silhouette.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.

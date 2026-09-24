@@ -1,0 +1,36 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x32 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233. Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+SUBJECT AND IDENTITY: one and the same youthful androgynous human adventurer in every cell, chibi proportions about 2.2 heads tall (the head is close to half of the body height). Facing RIGHT in a slight three-quarter side view, never front-facing. Short chestnut hair (HR01) with two flat browns, medium warm skin, round dark eyes, tiny mouth. Cream quilted short tunic with elbow-length sleeves, thin brown waist cord, two or three small square repair patches, muted grey-beige trousers, brown boots. Keep every hair lock, facial feature, garment detail, body proportion and limb thickness identical across all cells. Expressive and charming, not a stiff stick figure.
+FAR-SIDE LIMBS: the arm and leg farther from the viewer are always one shade darker than the near-side limbs, so left and right steps are distinguishable.
+PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord and boots #8E5E38; trousers #C8C2B8 #9A948C.
+
+LAYOUT: exactly 12 sprites in exactly 6 equal columns and 2 equal rows of identical square cells, evenly spaced, reading order left to right then next row. No empty cells.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell. Every figure's lowest point (feet, or hips when seated, or body when lying) sits on the SAME local ground line in its cell, about 10% above the cell bottom; no ground line is drawn. The body's horizontal center is at the same local x in every cell unless the pose itself moves it.
+BACKGROUND: genuinely transparent alpha everywhere outside the sprites. If transparency is impossible, one single flat #FF00FF color with no variation. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+ANIMATION, one 660 ms walk cycle, twelve DISTINCT poses at 55 ms each, the whole body walking in place:
+1 right foot forward contact, left foot behind, LEFT arm forward.
+2 weight settles onto the right knee, upper body one block lower; the planted right foot does not move.
+3 left foot lifts and swings under the body, arms start to cross.
+4 narrow passing pose, feet close beneath the hips, upper body one block higher.
+5 left leg extends forward, right arm comes forward.
+6 left heel just above the ground before contact, trailing leg pushes off.
+7 LEFT foot forward contact, right foot behind, RIGHT arm forward: the opposite leg step of pose 1, with the darker far-side leg now in front.
+8 weight settles onto the left knee, upper body one block lower.
+9 right foot lifts and swings under the body.
+10 narrow passing pose, upper body one block higher.
+11 right leg extends forward, left arm comes forward.
+12 right heel just before contact, approaching pose 1 but NOT a copy of it.
+Poses 1 and 7 have the widest stance, 4 and 10 the narrowest. Row 2 must visibly differ from row 1 because the near and far legs have swapped. No weapon, helmet, cape, bag or props.
+
+REGENERATION CORRECTION: The previous attempt wrongly turned every character in row 2 to face left. In ALL TWELVE cells the face, nose, chest, toes and travel direction MUST point RIGHT. Do not horizontally mirror the character. Only the near and far arms/legs exchange their forward/back positions. The row-2 poses are still RIGHT-FACING profiles. The darker far-side leg comes FORWARD TO THE RIGHT in frame 7, while the bright near-side leg extends BACK TO THE LEFT. Keep the hair part on the same side in both rows. Prioritize this correction.
+Use the allowed background fallback: the ENTIRE background, including all gutters and every empty region, must be solid uniform bright magenta #FF00FF. No transparency treatment, no haze, no lighting, no vignette.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+Final pose correction: Near-side means the arm and leg visible in front of the torso, drawn in the LIGHT shade. Far-side limbs are behind the torso, DARKER. Pose 1: LIGHT near leg extends right, LIGHT near arm swings left behind the hip; DARK far leg extends left, DARK far arm reaches right. Pose 7: DARK far leg extends right, DARK far arm swings left; LIGHT near leg extends left, LIGHT near arm reaches right. All heads and torsos keep facing RIGHT. Build all in-between poses around these two different contacts, never duplicate the same arm swing in both rows. Please make a fresh drawing, not a copy of any earlier sheet.
+
+Coarser and simpler than a 48px sprite: head about 12x12 logical pixels, standing height about 26, no interior outline lines, eyes one or two blocks, no eyebrows. Entire figure constructed from very few LARGE uniform square blocks. This is a NEW native 32px drawing, not a high-resolution tiny painting or an edit of the 48px drawing.
+No image input. Draw solely from this text. In every pose, the hair is just TWO big brown pixel clusters, eye one black block, limbs two blocks wide. No tiny hair highlights or garment texture.

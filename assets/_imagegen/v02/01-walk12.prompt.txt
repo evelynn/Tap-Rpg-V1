@@ -1,0 +1,26 @@
+Use case: stylized-concept
+Asset type: Tap RPG pixel-art animation sprite sheet, ImageGen revision v02, walk12 visual review.
+Create an exceptionally clean, appealing SMALL 2D PIXEL ART walking character animation sheet. This is a real sprite art request, not a UI, diagram, code sample or pixel-art-themed illustration.
+
+SUBJECT AND IDENTITY: One and the same right-facing, youthful androgynous human adventurer, chibi proportions about 2.2 heads tall. Short chestnut HR01 hair, medium warm skin, round eyes, tiny mouth, cream quilted short tunic A01 with elbow-length sleeves, a thin brown waist cord, small subtle repair patches, simple legs. No weapon, helmet, cape, bag, props or baked ground shadow. Keep every hair lock, facial feature, garment material, body proportion and limb thickness consistent across all twelve poses. Slight right-facing three-quarter profile, NOT front-facing. Expressive and charming, not a stiff stick figure.
+
+PIXEL LANGUAGE: Each figure must look designed on a genuine logical 48x48 pixel canvas, occupied standing height around 38 logical pixels, head approximately 18x17, torso 11x12, short legs 9px. Crisp hard square pixel clusters and deliberate one-pixel stair-steps, no miniature high-resolution painting. Very restrained internal detail and a strong readable silhouette. Outer contour one logical pixel thick, dark plum #2B2233 with selective warm shadow outlines on lit upper edges. Absolutely no blur, antialiasing, smooth vector curves, gradients, soft lighting, glows, painterly strokes, noisy dithering, glossy plastic, 3D rendering or photographic detail.
+Limited palette ONLY: #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord #8E5E38. Use large coherent clusters, not scattered highlights.
+
+LAYOUT: Exactly TWELVE full-body sprites, in exactly SIX equal columns and TWO equal rows, evenly spaced on a genuinely TRANSPARENT background. Reading order left to right then next row. All logical cells are identical squares. Center each character at the same local x, align every planted foot at the SAME local ground baseline (logical y43); no visible ground line. Entire figures inside their own cells with clear gutters. No overlap or cropping. No printed grid, borders, labels, frame numbers, words, watermark, shadows or decorative elements. Transparent means actual alpha, not a drawn checkerboard.
+
+ANIMATION, one 660ms cycle, twelve distinct poses at 55ms each:
+1 right foot forward contact, left foot behind, LEFT arm forward.
+2 weight settles onto right knee, upper body lowered just ONE logical pixel; planted right foot stays fixed.
+3 left foot lifts and swings under the body, arms start to cross.
+4 narrow passing pose, feet close beneath hips, upper body raised ONE logical pixel.
+5 left leg extends forward, right arm comes forward.
+6 left heel just above the ground before contact, trailing leg pushes off.
+7 left foot forward contact, right foot behind, RIGHT arm forward; SAME silhouette proportions as 1 with limb roles exchanged.
+8 weight settles onto left knee, torso lowered ONE logical pixel; planted left foot fixed.
+9 right foot lifts and swings under the body.
+10 narrow passing pose, upper body raised ONE logical pixel.
+11 right leg extends forward, left arm comes forward.
+12 right heel just before contact, fluidly approaching pose 1, NOT a duplicate of pose 1.
+
+Contact poses 1 and 7 have the widest LEG stance; passing poses 4 and 10 have clearly narrower stance. Arms counter-swing against the legs. The head must not change size, hairstyle or identity. Keep bobbing tiny; no jumping, stretching, torso horizontal sliding or random equipment changes. Give the stepping leg genuine knee bend and toe lift so the sequence reads as a relaxed natural walk at tiny display size. Preserve total twelve-pose count and grid above all. Produce ONLY the finished transparent sprite sheet.

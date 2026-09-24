@@ -1,0 +1,5 @@
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Everything removed becomes genuinely transparent (or flat #FF00FF if transparency is impossible). No new content.
+
+Keep ONLY the eyes, eyebrows and mouth of each figure. Remove everything else, including skin, hair and outline.
+
+STRICT EDIT: All removed areas must be 100% OPAQUE flat #FF00FF, with no glow, halo, gradient or lighting. Preserve the original grid and exact positions. Copy the visible eyes and mouth exactly as present in the source; do not invent a different expression or add pink lips, teeth or eye highlights. Remove every skin pixel around them. No new facial features. Never fill missing features.

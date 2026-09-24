@@ -1,0 +1,3 @@
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Everything removed becomes genuinely transparent (or flat #FF00FF if transparency is impossible). No new content.
+
+Remove the hair, the face (eyes, eyebrows, mouth), the tunic, the belt, the sword and the bread. Where clothing is removed, show the bare base body: skin #E3B48E #C88E68 #A0664A with a plain cream sleeveless undershirt #F0E6CC #C8C2B8 and the same trousers and boots. The head stays as a smooth bald skin-coloured head of the same size and outline.

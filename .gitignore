@@ -9,3 +9,15 @@ __pycache__/
 
 # 스프라이트 패키지 압축본(같은 내용이 폴더로 있음)
 output/**/*.zip
+
+# 아트 작업 폴더(D56): 예전 코드 방식 산출물은 보관만, 생성 원본은 합격본만 저장소에 둔다
+# 합격 목록은 docs/art/PROMPTS.md §6. 새 합격본은 아래 ! 줄에 더한다. 프롬프트·검토 기록(.txt·.md)은 모두 넣는다
+assets/_legacy/
+assets/_imagegen/**/*.png
+!assets/_imagegen/v03/02-ref-b-actions18-48-r4.png
+!assets/_imagegen/v03/08-rat18-48-r3.png
+!assets/_imagegen/v03/05-dagger10-48-r2.png
+!assets/_imagegen/v03/05-dagger10-32.png
+!assets/_imagegen/v03/16-body-actions18-48-r3.png
+!assets/_imagegen/v03/18-hair-actions18-48-r3.png
+!assets/_imagegen/v03/20-sword-actions18-48-r2.png

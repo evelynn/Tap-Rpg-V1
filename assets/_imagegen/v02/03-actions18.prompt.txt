@@ -1,0 +1,41 @@
+Use case: stylized-concept
+Input image role: CHARACTER IDENTITY AND PIXEL STYLE REFERENCE ONLY. Do NOT copy its walking poses, its layout or brown RGB backdrop.
+Asset type: Tap RPG P0 character action visual sheet, AO-02/04/07/08 assembled reference, NOT a poster.
+Draw a NEW transparent-background SMALL 2D pixel-art sprite sheet of exactly the same short chestnut-haired, warm-skinned right-facing chibi adventurer in a cream short tunic, thin brown belt, simple muted trousers and brown boots. Same head shape, eye placement, hair silhouette and clothing identity in EVERY frame; height about 2.2 heads. No cape, hat, bag or magical effects.
+
+LAYOUT ABSOLUTELY FIXED: SIX columns by FOUR rows of equal square cells, eighteen occupied cells total. Row 1: FOUR characters, final two cells EMPTY. Row 2: SIX characters. Row 3: FOUR characters, final two cells EMPTY. Row 4: FOUR characters, final two cells EMPTY. All objects remain fully inside their own cells. No labels, text, numbers, cell borders, background tiles, cast shadows, decorations or drawn checkerboards.
+
+Art: native 48x48-style sprites with standing silhouette about 38 logical pixels high, head 18x17, broad coherent square pixel clusters, one-pixel dark-plum outer contour, flat fills, few colors. No smooth vector edges, antialiasing, blur, gradients, glossy rendering, painterly fur/hair texture or noisy dithering. Use flat outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; belt/boots/book cover #8E5E38; sword silver #E8E6E0 #B4B2B0. Genuinely transparent alpha background with no halo. Avoid semi-transparent sprite bodies.
+
+ROW 1 — IDLE, 4 frames, 220ms each:
+1 relaxed right-facing stand, hands down;
+2 breathe in with just ONE logical-pixel chest/shoulder rise, head and feet fixed;
+3 exact same body posture as 1;
+4 slight rightward attentive head turn inside unchanged head silhouette, no whole-body motion.
+No held objects.
+
+ROW 2 — ATTACK, exactly SIX frames, 100/80/60/60/120/160ms:
+one short right-facing single sword slash, grip firmly connected to the front hand at all times.
+1 anticipation: short sword at front hip angled down-right, knees slightly bent.
+2 lift: sword directly overhead and pointing up, torso leans back one pixel.
+3 begin arc: sword ahead and above forehead, pointing up-right.
+4 impact: sword FORWARD HORIZONTAL TO THE RIGHT, arm extends, torso leans forward two pixels, rear leg braces.
+5 follow-through: sword points down-right, front shoulder lowers.
+6 recover to hip-level guard, no second lift after impact.
+Keep the exact same modest straight SHORT sword in every attack cell: total length about 16 logical pixels, small cross guard and brown grip, same width and length, no growing blade. Feet on SAME baseline. Focused eyebrows. No trails, impact sparks, enemy, gore, explosive shapes or duplicate swords.
+
+ROW 3 — SITTING / READING, FOUR frames, 300ms body rhythm:
+compact seated crouch, hips resting on SAME ground baseline, total silhouette height about 25 logical pixels. Tiny open cream-paged brown book at chest height in both hands.
+1 seated holding open book;
+2 head leans just one logical pixel closer to book;
+3 returns to first body pose, a small raised page indicates page turn;
+4 first body pose again, open book rests. Book stays small and consistently placed; no floating pages, letters or symbols.
+
+ROW 4 — SLEEP, FOUR frames, 450ms each:
+horizontal curled side-sleeping pose, HEAD TO THE RIGHT, total horizontal body length no more than 32 logical pixels inside its 48px cell.
+1 asleep, eyes closed, cheek on hand, bent relaxed knees;
+2 ONLY chest rises one logical pixel with breathing;
+3 same as pose 1;
+4 same as pose 1.
+NO bedroll, blanket, pillow, furniture or zZ symbols. Body lowest edge on SAME baseline in all four cells. Hair shape stays fixed.
+The intended contrast is visibly upright idle, active attack, lower seated reading and horizontal sleep, all recognizable at very small display size. Output the transparent sheet only.

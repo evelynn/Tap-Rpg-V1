@@ -1,0 +1,5 @@
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Everything removed becomes genuinely transparent (or flat #FF00FF if transparency is impossible). No new content.
+
+Keep ONLY the cream quilted tunic and its brown waist cord with the repair patches. Remove the body, skin, head, hair, trousers, boots, sword and bread.
+
+STRICT EDIT: All removed areas must be 100% OPAQUE flat #FF00FF, with no glow, halo, gradient or lighting. Preserve the original grid and exact positions. Only retain the ORIGINAL visible tunic pixels. All exposed forearms, hands, wrists and face must disappear; NEVER extend the short sleeves to cover the bare forearms. Do not reconstruct occluded garment areas. Only the original short sleeves and tunic torso remain.
