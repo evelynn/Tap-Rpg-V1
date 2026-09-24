@@ -1,8 +1,9 @@
 # P1_character — 캐릭터 쪽 나머지 에셋 프롬프트
 
-버전 1.1 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.2 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24) 반영 — 48 규격만(D64, §13 폐기·c24 폐기), 무기 셀 밖 허용(D65, §7.2·E14), 선택 부품 규약 확정(D67, §1.5), 모든 무기 한 손(D68), 볼 홍조 표지(§3.3)·흰머리 보조판(§11.3, c25) 추가, 두건 = 가림 `일부`.
 1.1: PROMPTS v1.2 정합 — 교체 머리말 S·무기 공통 문장 S-W를 PROMPTS §1로 옮김, 모든 무기(V1·V2 포함)를 합성에서 떼기(REF-Q 7칸), 쓰러짐 4를 15 §4 「엎드림」으로, 진행표·확인 필요를 PROMPTS §6·`OPEN_DECISIONS.md`로 옮김.
-상위 문서: `docs/art/PROMPTS.md` v1.2(이하 **PROMPTS**). 공통 블록 A~E·S·S-W, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.2, 확인 필요는 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P1-n`)다.
+상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 공통 블록 A~E·S·S-W, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.2, 확인 필요는 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P1-n`)다.
 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거를 하지 않는다. 규칙·수치는 `docs/design/15_아트_스프라이트_사양.md`(이하 **15**)가 소유한다. 카드 안 프롬프트보다 이 문서가 우선한다.
 
 ---
@@ -17,7 +18,7 @@
 
 1. **기준 인물**: `assets/_imagegen/v03/02-ref-b-actions18-48-r4.png`(PROMPTS §0.2의 0번, 이하 **마스터**). 새로 생성하는 캐릭터 시트에는 모두 이 이미지를 입력으로 넣는다.
 2. **REF-A 걷기 12**(PROMPTS §3.1)가 합격해야 걷기 행이 들어가는 모든 교체 편집(방어구·망토·방패·노년)을 시작할 수 있다. 그전에는 REF-B·REF-D·REF-E 편집만 한다.
-3. **O02 판정** 뒤에 시작한다(`ASSET_ORDERS.md` §1.1). 이 문서의 프롬프트는 48 규격 기준이다. 32가 채택되면 §13을 따른다.
+3. **규격은 48 × 48이다**(O02 결정 2026-09-24, D64). O02를 기다리지 않는다. 32 규격은 만들지 않는다(§13).
 
 ### 0.3 세 가지 요청
 
@@ -64,7 +65,7 @@ PROMPTS §3.2 공통 머리말을 그대로 쓴다(보이는 화소만, 입력 �
 
 ### 1.5 선택 부품 (15 §3.2 · ASSET_ORDERS §0.3의 인덱스 11~15)
 
-15는 선택 부품을 계열 시트 안의 전용 팔레트 인덱스로 미리 그려 두게 했다. 이미지 생성은 인덱스를 만들지 못하므로 의도(「팔레트로 켜고 끈다」)를 다음 두 방식으로 옮긴다(확인 필요 1).
+15는 선택 부품을 계열 시트 안의 전용 팔레트 인덱스로 미리 그려 두게 했다. 이미지 생성은 인덱스를 만들지 못하므로 의도(「팔레트로 켜고 끈다」)를 다음 두 방식으로 옮긴다. 이 규약은 사용자 결정으로 확정되어 15 §3.2에 들어갔다(`OPEN_DECISIONS.md` OD-04, D67).
 
 | 방식 | 대상 | 하는 일 | 끌 때(게임 팔레트) |
 | --- | --- | --- | --- |
@@ -83,6 +84,8 @@ PROMPTS §3.2 공통 머리말을 그대로 쓴다(보이는 화소만, 입력 �
 | 이 빠진 날 W01 | V1 | `#5A7FA8` | 날 한쪽 가장자리 가운데의 1 × 2블록 홈(W01은 투명, 나머지는 날 색) |
 | 자루 끝 종 W07 | V1 | `#E0B06A` `#B07A3A` | 자루 끝에 매단 작은 종, 검 길이의 약 1/6 |
 | 송곳니 장식 W06 | V4 | `#B4B2B0` | 창날 바로 아래 휜 금속 장식 |
+| 볼 홍조(새내기) | 얼굴 | `#B04A42` | 가까운 쪽 볼의 1블록(§3.3). 새내기 팔레트만 색을 주고 그 밖은 투명 |
+| 관자놀이 흰머리(숙련기) | 머리카락 | 표지 대신 **보조판**: 두 블록만 흰색으로 바꾼 머리카락 레이어(§11.3). 정규화가 원판과의 차이로 인덱스를 잡는다 | 관자놀이 2블록 |
 
 ---
 
@@ -159,6 +162,17 @@ Use case: precise edit of the provided 5-cell expression sheet. Keep the canvas,
 
 - 조립: 본문 + D. 그다음 결과에 X + L2 문장.
 - 합격: E1, E4, E8, E11. 다섯 칸의 눈 위치가 같다(AO-13). 둥근 눈과 나란히 놓고 실크기에서 다른 얼굴형으로 읽힌다.
+
+### 3.3 볼 홍조 표지 (새내기, 15 §5.1, `OPEN_DECISIONS.md` OD-17)
+
+새내기 볼 홍조 1픽셀은 얼굴 시트의 전용 인덱스다. 얼굴 12프레임을 늘리지 않고 표지 색으로 넣는다. 입력 = 합격한 표정 시트(떼기 전) 두 장: 둥근 눈(PROMPTS L7)과 가는 눈(§3.2 편집 결과). 조립: 본문 + D.
+
+```
+Use case: precise recolour edit of the provided 5-cell expression sheet. Keep every pixel position, shape and colour and the flat #FF00FF background exactly. In every cell, recolour ONE single block of skin on the near cheek, one block below and one block toward the ear from the lower edge of the near eye, to #B04A42. The same place in every cell. Nothing else changes.
+```
+
+- 그다음 결과에 X + PROMPTS L2(홍조 블록을 남기는 판)로 얼굴을 뗀다.
+- 합격: E1, E4, E8, E11, E21 + E19(`#B04A42`가 얼굴 레이어의 다른 곳에 없다). 다섯 칸의 홍조 위치가 같다.
 
 ---
 
@@ -270,6 +284,7 @@ REF-H에 투구를 씌우는 교체 편집 → 투구만 떼기. 가림 `일부`
 ## 7 무기 (AO-16·17 나머지, AO-18)
 
 **모든 무기 프레임은 손에 들거나 몸에 찬 합성에서 뗀다**(PROMPTS §2.3: 단독 생성한 단검은 밀도가 사양의 약 3배라 정규화에서 뭉개졌다). 무기 시트 = 공격 6 + 피격 3 + 착용 1(15 §6.3·§12.2). 공격 = REF-B, 피격 = REF-D 1행, 착용 = REF-Q(§7.3).
+**무기 레이어만 셀 밖으로 나갈 수 있다**(OD-03 결정, D65). 정규화가 뗀 무기를 hand_f 기준으로 넓힌 무기 셀 80 × 64(몸체 셀 원점 = (16, 16))에 담는다. 떼기 결과를 잘라 내지 않는다. **모든 무기는 앞손 한 손으로 쥔다**(D68).
 
 ### 7.1 V1 한손검 — 피격 3칸과 표지
 
@@ -295,8 +310,8 @@ Use case: precise edit of the provided weapon sprite sheet. Keep every existing 
 
 떼기: X + `Keep ONLY the {dagger / longsword / spear / pickaxe / bell maul} in each cell (all its parts). Remove the character entirely, including the hand holding it.`
 
-- AO-18의 각도(창 방향 2 고정, 곡괭이·종추 3 → 0 → 0 → 4 → 4 → 3)를 셀별 문장으로 옮겼다. 몸체 손 경로는 검 기준 하나뿐이다(확인 필요 2·3). 방향 값은 검수용이다(15 §3.2).
-- V3·V4(22)는 공격 4칸에서 셀 폭을 넘는다. V1(16)도 이미 넘는다(PROMPTS §2.3). S-W의 `stays inside its cell`은 결정(`OPEN_DECISIONS.md` OD-03) 전까지 그대로 두되, 모델이 길이를 줄여 맞추면 불합격이다(E14).
+- AO-18의 각도(창 방향 2 고정, 곡괭이·종추 3 → 0 → 0 → 4 → 4 → 3)를 셀별 문장으로 옮겼다. 몸체 손 경로는 검 기준 하나뿐이고 모든 무기를 한 손으로 쥔다(15 §6.3, D68 — V3 공격 2·3의 두 손과 V4 두 손 쥠은 없앴다, OD-06). 방향 값은 검수용이다(15 §3.2).
+- V3·V4(22)는 공격 4칸에서 셀 폭을 넘는다. V1(16)도 이미 넘는다(PROMPTS §2.3). S-W는 무기가 칸 가장자리를 넘어 빈 여백까지 나가도 되게 고쳤다(OD-03 결정). 옆 칸의 인물·무기에 닿으면 다시 생성하고, 모델이 길이를 줄여 맞추면 불합격이다(E14).
 - 청 광맥·가드·송곳니·금은 §1.5 표지 색이다.
 
 ### 7.3 착용 1칸 — REF-Q (V1·V2·V3~V6 + 방패)
@@ -385,7 +400,7 @@ SWAP (add, only in {ROWS}; all other cells stay exactly unchanged): a round wood
 | 두건 `chr_part_hood` | `SWAP (headwear, all three cells): a soft green cloth hood #6D8F5A with #4D6A3E shade pulled over the head, following each head angle; the face opening shows the eyes, eyebrows and fringe, the hem ends at the neck, and a short pointed tail hangs behind the head.` | `Keep ONLY the green hood.` |
 | 스카프 `chr_part_scarf` | `SWAP (add, all three cells): a red scarf #B04A42 wrapped once around the neck, with one short end hanging behind (to the left). The chin and face stay visible.` | `Keep ONLY the red scarf.` |
 
-- 합격: E1, E4, E8, E10, E11, E13, E15(두건은 가림 `일부`처럼 본다, 확인 필요 13).
+- 합격: E1, E4, E8, E10, E11, E13, E15. 두건은 투구 가림 `일부`로 다룬다 — 머리카락 가림 변형과 겹쳐 머리가 두건 밖으로 나오지 않는다(15 §5.3, OD-14 결정, D67).
 
 ---
 
@@ -403,7 +418,7 @@ SWAP (add, only in {ROWS}; all other cells stay exactly unchanged): a round wood
 One single flat filled circle centred in a square cell, diameter about three quarters of the cell width. One fully opaque color only: gold #FFE38A. Hard stepped pixel edge, no outline, no gradient, no blur, nothing else in the image.
 ```
 
-- 반경 18/48과 12/32의 비율이 같으므로 32 규격도 같은 문장으로 따로 생성한다.
+- 48 규격만 만든다(D64).
 - 합격: E4, E8, E10, E11. 등불은 캐릭터보다 훨씬 작다(AO-28).
 
 ---
@@ -412,9 +427,9 @@ One single flat filled circle centred in a square cell, diameter about three qua
 
 | 단계 | 새로 그리는 것 | 팔레트로 하는 것(게임) |
 | --- | --- | --- |
-| 새내기 18~29 | 없음 | 볼 홍조 1블록(확인 필요 7) |
+| 새내기 18~29 | 볼 홍조 표지 1블록(§3.3) | 볼 홍조 인덱스에 색(OD-17) |
 | 전성기 30~49 | 없음 | 눈썹을 머리색 최암 톤으로 |
-| 숙련기 50~64 | 주름 1칸 | 머리 채도 −35%, 관자놀이 흰머리 2블록(확인 필요 6) |
+| 숙련기 50~64 | 주름 1칸, 흰머리 보조판(§11.3) | 머리 채도 −35%, 관자놀이 흰머리 2블록 인덱스(OD-16) |
 | 노년 65+ | 노년 몸체 10 + 주름 1칸 | 흰머리 `#E8E4DC` `#C8C2B8`, 흰 눈썹 |
 
 ### 11.1 노년 몸체 10 — REF-EL
@@ -442,6 +457,17 @@ Keep this exact character, pose and size (row 1, frame 1). Make a 2-cell row of 
 - 흰 눈썹은 얼굴 레이어의 눈썹 인덱스를 팔레트로 바꾼다(AO-13 「눈썹 전용 인덱스」). 겹침에 넣지 않는다(표정마다 눈썹 모양이 다르다).
 - 합격: E1, E4, E8, E10, E11. 얼굴 레이어에 얹어 실크기에서 주름이 보인다.
 
+### 11.3 관자놀이 흰머리 보조판 (숙련기, 15 §5.1, `OPEN_DECISIONS.md` OD-16) — c25
+
+숙련기 흰머리 2픽셀은 머리카락 시트의 전용 인덱스다. 생성 그림에 인덱스가 없으므로 **머리 모양마다 그 두 블록만 흰색으로 바꾼 보조판**을 만들고, 게임 정규화가 원판과 보조판의 차이 화소를 흰머리 인덱스로 잡는다. 보조판은 게임 파일이 아니다(15 §13.1 수량 밖).
+입력 = 떼어 낸 머리카락 레이어(HR01~HR06 각각의 기본 변형 3칸·가림 변형 3칸). 조립: 본문 + D.
+
+```
+Use case: precise recolour edit of the provided hair sprite sheet. Keep every pixel position, shape and colour and the flat #FF00FF background exactly. In every cell, recolour exactly TWO hair blocks at the near temple (the side hair just in front of the ear, at eye height, following the head angle of that cell) to white #E8E4DC. The same two blocks in every cell. Nothing else changes.
+```
+
+- 합격: E1, E4, E8, E21(바꾼 두 블록 밖의 색이 원판과 같다). 원판과 겹쳐 차이가 칸마다 정확히 2블록이다.
+
 ---
 
 ## 12 흡혈귀 (AO-30, 15 §5.2) — 새 프레임 0
@@ -457,12 +483,9 @@ SWAP (colors only, ONLY in row 1; rows 2 to 4 stay exactly unchanged): pale vamp
 
 ---
 
-## 13 32 규격 (O02가 32를 채택했을 때만)
+## 13 32 규격 (폐기)
 
-- 이 문서의 **합성 시트**(REF-D·E·H·K·M·G·P·Q·EL, 교체 결과 포함)에 PROMPTS §1 E를 적용해 32 합성을 만든다. 레이어는 **32 합성에서 같은 떼기 문장으로 다시 뗀다.** 떼어 낸 48 레이어에 E를 직접 적용하지 않는다(부품마다 따로 성기게 그리면 겹치지 않는다).
-- 표지 색(§1.5)은 32에서 1블록으로 줄어도 남긴다. 32 합성마다 표지가 살아 있는지 본다.
-- 32에서 그리지 않는 것: J03 깃(15 §6.4). 등불은 32 규격에서도 표시한다(4 × 5).
-- 합격: E12 + 해당 절의 기준.
+O02는 48 × 48로 정했다(2026-09-24, D64). 32 규격은 만들지 않는다. v1.1의 절차(합성에 PROMPTS §1 E → 같은 문장으로 다시 떼기)는 쓰지 않는다.
 
 ---
 
@@ -471,7 +494,7 @@ SWAP (colors only, ONLY in row 1; rows 2 to 4 stay exactly unchanged): pale vamp
 | 번호 | 기준 |
 | --- | --- |
 | E13 | 교체 편집 결과를 입력과 겹치면 차이가 **바꾼 부품 자리에만** 있다. 팔·손·머리 위치가 1블록도 움직이지 않았다(노년 §11.1만 머리·어깨 예외) |
-| E14 | 무기는 모든 칸에서 길이·모양이 같고, 손잡이가 앞손 안에 있고, V1 대비 길이가 지정 비율(V2 0.6, V3·V4 1.4, V5 1.0, V6 1.1)로 보이고, 셀 밖으로 나가지 않는다(셀 넘침은 `OPEN_DECISIONS.md` OD-03 결정 뒤 다시 정한다. 길이를 줄여 셀에 맞춘 것은 불합격) |
+| E14 | 무기는 모든 칸에서 길이·모양이 같고, 손잡이가 앞손 안에 있고, V1 대비 길이가 지정 비율(V2 0.6, V3·V4 1.4, V5 1.0, V6 1.1)로 보인다. 칸 가장자리를 넘어 빈 여백까지 나가도 되지만 옆 칸의 인물·무기에 닿지 않는다(OD-03 결정, D65). 길이를 줄여 셀에 맞춘 것은 불합격 |
 | E15 | 가림 `일부` 투구·두건이 머리카락 가림 변형의 잘린 선을 덮는다. `전부` 투구 아래로 머리카락이 한 화소도 보이지 않고, 눈 틈으로 두 눈이 보인다. 머리 6종 어느 것과 겹쳐도 머리카락이 투구 밖으로 나오지 않는다(15 §12.3 검수 12) |
 | E16 | 합성 시트의 표정이 15 §4 연결을 따른다: 공격·피격 찡그림, 발견 놀람, 환호 웃음, 잠·쓰러짐 5 눈감음, 그 밖 기본 |
 | E17 | 쓰러짐 4·5칸이 잠 자세와 한눈에 구별된다(엎드림, 뺨 밑 손 없음, 다리를 폄). 얼굴이 옆으로 보인다. 5칸은 4칸과 눈만 다르다 |
@@ -487,30 +510,31 @@ SWAP (colors only, ONLY in row 1; rows 2 to 4 stay exactly unchanged): pale vamp
 
 | 번호 | 작업 | 종류 | 입력 | 선행 | 카드 | 우선 |
 | --- | --- | --- | --- | --- | --- | --- |
-| c01 | REF-D 피격·발견·상호작용 11 | 생성 | 마스터 | O02 | AO-05·06·09 | P1 |
-| c02 | REF-E 환호·쓰러짐 9 | 생성 | 마스터 | O02 | AO-10 | P1 |
+| c01 | REF-D 피격·발견·상호작용 11 | 생성 | 마스터 | — | AO-05·06·09 | P1 |
+| c02 | REF-E 환호·쓰러짐 9 | 생성 | 마스터 | — | AO-10 | P1 |
 | c03 | 몸체·천옷 떼기(D·E) | 떼기 ×4 | c01, c02 | c01·c02 | AO-05~10·20 | P1 |
 | c04 | REF-H 머리 자세 3 | 생성 | 마스터, c01 | c01 | AO-14·15·23 | P1 |
 | c05 | HR01 떼기 + 가림 | 떼기 ×2 | c04 | c04 | AO-14 | P1 |
 | c06 | HR02~06 교체 → 떼기 → 가림 | 교체 ×5, 떼기 ×10 | c04 | c04 | AO-15 | P1 |
-| c07 | 가는 눈 표정 → 얼굴 떼기 | 편집, 떼기 | P0 L7 | P0 L7 | AO-13 | P1 |
+| c07 | 가는 눈 표정 → 볼 홍조 표지(둥근 눈·가는 눈, §3.3) → 얼굴 떼기 | 편집 ×3, 떼기 ×2 | P0 L7 | P0 L7 | AO-13 | P1 |
 | c08 | 가죽 교체(D·E) + 가죽 떼기(A·B·D·E) | 교체 ×2, 떼기 ×4 | REF-C, c01, c02 | c01·c02, REF-A | AO-21 | P1 |
 | c09 | 금속 교체(A·B·D·E) + 떼기 | 교체 ×4, 떼기 ×4 | REF-A·B, c01, c02 | REF-A | AO-22 | P1 |
 | c10 | 기운 자국 표지 편집(필요할 때) | 편집 ≤4 | 천옷 레이어 | c03 | AO-20 | P1 |
 | c11 | 선택 부품 겹침 3종 | 교체 ×12, 떼기 ×12 | 천옷·가죽·금속 합성 | c08·c09 | AO-20~22·24 | P1 |
 | c12 | 투구 5 교체 → 떼기 | 교체 ×5, 떼기 ×5 | c04 | c05·c06 | AO-23 | P1 |
-| c13 | V1 피격 떼기 + V1 표지 편집 | 떼기, 편집 ×3 | c01, P0 V1 | c01, OD-03 | AO-16 | P1 |
-| c14 | V2 교체(D) + V3~V6 교체(B·D) → 떼기 | 교체 ×9, 떼기 ×9 | REF-B, c01, P0 V2 | c01, OD-03 | AO-17·18 | P1 |
+| c13 | V1 피격 떼기 + V1 표지 편집 | 떼기, 편집 ×3 | c01, P0 V1 | c01 | AO-16 | P1 |
+| c14 | V2 교체(D) + V3~V6 교체(B·D) → 떼기 | 교체 ×9, 떼기 ×9 | REF-B, c01, P0 V2 | c01 | AO-17·18 | P1 |
 | c15 | 망토 교체(A·B·D·E) → 앞·뒤 떼기 | 교체 ×4, 떼기 ×8 | REF-A·B, c01, c02 | REF-A | AO-25 | P2 |
 | c16 | 방패 교체(A·B·D) → 떼기 | 교체 ×3, 떼기 ×3 | REF-A·B, c01 | REF-A | AO-27 | P2 |
 | c17 | REF-Q 착용 무기 6·방패 1 → 떼기 | 생성, 떼기 | 마스터, P0 V2, c14, c16 | c14·c16 | AO-16~18·27 | P2 |
-| c18 | REF-P 봇짐·배낭·등불 6 → 떼기 | 생성, 떼기 | 마스터 | O02 | AO-26·28 | P2 |
+| c18 | REF-P 봇짐·배낭·등불 6 → 떼기 | 생성, 떼기 | 마스터 | — | AO-26·28 | P2 |
 | c19 | 두건·스카프·깃 교체 → 떼기 | 교체 ×3, 떼기 ×3 | c04 | c04 | AO-26·28 | P2 |
 | c20 | 빛 원 | 생성 | — | — | AO-28 | P2 |
 | c21 | 노년 교체(A·B) → 몸체 떼기 | 교체 ×2, 떼기 ×2 | REF-A·B | REF-A | AO-29 | P2 |
 | c22 | 주름 2칸 → 떼기 | 편집, 떼기 | 마스터 | — | AO-13·29 | P2 |
 | c23 | 흡혈귀 확인 합성(선택) | 교체 | c15의 B판 | c15 | AO-30 | P2 |
-| c24 | (32 채택 시) 합성 전부 §1 E → 레이어 다시 떼기 | 편집, 떼기 | 합격 합성 | 각 줄 | 전부 | — |
+| c24 | (폐기 — 32 규격을 만들지 않는다, D64) | — | — | — | — | — |
+| c25 | 관자놀이 흰머리 보조판(§11.3) | 편집 ×12(6종 × 기본·가림) | c05·c06 머리카락 레이어 | c05·c06 | AO-29 | P2 |
 
 ---
 
@@ -536,10 +560,10 @@ SWAP (colors only, ONLY in row 1; rows 2 to 4 stay exactly unchanged): pale vamp
 | 전문화 | 30 | 0 | 30 (방패 19+등 1, 두건 3·스카프 3·배낭 3, 봇짐 1) | §7.3·9 |
 | **합계** | **388** | **73** | **315** | 73 + 315 = 388 |
 
-388에 들지 않는 부산물: 합성 시트, 걷기 12의 나머지 6칸(방어구·망토·방패·노년), 선택 부품 겹침 3종 × 44, 빛 원 1, 흡혈귀 확인 합성, (선택) 관자놀이 흰머리 보조.
+388에 들지 않는 부산물: 합성 시트, 걷기 12의 나머지 6칸(방어구·망토·방패·노년), 선택 부품 겹침 3종 × 44(게임 파일 `chr_part_muffler`·`pauldron`·`clasp`, 15 §3.2), 빛 원 1, 흡혈귀 확인 합성, 관자놀이 흰머리 보조판(c25, 게임 파일 아님).
 
 ---
 
 ## 18 확인 필요
 
-`docs/art/OPEN_DECISIONS.md`로 옮겼다(v1.1). 본문의 「확인 필요 N」은 그 표의 `옛 번호` 열 `P1-N`으로 찾는다. 이 문서에서 닫은 것: 9(가죽 레이어가 어깨 속옷을 가진다, OD-48), 10(피격 3·착용 1을 합성에서 뗀다, OD-49), 18(쓰러짐 4 = 15 §4 엎드림, OD-53).
+`docs/art/OPEN_DECISIONS.md`로 옮겼다(v1.1). 본문의 「확인 필요 N」은 그 표의 `옛 번호` 열 `P1-N`으로 찾는다. 이 문서에서 닫은 것: 9(가죽 레이어가 어깨 속옷을 가진다, OD-48), 10(피격 3·착용 1을 합성에서 뗀다, OD-49), 18(쓰러짐 4 = 15 §4 엎드림, OD-53). 2026-09-24 사용자 결정(권장안)으로 닫은 것: 1·15(선택 부품 규약, OD-04 → §1.5), 2(한 손, OD-06 → §7.2), 4(무기 셀 넘침 허용, OD-03 → §7·E14), 5(앉기 head `기본`, OD-15), 6(흰머리 보조판, OD-16 → §11.3), 7(볼 홍조 표지, OD-17 → §3.3), 13(두건 가림 `일부`, OD-14 → §9.3), 17(걷기 재생 6, OD-31). 남은 것 없음.

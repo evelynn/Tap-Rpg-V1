@@ -1,9 +1,10 @@
 # P2_world — 세계 쪽 에셋 프롬프트 (적·보스·배경·장소 소품·날씨·효과·소품·아이콘·책 UI·초상)
 
-버전 1.1 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.2 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24, 권장안) 반영 — 48 규격만(D64), 배경 가로 이음·장면 떨림은 두 번 실패 뒤 정규화가 자르기·옮기기(D66), 장소 소품 20·정예 깃발 16 × 16·입자 스프라이트·흰빛 덮기 파일 없음·박쥐 색·변형 둘째 톤·마을 중간 층 승인, 종추 별도 파일 없음.
 1.1: PROMPTS v1.2 정합 — D-BG를 PROMPTS §1로 옮김, 표시용 D-MARK 추가, SW에 색 유지 문장, NPC 정체성 블록(NB)을 PROMPTS §7로 합치고 NPC 초상은 NPC 전신 기준 시트 `n01`에서 만듦, 호각은 나무, 같은 소품의 색을 카드(AO-19·49·50)에 맞춤, 진행표·확인 필요를 PROMPTS §6.3·`OPEN_DECISIONS.md`로 옮김.
-상위 문서: `docs/art/PROMPTS.md` v1.2(이하 **PROMPTS**). 공통 블록 A~E·D-BG·S, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21, NPC 외형(§7)은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.3이다. 캐릭터 쪽은 `P1_character.md`(이하 **P1**), 이벤트 장면 20개는 `P3_scenes.md`(이하 **P3**)가 가진다.
-제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거·복제를 하지 않는다. 규칙·수치는 `docs/design/15_아트_스프라이트_사양.md`(이하 **15**)가 소유한다. 카드 안 프롬프트보다 이 문서가 우선한다. 카드(AO-xx)와 15가 다른 곳은 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P2-17-n`)에 있고, 적어 둔 처리안으로 진행한다.
+상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 공통 블록 A~E·D-BG·S, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21, NPC 외형(§7)은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.3이다. 캐릭터 쪽은 `P1_character.md`(이하 **P1**), 이벤트 장면 20개는 `P3_scenes.md`(이하 **P3**)가 가진다.
+제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거·복제를 하지 않는다. 규칙·수치는 `docs/design/15_아트_스프라이트_사양.md`(이하 **15**)가 소유한다. 카드 안 프롬프트보다 이 문서가 우선한다. 카드(AO-xx)와 15가 다른 곳은 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P2-17-n`)에 있고, 2026-09-24 사용자 결정(권장안)으로 닫혔다. 이 문서는 그 결정을 반영했다.
 
 ---
 
@@ -36,7 +37,7 @@
 | **생성** | 계열 기준 시트, 합성 장면, 새 소품·효과·아이콘 | A(또는 A-UI·A-POR) + 정체성 블록 + C 계열 + 본문 + D 계열 |
 | **교체 편집** | 합격한 시트를 입력으로 넣고 **색을 바꾸거나 부품을 더한다**(변형·정예·상태·장소 소품·점등) | SW + 문장 + D 계열 |
 | **떼기** | 합성 결과에서 **그 부품·층만 남긴다**. 보이는 화소만 | X(= PROMPTS §3.2 머리말) + 떼기 문장 |
-| **밀도 편집** | 32 규격(PROMPTS E) 또는 초상 48 판(E-POR) | E 또는 E-POR |
+| **밀도 편집** | 초상 48 판(E-POR). 32 규격(PROMPTS E)은 폐기(D64) | E-POR |
 | **상태 편집** | 닫힘 → 열림처럼 **바뀌는 부분만** 다시 그린다 | SW + 문장 + D 계열 |
 
 원칙은 PROMPTS §0.2와 같다. **같은 이미지에서 나온 것끼리만 위치가 맞는다.** 그래서
@@ -51,7 +52,7 @@ PROMPTS §0.3 그대로. 파일 이름은 `assets/_imagegen/{판}/w{번호}-{이
 
 ### 0.4 규격
 
-P1 이후는 O02가 채택한 한 규격만 만든다(`ASSET_ORDERS.md` §1.1). 이 문서의 프롬프트는 **48 규격 기준**이다. 32가 채택되면 합격한 48 시트에 PROMPTS §1 E를 적용하고, 들쥐 문장 자리를 다음으로 바꾼다: 늑대 `the wolf body is about 18 blocks tall`, 박쥐 `the bat torso is 8 by 8 blocks`, 코볼트 `the kobold is about 21 blocks tall`, 보스 `the warden is about 38 blocks tall`. 배경·아이콘·초상은 규격 구분이 없다(초상은 64와 48을 둘 다 만든다, §12).
+규격은 **48 × 48 하나**다(O02 결정 2026-09-24, D64, `ASSET_ORDERS.md` §1.1). 32 규격은 만들지 않는다. 배경·아이콘·초상은 규격 구분이 없다(초상은 64와 48을 둘 다 만든다, §12).
 
 ### 0.5 게임 쪽 정규화가 맡는 것 (D56)
 
@@ -60,11 +61,11 @@ P1 이후는 O02가 채택한 한 규격만 만든다(`ASSET_ORDERS.md` §1.1). 
 | 정규화 | 내용 |
 | --- | --- |
 | 자홍 키 | `#FF00FF`를 투명으로(`imagegen.map.json` key·tolerance) |
-| 격자·정렬 | 칸 나누기, 지면선·가로 중심 맞춤(`align`), 장소 소품·효과의 bbox 자르기 |
+| 격자·정렬 | 칸 나누기, 지면선·가로 중심 맞춤(`align`), 장소 소품·효과의 bbox 자르기. 무기는 넓힌 무기 셀 80 × 64(15 §12.2) |
 | 색 | 등록 팔레트로 양자화, 인덱스 배정(표지 색 → 전용 인덱스, P1 §1.5와 같은 방식) |
 | 알파 | 2값화. 반투명이 허용된 파일(그림자·빛 원·안개)은 **불투명으로 받은 뒤** 알파를 준다 |
-| 팔레트·변환표 | 변형 팔레트 12, 계절·낮밤 LUT 16, 장소 팔레트(§17-15), 책등 3 |
-| 가로 이음 | A17 검사. 어긋나면 §17-17 처리 |
+| 팔레트·변환표 | 변형 팔레트 12, 계절·낮밤 LUT 16, 장소 팔레트 7(OD-23 결정, 어둡게 하는 변환은 L\* 30에서 멈춘다), 책등 3 |
+| 가로 이음 | A17 검사. 먼저 다시 생성한다. 같은 합성이 두 번 어긋나면 그 합성을 C-BG의 `4:1`·`256 blocks wide`를 `5:1`·`320 blocks wide`로 바꿔 다시 생성하고, 정규화가 좌우 끝이 맞는 256 폭 구간을 골라 **모든 층에 같은 구간으로** 자른다(15 §12.2, D66, OD-07 결정). 새 화소는 그리지 않는다 |
 
 ---
 
@@ -183,7 +184,6 @@ Input image role: layout and pixel-style reference only. Copy its grid (four col
 - 적은 **왼쪽**을 본다. 퇴장은 **달아남**이다(쓰러짐·죽음 금지, 02 §7). 달아날 때만 오른쪽으로 돌아선다.
 - 조립(생성): A(`{계열 셀}`) + R-EN + 정체성 블록(I-…) + C-E + 본문 + D. 입력 = 들쥐 합격본(배치 참고).
 - 적 1스프라이트 12색 이내(15 §2.2). 각 정체성 블록의 PALETTE ONLY가 그 목록이다.
-- 32 규격이 채택되면 §0.4.
 
 ### 2.1 늑대 기준 시트 (AO-32, EN03 팔레트) — w01
 
@@ -209,7 +209,7 @@ No tongue, no blood, no ground, no dust, no speed lines.
 
 ### 2.2 박쥐 기준 시트 (AO-33, EN05 팔레트) — w02
 
-**I-BAT** — 날개막 3색과 눈 색은 **박쥐의 다른 곳에 쓰지 않는 색**으로 둔다. 게임 정규화가 그 색을 인덱스 5·6·7·12로 옮겨 EN06·EN07 팔레트를 바꾼다(AO-33·36, P1 §1.5 표지 색과 같은 방식). EN05의 막·눈 색은 카드에 값이 없어 제안값이다(§17-5).
+**I-BAT** — 날개막 3색과 눈 색은 **박쥐의 다른 곳에 쓰지 않는 색**으로 둔다. 게임 정규화가 그 색을 인덱스 5·6·7·12로 옮겨 EN06·EN07 팔레트를 바꾼다(AO-33·36, P1 §1.5 표지 색과 같은 방식). EN05의 막·눈 색은 승인되어 카드 AO-33에 들어갔다(OD-13 결정).
 
 ```
 SUBJECT AND IDENTITY: the same chibi cave bat in every cell, FACING LEFT. A compact round torso about three eighths of the cell wide and tall, two big rounded ears, tiny feet, two small bright eyes, and two membrane wings with three finger ribs each. The torso has IDENTICAL size and shape in all eighteen cells and stays at the same place unless a pose line moves it; only the wings change. It hovers: the torso's lowest block is at the vertical middle of the cell, and nothing touches the lower quarter of the cell.
@@ -279,14 +279,14 @@ ROW 5 FLEE, 4 frames, 120 ms each: 1 trips and sits down hard; 2 pushes up with 
 | w08a | EB01 코볼트 두목 | w03 | `Recolour the skin one tone darker (see note). Add a horned iron helmet #7D7B80 #4C4A52 with two short curved ivory horns #F0E6CC. Make the pickaxe HEAD one and a half times larger; the haft keeps its length. Every outline pixel, on the kobold and on everything it holds, becomes dark gold #7A5A1E instead of #2B2233.` | ① `Keep ONLY the horned helmet.` → `enm_prop_kobold_hornhelm` 18 ② `Keep ONLY the pickaxe.` → `enm_prop_kobold_pickaxe_big` 18 |
 | w08b | EB02 늙은 광부장 | w07a 결과 | `Add a long white beard #E8E4DC #C8C2B8 from the chin down over the chest. Add a small bronze lantern (frame #E0B06A #B07A3A, flame pane #FFE38A, no glow) hanging from the far hand in every cell. Every outline pixel becomes dark gold #7A5A1E instead of #2B2233.` 다음에 둘째 편집: `Change ONLY the lantern's flame pane: one block smaller and lower.` | ① `Keep ONLY the white beard.` → `kobold_beard` ② 두 편집본 각각 `Keep ONLY the lantern.` → `kobold_lantern` 깜박임 2 |
 
-- EB01 「한 톤 짙게」의 색값이 정해져 있지 않다. 편집 문장의 `(see note)` 자리는 `#9AA85A becomes {EB01 본색} and #6E7A5A becomes {EB01 그늘}`로 바꾼다. 값은 §17-6에서 정한 뒤 넣는다. 정해지기 전에는 w08a를 **소품 떼기 원본**으로만 쓰고 색은 보지 않는다.
+- EN04·EN07·EN09·EN10 교체 색은 승인되어 15 §7.2에 들어갔다(OD-12 결정). EB01 「한 톤 짙게」는 새 색 2개를 `pal_master.json`에 등록하기로 했지만 **값은 아직 정하지 않았다**(OD-12, 사용자 확인 대기). 편집 문장의 `(see note)` 자리는 `#9AA85A becomes {EB01 본색} and #6E7A5A becomes {EB01 그늘}`로 바꾼다. 값이 정해지기 전에는 w08a를 **소품 떼기 원본**으로만 쓰고 색은 보지 않는다.
 - 등불은 P1 c18(J04 등불)과 같은 모양이어야 한다. P1 c18이 합격했으면 **둘째 입력 이미지**로 넣고 `the same lantern design as the second input image, at the kobold's scale`를 덧붙인다.
 - 정예 외곽선 `#7A5A1E`는 게임 팔레트가 외곽선 인덱스를 바꿔서도 낸다. 편집본은 색 목표와 소품 원본이다.
 - 합격: 모든 편집 W3(겹쳐 보면 윤곽이 같고 차이는 지정한 색·부품에만), E4 E11. 떼기 E8 E10 E11.
 
 ### 2.5 정예 깃발 (AO-35 `elite_flag`) — w09
 
-셀이 정해지지 않았다(manifest `unspecified`). **깃발 전용 16 × 16 셀**(32 규격 12 × 12)로 정한다. 정예는 코볼트 두 종만이 아니라 층의 `관문 잔당`(01 §8.2, 박쥐 포함)에도 붙으므로 계열 셀에 묶지 않는다(§17-2).
+**깃발 전용 16 × 16 셀**이다(OD-30 결정, 15 §7.2, 카드 AO-35·`assets.manifest.json` `enm_prop_elite_flag_48`). 정예는 코볼트 두 종만이 아니라 층의 `관문 잔당`(01 §8.2, 박쥐 포함)에도 붙으므로 계열 셀에 묶지 않는다.
 조립: A(`{16x16}`) + C(`N=2, COLS=2, ROWS=1, EMPTY_CELLS=없음`) + 본문 + D. C의 발바닥 문장은 「깃대 아래 끝」으로 읽는다.
 
 ```
@@ -340,7 +340,6 @@ ROW 3 SHUTDOWN, 6 frames, 150/150/150/200/300 ms then hold: the ringing stops an
 | w37a | 고정 균열 마스크(게임 인덱스 15 확인용) | w35를 X + `Keep ONLY the crack pixels (#B0603A) in each cell.` |
 | w37b | `boss_bellwarden_crack` 1칸 (2단계 금 겹침) | w34를 SW + `Add two more short branching cracks to the bell, in #B0603A, starting from the existing crack.` → X + `Keep ONLY the newly added cracks; remove the original crack and the warden.` |
 | w38 | `fx_bell_wave` 4 | A(`{64x56}`) + C-FX(`N=4, COLS=4, ROWS=1, ANCHOR=the arc centre sits near the right edge at mid-height of the cell`) + 본문 + D-FX |
-| (선택) | `boss_prop_clapper` 6 | AO-38이 종추를 떼기로 확정할 때만: w35를 X + `Keep ONLY the bronze mallet at the end of the front arm in row 2.` (§17-10) |
 
 w38 본문:
 
@@ -348,7 +347,7 @@ w38 본문:
 A bell's sound shockwave, 4 frames, 120 ms each: three thin concentric arcs, each exactly ONE block thick, bulging toward the LEFT, spaced four blocks apart. The outermost arc's radius grows 12, 18, 24, 30 blocks over frames 1 to 4. Colours #FFE38A, #FFFFFF, #B07A3A only. Arcs are clipped at the cell edge. No red, no dust, no blur.
 ```
 
-- 파동 셀은 카드의 48 × 48이 아니라 보스 셀 64 × 56으로 둔다(반지름 30이 48 셀에 들어가지 않는다, §17-11).
+- 파동 셀은 보스 셀 64 × 56이다(반지름 30이 48 셀에 들어가지 않는다, OD-60, 카드 AO-38 고침). 종추는 본체에 그리고 별도 파일을 만들지 않는다(OD-59).
 - 합격: w34~36 E1 E3(대기 전체) E4 E5 E6 E7 E11 + W4. w37 E8 E10. w38 E1 E4 E6 E7 + W9.
 
 ---
@@ -361,7 +360,8 @@ A bell's sound shockwave, 4 frames, 120 ms each: three thin concentric arcs, eac
 - 조립(합성): A(`{256x64}`) + C-BG(`{DARKEST}`는 장면마다) + 본문 + D-BG. **입력 = 합격한 들판 합성(PROMPTS §3.5 ①)**을 `Input image role: framing and style reference only: copy its strip size and position on the canvas, its ground line height, its pixel-block size and its soft outline-free style; do not copy its scenery.`로 넣는다. 들판이 합격하기 전에는 마을·폐광을 시작하지 않는다.
 - 층 떼기 문장 = PROMPTS §3.5 ②와 같은 형식: 먼 층 `Keep ONLY the {far}. Remove …, and continue the {far} naturally where they were hidden (this layer alone is fully opaque inside the strip).`, 중간·가까운 층 `Keep ONLY the {…}. Everything else inside and outside the strip becomes flat #FF00FF.`
 - **계절·낮밤은 그리지 않는다.** 기본 팔레트 한 벌만 만들고 LUT 16개(AO-44, 게임)가 봄·여름·가을·겨울 × 낮·밤을 만든다. 폐광·틈에는 LUT가 없다. 불빛은 **꺼진 채** 그리고 켜진 불빛은 겹침 파일로 뗀다(P-15).
-- 장소별 차이(H1~A4)는 장소 팔레트(게임, §17-15)와 §5 장소 소품이 낸다.
+- 장소별 차이(H1~A4)는 장소 팔레트(게임, OD-23)와 §5 장소 소품이 낸다.
+- 가로 이음(A17)이 두 번 어긋나면 §0.5 가로 이음 행의 절차(5:1 재생성 → 정규화가 구간 선택해 자르기, D66)를 쓴다.
 
 ### 4.1 들판 (AO-39) — PROMPTS §3.5 그대로
 
@@ -369,7 +369,7 @@ P0다. 여기서는 새로 쓰지 않는다. PROMPTS v1.2 §3.5 ①은 D 대신 
 
 ### 4.2 마을 (AO-40) — w10·w11
 
-`{DARKEST}` = `#8E5E38`. 창 불빛 없음. 시설 배치는 AO-40을 따른다(여관·길드·치료소 = 중간 층, 대장간·잡화점 = 장소 소품, §17-13).
+`{DARKEST}` = `#8E5E38`. 창 불빛 없음. 시설 배치는 AO-40을 따른다(여관·길드·치료소 = 중간 층, 대장간·잡화점 = 장소 소품. OD-10 결정으로 15 §8.1도 이렇게 고쳤다).
 
 w10 합성 본문:
 
@@ -439,13 +439,13 @@ The rift wall: muted ash stone #9A948C #6E6862; a jagged crack in the left part 
 | --- | --- | --- |
 | 봄·여름·가을·겨울 × 낮·밤 16 | 게임 LUT(AO-44) | 없음. 기본 타일의 풀·나무 색이 **서로 다른 색**이어야 LUT가 따로 바꿀 수 있다: 풀 `#6D8F5A`, 언덕 `#8FC06A` `#5E9A4A`, 나뭇잎 `#6D8F5A` `#4D6A3E`는 들판 합성에서 이미 나뉜다 |
 | 밤 창·등불 | 겹침 파일 w11·w14 | 위 |
-| 장소 팔레트 7(H1 밝은 연두, H3 황갈, H4 채도 −50%, A2 −15%, A3 채도 −40%, D2 청회, D3 −40%) | 게임 변환(카드·수량 없음) | §17-15 |
+| 장소 팔레트 7(H1 밝은 연두, H3 황갈, H4 채도 −50%, A2 −15%, A3 채도 −40%, D2 청회, D3 −40%) | 게임 변환(15 §13.1 팔레트·변환표 약 76에 포함) | 없음(OD-23 결정) |
 
 ---
 
 ## 5 배경 장소 소품 20종 확정안 (AO-43) — w12·w16
 
-AO-43 표에는 이름이 32개여서 「20개를 넘기지 않는다」와 맞지 않았고, 크기가 「32 × 32 또는 48 × 32에서 고른다」로 미정이었다. **아래 20개와 크기로 확정한다**(48 규격 논리 화소, 폭 × 높이). 지면선 y 56에 바닥을 두고, 위 끝은 y 16 아래(축소 창)에 들어오게 **높이 40 이하**로 잡았다. 15 §8.3의 H1 「여울 물줄기 띠·작은 나무다리」가 카드에 빠져 있어 넣었다.
+AO-43 표에는 이름이 32개여서 「20개를 넘기지 않는다」와 맞지 않았고, 크기가 「32 × 32 또는 48 × 32에서 고른다」로 미정이었다. **아래 20개와 크기로 확정한다**(사용자 승인 2026-09-24, OD-09. 카드 AO-43과 `assets.manifest.json`의 `bg_prop_*` 항목에 옮겼다)(48 규격 논리 화소, 폭 × 높이). 지면선 y 56에 바닥을 두고, 위 끝은 y 16 아래(축소 창)에 들어오게 **높이 40 이하**로 잡았다. 15 §8.3의 H1 「여울 물줄기 띠·작은 나무다리」가 카드에 빠져 있어 넣었다.
 
 | # | 파일 `bg_prop_…` | 장소 | 크기 | 층 | 합성 | 내용 · 줄이며 합친 것 |
 | ---: | --- | --- | --- | --- | --- | --- |
@@ -519,7 +519,7 @@ AO-43 표에는 이름이 32개여서 「20개를 넘기지 않는다」와 맞�
 
 ## 6 날씨 (AO-45, 15 §8.3) — w17
 
-생성 모델은 **입자 수 정확히 40·30**과 **알파 40%**를 보장하지 못한다(§17-18). 처리안: 입자 **스프라이트**를 그리고 게임이 화면당 40·30개를 흩뿌린다(15의 「입자」 표현과 맞다). 안개는 불투명 흰색으로 받고 알파 102는 게임이 준다(그림자·빛 원과 같은 방식).
+생성 모델은 **입자 수 정확히 40·30**과 **알파 40%**를 보장하지 못한다. 입자 **스프라이트**를 그리고 게임이 화면당 40·30개를 흩뿌린다(OD-25 결정, 15 §8.3, 카드 AO-45 `fx_particle_{rain,snow}_48`, 비·눈 각 2칸 16 × 16). 안개는 불투명 흰색으로 받고 알파 102는 게임이 준다(그림자·빛 원과 같은 방식).
 
 w17a 입자: A(`{16x16}`) + C-FX(`N=6, COLS=6, ROWS=1, ANCHOR=the particle is centred in the cell`) + 본문 + D-FX
 
@@ -535,8 +535,8 @@ w17b 안개 `fx_weather_fog`: A(`{256x64}`) + C-BG(`{DARKEST}`=`#FFFFFF`) + 본�
 Only a horizontal band of fog across the whole strip: one flat, fully opaque white #FFFFFF shape filling roughly the middle third of the strip's height, its top and bottom edges gently wavy in hard one-block steps, a few separate small white wisps above and below it. The band meets the left and right edges at the same height so it tiles. Nothing else: no sky, no ground, no scenery. The game makes it semi-transparent.
 ```
 
-- AO-45의 구운 256 × 64 비·눈 겹침이 꼭 필요하면(런타임 입자 불가 판정 시) 같은 C-BG로 `about forty raindrops scattered evenly`를 요청하되 **개수는 게임 검사에서 ±를 허용**해야 한다(§17-18).
-- `fx_whiteflash`(흰빛 덮기)는 그리지 않는다. 합성 대상 실루엣을 흰색으로 칠하는 런타임 마스크라 그림이 필요 없다(§17-19).
+- 구운 256 × 64 비·눈 겹침은 만들지 않는다(OD-25 결정).
+- `fx_whiteflash`(흰빛 덮기)는 그리지 않는다. 합성 대상 실루엣을 흰색으로 칠하는 런타임 처리라 그림이 필요 없다(OD-26 결정, 15 §4).
 - 합격: E4 E6 E7 E11 + W9. 안개 띠 가장자리가 계단식이고 반투명·흐림이 없다.
 
 ---
@@ -599,7 +599,7 @@ w22b 표시 4 (`N=4, COLS=4, ROWS=1`, 모두 떠 있다, 금지 블록은 D-MARK
 Floating marks, no body. Cells 1-2: an exclamation speech bubble about 10 by 12 blocks, white #FFFFFF with a gold exclamation mark #FFE38A and a small tail at the bottom; cell 2 is the same bubble one block larger. Cells 3-4: sleep marks made of two small zigzag lines, NOT the letter Z: a larger zigzag and a smaller one above it, pale blue #B9C8FF; in cell 4 both zigzags are one block higher.
 ```
 
-- 호각은 J01 아이템 아이콘(§10)·토리 초상(§12)·P3 ES06~08과 같은 물건이다. **나무 호각**이다(15 §9.3 ES06, 11 C02-1, 08 J01 「끈에 매단 나무 호각」). 카드 AO-49 「청동 호각」과 AO-57 J01 색 `#B07A3A` `#7A4E24`는 소유 문서와 달라 고칠 대상이다(`OPEN_DECISIONS.md` OD-33).
+- 호각은 J01 아이템 아이콘(§10)·토리 초상(§12)·P3 ES06~08과 같은 물건이다. **나무 호각**이다(15 §9.3 ES06, 11 C02-1, 08 J01 「끈에 매단 나무 호각」). 카드 AO-49 「청동 호각」과 AO-57 J01 색은 나무로 고쳤다(`OPEN_DECISIONS.md` OD-33).
 - 지도·편지는 P3 ES03·ES18의 입력이 된다.
 
 ### 8.3 장면 소품과 상태 편집 — w23·w24
@@ -686,14 +686,14 @@ E (w28b):
 Three small emblems: 1 a lantern frame with NO flame, the glass empty and dull, #6E6862; 2 the same lantern lit, frame #B07A3A with a gold flame #FFE38A inside; 3 a crescent moon #B9C8FF. Lanterns 1 and 2 have exactly the same frame shape.
 ```
 
-- 명암 색은 03 §4에 값이 없다(§17-29). 게임이 UI 확장 묶음에 등록한 명암으로 양자화한다.
+- 명암 색은 03 §4에 값이 없다. 게임이 UI 확장 묶음에 등록한 명암으로 양자화한다(OD-29 결정, 15 §11).
 - 합격: E1 E4 E6 E7 E11 + W11. `ui_sp_pause_16`과 `ui_state_pause_12`가 같은 모양이다. 켜진 등불과 꺼진 등불의 불 화소 차가 보인다.
 
 ---
 
 ## 10 아이템 아이콘 34 (AO-55~58, 24 × 24) — w29~w32
 
-15에는 아이템 아이콘이 없고 카드가 24 × 24로 신설했다(P-04 승인 대기). 16 × 16 판은 B-02로 미뤄져 있다(§17-25). **첫 장(w29 무기)이 스타일 키**이고, P1의 무기·방어구 레이어가 합격했으면 **정체성 입력**으로 함께 넣는다(`Input image role: the in-game look of these items; match their shapes and colours.`).
+15에는 아이템 아이콘이 없고 카드가 24 × 24로 신설했다. 만들면 24 × 24로 정했고(OD-08 결정, P-04 규격 승인), **만들지는 `ASSET_BACKLOG.md` O-02가 정한다**(그전에는 시작하지 않는다). 16 × 16 판은 B-02로 미뤄져 있다. **첫 장(w29 무기)이 스타일 키**이고, P1의 무기·방어구 레이어가 합격했으면 **정체성 입력**으로 함께 넣는다(`Input image role: the in-game look of these items; match their shapes and colours.`).
 조립: A-UI(`{24x24}`) + C-ICON(`S=24`) + 본문 + D-UI. 공통: 빛은 왼쪽 위, 아이콘당 4색 + 외곽선, 등급 표시(보석·광채) 없음.
 
 | 번호 | 카드 | C-ICON 값 |
@@ -786,7 +786,7 @@ Front-facing bust of this youthful androgynous adventurer: short chestnut hair (
 
 ### 12.3 NPC 정체성 (PROMPTS §7로 옮김)
 
-v1.0의 NB-01~NB-09는 P3의 외형표와 합쳐 PROMPTS §7.3 `[ID-N01]`~`[ID-N09]`가 되었다(NB-0n = `[ID-N0n]`). 외형은 거기서만 고친다. 초상에서는 문장의 괄호 `(Full body: …)`를 괄호째 뺀다. 합칠 때 달라진 점: 도담 머리 밤색 `#7A4E30`·피부 밝음, 유안 망토 녹색(길잡이 두건 색), 비엘 머리 은백 `#E8E4DC`(검은 망토 위 윤곽), 토리 모자 `#C08A58` + 윗부분 `#7A4E24`, 호각 나무 `#C08A58` `#8E5E38`, 미루 약초는 캐릭터 48색 안의 녹 `#6D8F5A` `#4D6A3E`. 모두 `임시`다(`OPEN_DECISIONS.md` OD-02).
+v1.0의 NB-01~NB-09는 P3의 외형표와 합쳐 PROMPTS §7.3 `[ID-N01]`~`[ID-N09]`가 되었다(NB-0n = `[ID-N0n]`). 외형은 거기서만 고친다. 초상에서는 문장의 괄호 `(Full body: …)`를 괄호째 뺀다. 합칠 때 달라진 점: 도담 머리 밤색 `#7A4E30`·피부 밝음, 유안 망토 녹색(길잡이 두건 색), 비엘 머리 은백 `#E8E4DC`(검은 망토 위 윤곽), 토리 모자 `#C08A58` + 윗부분 `#7A4E24`, 호각 나무 `#C08A58` `#8E5E38`, 미루 약초는 캐릭터 48색 안의 녹 `#6D8F5A` `#4D6A3E`. 모두 `임시`이고 사용자가 승인했다(2026-09-24, `OPEN_DECISIONS.md` OD-02).
 
 ### 12.4 NPC 초상 11 — w43·w44
 
@@ -821,7 +821,6 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 | 소품 | E1 E3 E4 E6 E7 E11 |
 | 아이콘·책 UI | E1 E4 E6 E7 E11 |
 | 초상 | E1 E4 E6 E7 E11 (E9 대신 W12) |
-| 32 규격 | E12 |
 
 ### 13.2 세계 쪽 새 기준 W1~W14 (P1의 E13~E19와 번호가 겹치지 않게 W를 쓴다)
 
@@ -850,14 +849,14 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 
 | 번호 | 내용 | 요청 | 입력 | 선행 | 카드 | 15 단계 |
 | --- | --- | --- | --- | --- | --- | --- |
-| w01 | 늑대 기준 시트 18 | 생성 | 들쥐 합격본 | O02 | AO-32 | 5 |
-| w02 | 박쥐 기준 시트 18 | 생성 | 들쥐 합격본 | O02 | AO-33 | 5 |
-| w03 | 코볼트 합성 18 | 생성 | 들쥐 합격본, 마스터 | O02 | AO-34 | 5 |
+| w01 | 늑대 기준 시트 18 | 생성 | 들쥐 합격본 | — | AO-32 | 5 |
+| w02 | 박쥐 기준 시트 18 | 생성 | 들쥐 합격본 | — | AO-33 | 5 |
+| w03 | 코볼트 합성 18 | 생성 | 들쥐 합격본, 마스터 | — | AO-34 | 5 |
 | w04 | 코볼트 몸체·곡괭이 떼기 | 떼기 ×2 | w03 | w03 | AO-34·35 | 5 |
 | w05 | EN02 교체 → 귀 떼기 | 교체, 떼기 | 들쥐 합격본 | — | AO-35 | 5 |
 | w06 | EN04·06·07 색 목표(검토용) | 교체 ×3 | w01, w02 | w01·w02 | AO-36 | 5 |
 | w07 | EN09·EN10 교체 → 모자·투구 떼기 | 교체 ×2, 떼기 ×2 | w03 | w03 | AO-35 | 5 |
-| w08 | EB01·EB02 교체 → 뿔 투구·큰 곡괭이·수염·등불 떼기 | 교체 ×3, 떼기 ×5 | w03, w07a, (P1 c18) | w07, §17-6 | AO-35 | 5 |
+| w08 | EB01·EB02 교체 → 뿔 투구·큰 곡괭이·수염·등불 떼기 | 교체 ×3, 떼기 ×5 | w03, w07a, (P1 c18) | w07(EB01 색 목표만 OD-12 값 대기) | AO-35 | 5 |
 | w09 | 정예 깃발 2 | 생성 | — | — | AO-35 | 5 |
 | w10 | 마을 합성 → 3층 떼기 | 생성, 떼기 ×3 | 들판 합성 합격본 | PROMPTS §3.5 | AO-40 | 5 |
 | w11 | 마을 창 불빛 | 교체, 떼기 | w10 | w10 | AO-40 | 5 |
@@ -876,7 +875,7 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 | w24 | 장면 소품 10 → 상태 편집 → 꺼진 등불 | 생성, 교체 ×4 | 마스터, (P1 c18) | — | AO-50 | 6 |
 | w25 | UI 상태 12(스타일 키) | 생성 | — | — | AO-51 | 6 |
 | w26~w28 | UI 8 · 7 · 12 · 3 | 생성 ×4 | w25 | w25 | AO-52~54 | 6 |
-| w29 | 아이템 무기 10(스타일 키) | 생성 | (P1 무기 레이어) | P1 c14 권장 | AO-55 | 6 |
+| w29 | 아이템 무기 10(스타일 키) | 생성 | (P1 무기 레이어) | `ASSET_BACKLOG.md` O-02, P1 c14 권장 | AO-55 | 6 |
 | w30~w32 | 아이템 방어구·장신구·소모품 | 생성 ×3 | w29, (P1 방어구) | w29 | AO-56~58 | 6 |
 | w33 | 책 UI 3 | 생성 | — | — | AO-59 | 7 |
 | w34 | 보스 정체성 1 | 생성 | w03 | w03 | AO-37 | 7 |
@@ -898,27 +897,27 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 
 ---
 
-## 16 수량 대조 (15 §13.1, 한 규격 기준)
+## 16 수량 대조 (15 §13.1, 48 규격 한 벌)
 
 | 15 §13.1 항목 | 15 수량 | 이 문서 | 다른 곳 | 비고 |
 | --- | ---: | ---: | --- | --- |
 | 적 4계열 × 18 | 72 | 54(늑대·박쥐·코볼트) | 들쥐 18 = PROMPTS P0 | ✅ 72 |
-| 적 소품 | 22 | 22 | — | 곡괭이 5·큰 곡괭이 5·귀·모자·녹슨 투구·뿔 투구·수염·등불·깃발 각 2. 떼기 결과는 18칸 층이라 게임이 고른다(§17-8) |
-| 보스 | 35 | 35 | — | 본체 31 + 파동 4. 카드의 균열 겹침 1·종추 6은 15 밖(§17-10) |
+| 적 소품 | 22 | 22 | — | 곡괭이 5·큰 곡괭이 5·귀·모자·녹슨 투구·뿔 투구·수염·등불·깃발 각 2. 떼기 결과는 18칸 층이라 게임이 고른다(OD-22 결정, 15 §7.2) |
+| 보스 | 35 | 35 | — | 본체 31 + 파동 4. 균열 겹침 1은 15 §7.3 2단계 부품, 종추는 본체에 그린다(OD-59) |
 | 효과 | 32 | 32 | — | FX1 4·FX2 6·FX3 4·FX4 8·FX5 4·FX6 6 |
 | 소품 | 43 | 41 | 책 2 = PROMPTS P0 | ✅ 43 |
 | 이벤트 장면 | 80 | 0 | P3 | 소품·장소 입력은 이 문서가, NPC 입력은 PROMPTS §7.4 `n01`이 준다 |
-| 배경 타일 | 10장 | 7 | 들판 3 = PROMPTS P0 | ✅ 10. 점등 겹침 2장(창·등불)은 15 밖(P-15) |
-| 배경 장소 소품 | 약 20 | **20** | — | §5 확정안 |
+| 배경 타일 | 10장 | 7 | 들판 3 = PROMPTS P0 | ✅ 10. 점등 겹침 2장(창·등불)은 15 §13.1 주석으로 따로 센다(OD-28 결정) |
+| 배경 장소 소품 | 20 | **20** | — | §5 확정안(OD-09 승인) |
 | 초상 | 72 | 72 | — | 부품 25 + NPC 11 = 36 × 2크기 |
 | UI 아이콘 | 42 | 42 | — | 12 + 8 + 7 + 15 |
 | 책 UI 부품 | 3 | 3 | — | 팔레트 3은 게임 |
-| 팔레트·변환표 | 약 69 | 0 | 게임(D56 8번) | 변형 색 목표(w06·w07·w08)만 검토용으로 만든다 |
+| 팔레트·변환표 | 약 76 | 0 | 게임(D56 8번) | 장소 팔레트 7 포함(OD-23). 변형 색 목표(w06·w07·w08)만 검토용으로 만든다 |
 | (15에 없음) 아이템 아이콘 | — | 34 | — | 카드 신설(P-04) |
-| (15에 없음) 날씨 | — | 입자 4(+2)·안개 1 | — | AO-45. 흰빛 덮기는 그리지 않는다 |
+| (15에 없음) 날씨 | — | 입자 4(+2)·안개 1 | — | AO-45. 흰빛 덮기는 그리지 않는다(OD-26) |
 
 ---
 
 ## 17 확인 필요
 
-`docs/art/OPEN_DECISIONS.md`로 옮겼다(v1.1). 본문의 「§17-n」은 그 표의 `옛 번호` 열 `P2-17-n`으로 찾는다. 이 정리에서 닫은 것: 20(공통 블록 충돌 → PROMPTS D-BG·이 문서 D-MARK, OD-63), 21(NPC 외형 → 02 §8, OD-38), 23(호각 = 나무, OD-33), 31(P3와 공유하는 모양 → PROMPTS §5.3 순서, OD-66) 등. 각 항목의 상태는 그 표에 있다.
+`docs/art/OPEN_DECISIONS.md`로 옮겼다(v1.1). 본문의 「§17-n」은 그 표의 `옛 번호` 열 `P2-17-n`으로 찾는다. 이 정리에서 닫은 것: 20(공통 블록 충돌 → PROMPTS D-BG·이 문서 D-MARK, OD-63), 21(NPC 외형 → 02 §8, OD-38), 23(호각 = 나무, OD-33), 31(P3와 공유하는 모양 → PROMPTS §5.3 순서, OD-66) 등. 2026-09-24 사용자 결정(권장안)으로 나머지 사용자 결정 항목을 모두 닫았다. **남은 것: EB01 새 색 2개의 값(OD-12)** 하나. 각 항목의 상태는 그 표에 있다.

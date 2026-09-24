@@ -1,8 +1,9 @@
 # P3_scenes — 이벤트 장면 20개 프롬프트
 
-버전 1.1 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.2 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24, 권장안) 반영 — 48 규격만(D64, §7.3 폐기, O02 대기 줄 삭제), ES10 장소 = 길바뀜의 틈 안쪽(OD-11), ES15 무기 한 점은 게임이 얹음(OD-18), 정지 부분 떨림은 두 번 실패 뒤 정규화가 1칸에서 복사(D66, OD-05), NPC `임시` 외형 승인(OD-02).
 1.1: 15 §9.3 보정(커밋 e878cce) 반영 — 표의 x는 인물 가로 중심, 주인공 비움 폭 x ± 16(`잠` ± 22, `환호` 위로 y 6), 축소 창은 장면을 쓰지 않음(y 16 제약·320 × 48 검사 삭제), 반복 장면은 처음 자세로 돌아오는 몸짓, ES09 `끝 유지`. PROMPTS v1.2 정합 — 등장인물 외형·NPC 전신 기준 시트를 PROMPTS §7로 옮김(`[ID-N0n]`, `nref` 칸 번호 바뀜), 장면 블록 이름 S-* → SC-*, 호각은 나무, 같은 소품 문장을 P2와 맞춤, 진행표·확인 필요를 PROMPTS §6.4·`OPEN_DECISIONS.md`로 옮김.
-상위 문서: `docs/art/PROMPTS.md` v1.2(이하 **PROMPTS**). 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거를 하지 않는다. 색인·전체 제작 순서는 PROMPTS §5다.
+상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거를 하지 않는다. 색인·전체 제작 순서는 PROMPTS §5다.
 사양은 `docs/design/15_아트_스프라이트_사양.md` §9.3(D63, 이하 **15 §9.3**)이 소유한다. 이 문서는 그 표를 프롬프트로 옮기기만 한다. 표와 이 문서가 다르면 표가 맞다.
 관련: 등장인물 외형은 PROMPTS §7(02 §8이 출처), 사건 도입 문장은 11, 장소 모습은 02 §6·15 §8, 소품 모양은 15 §9.2와 `ASSET_ORDERS.md` AO-49·AO-50·AO-57(프롬프트는 P2 §8), 적은 15 §7, 사망 연출은 09 §5.2, 동반자는 12 §2.1.
 
@@ -12,7 +13,7 @@
 
 ### 0.1 범위
 
-15 §9.3의 ES01~ES20. 장면마다 128 × 64 칸 4개(250 ms × 4)이고, 48 규격 제작 원본을 먼저 만든다. 32 규격은 O02가 32를 채택했을 때만 만든다(§7.3). 장면이 쓰는 **NPC 전신 기준 시트**(`n01`, 합격본 `nref`)는 PROMPTS §7.4가 만든다.
+15 §9.3의 ES01~ES20. 장면마다 128 × 64 칸 4개(250 ms × 4)이고, 48 규격만 만든다(O02 = 48, D64). 장면이 쓰는 **NPC 전신 기준 시트**(`n01`, 합격본 `nref`)는 PROMPTS §7.4가 만든다.
 
 ### 0.2 장면 그림이 지켜야 할 것 (15 §9.3 요약)
 
@@ -27,6 +28,7 @@
 | 색 | 기본 48색 + 배경 확장 묶음. 달그늘(ES11·ES19)만 변이·정예 묶음 추가. 밤·계절 변환표를 쓰지 않는다 | 장면별 팔레트 |
 | 외곽선 | 인물·소품은 `#2B2233`. 배경 면은 어두운 외곽선 없음, 배경 최암부는 외곽선보다 L\* 15 이상 밝게 | SC-A |
 | 움직임 줄이기 | 1칸째만 보인다(`끝 유지`는 4칸째) → 그 한 칸만으로 사건이 읽혀야 한다 | SE12 |
+| 정지 부분 | FRAMES 밖이 네 칸에서 같다. 먼저 다시 생성해 칸 사이 차이를 정지 부분의 0.5% 이하로 맞추고, 같은 장면이 두 번 넘으면 게임 정규화가 정지 부분을 1칸에서 나머지 칸으로 복사한다(15 §9.3·§12.2, D66) | SE3, V-S5 |
 
 배경 최암부 계산: 외곽선 `#2B2233`의 L\*는 14.9이므로 배경 화소는 L\* 29.9 이상이어야 한다. 기본 48색 가운데 배경에 쓸 수 있는 가장 어두운 색은 `#4C4A52`(L\* 31.9)다. `#4A3F55`(28.6), `#3A4458`(28.7), `#5E3C24`(28.7), `#553420`(25.2), `#2E2438`(16.1), `#7A1F33`(27.7)은 **인물·소품에만** 쓴다.
 
@@ -334,20 +336,20 @@ FRAMES (one way, frame 4 is held): 1 ledger open, Hadel looking down at it; 2 it
 11 선택 창 본문: 길바뀜의 틈 안쪽, 별빛 문양이 새겨진 돌샘에서 물이 솟는다. … 샘가에는 다리를 다친 길잡이 유안이 앉아 있다. "그 물, 한 사람 몫밖에 안 나와요."
 
 ```
-SCENE: the Starsleep spring. The end of a misty mountain path: pale misty sky #E8EEF2 #B9C8FF, two dark-green conifers #4D6A3E #6D8F5A at the right edge, mossy rocks #9A948C #6D8F5A, flat horizontal mist bands #E8EEF2 across rows 30-40 (flat and opaque, no transparency). Hushed, sacred, a little sad.
-HERO SLOT (keep empty): 0.05 to 0.30 of the panel width, ground line up to row 10, show only plain mist, rock and path. No person, prop, shadow or bright detail (the player character is added later).
+SCENE: the Starsleep spring. Deep inside the Pathshift rift: cracked grey rock walls #6E6862 #7D7B80 with starlight leaking through the cracks as flat pale bands #B9C8FF and a few single-block star specks #FFE38A #FFFFFF, a few small flat stone fragments #C8C2B8 floating near the upper right, a rough rock floor #9A948C #6E6862 below the ground line. Hushed, sacred, a little sad; never black or frightening.
+HERO SLOT (keep empty): 0.05 to 0.30 of the panel width, ground line up to row 10, show only plain rift rock wall and floor. No person, prop, shadow or bright detail (the player character is added later).
 PROPS AND PEOPLE:
 - The Starsleep spring from 0.44 to 0.72 on the ground line: a low round stone basin #C8C2B8 #9A948C, its rim carved with small four-point star marks, clear water #B9C8FF with two flat ripple rings rising gently in the middle.
 - [ID-N07] Sitting on the ground centered at 0.78, leaning back against the right side of the basin, facing LEFT, the bandaged leg stretched out.
 FRAMES: the ripple rings on the water move outward in four phases and loop; one star mark sparkles #FFFFFF in frame 2 and another in frame 4; Yuan's chest rises one block in frame 3.
 ```
 
-- 입력: nref(7칸 = 유안). 별잠 샘물 소품이 합격해 있으면 함께 — 없으면 이 장면이 샘 모양의 기준이 되고 AO-50 `prop_star_spring`에 넘긴다.
-- 배치: 주인공 x 22 `발견`, 자리 6~38(0.05~0.30) / 샘 56~92 / 유안 90~112(앉음) / 침엽수 112~128.
+- 입력: nref(7칸 = 유안). 틈 먼 층(P2 w15 `bg_rift_far`)이 합격해 있으면 장소 참고 입력(`Input image role: place reference only: copy the rift wall's colours and crack style, not its layout.`). 별잠 샘물 소품이 합격해 있으면 함께 — 없으면 이 장면이 샘 모양의 기준이 되고 AO-50 `prop_star_spring`에 넘긴다.
+- 배치: 주인공 x 22 `발견`, 자리 6~38(0.05~0.30) / 샘 56~92 / 유안 90~112(앉음) / 떠 있는 돌 조각 104~124(위쪽).
 - 프레임: 물결 4위상 반복, 별 반짝 2·4칸, 유안 숨.
-- 장소: 15 §9.3은 「안개 산길 끝」, 11 F02·02 §6.4는 「길바뀜의 틈 안쪽」이다. 표를 따랐다(사용자 결정 `OPEN_DECISIONS.md` OD-11). 틈으로 바꾸면 SCENE 첫 문장을 `Inside the Pathshift rift: cracked dark-grey rock #6E6862 #7D7B80 with starlight leaking through the cracks as flat pale bands #B9C8FF #FFE38A, a few small floating stone fragments` 로 바꾼다.
-- 팔레트: 하늘 `#E8EEF2` `#B9C8FF`, 안개 `#E8EEF2`, 나무 `#4D6A3E` `#6D8F5A`, 바위 `#9A948C` `#6D8F5A`, 샘 `#C8C2B8` `#9A948C` `#B9C8FF`, 반짝 `#FFFFFF`, 유안 `#3A4458` `#262E3E` `#B97F5A` `#93603F` `#6D8F5A` `#4D6A3E` `#B4B2B0` `#B04A42` `#F0E6CC` `#C8C2B8`, 외곽선.
-- 장면 금지: 피·상처 금지 — 다친 다리는 흰 붕대로만. 반투명 안개 금지(불투명 띠).
+- 장소: **길바뀜의 틈 안쪽**(11 F02·02 §6.4). 사용자 결정(2026-09-24, `OPEN_DECISIONS.md` OD-11)으로 15 §9.3 ES10 행을 「안개 산길 끝」에서 이렇게 고쳤다(D69).
+- 팔레트: 벽 `#6E6862` `#7D7B80`, 별빛 `#B9C8FF` `#FFE38A` `#FFFFFF`, 돌 조각 `#C8C2B8`, 바닥 `#9A948C` `#6E6862`, 샘 `#C8C2B8` `#9A948C` `#B9C8FF`, 반짝 `#FFFFFF`, 유안 `#3A4458` `#262E3E` `#B97F5A` `#93603F` `#6D8F5A` `#4D6A3E` `#B4B2B0` `#B04A42` `#F0E6CC` `#C8C2B8`, 외곽선.
+- 장면 금지: 피·상처 금지 — 다친 다리는 흰 붕대로만. 달·초승달·잔 모양 금지(AO-42와 같은 이유). 검은 틈(`#2B2233`) 금지.
 
 ### ES11 · F03 마지막 잔을 권하는 성주
 
@@ -432,11 +434,11 @@ FRAMES: Hadel's hand: up, tilted, up, tilted; Dodam's hand: tilted, up, tilted, 
 
 ### ES15 · S04 생애의 끝 (끝 유지)
 
-09 §5.2: `쓰러짐` → 등불이 깜빡이다 꺼짐 → 인물이 사라지고 배낭과 무기 한 점이 남음 → 길드 편지. ES15는 그 가운데 `꺼진 등불 → 남은 배낭` 칸을 대신한다. 한 줄 기록: `[사망] {name}의 등불이 꺼졌다`.
+09 §5.2: `쓰러짐` → 등불이 깜빡이다 꺼짐 → 인물이 사라지고 배낭과 무기 한 점이 남음 → 길드 편지. ES15는 그 가운데 `꺼진 등불 → 남은 배낭` 칸을 대신한다. **무기 한 점은 장면에 그리지 않는다** — 유품 등록 1위 장비가 무기이면 게임이 그 무기의 착용 1프레임을 배낭 오른쪽(x 92)에 얹는다(15 §9.3, D69, `OPEN_DECISIONS.md` OD-18). 한 줄 기록: `[사망] {name}의 등불이 꺼졌다`.
 
 ```
 SCENE: the end of a life. A hold scene: the last panel stays on screen. A quiet empty floor that is not any real place: a flat dusk-grey floor #6E6862 below the ground line with a slightly lighter top edge #7D7B80, and behind it one deep flat blue-grey #4C4A52 with a slightly lighter band #5A6A9A near the horizon (rows 44-55). No walls, no enemies, no people, no player character anywhere. Calm, dignified, sad but gentle; never scary.
-EMPTY LEFT SIDE: from 0 to 0.42 of the panel width only plain floor and background; nothing is added there.
+EMPTY LEFT SIDE: from 0 to 0.42 of the panel width only plain floor and background; nothing is added there. EMPTY RIGHT OF THE BACKPACK: from 0.63 to 0.81 only plain floor and background (the game adds one item there later).
 PROPS (between 0.44 and 0.62, standing on the ground line):
 - A small standing lantern centered at 0.48, about 14 by 20 blocks, bronze frame #B07A3A #7A4E24, glass panel.
 - A left-behind small boxy travel backpack #8E5E38 #5E3C24 with a rolled flap, centered at 0.57, leaning slightly toward the lantern.
@@ -444,11 +446,11 @@ FRAMES (one way, frame 4 is held): the lantern goes out in four steps. 1 flame #
 ```
 
 - 입력: 없음. 세움 등불·꺼진 등불 소품(AO-50)이 합격해 있으면 함께.
-- 배치: 주인공 없음(15 §9.3: 얹지 않는다). 등불 55~68, 배낭 64~80.
+- 배치: 주인공 없음(15 §9.3: 얹지 않는다). 등불 55~68, 배낭 64~80, 게임이 얹는 무기 자리 x 80~104(비움).
 - 프레임: 켜짐 → 작아짐 → 불씨 → 꺼짐, **4칸째 유지**. 움직임 줄이기에서도 4칸째만 보인다.
 - 분위기: 슬프지만 담담하다. 어둠은 짙은 청회색까지만(검정 금지). 공포·피·쓰러진 몸 금지.
 - 팔레트: 바닥 `#6E6862` `#7D7B80`, 배경 `#4C4A52` `#5A6A9A`, 빛 고리 `#9A948C` `#7D7B80`, 등불 `#B07A3A` `#7A4E24` `#FFE38A` `#C8783A` `#6E6862`, 배낭 `#8E5E38` `#5E3C24`, 외곽선(등불·배낭).
-- 장면 금지: 무덤·묘비·해골·꽃다발·무기 금지(09 §5.2의 「무기 한 점」은 `OPEN_DECISIONS.md` OD-18). 4칸째 `#FFE38A` 화소 0(AO-50 `prop_lantern_out`과 같은 기준).
+- 장면 금지: 무덤·묘비·해골·꽃다발·무기 금지(무기 한 점은 게임이 얹는다, OD-18). 4칸째 `#FFE38A` 화소 0(AO-50 `prop_lantern_out`과 같은 기준).
 
 ### ES16 · S05 계승
 
@@ -525,7 +527,7 @@ FRAMES (one way, frame 4 held): the door closes; the open gap on the doorway's l
 - 입력: nref(8칸 = 비엘). ES11이 먼저 합격했으면 ES11 띠도 정체성 입력으로.
 - 배치: 주인공 x 34 `잠`(머리는 오른쪽), 자리 12~56(0.09~0.44), 침상 10~58 / 촛대·꽃병 x 60~66 / 문간 90~118 / 비엘 x 96.
 - 프레임: 문틈 16 → 12 → 8 → 4블록, **4칸째 유지**. 움직임 줄이기에서도 4칸째만 보인다 — 비엘이 거의 가려져도 문틈의 눈·손으로 인물이 읽혀야 한다.
-- 11 S08 연출은 「머리맡의 잔, 촛불이 꺼짐 → 달빛 효과」도 적었다. 15 표에는 잔이 없고 촛불은 켜 둔다(11 상세 기록과 같다). 15 표(아트 사양 소유)를 따른다 — `OPEN_DECISIONS.md` OD-41. 11 S08 연출 줄은 소유 문서 정리 대상이다.
+- 11 S08 연출은 「머리맡의 잔, 촛불이 꺼짐 → 달빛 효과」도 적었다. 15 표에는 잔이 없고 촛불은 켜 둔다(11 상세 기록과 같다). 15 표(아트 사양 소유)를 따른다 — `OPEN_DECISIONS.md` OD-41. 11 S08 연출 줄도 이에 맞춰 고쳤다(2026-09-24).
 - 팔레트: 벽 `#A596B0` `#CFC3D6` `#7D7B80`, 달빛 `#B9C8FF`, 바닥 `#7D7B80` `#9A948C`, 침상 `#9A948C` `#CFC3D6`, 촛불 `#F0E6CC` `#FFE38A`, 장미 `#7A1F33` `#2E2438` `#4D6A3E`, 문 `#8E5E38` `#5E3C24`, 비엘 색, 외곽선. 변이·정예 묶음을 쓰는 두 장면 중 하나다.
 - 장면 금지: 관·무덤·해골 금지. 문을 잠그는 자물쇠·쇠사슬 금지(갇히는 느낌이 아니다).
 
@@ -557,7 +559,7 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 | --- | --- | --- |
 | SE1 | 띠가 같은 크기 4칸, 전체 가로:세로 = 8:1(±2%), 칸 사이 선·틈 없음. 열쇠 칸은 2:1 한 칸 | E1 |
 | SE2 | 띠 밖이 `#FF00FF` 한 값. 후광·비네트·그라데이션 없음 | E4 E11 |
-| SE3 | FRAMES에 적지 않은 부분(배경·인물 위치·크기·색)이 네 칸에서 같다. 반복 재생에서 떨리는 곳이 없다 | 12.3 체크 8 |
+| SE3 | FRAMES에 적지 않은 부분(배경·인물 위치·크기·색)이 네 칸에서 같다. 반복 재생에서 떨리는 곳이 없다. 허용 한도: 정지 부분 칸 사이 차이 화소 0.5% 이하. 넘으면 다시 생성하고, 같은 장면이 두 번 넘으면 게임 정규화가 정지 부분을 1칸에서 복사한다(D66, `OPEN_DECISIONS.md` OD-05) | 12.3 체크 8 |
 | SE4 | FRAMES에 적은 변화만 있고 크기는 1~2블록. 반복 장면은 처음 자세로 돌아오는 몸짓이라 4→1이 이어진다. `끝 유지`(ES09·ES15·ES19)는 4칸이 최종 상태다 | 15 §9.3 |
 | SE5 | 주인공 자리에 사람·동물·소품·그림자·밝은 점이 없다. 주인공처럼 보이는 모험가가 어디에도 없다 | 15 §9.3 |
 | SE6 | 지면선이 칸 높이 7/8의 곧은 선이고 모든 인물·소품이 딛는다 | 03 §2.2 |
@@ -597,7 +599,7 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 | V-S2 | 대비 | 주인공 몸통·머리 평균 L\*와 주인공 자리 배경 평균 L\* 차이 25 이상(15 §2.3). 밤 장면 ES01은 주인공 명도 −15%를 적용하지 않는다(장면 고유 조명, 15 §9.3) |
 | V-S3 | (없앰) | 축소 창은 장면을 쓰지 않는다(15 §9.3, e878cce). 번호는 비워 둔다 |
 | V-S4 | 배율 | 125·150%에서 채운 윗줄과 장면 사이에 경계선이 보이지 않는다 |
-| V-S5 | 반복 | 정지 부분이 떨리지 않는다(SE3). 떨림이 있으면 화소 차이 위치를 적는다 |
+| V-S5 | 반복 | 정지 부분이 떨리지 않는다(SE3). 떨림이 있으면 화소 차이 위치와 비율을 적는다. 0.5%를 넘은 두 번째 실패부터는 정규화의 1칸 복사(도구 T10) 뒤 다시 본다 |
 | V-S6 | 한 칸 | 움직임 줄이기 한 칸만 보고 사건이 읽힌다(SE12) |
 | V-S7 | 실제 크기 | 100% 실제 크기로 60cm 거리에서 NPC가 누구인지, 소품이 무엇인지 알아본다(15 §12.3 체크 9) |
 
@@ -626,19 +628,17 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 
 | 차례 | 대상 | 이유 | 선행 |
 | --- | --- | --- | --- |
-| 0 | `n01` NPC 기준(PROMPTS §7.4) | 다섯 명이 여러 장면에 나온다. 정체성 기준이 먼저 있어야 한다 | 마스터(있음), 외형 승인(`OPEN_DECISIONS.md` OD-02) |
+| 0 | `n01` NPC 기준(PROMPTS §7.4) | 다섯 명이 여러 장면에 나온다. 정체성 기준이 먼저 있어야 한다 | 마스터(있음). 외형 승인됨(OD-02, 2026-09-24) |
 | 1 | **시범** ES15, ES18 | NPC가 없어 정체성 위험 없이 띠 형식·두 단계 제작·주인공 자리·끝 유지·preview 합성을 먼저 검증한다 | 없음 |
 | 2 | 시범 ES01 | 한 번만 나오는 NPC(여행자) + 소품(모닥불) + 들판. 반복 장면 형식 검증 | nref |
-| — | **O02 판정 대기** | 32가 채택되면 장면 속 인물 키가 26으로 바뀌어 전부 다시 그려야 한다. 시범 3장면 뒤 본 제작은 O02 뒤로 미룬다 | O02 |
 | 3 | 들판·여울: ES06, ES07, ES12, ES13 | 들판 배경(AO-39)이 합격하면 장소 참고 입력으로 쓴다 | AO-39 합격이면 더 좋음 |
 | 4 | 마을: ES02, ES04, ES08, ES09, ES14, ES16, ES17 | 하델·도담·토리 반복 등장 — 같은 인물끼리 나란히 검수 | 마을 배경 합격이면 더 좋음 |
 | 5 | 폐광: ES03, ES05, ES20 | 폐광 배경·보스 시트 뒤가 좋다 | 폐광 배경, EB03 |
-| 6 | 틈·달그늘: ES10, ES11, ES19 | 변이 묶음 색, 비엘 두 장면을 이어서 | ES10 장소 결정(OD-11) |
+| 6 | 틈·달그늘: ES10, ES11, ES19 | 틈 장소(ES10, OD-11 결정)와 변이 묶음 색, 비엘 두 장면을 이어서 | 틈 먼 층(P2 w15) 합격이면 더 좋음 |
 
-### 7.3 32 규격
+### 7.3 32 규격 (폐기)
 
-- 15 §9.3대로 **O02가 채택한 규격만** 만든다. 48이 채택되면 32 장면은 만들지 않는다.
-- 32가 채택되면: 48 장면을 PROMPTS §1 E 방식으로 편집하지 않는다(창 크기 128 × 64가 같으므로 블록 크기가 아니라 **인물 키만** 38 → 26으로 줄어든다). 장면 본문의 `an adult stands about 38 blocks tall … top of the head near row 18`을 `about 26 blocks tall … near row 30`으로, 아이 30 → 21, 세나 34 → 23으로 바꿔 새로 생성하고, 주인공 자리 폭을 x ± 11로 다시 계산한다.
+- O02는 48로 정했다(2026-09-24, D64). 32 장면은 만들지 않는다(15 §9.3 파일 행).
 
 ---
 
@@ -650,4 +650,4 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 
 ## 9 확인 필요
 
-`docs/art/OPEN_DECISIONS.md`로 옮겼다(v1.1). 옛 번호는 그 표의 `옛 번호` 열 `P3-n`으로 찾는다. 15 §9.3 보정(e878cce)과 소유 문서 규칙으로 닫은 것: 1 주인공 x(OD-34), 2 축소 창(OD-35), 3 한 방향 움직임·ES09 끝 유지(OD-36), 4 아기(OD-45), 8 NPC 외형 출처(OD-38), 10 ES20 파수꾼 몸(OD-42), 11 ES04 지도(OD-43), 12 아이 키(OD-40), 13 ES19 잔·촛불(OD-41), 14 먼 늑대(OD-44), 15 호각 재질(OD-33). 남은 사용자 결정: 5(OD-18), 6(OD-19), 7(OD-20), 8의 `임시` 외형 승인(OD-02), 9(OD-11), 17(OD-05), 18(OD-01). 16은 도구 작업 T2다.
+`docs/art/OPEN_DECISIONS.md`로 옮겼다(v1.1). 옛 번호는 그 표의 `옛 번호` 열 `P3-n`으로 찾는다. 15 §9.3 보정(e878cce)과 소유 문서 규칙으로 닫은 것: 1 주인공 x(OD-34), 2 축소 창(OD-35), 3 한 방향 움직임·ES09 끝 유지(OD-36), 4 아기(OD-45), 8 NPC 외형 출처(OD-38), 10 ES20 파수꾼 몸(OD-42), 11 ES04 지도(OD-43), 12 아이 키(OD-40), 13 ES19 잔·촛불(OD-41), 14 먼 늑대(OD-44), 15 호각 재질(OD-33). 2026-09-24 사용자 결정(권장안)으로 닫은 것: 5 ES15 무기(OD-18 → 게임이 얹음, ES15), 6 동반자 머리(OD-19 → 교체용 두 색, 15 §9.3), 7 세대 교대 NPC(OD-20 → 1대 그림, 15 §10), 8의 `임시` 외형(OD-02 → 승인), 9 ES10 장소(OD-11 → 틈 안쪽, ES10), 17 떨림(OD-05 → SE3·V-S5, D66), 18 규격(OD-01 → 48, D64, §7.3 폐기). 16은 도구 작업 T2다. 남은 것 없음.
