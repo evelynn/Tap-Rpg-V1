@@ -95,10 +95,12 @@ describe('정산 상한과 버린 시간(13 §3.2)', () => {
     const world = makeGame({ seed: seedOf(5) })
     world.state.policies.stage_boundary_stop = false
     warm(world, 300) // 일지가 쌓인 뒤가 가장 느리다
-    const t0 = Date.now()
+    // 벽시계가 아니라 이 프로세스의 CPU 시간을 잰다. 테스트를 병렬로 돌리면 벽시계가 2~5배 늘어 흔들렸다
+    const t0 = process.cpuUsage()
     settleOffline(world, CAP_SEC)
-    const ms = Date.now() - t0
-    assert.ok(ms <= 2000, `480분 정산 ${ms}ms`)
+    const used = process.cpuUsage(t0)
+    const ms = Math.round((used.user + used.system) / 1000)
+    assert.ok(ms <= 2000, `480분 정산 CPU ${ms}ms`)
   })
 })
 
