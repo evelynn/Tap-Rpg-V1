@@ -1,9 +1,10 @@
 # P1_character — 캐릭터 쪽 나머지 에셋 프롬프트
 
-버전 1.2 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.3 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.3: PROMPTS v1.4 규격 고정 절차 반영 — 생성은 틀 이미지 + T + NUM(G는 틀 필요 시트만), REF-H는 틀 `chr_head_poses_ref`. 가는 눈(§3.2)·주름(§11.2)을 PROMPTS L7 표정 합성 12(틀 `chr_face`)의 2·3행으로 합침. **옷·무기 떼기는 요청하지 않고 도구 `derive`가 뗀다**(v04 두 번 연속 실패, PROMPTS §2.4). 파생용 가림막(§3.4), 바지 색 교체에 REF-C 어깨 속옷 추가(§3.1).
 1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24) 반영 — 48 규격만(D64, §13 폐기·c24 폐기), 무기 셀 밖 허용(D65, §7.2·E14), 선택 부품 규약 확정(D67, §1.5), 모든 무기 한 손(D68), 볼 홍조 표지(§3.3)·흰머리 보조판(§11.3, c25) 추가, 두건 = 가림 `일부`.
 1.1: PROMPTS v1.2 정합 — 교체 머리말 S·무기 공통 문장 S-W를 PROMPTS §1로 옮김, 모든 무기(V1·V2 포함)를 합성에서 떼기(REF-Q 7칸), 쓰러짐 4를 15 §4 「엎드림」으로, 진행표·확인 필요를 PROMPTS §6·`OPEN_DECISIONS.md`로 옮김.
-상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 공통 블록 A~E·S·S-W, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.2, 확인 필요는 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P1-n`)다.
+상위 문서: `docs/art/PROMPTS.md` v1.4(이하 **PROMPTS**). 공통 블록 A~E·S·S-W, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.2, 확인 필요는 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P1-n`)다.
 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거를 하지 않는다. 규칙·수치는 `docs/design/15_아트_스프라이트_사양.md`(이하 **15**)가 소유한다. 카드 안 프롬프트보다 이 문서가 우선한다.
 
 ---
@@ -24,11 +25,11 @@
 
 | 종류 | 무엇 | 머리말 |
 | --- | --- | --- |
-| **생성** | 새 기준 합성 시트(REF-D·E·H·P·Q). 모든 부품을 입은 완성 인물 | A + B + C + G + F + 본문 + D |
+| **생성** | 새 기준 합성 시트(REF-D·E·H·P·Q). 모든 부품을 입은 완성 인물 | A + B + T + NUM + C + F + 본문 + D(입력 1 = 틀, PROMPTS §0.4). 틀 필요 시트는 NUM 대신 G |
 | **교체 편집** | 합격한 합성 시트를 입력으로 넣고 **부품 하나만 바꾼다**(머리 모양·옷 계열·투구·무기·망토·방패). 포즈·위치·색은 그대로 | S(PROMPTS §1) + 교체 문장 + D |
-| **떼기** | 합성 시트(원본 또는 교체 결과)에서 **그 부품만 남긴다**. 보이는 화소만 | PROMPTS §3.2 머리말(이하 **X**) + 떼기 문장 |
+| **떼기** | 합성 시트(원본 또는 교체 결과)에서 **그 부품만 남긴다**. 보이는 화소만. **옷(방어구 몸통·선택 부품 겹침)·무기는 요청하지 않는다** — 도구 `derive`가 기준 시트에서 골라 낸다(v1.3) | PROMPTS §3.2 머리말(이하 **X**) + 떼기 문장 |
 
-변형은 모두 「교체 편집 → 떼기」 두 단계로 만든다. 같은 합성 시트에서 나오므로 모든 변형이 같은 몸체 프레임에 겹친다. 게임 쪽 정규화가 떼어 낸 레이어를 15 §12.2 시트 배치로 모은다(`docs/art/imagegen.map.json`의 `reference`/`layer` 짝).
+변형은 모두 「교체 편집 → 떼기(옷·무기는 `derive`)」 두 단계로 만든다. 같은 합성 시트에서 나오므로 모든 변형이 같은 몸체 프레임에 겹친다. 틀 위에서 만든 합성의 교체 편집 결과는 같은 `--spec`으로 문을 통과해야 한다(PROMPTS E22). 게임 쪽 정규화가 떼어 낸 레이어를 15 §12.2 시트 배치로 모은다(`docs/art/imagegen.map.json`의 `reference`/`layer` 짝).
 
 ### 0.4 저장
 
@@ -44,9 +45,9 @@ PROMPTS §0.3 그대로. 파일 이름은 `assets/_imagegen/{판}/c{번호}-{이
 Input image role: this is the exact character to draw. Copy its head shape, hair silhouette, eye size, face proportions, clothing, colors, pixel-block size and figure size relative to the cell exactly, and the short sword of its attack row whenever a sword is asked for. Do not copy its poses or its layout. No strap, no pouch, no bag, nothing on the back.
 ```
 
-### G 크기 (생성할 때, C 뒤에)
+### G 크기 (틀 필요 시트만 — 틀이 있으면 NUM이 대신한다)
 
-시트마다 셀 안 인물 크기가 다르면 레이어가 겹치지 않는다. PROMPTS C에는 크기 문장이 없어 여기서 더한다(48 규격 키 40(머리카락 포함) / 셀 48, 머리 폭 18, 머리카락 최상단 y 4를 비율로 옮김, D74).
+시트마다 셀 안 인물 크기가 다르면 레이어가 겹치지 않는다. v1.3부터 크기는 틀 이미지와 NUM(PROMPTS §8)이 가진다. 아래 어림 문장은 틀이 없는 시트(PROMPTS §0.4.3: REF-P·REF-Q, REF-D·REF-E를 다시 만들 때)에만 쓴다(48 규격 키 40(머리카락 포함) / 셀 48, 머리 폭 18, 머리카락 최상단 y 4를 비율로 옮김, D74).
 
 ```
 SCALE: exactly the figure scale of the input sheet. A standing figure is about four fifths of the cell height, the top of the head about one eighth of the cell height below the cell top, and the head about three eighths of the cell width. Seated, crouched and lying poses keep the same head size.
@@ -95,6 +96,8 @@ REF-A·REF-B(P0)에 없는 동작 5종(15 §4의 피격·발견·상호작용·�
 
 ### 2.1 REF-D · 피격 3 · 발견 4 · 상호작용 4 (AO-05·06·09)
 
+**v04 `c01-ref-d-hit-discover-interact11-48` 합격**(PROMPTS §2.4). 다시 만들지 않는다. v05 할 일: 바지 색 교체(§3.1) → 몸체 L1·가림막 L3·L8(§3.4) → `derive`. 다시 만들게 되면 틀 필요(PROMPTS §0.4.3)라 아래 G 조립을 쓴다.
+
 조립: A + B + C(`N=11, COLS=6, ROWS=3, EMPTY_CELLS=Row 1 holds three sprites; its last three cells stay completely empty. Rows 2 and 3 hold four sprites each; their last two cells stay completely empty.`) + G + F + 본문 + D. 입력: 마스터.
 
 ```
@@ -108,6 +111,8 @@ ROW 3 INTERACT, 4 frames, 150/150/150/250 ms, standing, the head bowed forward b
 - 합격: E1~E7, E9, E11, E16(표정: 피격 찡그림, 발견 3·4 놀람). 피격 2칸만 몸 중심이 1블록 왼쪽이다.
 
 ### 2.2 REF-E · 환호 4 · 쓰러짐 5 (AO-10)
+
+**v04 `c02-ref-e-cheer-collapse9-48-r2` 합격**(PROMPTS §2.4). 다시 만들지 않는다. v05 할 일은 REF-D와 같다. 다시 만들 때 환호 2·3칸 높이는 어림(`about one twentieth / one tenth of the standing height`) 대신 `the feet exactly 2 art px / 4 art px above the ground line`으로 쓴다(15 §12.3 검수 2, 틀 `chr_actions_b` lift [0, 2, 4, 0]).
 
 조립: A + B + C(`N=9, COLS=6, ROWS=2, EMPTY_CELLS=Row 1 holds four sprites; its last two cells stay completely empty. Row 2 holds five sprites; its last cell stays completely empty.`) + G + F + 본문 + D. 입력: 마스터.
 
@@ -124,10 +129,10 @@ Cells 4 and 5 must clearly differ from the sleep pose of the input: lying on the
 ### 2.3 REF-H · 머리 자세 3칸 (AO-14·15·23·26·28의 원본)
 
 머리카락·투구·두건·스카프·깃은 동작별이 아니라 **자세 3칸(기본·숙임·누움)**이다(15 §6.1·§6.2, §12.2). 세 자세를 한 장에 모은 합성 시트를 만들고, 머리에 붙는 모든 부품을 이 시트의 교체 편집으로 만든다.
-조립: A + B + C(`N=3, COLS=3, ROWS=1, EMPTY_CELLS=`) + G + 본문 + D. 입력: 마스터(이미지 1), 합격한 REF-D(이미지 2).
+조립: A + B + T + NUM(chr_head_poses_ref) + C(`N=3, COLS=3, ROWS=1, EMPTY_CELLS=`) + 본문 + D. 입력 1 = `docs/art/templates/chr_head_poses_ref.placeholder.png`(틀), 입력 2 = 마스터, 입력 3 = 합격한 REF-D(v04 `c01`). 문: `pnpm art:gate <png> --spec chr_head_poses_ref`.
 
 ```
-Input image role: image 1 is the exact character and supplies cells 1 and 3; image 2 supplies cell 2. Copy the identity, pixel-block size and figure size relative to the cell exactly. Do not copy the layouts.
+Input image roles: image 2 is the exact character and supplies cells 1 and 3; image 3 supplies cell 2. Copy the identity and the pixel density exactly; the size and place of each figure come from input image 1 and the NUMBERS block. Do not copy the layouts of images 2 and 3. In input image 1, cell 2 holds a SEATED stand-in only because no bowed pose existed: ignore its height and pose, draw the standing bowed figure there with its feet on the cell's ground line and on the same horizontal centre.
 THREE HEAD POSES of the same fully dressed character, no held objects, no sword, no bread:
 1 UPRIGHT: the relaxed idle stance of image 1, row 1 frame 1, head upright.
 2 BOWED: the interact pose of image 2, row 3 frame 2: standing, head bowed forward one step so the face looks down, the front hand gripping forward at waist height.
@@ -135,50 +140,85 @@ THREE HEAD POSES of the same fully dressed character, no held objects, no sword,
 The head, hair and face are exactly the same size in all three cells; only the head angle differs.
 ```
 
-- 합격: E1, E2, E4, E9, E11. 세 칸의 머리 크기가 같다.
+- 합격: 문 통과(E22) + E1, E2, E4, E9, E11. 세 칸의 머리 크기가 같다.
+- v04 `c04-ref-h-headposes3-48`(틀 이전)은 보류다(PROMPTS §2.4). 검증에서 떨어지면 이 조립으로 다시 만든다. 이 시트를 교체 편집하는 §4·§6·§9.3·§10의 결과도 `--spec chr_head_poses_ref`로 문을 통과해야 한다(틀 위에서 만든 경우).
 
 ---
 
 ## 3 몸체와 얼굴 (AO-05~AO-10, AO-13)
 
-### 3.1 몸체·천옷 레이어 — REF-D, REF-E에서 떼기
+### 3.1 몸체 레이어 — 바지 색 교체 뒤 떼기 (천옷은 `derive`)
 
 | 레이어 | 입력 | X 뒤 문장 |
 | --- | --- | --- |
-| 몸체(AO-05~10) | REF-D, REF-E | PROMPTS L1 그대로 |
-| 천옷(AO-20 나머지 28) | REF-D, REF-E | PROMPTS L4 그대로 |
-| 머리카락(참고용) | — | 떼지 않는다. 머리카락은 §4의 자세 3칸을 쓴다(확인 필요 12) |
+| 몸체(AO-05~10) | 바지 색 교체한 REF-D, REF-E | PROMPTS L1 그대로 |
+| 천옷(AO-20 나머지 28) | — | **요청하지 않는다**(v1.3). 도구 `derive`가 기준 시트에서 골라 낸다(PROMPTS §3.2) |
+| 머리카락·얼굴(파생용 가림막) | 바지 색 교체한 REF-D, REF-E | §3.4 |
 
 - 몸체 44프레임 = REF-B(대기 4·공격 6·앉기 4·잠 4) + REF-A에서 고른 걷기 6 + REF-D 11 + REF-E 9.
-- 합격: E8, E10, E11. 쓰러짐 4·5, 피격 1~3에서 몸체가 잘리지 않았는지 본다.
-- 몸체 속옷은 회청 민소매 `#7EA6B8` `#546E7A`, 바지는 청록 캔버스 `#27978D` `#00766D`다(PROMPTS L1, D73). 뗀 몸체에 크림 `#F0E6CC`나 회색 바지 `#C8C2B8` `#9A948C` 화소가 있으면 불합격이다. 먼저 뗀 v04 `c03-body-ref-d-48`·`c03-body-ref-e-48`은 크림 속옷·회색 바지라 모양만 합격이고, 다음 차례에 새 L1로 다시 뗀다.
-- **바지 색 교체(떼기 전에 한 번)**: 바지는 기준 시트에서 보이는 자리라 파생 도구가 기준 시트 색을 쓴다(D73). 합격한 기준 시트(REF-A·REF-B·REF-C·REF-D·REF-E) 각각에 아래 편집을 한 번 하고, 그 결과를 L1·L4·파생의 입력으로 쓴다.
+- 합격: E8, E10, E11, E21. 쓰러짐 4·5, 피격 1~3에서 몸체가 잘리지 않았는지 본다.
+- 몸체 속옷은 회청 민소매 `#7EA6B8` `#546E7A`, 바지는 청록 캔버스 `#27978D` `#00766D`다(PROMPTS L1, D73). 뗀 몸체에 크림 `#F0E6CC`나 회색 바지 `#C8C2B8` `#9A948C` 화소가 있으면 불합격이다. 먼저 뗀 v04 `c03-body-ref-d-48`·`c03-body-ref-e-48`은 크림 속옷·회색 바지라 모양만 합격이고, 다음 차례(`V05_REQUEST.md`)에 새 L1로 다시 뗀다.
+- **바지 색 교체(떼기 전에 한 번)**: 바지는 기준 시트에서 보이는 자리라 파생 도구가 기준 시트 색을 쓴다(D73). 합격한 기준 시트 각각에 아래 편집을 한 번 하고, 그 결과를 L1·가림막·파생의 입력으로 쓴다. 조립: 본문 + D(A·B·C·T·NUM 없음, 편집).
+
+| 기준 시트 | 합격 원본 | 편집 |
+| --- | --- | --- |
+| REF-A 걷기 12 | 없음(v04는 불합격) | 없음 — 새 REF-A(PROMPTS §3.1)가 처음부터 청록으로 그린다 |
+| REF-B 동작 18 | `v03/02-ref-b-actions18-48-r4.png` | 바지 |
+| REF-C 가죽 동작 18 | `v03/04-ref-c-leather-actions18-48-r2.png` | 바지 + 어깨 속옷(아래 둘째 판) |
+| REF-D 11 | `v04/c01-ref-d-hit-discover-interact11-48.png` | 바지 |
+| REF-E 9 | `v04/c02-ref-e-cheer-collapse9-48-r2.png` | 바지 |
 
 ```
-Use case: precise recolour edit of the provided sprite sheet. Keep every pixel position, shape and the flat #FF00FF background exactly. Recolour ONLY the trousers in every cell: their lit blocks to #27978D and their shaded blocks to #00766D. The tunic hem, waist cord, boots, skin and everything else keep their exact colours.
+Use case: precise recolour edit of the provided sprite sheet. Keep the exact canvas size, every pixel position, every shape and the flat #FF00FF background exactly; do not crop, resize, redraw or move anything. Recolour ONLY the trousers in every cell: their lit blocks to #27978D and their shaded blocks to #00766D. The tunic hem, waist cord, boots, skin and everything else keep their exact colours.
 ```
 
-### 3.2 얼굴 — 둥근 눈 5 (P0) + 가는 눈 5 (AO-13)
+v04 입력(REF-D·REF-E)은 투명 배경 RGBA라, 위 문장의 첫 문장을 다음으로 바꾼다: `Use case: precise recolour edit of the provided sprite sheet. Keep the exact canvas size, every pixel position and every shape exactly; do not crop, resize, redraw or move anything. The transparent background becomes one flat, fully opaque #FF00FF everywhere; pixels that were mostly transparent become background, and every other pixel becomes fully opaque with its own colour.`
 
-둥근 눈은 PROMPTS L7 → L2 그대로다. 가는 눈(HR03·HR05·HR06용)은 **합격한 L7 표정 시트(떼기 전)**를 입력으로 편집한 뒤 L2로 뗀다.
+- **한 계보 규칙**: 이 편집 결과가 그 기준 시트의 새 원본이다. 몸체 L1·가림막 L3·L8·파생은 모두 **같은 편집 결과**에서 만든다(원본과 섞지 않는다). 편집 결과의 캔버스가 입력과 다르게 나오면(생성 도구가 그 크기를 못 낼 때) 멈추고 보고한다 — 그 결과를 쓰기로 하면 아래 레이어를 모두 그 결과에서 다시 뗀다.
+
+REF-C판은 위 문장 끝에 다음을 더한다.
 
 ```
-Use case: precise edit of the provided 5-cell expression sheet. Keep the canvas, the cells, the flat #FF00FF background and every pixel of hair, skin, body and clothing exactly. Change ONLY the eyes, the same way in every cell: replace the round eyes with NARROW eyes, each a short horizontal slit two blocks wide and one block tall, in exactly the same place and with the same spacing as the round eyes. Eyebrows and mouths stay exactly as they are. The closed-eyes cell stays unchanged. In the smile cell the slits curve slightly upward; in the surprise cell they open to two blocks tall.
+Also recolour ONLY the undershirt visible at the shoulders under the leather vest: its lit blocks to #7EA6B8 and its shaded blocks to #546E7A. The leather vest, straps and belt keep their exact colours.
 ```
 
-- 조립: 본문 + D. 그다음 결과에 X + L2 문장.
-- 합격: E1, E4, E8, E11. 다섯 칸의 눈 위치가 같다(AO-13). 둥근 눈과 나란히 놓고 실크기에서 다른 얼굴형으로 읽힌다.
+- 합격: E4, E8, E11, E13, E21 — 입력과 겹치면 차이가 바지(REF-C는 어깨 속옷도)에만 있다. 캔버스 크기가 입력과 같다. v03·v04 원본은 틀 이전이라 문 캔버스 모드가 없다(PROMPTS §0.4).
+
+### 3.2 얼굴 — 둥근 눈 5 + 가는 눈 5 (AO-13)
+
+v1.3부터 **PROMPTS L7 표정 합성 12(틀 `chr_face`)의 1행 = 둥근 눈, 2행 = 가는 눈**이다. 한 번의 생성으로 둘을 같이 만들고 L2로 뗀다. 가는 눈(HR03·HR05·HR06용)의 모양 문장은 L7 2행에 들어갔다.
+
+아래 편집은 **대체 방법**이다: L7의 2행이 1행과 다른 인물로 나왔을 때만, 합격한 L7(떼기 전)을 입력으로 2행을 고친다.
+
+```
+Use case: precise edit of the provided expression sheet. Keep the canvas, the cells, the flat #FF00FF background and every pixel of rows 1 and 3 exactly. In row 2, make every cell a copy of the cell above it in row 1, identical in hair, skin, body and clothing, and change ONLY the eyes: replace the round eyes with NARROW eyes, each a short horizontal slit two blocks wide and one block tall, in exactly the same place and with the same spacing as the round eyes. Eyebrows and mouths stay exactly as in row 1. The closed-eyes cell keeps the flat closed line. In the smile cell the slits curve slightly upward; in the surprise cell they open to two blocks tall.
+```
+
+- 조립: 본문 + D. 문: `--spec chr_face`.
+- 합격: 문 통과(E22) + E1, E4, E8, E11. 다섯 칸의 눈 위치가 같다(AO-13). 둥근 눈과 나란히 놓고 실크기에서 다른 얼굴형으로 읽힌다.
 
 ### 3.3 볼 홍조 표지 (새내기, 15 §5.1, `OPEN_DECISIONS.md` OD-17)
 
-새내기 볼 홍조 1픽셀은 얼굴 시트의 전용 인덱스다. 얼굴 12프레임을 늘리지 않고 표지 색으로 넣는다. 입력 = 합격한 표정 시트(떼기 전) 두 장: 둥근 눈(PROMPTS L7)과 가는 눈(§3.2 편집 결과). 조립: 본문 + D.
+새내기 볼 홍조 1픽셀은 얼굴 시트의 전용 인덱스다. 얼굴 12프레임을 늘리지 않고 표지 색으로 넣는다. 입력 = 합격한 표정 합성 12(PROMPTS L7, 떼기 전). 조립: 본문 + D. 문: `--spec chr_face`.
 
 ```
-Use case: precise recolour edit of the provided 5-cell expression sheet. Keep every pixel position, shape and colour and the flat #FF00FF background exactly. In every cell, recolour ONE single block of skin on the near cheek, one block below and one block toward the ear from the lower edge of the near eye, to #B04A42. The same place in every cell. Nothing else changes.
+Use case: precise recolour edit of the provided expression sheet. Keep the canvas, every pixel position, shape and colour and the flat #FF00FF background exactly. In every cell of rows 1 and 2, recolour ONE single block of skin on the near cheek, one block below and one block toward the ear from the lower edge of the near eye, to #B04A42. The same place in every cell. Row 3 does not change. Nothing else changes.
 ```
 
 - 그다음 결과에 X + PROMPTS L2(홍조 블록을 남기는 판)로 얼굴을 뗀다.
-- 합격: E1, E4, E8, E11, E21 + E19(`#B04A42`가 얼굴 레이어의 다른 곳에 없다). 다섯 칸의 홍조 위치가 같다.
+- 합격: 문 통과(E22) + E1, E4, E8, E11, E21 + E19(`#B04A42`가 얼굴 레이어의 다른 곳에 없다). 열 칸의 홍조 위치가 같다.
+
+### 3.4 파생용 가림막 — 머리카락만 · 얼굴만 (v1.3)
+
+옷·무기 레이어를 도구가 뗄 때(`derive`) 기준 시트에서 **몸체·머리카락·얼굴 자리를 빼는 레이어**가 필요하다. 도구는 이 레이어의 **모양만** 쓰고 색은 기준 시트에서 가져오므로(`tools/art-check/README.md` 「색 출처 reference」), 편집이 색을 조금 바꿔도 되지만 **위치·모양은 1블록도 움직이면 안 된다**(E8). v04 D·E는 이 가림막이 없어 파생이 7칸·6칸 실패했다(분류 못 한 화소 32.9%·30.9%, PROMPTS §2.4).
+
+| 가림막 | 입력(바지 색 교체한 판) | X 뒤 문장 |
+| --- | --- | --- |
+| 머리카락만 | REF-D, REF-E(v04), 새 REF-A | PROMPTS L3 |
+| 얼굴만 | REF-D, REF-E(v04), REF-B(v03), 새 REF-A | PROMPTS L8 |
+
+- v03 REF-B의 머리카락은 `18-hair-actions18-48-r3`(위치 합격)을 쓴다. 얼굴만 없다.
+- 합격: E8, E10, E11. 겹치면 가림막 화소가 기준 시트의 머리카락·눈·눈썹·입 자리에만 있다. 얼굴이 보이지 않는 칸은 비어 있어도 된다.
 
 ---
 
@@ -225,12 +265,12 @@ SWAP (hair only, all three cells): change ONLY the hairstyle. Keep the same two 
 
 ## 5 방어구 몸통 3계열 (AO-20·21·22) + 선택 부품
 
-각 계열은 **네 장의 합성 시트**(REF-A 걷기 12, REF-B 동작 18, REF-D 11, REF-E 9)를 교체 편집하고 각각 뗀다. 게임 쪽이 44프레임 시트로 모은다(걷기는 12칸 중 1·2·4·7·8·10).
+각 계열은 **네 장의 합성 시트**(REF-A 걷기 12, REF-B 동작 18, REF-D 11, REF-E 9)를 교체 편집한다. **옷 레이어는 생성기에 떼게 하지 않는다**(v1.3, PROMPTS §2.4): 도구 `derive`가 각 합성에서 그 계열 부류(core 색)를 골라 낸다. 필요한 것은 합성 + 빼는 레이어(몸체 L1·머리카락 L3·얼굴 L8, §3.4)다. 아래 「떼기」 문장은 기록으로 남기고 요청하지 않는다. 게임 쪽이 44프레임 시트로 모은다(걷기는 12칸 중 1·2·4·7·8·10).
 
 ### 5.1 천옷 (AO-20)
 
-- 합성은 기본 복장 그대로다(교체 없음). REF-A·REF-B는 PROMPTS L4(P0), REF-D·REF-E는 §3.1.
-- 기운 자국 표지(§1.5): 떼어 낸 천옷 레이어에서 헝겊 조각 색이 옷 그늘 색과 같으면 다음 편집을 한 번 한다(입력: 천옷 레이어 4장 각각).
+- 합성은 기본 복장 그대로다(교체 없음). 레이어는 `derive`(v03 REF-B 18칸 통과, 도구 README 「현재 결과」).
+- 기운 자국 표지(§1.5): 파생한 천옷에서 헝겊 조각 색이 옷 그늘 색과 같으면 **기준 합성**(바지 색 교체한 판)에 다음 편집을 한 번 하고 파생을 다시 돌린다.
 
 ```
 Use case: precise recolour edit of the provided sprite sheet. Keep every pixel position, shape and the flat #FF00FF background exactly. Recolour ONLY the small square repair patches on the tunic to #C08A58, the same patches in every cell. Nothing else changes.
@@ -239,8 +279,8 @@ Use case: precise recolour edit of the provided sprite sheet. Keep every pixel p
 ### 5.2 가죽 (AO-21)
 
 - 교체 문장: PROMPTS §3.1 REF-C 문장 그대로. REF-D·REF-E에도 같은 문장으로 교체한다(REF-A·REF-B판은 P0 것을 쓴다).
-- 떼기: PROMPTS L5. P0의 가죽 레이어(v03 `15`·`21`)는 소매를 늘려 불합격이므로 REF-C 네 장 모두 새 머리말로 다시 뗀다.
-- 어깨에 보이는 회청 속옷 소매(`#7EA6B8`, D73)는 가죽 레이어가 가진다(PROMPTS L5, 15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」). 확인 필요 9는 이것으로 닫았다(`OPEN_DECISIONS.md` OD-48).
+- 레이어: `derive`(가죽 부류). P0의 생성기 떼기(v03 `15`·`21`)는 소매를 늘려 불합격이었다. v03 REF-C 동작판은 바지 + 어깨 속옷 색 교체(§3.1) 뒤 파생한다.
+- 어깨에 보이는 회청 속옷 소매(`#7EA6B8`, D73)는 가죽 레이어가 가진다(15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」, OD-48). 파생 대응표에서 속옷 색을 가죽 부류의 `extra`로 둔다(도구 담당).
 
 ### 5.3 금속 (AO-22) — REF-M
 
@@ -250,20 +290,20 @@ S + 문장 + D, 입력 REF-A·REF-B·REF-D·REF-E 각각.
 SWAP (clothing, every non-empty cell): replace the cream tunic, its waist cord and patches with segmented plate armour covering the same area. A steel chest plate of three overlapping horizontal bands from collar to hips; rounded pauldrons that stick out about two blocks beyond each shoulder, the only place where the outline gets wider; plain steel plates on the upper arms down to the elbows. Colors: #B4B2B0 main, #7D7B80 shade, #4C4A52 deep shade, #E8E6E0 small highlights on top edges, outline #2B2233. Also, identical in every cell: two or three small rust spots #B0603A on the chest plate, and a small bell-shaped trapezoid emblem outlined in #7A4E24 in the middle of the chest plate. Forearms, hands, trousers, boots, head, hair, face, sword and bread unchanged.
 ```
 
-떼기: X + `Keep ONLY the plate armour: chest plate with its rust spots and emblem, pauldrons and upper-arm plates. Remove everything else.`
+레이어: `derive`(금속 부류, `match_distance`를 65 미만으로 — 도구 README 「몸체 속옷·바지와 옷 색의 허용 거리」). 기록(요청하지 않음): X + `Keep ONLY the plate armour: chest plate with its rust spots and emblem, pauldrons and upper-arm plates. Remove everything else.`
 
 - 녹·종 문양은 §1.5 표지 색이다. A06은 녹을 켜고 문양을 바탕색으로, A07은 문양을 켜고 녹을 바탕색으로 바꾼다(게임 팔레트).
 - 은색 기본 팔레트에 청동을 넣지 않는다(A07 청동은 팔레트 교체, AO-22·24).
 
 ### 5.4 선택 부품 겹침 레이어 (§1.5 겹침 방식)
 
-| 부품 | 입력(합성 4장) | 교체 문장(S 뒤) | 떼기(X 뒤) |
+| 부품 | 입력(합성 4장) | 교체 문장(S 뒤) | 레이어: `derive`(표지 색 부류). 기록 — 떼기(X 뒤) |
 | --- | --- | --- | --- |
 | 목도리 A04 | 천옷 합성 REF-A·B·D·E | `SWAP (add, every non-empty cell): a thick red wool muffler #B04A42 wrapped around the neck over the tunic collar, about two blocks tall, with one short end hanging at the back (left). It follows the neck in every pose; the chin and face stay visible.` | `Keep ONLY the red muffler.` |
 | 짝짝이 어깨받이 A06 | REF-M 4장 | `SWAP (add, every non-empty cell): make ONLY the near-side (brighter) pauldron one size bigger by adding one extra steel plate #7D7B80 #4C4A52 along its outer edge, one block thick. The far-side pauldron stays as it is.` | `Keep ONLY the added extra plate on the near pauldron.` |
 | 망토 연결 고리 A05 | 가죽 합성 REF-C 4장 | `SWAP (add, every non-empty cell): a small round bronze clasp #B07A3A #7A4E24, about two blocks wide, at the collar on the near shoulder, where a cloak would fasten.` | `Keep ONLY the bronze clasp.` |
 
-- 합격(5.1~5.4): E1, E4, E8, E10, E11, E13(교체), E19. 세 계열을 나란히 놓고 3초 안에 다른 옷으로 읽힌다(AO-21 육안). 금속은 어깨가 좌우로 넓다.
+- 합격(5.1~5.4): 교체 E4, E11, E13, E21(틀 위 합성이면 E22) · 파생 결과는 도구의 재합성 검사(칸마다 98% 이상) + E10, E19. 세 계열을 나란히 놓고 3초 안에 다른 옷으로 읽힌다(AO-21 육안). 금속은 어깨가 좌우로 넓다.
 
 ---
 
@@ -289,17 +329,17 @@ REF-H에 투구를 씌우는 교체 편집 → 투구만 떼기. 가림 `일부`
 
 ## 7 무기 (AO-16·17 나머지, AO-18)
 
-**모든 무기 프레임은 손에 들거나 몸에 찬 합성에서 뗀다**(PROMPTS §2.3: 단독 생성한 단검은 밀도가 사양의 약 3배라 정규화에서 뭉개졌다). 무기 시트 = 공격 6 + 피격 3 + 착용 1(15 §6.3·§12.2). 공격 = REF-B, 피격 = REF-D 1행, 착용 = REF-Q(§7.3).
+**모든 무기 프레임은 손에 들거나 몸에 찬 합성에서 얻는다**(PROMPTS §2.3: 단독 생성한 단검은 밀도가 사양의 약 3배라 정규화에서 뭉개졌다). v1.3부터 합성에서 무기를 골라 내는 일은 **도구 `derive`**(무기 부류, `place: outside`)가 한다 — 생성기 떼기는 칼을 다시 그렸다(v04 `c13`, PROMPTS §2.4). 아래 「떼기」 문장은 기록이다. 무기 시트 = 공격 6 + 피격 3 + 착용 1(15 §6.3·§12.2). 공격 = REF-B, 피격 = REF-D 1행, 착용 = REF-Q(§7.3).
 **무기 레이어만 셀 밖으로 나갈 수 있다**(OD-03 결정, D65). 정규화가 뗀 무기를 hand_f 기준으로 넓힌 무기 셀 80 × 64(몸체 셀 원점 = (16, 16))에 담는다. 떼기 결과를 잘라 내지 않는다. **모든 무기는 앞손 한 손으로 쥔다**(D68).
 
 ### 7.1 V1 한손검 — 피격 3칸과 표지
 
-- **피격 3칸**: REF-D에서 X + PROMPTS L6 문장으로 뗀다(1행만 검이 있다). 몸체 피격 자세와 1:1로 맞는다. 카드 AO-16의 「앞으로 든 3」은 15 §6.3의 「피격 3」이다(`OPEN_DECISIONS.md` OD-49).
+- **피격 3칸**: REF-D(바지 색 교체한 판) 1행에서 `derive`로 뗀다(v04 파생 시험에서 날·코등이·손잡이가 한 덩어리로 나왔다). 몸체 피격 자세와 1:1로 맞는다. 카드 AO-16의 「앞으로 든 3」은 15 §6.3의 「피격 3」이다(`OPEN_DECISIONS.md` OD-49).
 - **착용 1칸**: REF-Q 1칸(§7.3). PROMPTS v1.1의 가로 칼집 단독 편집은 쓰지 않는다.
-- **표지 편집**(W01 이 빠진 날, W07 자루 끝 종): 입력 = V1 레이어(공격 6, 피격 3, 착용 1) 각각.
+- **표지 편집**(W01 이 빠진 날, W07 자루 끝 종): 입력 = V1을 든 **합성**(REF-B·REF-D·REF-Q) 각각. 편집 뒤 파생을 다시 돌린다(표지 색은 무기 부류의 `extra`).
 
 ```
-Use case: precise edit of the provided weapon sprite sheet. Keep every existing pixel, position and the flat #FF00FF background exactly. In every cell with a sword: (1) recolour a notch one block deep and two blocks long on one edge of the blade, halfway along the blade, to #5A7FA8; (2) add a tiny bronze bell #E0B06A #B07A3A with a #2B2233 outline hanging from the pommel end, about one sixth of the sword length. The carried sword in its scabbard gets only the bell. Nothing else changes.
+Use case: precise edit of the provided sprite sheet. Keep every existing pixel, position and the flat #FF00FF background exactly. In every cell with a sword, change ONLY the sword: (1) recolour a notch one block deep and two blocks long on one edge of the blade, halfway along the blade, to #5A7FA8; (2) add a tiny bronze bell #E0B06A #B07A3A with a #2B2233 outline hanging from the pommel end, about one sixth of the sword length. The carried sword in its scabbard gets only the bell. Nothing else changes.
 ```
 
 ### 7.2 V2·V3~V6 — 무기 교체 편집
@@ -314,7 +354,7 @@ Use case: precise edit of the provided weapon sprite sheet. Keep every existing 
 | V5 곡괭이(W05) | 16 = 1.0배 | `a PICKAXE as long as the input sword: a straight wooden handle #8E5E38 #5E3C24 gripped near its end, with a grey iron head #7D7B80 at the far end crossing the handle at a right angle, one long curved point and one short blunt end. Handle direction per attack cell: 1 down-right, 2 straight up overhead, 3 still straight up, 4 straight down in front of the body, 5 straight down, 6 down-right at the hip. In the hit cells it is held upright in front of the chest.` |
 | V6 종추(W10) | 18 = 1.1배 | `a BELL MAUL about 1.1 times as long as the input sword: a short handle #7A4E24 and a bronze bell-shaped head #E0B06A #B07A3A #7A4E24 at the far end, a trapezoid wider at its outer end with a one-block clapper at its lower edge and a thin crack line #4C4A52 across the bell. Same handle directions as a pickaxe: 1 down-right, 2 up, 3 up, 4 down in front, 5 down, 6 down-right at the hip. In the hit cells it is held upright in front of the chest.` |
 
-떼기: X + `Keep ONLY the {dagger / longsword / spear / pickaxe / bell maul} in each cell (all its parts). Remove the character entirely, including the hand holding it.`
+레이어: `derive`. 기록(요청하지 않음): X + `Keep ONLY the {dagger / longsword / spear / pickaxe / bell maul} in each cell (all its parts). Remove the character entirely, including the hand holding it.`
 
 - AO-18의 각도(창 방향 2 고정, 곡괭이·종추 3 → 0 → 0 → 4 → 4 → 3)를 셀별 문장으로 옮겼다. 몸체 손 경로는 검 기준 하나뿐이고 모든 무기를 한 손으로 쥔다(15 §6.3, D68 — V3 공격 2·3의 두 손과 V4 두 손 쥠은 없앴다, OD-06). 방향 값은 검수용이다(15 §3.2).
 - V3·V4(22)는 공격 4칸에서 셀 폭을 넘는다. V1(16)도 이미 넘는다(PROMPTS §2.3). S-W는 무기가 칸 가장자리를 넘어 빈 여백까지 나가도 되게 고쳤다(OD-03 결정). 옆 칸의 인물·무기에 닿으면 다시 생성하고, 모델이 길이를 줄여 맞추면 불합격이다(E14).
@@ -323,7 +363,7 @@ Use case: precise edit of the provided weapon sprite sheet. Keep every existing 
 ### 7.3 착용 1칸 — REF-Q (V1·V2·V3~V6 + 방패)
 
 무기는 공격·피격 밖에서 허리나 등에 찬 1프레임을 `back`에 붙인다(15 §3.1). 뒤 부품이므로 합성에서 **몸 뒤**에 그린다. V1·V2도 여기서 만든다(v1.1: 여섯 무기의 착용 칸을 한 합성에서 뽑아 모양·밀도를 맞춘다).
-조립: A + B + C(`N=7, COLS=4, ROWS=2, EMPTY_CELLS=Row 2 holds three sprites; its last cell stays completely empty.`) + G + 본문 + D. 입력: 마스터(V1 검을 가진다), V2 레이어, V3~V6 레이어 4장, 방패 레이어(§9.2).
+조립: A + B + C(`N=7, COLS=4, ROWS=2, EMPTY_CELLS=Row 2 holds three sprites; its last cell stays completely empty.`) + G + 본문 + D — **틀 필요**(PROMPTS §0.4.3)라 G를 쓰고 문 검사가 없다. 입력: 마스터(V1 검을 가진다), V2 레이어, V3~V6 레이어 4장, 방패 레이어(§9.2).
 
 ```
 Input image role: image 1 is the exact character and its attack row shows the exact short sword; images 2 to 7 show the exact dagger, longsword, spear, pickaxe, bell maul and round shield to carry: copy their shapes, lengths, sizes and colors exactly. Do not copy any layout.
@@ -338,9 +378,9 @@ SEVEN CELLS, each the relaxed idle stance of image 1 (row 1 frame 1), hands down
 Every item keeps its exact length and stays inside its cell.
 ```
 
-떼기: X + `Keep ONLY the carried item in each cell (sword or dagger with its scabbard, spear, pickaxe, maul or shield). Remove the character entirely.`
+레이어: 무기 6칸은 `derive`, 방패 1칸은 §9.2와 같은 방식. 기록: X + `Keep ONLY the carried item in each cell (sword or dagger with its scabbard, spear, pickaxe, maul or shield). Remove the character entirely.`
 
-- 합격(7.1~7.3): E1, E4, E8, E10, E11, E13, E14, E18. 6종을 나란히 놓고 실크기에서 실루엣 4~5종 이상이 구분된다(AO-18).
+- 합격(7.1~7.3): 교체 E4, E11, E13, E14, E21 · 착용 합성 E1, E4, E18 · 파생 결과 도구 재합성 검사 + E10. 6종을 나란히 놓고 실크기에서 실루엣 4~5종 이상이 구분된다(AO-18).
 
 ---
 
@@ -368,7 +408,7 @@ SWAP (add, every non-empty cell): a plain cape. Dark brown cloth #5E3C24 outside
 
 ### 9.1 봇짐 1 · 길잡이 배낭 3 · 등불(§10) — REF-P
 
-조립: A + B + C(`N=6, COLS=6, ROWS=1, EMPTY_CELLS=`) + G + F + 본문 + D. 입력: 마스터.
+조립: A + B + C(`N=6, COLS=6, ROWS=1, EMPTY_CELLS=`) + G + F + 본문 + D. 입력: 마스터. **틀 필요**(PROMPTS §0.4.3) — G를 쓰고 문 검사가 없다.
 
 ```
 SIX CELLS, each exactly the relaxed idle stance of the input (row 1 frame 1), hands down, with one added item:
@@ -450,7 +490,9 @@ SWAP (aging{, ONLY in row 1; rows 2 to 4 stay exactly unchanged}): the same pers
 - 떼기: X + PROMPTS L1 문장(주름·흰머리도 얼굴·머리카락과 함께 지워진다). 걷기는 12칸 중 6칸을 게임이 고른다.
 - 합격: E1, E4, E8, E10, E11, E20.
 
-### 11.2 주름 겹침 2 — REF-AGE
+### 11.2 주름 겹침 2 — PROMPTS L7 3행 (v1.3)
+
+v1.3부터 주름 2칸은 **PROMPTS L7 표정 합성 12(틀 `chr_face`)의 3행**으로 함께 생성하고 L2(3행은 주름만 남기는 판)로 뗀다. 아래 REF-AGE 편집은 L7의 3행이 1행과 다른 인물로 나왔을 때의 대체 방법이다(입력 = 합격한 L7, 3행만 고친다).
 
 입력: 마스터. PROMPTS L7과 같은 방식으로 한 프레임에서 2칸을 만든다.
 
@@ -512,32 +554,32 @@ O02는 48 × 48로 정했다(2026-09-24, D64). 32 규격은 만들지 않는다.
 
 ## 15 제작 순서표
 
-「선행」이 합격해야 시작한다. 한 줄이 끝날 때마다 합격 기준을 보고, 떨어지면 프롬프트를 고쳐 다시 요청한다(다음 줄로 넘어가지 않는다).
+「선행」이 합격해야 시작한다. 한 줄이 끝날 때마다 합격 기준을 보고, 떨어지면 프롬프트를 고쳐 다시 요청한다(다음 줄로 넘어가지 않는다). 틀 위에서 만드는 시트는 먼저 문(`pnpm art:gate`, PROMPTS §0.4 — 지적문을 붙여 최대 3번)을 통과해야 한다. `derive`는 도구 담당이 돌린다(제작 AI에게 요청하지 않는다).
 
 | 번호 | 작업 | 종류 | 입력 | 선행 | 카드 | 우선 |
 | --- | --- | --- | --- | --- | --- | --- |
-| c01 | REF-D 피격·발견·상호작용 11 | 생성 | 마스터 | — | AO-05·06·09 | P1 |
-| c02 | REF-E 환호·쓰러짐 9 | 생성 | 마스터 | — | AO-10 | P1 |
-| c03 | 몸체·천옷 떼기(D·E) | 떼기 ×4 | c01, c02 | c01·c02 | AO-05~10·20 | P1 |
+| c01 | REF-D 피격·발견·상호작용 11(v04 합격) → 바지 색 교체 | 생성, 편집 | 마스터 | — | AO-05·06·09 | P1 |
+| c02 | REF-E 환호·쓰러짐 9(v04 r2 합격) → 바지 색 교체 | 생성, 편집 | 마스터 | — | AO-10 | P1 |
+| c03 | 몸체 떼기(D·E) + 가림막 머리카락·얼굴(D·E, §3.4) → 천옷 `derive`(도구) | 떼기 ×6 | c01, c02 | c01·c02 | AO-05~10·20 | P1 |
 | c04 | REF-H 머리 자세 3 | 생성 | 마스터, c01 | c01 | AO-14·15·23 | P1 |
 | c05 | HR01 떼기 + 가림 | 떼기 ×2 | c04 | c04 | AO-14 | P1 |
 | c06 | HR02~06 교체 → 떼기 → 가림 | 교체 ×5, 떼기 ×10 | c04 | c04 | AO-15 | P1 |
-| c07 | 가는 눈 표정 → 볼 홍조 표지(둥근 눈·가는 눈, §3.3) → 얼굴 떼기 | 편집 ×3, 떼기 ×2 | P0 L7 | P0 L7 | AO-13 | P1 |
-| c08 | 가죽 교체(D·E) + 가죽 떼기(A·B·D·E) | 교체 ×2, 떼기 ×4 | REF-C, c01, c02 | c01·c02, REF-A | AO-21 | P1 |
-| c09 | 금속 교체(A·B·D·E) + 떼기 | 교체 ×4, 떼기 ×4 | REF-A·B, c01, c02 | REF-A | AO-22 | P1 |
-| c10 | 기운 자국 표지 편집(필요할 때) | 편집 ≤4 | 천옷 레이어 | c03 | AO-20 | P1 |
-| c11 | 선택 부품 겹침 3종 | 교체 ×12, 떼기 ×12 | 천옷·가죽·금속 합성 | c08·c09 | AO-20~22·24 | P1 |
+| c07 | 볼 홍조 표지(§3.3) → 얼굴 떼기(L2). 가는 눈은 PROMPTS L7 2행에 합쳤다 | 편집, 떼기 | P0 L7 | P0 L7 | AO-13 | P1 |
+| c08 | 가죽 교체(D·E) → 가죽 `derive`(A·B·D·E, 도구) | 교체 ×2 | REF-C, c01, c02 | c01·c02, REF-A | AO-21 | P1 |
+| c09 | 금속 교체(A·B·D·E) → `derive`(도구) | 교체 ×4 | REF-A·B, c01, c02 | REF-A | AO-22 | P1 |
+| c10 | 기운 자국 표지 편집(필요할 때, 기준 합성에) → `derive` 다시 | 편집 ≤4 | 천옷 합성 | c03 | AO-20 | P1 |
+| c11 | 선택 부품 겹침 3종 → `derive` | 교체 ×12 | 천옷·가죽·금속 합성 | c08·c09 | AO-20~22·24 | P1 |
 | c12 | 투구 5 교체 → 떼기 | 교체 ×5, 떼기 ×5 | c04 | c05·c06 | AO-23 | P1 |
-| c13 | V1 피격 떼기 + V1 표지 편집 | 떼기, 편집 ×3 | c01, P0 V1 | c01 | AO-16 | P1 |
-| c14 | V2 교체(D) + V3~V6 교체(B·D) → 떼기 | 교체 ×9, 떼기 ×9 | REF-B, c01, P0 V2 | c01 | AO-17·18 | P1 |
+| c13 | V1 표지 편집(합성에) → V1 피격 `derive` | 편집 ×3 | c01, REF-B, REF-Q | c01 | AO-16 | P1 |
+| c14 | V2 교체(D) + V3~V6 교체(B·D) → `derive` | 교체 ×9 | REF-B, c01, P0 V2 | c01 | AO-17·18 | P1 |
 | c15 | 망토 교체(A·B·D·E) → 앞·뒤 떼기 | 교체 ×4, 떼기 ×8 | REF-A·B, c01, c02 | REF-A | AO-25 | P2 |
 | c16 | 방패 교체(A·B·D) → 떼기 | 교체 ×3, 떼기 ×3 | REF-A·B, c01 | REF-A | AO-27 | P2 |
-| c17 | REF-Q 착용 무기 6·방패 1 → 떼기 | 생성, 떼기 | 마스터, P0 V2, c14, c16 | c14·c16 | AO-16~18·27 | P2 |
-| c18 | REF-P 봇짐·배낭·등불 6 → 떼기 | 생성, 떼기 | 마스터 | — | AO-26·28 | P2 |
+| c17 | REF-Q 착용 무기 6·방패 1(틀 필요) → 무기 `derive`, 방패 떼기 | 생성, 떼기 | 마스터, P0 V2, c14, c16 | c14·c16 | AO-16~18·27 | P2 |
+| c18 | REF-P 봇짐·배낭·등불 6(틀 필요) → 떼기 | 생성, 떼기 | 마스터 | — | AO-26·28 | P2 |
 | c19 | 두건·스카프·깃 교체 → 떼기 | 교체 ×3, 떼기 ×3 | c04 | c04 | AO-26·28 | P2 |
 | c20 | 빛 원 | 생성 | — | — | AO-28 | P2 |
 | c21 | 노년 교체(A·B) → 몸체 떼기 | 교체 ×2, 떼기 ×2 | REF-A·B | REF-A | AO-29 | P2 |
-| c22 | 주름 2칸 → 떼기 | 편집, 떼기 | 마스터 | — | AO-13·29 | P2 |
+| c22 | 주름 2칸 — PROMPTS L7 3행에 합쳤다(대체: §11.2 편집 → 떼기) | (L7) | 마스터 | — | AO-13·29 | P2 |
 | c23 | 흡혈귀 확인 합성(선택) | 교체 | c15의 B판 | c15 | AO-30 | P2 |
 | c24 | (폐기 — 32 규격을 만들지 않는다, D64) | — | — | — | — | — |
 | c25 | 관자놀이 흰머리 보조판(§11.3) | 편집 ×12(6종 × 기본·가림) | c05·c06 머리카락 레이어 | c05·c06 | AO-29 | P2 |

@@ -1,6 +1,7 @@
 # PROMPTS — 이미지 생성 전달용 프롬프트 모음
 
-버전 1.3 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.4 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.4: **규격 고정 절차**(§0.4) — 모든 생성 요청에 배치 틀 이미지(입력 1) + 틀 블록 T + 틀 수치 블록 NUM(§8, `docs/art/templates/<시트>.json`에서 옮김)을 붙이고, 결과를 `pnpm art:gate`에 통과시켜 떨어지면 지적문을 붙여 다시 생성한다(최대 3번). 「약 38블록」「칸의 10% 위」 같은 어림 크기 문장을 NUM으로 바꿨다. v04 검토(§2.4) 반영: REF-A 재생성 문장, 표정은 틀 `chr_face` 12칸 합성(L7), 옷·무기 떼기 요청 중지(도구 `derive`), 모양 가림막 L8. 몬스터는 P2 §2.0 「몬스터 표준」(황금 표본 = 들쥐 r3). 제작 AI에게 넘기는 묶음은 `V05_REQUEST.md`.
 1.3: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24) 반영 — 규격은 48만(D64, 32 편집 E·32 칸 폐기), 무기는 셀 밖 허용(D65, S-W 문장·E6 고침), 정규화의 화소 옮기기·자르기(D66), NPC `임시` 외형 승인(§7), 전체 순서(§5.3)·진행표(§6) 갱신.
 1.2: 네 문서(이 문서·`prompts/P1_character.md`·`P2_world.md`·`P3_scenes.md`) 정합 — §5 색인과 전체 제작 순서, §6 단일 진행표, §7 NPC 외형 단일 출처 신설. 배경 금지 블록 D-BG와 교체 편집 머리말 S·S-W를 §1로 모음. 편집이 색을 바꾸지 않게(§3.2, E21). 단검은 손에 든 합성에서 떼기(§3.3). 정규화·미리보기 도구 결과(§2.3). 확인 필요는 `OPEN_DECISIONS.md` 한 곳에 모은다.
 1.1: v03 검토 반영(§2.2) — 기준 인물 지정, 편집 규칙 강화(보이는 화소만·배경 단색), 배경은 합성 후 분리, 32 규격은 48 편집, 그림자·책·검 보완, P0 진행표(§6)
@@ -13,8 +14,8 @@
 
 ### 0.1 프롬프트 조립
 
-한 번의 생성 요청 = **[A 스타일] + [B 주인공 정체성](캐릭터일 때) + [C 배치] + [에셋 본문] + [D 금지]**를 순서대로 이어 붙인 하나의 글이다.
-공통 블록은 줄이지 말고 전문을 붙인다. `{...}` 자리는 에셋 본문이 정한 값으로 바꾼다.
+한 번의 생성 요청 = **[A 스타일] + [B 주인공 정체성](캐릭터일 때) + [T 틀] + [NUM 틀 수치] + [C 배치] + [에셋 본문] + [D 금지]**를 순서대로 이어 붙인 하나의 글이다(v1.4: T·NUM 추가, §0.4).
+공통 블록은 줄이지 말고 전문을 붙인다. `{...}` 자리는 에셋 본문이 정한 값으로 바꾼다. 크기·위치 수치는 NUM만 가진다 — 본문·C에 「약 N블록」「칸 높이의 몇 분의 몇」 같은 어림 수치를 새로 쓰지 않는다. 틀이 아직 없는 시트(§0.4.3 「틀 필요」)만 T·NUM 없이 옛 조립을 쓴다.
 요청 본문이 D가 금지하는 것을 그리게 하면(배경·효과·아이콘·떠 있는 표시) **D 대신 그 요청에 맞는 D 변형을 붙인다**(§1 D 변형 표). 금지 문장과 요청이 부딪히면 모델은 둘 중 하나를 무시한다(v03 배경이 그 예다).
 편집 요청(떼기·교체)은 §1 S·§3.2 X 머리말로 시작하고 A·B·C를 붙이지 않는다. 입력 이미지가 정체성과 배치를 가진다.
 
@@ -33,7 +34,68 @@
 - 생성 결과를 **그대로** 저장한다. 코드로 자르기·축소·배경 제거·색 변환을 하지 않는다(D56).
 - 저장 위치: `assets/_imagegen/{판}/{접두사}{번호}-{이름}.png` + 같은 이름 `.prompt.txt`(보낸 프롬프트 전문) + 폴더의 `README.md`(포즈 수, 눈으로 본 결과, 남은 차이). 접두사는 §5.2.
 - 결과가 기준과 다르면 **프롬프트를 고쳐 다시 생성**한다. 고친 문장을 `.prompt.txt`에 남긴다.
-- 합격 판정은 §4 육안 기준으로 한다. 규격 수치 검사(셀 크기·색 수·알파)는 게임 쪽 정규화 뒤에 한다.
+- 합격 판정은 먼저 **문**(`pnpm art:gate`, §0.4 — 캔버스·배경·칸·지면선·중심·키·블록·반투명)이고, 문을 통과한 것만 §4 육안 기준으로 본다. 색 수 검사는 게임 쪽 정규화 뒤에 한다.
+
+### 0.4 규격 고정 절차 (v1.4, 모든 시트 공통)
+
+사용자 요청(2026-09-24): 「제약조건을 빠듯하게 넣어야 된다. 그림은 제대로 나오되 스프라이트의 규격에는 꼭 맞도록.」 v04는 모든 장이 캔버스부터 달랐다(2172 × 724, 1774 × 887, 916 × 1717 …, 투명 배경에 속 반투명 화소 38만~64만 개, §2.4). 어림 문장(「about four fifths of the cell」)은 지켜지지 않으므로 **규격은 틀 이미지 + 수치 + 기계 검사**가 가진다(CLAUDE.md §5: 형식은 코드가 소유한다). 틀·문 도구는 `tools/art-check/README.md` 「배치 틀과 납품 문」이다.
+
+#### 0.4.1 절차 (생성 한 번마다)
+
+1. **틀 고르기**: §0.4.2 표에서 이 시트의 틀 이름 `<시트>`를 찾는다. 「틀 필요」(§0.4.3)면 이 절차를 쓰지 않고 옛 조립으로 요청한 뒤 README에 「틀 없음」이라 적는다.
+2. **입력 1 = 틀 이미지**: `docs/art/templates/<시트>.placeholder.png`(없으면 `<시트>.grid.png`, 표의 「붙일 틀」 열이 정한다). 입력 2부터가 정체성·스타일 입력(마스터, 황금 표본 등)이다.
+3. **글**: A(+B) + **T**(§1) + **NUM(<시트>)**(§8 그대로 복사) + C + 본문 + D. 생성 도구의 출력 크기는 NUM의 캔버스(1536 × 1024 또는 1024 × 1536)로 **직접 지정**하고, 배경은 투명이 아니라 불투명 `#FF00FF`로 받는다.
+4. **문**: `pnpm art:gate <결과.png> --spec <시트>`. 종료 코드 0 = 통과 → §4 육안 기준으로 간다.
+5. **떨어지면**: 출력의 `Regeneration feedback:` 문단을 **그대로** GF 블록(§1)으로 같은 글 끝에 붙여 다시 생성한다. 생성은 **최대 3번**(처음 + 다시 2번). 파일 이름은 `-r2`, `-r3`.
+6. **세 번째도 떨어지면** 멈추고 보고한다: 세 PNG, 각 `art:gate` 출력, 보낸 글 전문을 폴더 `README.md`에 적는다. 코드로 고치거나 자르지 않는다. 같은 지적이 두 번 되풀이되면 게임 쪽이 구조(틀·수치·블록 문장)를 다시 본다(CLAUDE.md §5).
+
+- **편집 요청(떼기·교체·색 교체·가림막)**: 입력 이미지가 틀이다. T·NUM을 붙이지 않고 「입력 캔버스·칸 그대로」 문장(X·S·SW·SC-E)을 쓴다. 입력이 틀 위에서 만든 것이면 편집 결과도 **같은 `--spec`으로 문을 통과**해야 한다. v03·v04 원본(틀 이전)을 편집한 결과는 캔버스가 틀과 달라 캔버스 모드 문을 쓸 수 없다 — `--no-canvas`(행 구성은 §0.4.2 표)로 참고만 하고, 합격은 겹침 기준(E8·E13·E21)과 `layers` 측정(`tools/art-check/README.md`)으로 한다.
+- 틀의 자리표시 인물은 **크기·위치만** 준다(v03 마스터라 바지가 옛 회색이다). 색·자세·정체성은 B·입력 2·본문이 가진다(T 블록 문장).
+- 수치의 출처는 `docs/art/templates/<시트>.json`(도구 `pnpm art:template`이 `specs.json`에서 만든다)이고 §8은 그것을 영어로 옮긴 것이다. 규격이 바뀌면 `specs.json` → `pnpm art:template` → §8을 다시 옮긴다(수작업 옮김을 없애는 도구 작업은 `OPEN_DECISIONS.md` T13).
+
+#### 0.4.2 틀 대응표 (프롬프트 시트 → 틀)
+
+「붙일 틀」은 입력 1이다. `P` = `<시트>.placeholder.png`, `G` = `<시트>.grid.png`. 「편집」은 입력이 틀이라 T·NUM이 없다.
+
+| 프롬프트 (문서 §) | 틀 `<시트>` | 붙일 틀 | 문 명령 `pnpm art:gate <png> …` |
+| --- | --- | --- | --- |
+| REF-A 걷기 12 (§3.1) | **임시** `chr_elder` 격자(= 걷기 12 격자, 바이트까지 같음 확인) | `chr_elder` G | `--spec chr_elder --rows walk:6,walk:6` · NUM(chr_walk12) |
+| REF-B·REF-C·REF-D·REF-E 바지 색 교체, 몸체 L1, 가림막 L3·L8 (§3.2, P1 §3.1·§3.4) | 편집(v03·v04 원본) | — | 캔버스 모드 없음. 참고: `--spec chr_actions_a --no-canvas --rows idle,attack,sit_eat,sleep`(REF-B) |
+| L7 표정 합성 12 (§3.2) → P1 §3.2 가는 눈·§3.3 홍조·§11.2 주름 | `chr_face` | P | `--spec chr_face` |
+| REF-H 머리 자세 3 (P1 §2.3) → P1 §4·§6·§9.3·§10 교체 | `chr_head_poses_ref` | P | `--spec chr_head_poses_ref`(교체 편집도 같은 명령) |
+| NPC 전신 기준 `n01` (§7.4, 다시 만들 때) | `npc_ref` | P | `--spec npc_ref` |
+| 몬스터 늑대·박쥐·코볼트 (P2 §2.0~§2.3) | `enm_wolf` · `enm_bat` · `enm_kobold` | 늑대 G(자리표시가 v04 불합격 늑대라 쓰지 않는다) · 박쥐 G · 코볼트 G + 황금 표본 `enm_rat` P | `--spec enm_wolf` 등 |
+| 적 변형·정예 교체 (P2 §2.4) | 편집(입력 = 틀 위의 계열 시트) | — | 입력과 같은 `--spec` |
+| 보스 시트 1 (P2 w35) · 시트 2 + 파동 (P2 w36) | `boss_bellwarden_a` · `boss_bellwarden_b` | G | `--spec boss_bellwarden_a` · `_b` |
+| 배경 기본 장면·계절·시간대·먼 층 FILL (P2 §4.1~§4.4) | `bg_far` | G | `--spec bg_far` |
+| 배경 중간 층 떼기 · 가까운 층 떼기 (P2 §4.1) | `bg_mid` · `bg_near` | 편집 | `--spec bg_mid` · `--spec bg_near` |
+| 안개 띠 (P2 §6 w17b) | `bg_mid`(같은 띠, 하늘 자리 자홍) | G | `--spec bg_mid` |
+| UI 아이콘 12 × 12 15개 (P2 §9 w25 + w28b) | `ui_icon_12` | G | `--spec ui_icon_12` |
+| UI 아이콘 16 × 16 27개 (P2 §9 w26 + w27 + w28a) | `ui_icon_16` | G | `--spec ui_icon_16` |
+| NPC 초상 64 11 (P2 w43 + w44) | `por_npc_64` | G | `--spec por_npc_64` |
+| NPC 초상 48 11 (P2 w45) | `por_npc_48` | G | `--spec por_npc_48` |
+| 이벤트 장면 열쇠 띠·띠 (P3 §0.4) | `scene_event` | G | `--spec scene_event` |
+
+#### 0.4.3 틀 필요 (수치를 지어내지 않는다)
+
+아래 시트는 `specs.json`에 맞는 틀이 없다. 틀이 생길 때까지 옛 조립(어림 문장)으로 요청하고 문 검사 없이 육안 기준만 본다. 틀을 더하는 일은 `OPEN_DECISIONS.md` T12(도구)다. 「제안」은 `specs.json`에 더할 줄의 뜻이고 수치는 `pnpm art:template`이 정한다.
+
+| 시트 (문서 §) | 왜 기존 틀이 안 맞나 | 제안 |
+| --- | --- | --- |
+| REF-A 걷기 12 `chr_walk12` (§3.1) | 게임 시트 틀은 걷기 6. 임시로 `chr_elder` 격자 + `--rows`를 쓴다(§0.4.2) | `character`, 행 `walk`,`walk` |
+| REF-B 동작 18 (§3.1, 다시 만들 때만) | 대기 4·공격 6·앉기 4·잠 4는 `chr_actions_a`·`_b` 행 묶음과 다르다 | `character`, 행 `idle`,`attack`,`sit_eat`,`sleep` |
+| REF-D 11 · REF-E 9 (P1 §2.1·§2.2, 다시 만들 때만) | 피격·발견·상호작용 / 환호·쓰러짐 묶음 | `character`, 행 `hit`,`discover`,`interact` / `cheer`,`collapse` |
+| REF-P 봇짐·배낭·등불 6 · REF-Q 착용 7 (P1 §9.1·§7.3) | 대기 자세 + 소품 칸 | `character`, 행 `idle:6` / `idle:4`,`idle:3` |
+| 책 2 · 그림자 1 (§3.3) | 책은 `prop_anim_b` 4행(다른 소품 8칸과 한 장), 그림자는 틀 없음 | 생성 묶음별 틀 또는 `prop_anim_b` 한 장 생성(OD-74) |
+| 정예 깃발 16 × 16 (P2 §2.5) · 날씨 입자 16 × 16 (P2 §6 w17a) | 16 × 16 소품 계열 없음 | 계열 `prop16` |
+| 보스 정체성 1칸 (P2 w34) | 1 × 1 칸 틀 없음 | `boss`, 행 `idle:1` |
+| 효과 6종 따로 (P2 §7 w18~w20) | `fx_common`은 32프레임 한 장. P2는 효과마다 따로 생성한다(한 장이면 모양이 닮는다, 1차 S7) | 효과별 시트 6개(OD-74) |
+| 소품 w21~w24 (P2 §8) | `prop_anim_a`·`_b`·`prop_misc`는 게임 파일 묶음이라 생성 묶음(손 소품·표시·장면 소품·상태 편집)과 행이 다르다 | OD-74 |
+| 아이템 아이콘 24 × 24 (P2 §10) | 24 계열 없음(만들지는 O-02) | 계열 `icon24` |
+| 책 UI 3 (P2 §11) | 칸 없는 자유 배치 | 자유 배치 틀(띠) |
+| 주인공 초상 마스터 1 · 초상 부품 합성 w40~w42 (P2 §12.1·§12.2) | 1칸, 3 × 2 · 4 × 2 · 3 × 3 합성. `por_parts_*`는 뗀 결과의 배치다 | `portrait64` 1 × 1, 합성 3장 |
+| 배경 패널 두 장 · 한 장 (P2 §4.6) | 띠 틀은 이음 띠 하나. 두 장면 + x 768 끊는 선이 없다 | `bg_panel2`·`bg_panel1` |
+
 
 ---
 
@@ -63,11 +125,38 @@ PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #55342
 
 ```
 LAYOUT: exactly {N} sprites in exactly {COLS} equal columns and {ROWS} equal rows of identical square cells, evenly spaced, reading order left to right then next row. {EMPTY_CELLS}
-One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell. Every figure's lowest point (feet, or hips when seated, or body when lying) sits on the SAME local ground line in its cell, about 10% above the cell bottom; no ground line is drawn. The body's horizontal center is at the same local x in every cell unless the pose itself moves it.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell. Every figure's lowest point (feet, or hips when seated, or body when lying) sits on the SAME local ground line in its cell, exactly where the NUMBERS block puts it; no ground line is drawn. The body's horizontal center is on the centre column the NUMBERS block gives, in every cell, unless the pose itself moves it.
 BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel (preferred over transparency: transparent outputs came back with halos and dark fringes). Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
 ```
 
 - 정사각이 아닌 적 칸·효과·소품·아이콘·초상·배경 띠는 P2 §1.2의 C 변형을 쓴다.
+- v1.3까지의 `about 10% above the cell bottom`은 뺐다(v1.4). 지면선·중심 수치는 NUM만 가진다. 틀 필요 시트(§0.4.3)는 NUMBERS block 대신 `about 10% above the cell bottom`을 넣는다.
+
+### T 틀 (v1.4 — 틀 위에서 생성하는 모든 요청, C 앞에)
+
+입력 1이 배치 틀일 때 붙인다(§0.4). `{SHEET}`·`{FILE}`·`{W}`·`{H}`·`{S}`는 NUM에서 옮긴다.
+
+```
+TEMPLATE (input image 1 = {FILE}, the layout template of sheet {SHEET}): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly {W} x {H} pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly {S} x {S} image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+```
+
+### NUM 틀 수치 (v1.4 — T 바로 뒤)
+
+§8의 `NUM(<시트>)` 코드 블록 전문을 그대로 붙인다. 캔버스·S·격자 원점·칸 크기·쓰는 칸과 빈 칸·행마다 최하단 화소 줄과 지면선·열마다 가로 중심·기준 키(논리 화소와 이미지 화소)·여백이 든다. 본문은 NUM과 다른 수치를 쓰지 않는다.
+
+### GF 문 지적 (v1.4 — 문에서 떨어진 뒤 다시 생성할 때, 글 맨 끝에)
+
+```
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+{art:gate 출력의 "Regeneration feedback:" 아래 문단 전문}
+```
 
 ### D 금지 — 캐릭터·적·무기·소품·초상 시트
 
@@ -170,6 +259,26 @@ SWAP (weapon): in every cell where the character holds the short sword, replace 
 | 검 `20-…-r2` | 합격(셀 넘침 허용) | 공격 2·3·4칸의 칼끝이 48 셀 밖으로 나간다(25~29px 잘림). P1의 V3·V4(22)는 더 길다 | OD-03 결정(2026-09-24): 무기 레이어만 셀 밖 허용, 무기 셀 80 × 64에 hand_f 기준으로 담는다(15 §12.2, D65). 도구 T5로 다시 정규화 |
 | 전체 | 도구 과제 | 팔레트 스냅 뒤 반점 잡음, 칸별 색 수가 카드 상한을 넘는다 | 프롬프트 문제가 아니라 정규화 과제다. `OPEN_DECISIONS.md` 도구 작업 T1 |
 
+### 2.4 v04 (2026-09-24)
+
+육안 검토(`assets/_imagegen/v04/README.md`·`REVIEW.md`) + 사용자 검토 + 문 `--no-canvas` 측정(`tools/art-check/README.md` 「옛 납품 검사 결과」) + 파생 시험(같은 README 「파생 레이어」).
+
+| 대상 | 판정 | 근거 | 반영 |
+| --- | --- | --- | --- |
+| 23장 공통 | **규격 불합격** | 캔버스가 장마다 다르다(2172 × 724, 1774 × 887, 1448 × 1086, 916 × 1717 …). 투명 배경으로 받아 그림 속 반투명 화소가 장마다 38만~64만 개(`alpha` 실패 전부). 칸 여백·키도 어긋난다(늑대 키 21.6블록, 박쥐 15~20) | §0.4 규격 고정 절차, §1 T(불투명 `#FF00FF`, 캔버스 지정), NUM |
+| 걷기 12 `00-ref-a-walk12-48` | 불합격(동작) | 인물은 마스터와 같다(E9 통과, 지면선·중심·키도 통과). 그러나 2행이 1행과 거의 같다(좌우 교대가 없다). 팔을 가슴 앞에 주먹 쥐고 들어 권투하는 모습이다 | §3.1 REF-A: 팔은 손을 편 채 허리 옆에서 앞뒤로 흔든다, 2행 = 1행의 좌우 바꿈. 틀 위에서 다시 생성 |
+| 표정 5 `00-expression-round5-48` | 불합격(1칸) | 「눈감음」 칸이 웃는 `^^` 눈이다. 출력 비율도 요청과 다르다 | §3.2 L7: 눈감음 = 가로 한 줄의 평평한 눈, 틀 `chr_face` 12칸 합성 |
+| REF-D `c01` · REF-E `c02-r2` | **합격**(기준 D·E) | 칸 배치·인물 유지 | 바지 색 교체(P1 §3.1) → 몸체 L1 다시 떼기, 가림막(P1 §3.4) |
+| 몸체 D·E `c03-body-ref-d/e` | 모양 합격 · 색 불합격 | 크림 속옷·회색 바지(D73 이전) | 새 L1로 다시 뗀다 |
+| 천옷 D·E `c03-cloth` · 피격 검 `c13` | 불합격 → **요청 중지** | 생성기의 옷·무기 떼기가 두 번 연달아 실패(피부 위 소매 5~16%, 1~3px 밀림, 칼을 다시 그림) | 옷·무기 레이어는 도구가 기준 시트에서 골라 낸다(`derive`, D66). §3.2 L4·L5·L6 요청 중지 |
+| 머리카락만·얼굴만 편집 | **없음** | 파생 시험에서 v04 D·E는 머리카락·얼굴 가림막이 없어 분류 못 한 화소가 32.9%·30.9%, 7칸·6칸 실패(몸체가 머리카락·눈을 흡수) | P1 §3.4 가림막: v04 D·E 머리카락만(L3)·얼굴만(L8), v03 REF-B 얼굴만(L8) |
+| 머리 자세 `c04` · HR01 `c05` | 보류 | 숙임 손·피부색·얼굴 비율, 머리카락 색·겹침 검증 전 | 틀 `chr_head_poses_ref`로 다시 만들지는 검증 뒤 |
+| 늑대 `w01` | 불합격(외형) | 여우·코기로 읽힌다(짧은 주둥이, 큰 귀) | P2 §2.1: 주둥이를 길게, 귀를 작게. 몬스터 표준 |
+| 박쥐 `w02-r2` | 불합격 | 땅에 서 있다(부양 없음) | P2 §2.2: 몸 최하단 = NUM 부양 줄, 그 아래는 비움 |
+| 코볼트 `w03-r4` | 불합격 | 화풍이 다르다(평면 채색, 두꺼운 외곽선). 대기·이동 프레임이 움직이지 않는다. r3는 배경 얼룩 | P2 §2.3: 몬스터 표준으로 처음부터 |
+| NPC 기준 `n01` 첫 판 | **합격**(`nref`) | r2는 요청하지 않은 세부까지 바뀌었다 | `nref` = `v04/n01-npc-ref-48.png` |
+| 배경 `bg-four-regions-quality-r2` | **합격**(품질 기준, D71) | — | P2 §4 품질 입력 |
+
 ---
 
 ## 3 P0 에셋별 프롬프트
@@ -178,34 +287,39 @@ P0 범위는 `ASSET_ORDERS.md` §1.2다. **48 규격만 만든다**(O02 = 48, D6
 
 ### 3.1 기준 합성 시트 (가장 먼저)
 
-#### REF-A · 걷기 12 (AO-03 연구본, v03 재생성)
+#### REF-A · 걷기 12 (AO-03 연구본, v05 재생성)
 
-조립: A + B + C(`N=12, COLS=6, ROWS=2, EMPTY_CELLS=없음`) + 본문 + D. **기준 인물(§0.2의 0번)을 입력 이미지로 함께 넣고** 본문 앞에 다음을 붙인다.
-
-```
-Input image role: this is the exact character to draw. Copy its head shape, hair silhouette, eye size, face proportions, clothing and colors exactly. Do not copy its poses or its layout. No strap, no pouch, no bag, nothing on the back.
-```
+조립: A + B + T + NUM(chr_walk12) + C(`N=12, COLS=6, ROWS=2, EMPTY_CELLS=없음`) + 입력 역할 + 본문 + D. 입력 1 = `docs/art/templates/chr_elder.grid.png`(임시 틀, §0.4.2), 입력 2 = 기준 인물(§0.2의 0번). 문: `pnpm art:gate <png> --spec chr_elder --rows walk:6,walk:6`.
 
 ```
-ANIMATION, one 660 ms walk cycle, twelve DISTINCT poses at 55 ms each, the whole body walking in place:
+Input image 2 role: this is the exact character to draw. Copy its head shape, hair silhouette, eye size, face proportions, clothing and pixel density exactly; its trousers are drawn teal #27978D #00766D as stated above, not grey. Do not copy its poses or its layout. No strap, no pouch, no bag, nothing on the back.
+```
+
+```
+ANIMATION, one 660 ms walk cycle, twelve DISTINCT poses at 55 ms each, the whole body walking in place, a relaxed easy stroll.
+ARMS: both hands are OPEN and relaxed, hanging at hip height; the arms swing gently forward and back from the shoulder, opposite to the legs, the forward hand reaching at most the front of the belly. Never raise a hand to the chest, never make a fist, never hold the arms bent in front of the body: this is not a boxing or running pose.
 1 right foot forward contact, left foot behind, LEFT arm forward.
 2 weight settles onto the right knee, upper body one block lower; the planted right foot does not move.
-3 left foot lifts and swings under the body, arms start to cross.
+3 left foot lifts and swings under the body, both arms passing beside the hips.
 4 narrow passing pose, feet close beneath the hips, upper body one block higher.
 5 left leg extends forward, right arm comes forward.
 6 left heel just above the ground before contact, trailing leg pushes off.
-7 LEFT foot forward contact, right foot behind, RIGHT arm forward: the mirror step of pose 1, with the darker far-side leg now in front.
+7 LEFT foot forward contact, right foot behind, RIGHT arm forward: pose 1 with left and right swapped; the darker far-side leg is now in front and the darker far-side arm is now behind.
 8 weight settles onto the left knee, upper body one block lower.
 9 right foot lifts and swings under the body.
 10 narrow passing pose, upper body one block higher.
 11 right leg extends forward, left arm comes forward.
 12 right heel just before contact, approaching pose 1 but NOT a copy of it.
-Poses 1 and 7 have the widest stance, 4 and 10 the narrowest. Row 2 must visibly differ from row 1 because the near and far legs have swapped. No weapon, helmet, cape, bag or props.
+Poses 1 and 7 have the widest stance, 4 and 10 the narrowest. ROW 2 IS ROW 1 WITH LEFT AND RIGHT SWAPPED: in every row-2 cell the leg that is in front in the row-1 cell above it is behind, and the arm that is forward is back. Seen side by side, cell (1,1) and cell (1,2) must clearly differ by which leg and which arm lead. No weapon, helmet, cape, bag or props.
 ```
 
 - 게임에 쓰는 걷기 6프레임은 따로 생성하지 않는다. 이 12칸 중 1·2·4·7·8·10번을 게임 쪽이 고른다(AO-03 표).
+- v04 `00-ref-a-walk12-48`은 인물이 맞았지만 2행이 1행과 같고 팔이 권투 자세였다(§2.4). ARMS 줄과 ROW 2 문장이 그 두 가지를 막는다. 합격: 문 통과(E22) + E1~E7, E9 + 1행과 2행을 나란히 놓아 이끄는 다리가 칸마다 다르다.
+- 바지는 B의 청록이다(D73). 이 시트는 바지 색 교체 편집(P1 §3.1)이 필요 없다.
 
 #### REF-B · 대기·공격·앉기와 식사·잠 (AO-02·04·07·08) — v03 r4 합격, 기준 인물
+
+다시 만들지 않는다. v05에서 하는 일은 바지 색 교체(P1 §3.1) → 몸체 L1 다시 떼기, 얼굴 가림막 L8(P1 §3.4)이다. 아래는 v03 기록이다(다시 만들게 되면 틀 필요 — §0.4.3).
 
 조립: A + B + C(`N=18, COLS=6, ROWS=4, EMPTY_CELLS=Row 1, row 3 and row 4 hold four sprites each; their last two cells stay completely empty.`) + 본문 + D
 
@@ -227,9 +341,11 @@ ROW 4 SLEEP, 4 frames, 450 ms: lying ON ITS SIDE, back gently curved, knees draw
 Clothing replacement: instead of the cream tunic, a sleeveless tan leather vest #C08A58 #8E5E38 with two vertical shoulder straps and a 2-block belt, the plain grey-blue linen undershirt #7EA6B8 #546E7A visible at the shoulders. Everything else (face, hair, trousers, boots, poses) identical to the reference sheet.
 ```
 
+- 합격한 동작판은 v03 `04-ref-c-leather-actions18-48-r2`다. 어깨 속옷이 옛 크림이고 바지가 옛 회색이라 P1 §3.1의 색 교체 편집(REF-C판: 바지 + 어깨 속옷)을 한 번 한다.
+
 ### 3.2 레이어 부품 — 기준 합성 시트를 편집해 떼어 낸다
 
-모든 부품 프롬프트는 **편집**이다. 입력 이미지 = 합격한 REF 시트. 공통 머리말(이하 **X**, 네 문서가 같은 이름으로 부른다):
+부품 프롬프트는 **편집**이다(L7 표정 합성만 틀 위 생성). 입력 이미지 = 합격한 REF 시트(v1.4: 바지 색 교체한 판, P1 §3.1). 옷·무기(L4~L6)는 요청하지 않는다. 공통 머리말(이하 **X**, 네 문서가 같은 이름으로 부른다):
 
 ```
 Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
@@ -238,19 +354,38 @@ Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the 
 | 번호 | 카드 | 입력 | 머리말 뒤에 붙일 문장 |
 | --- | --- | --- | --- |
 | L1 | AO-02·03·04·07·08 몸체 | REF-A, REF-B | `Remove the hair, the face (eyes, eyebrows, mouth), the tunic, the belt, the sword and the bread. Where clothing is removed, show the bare base body: skin #E3B48E #C88E68 #A0664A with a plain grey-blue linen sleeveless undershirt #7EA6B8 #546E7A (never cream, never the tunic colours), teal canvas trousers #27978D #00766D (never grey) and the same brown boots. The head stays as a smooth bald skin-coloured head of the same size and outline.` |
-| L2 | AO-13 얼굴 | L7 결과(+ 볼 홍조 표지, P1 §3.3) | `Keep ONLY the eyes, eyebrows and mouth of each figure, and the single #B04A42 cheek block, pixel for pixel as they are. Do not redraw or enlarge them. Remove everything else, including skin, hair and outline.` |
+| L2 | AO-13 얼굴 | L7 결과(+ 볼 홍조 표지, P1 §3.3) | `Keep ONLY the eyes, eyebrows and mouth of each figure in rows 1 and 2, and the single #B04A42 cheek block, pixel for pixel as they are. In row 3 keep ONLY the #A0664A wrinkle lines. Do not redraw or enlarge them. Remove everything else, including skin, hair and outline.` 문: `--spec chr_face` |
 | L3 | AO-14 머리카락 HR01 | REF-A, REF-B | `Keep ONLY the hair. Remove face, skin, body, clothing, weapon and all other parts.` |
-| L4 | AO-20 천옷 | REF-A, REF-B | `Keep ONLY the cream quilted tunic and its brown waist cord with the repair patches. Remove the body, skin, head, hair, trousers, boots, sword and bread.` |
-| L5 | AO-21 가죽옷 | REF-C | `Keep ONLY the leather vest, its straps and belt, and the grey-blue undershirt visible at the shoulders. Remove everything else.` |
-| L6 | AO-16·17 무기 | REF-B 2행(V1), §3.3 교체 결과(V2) | `Keep ONLY the {sword / dagger} in each cell (blade, guard, grip). Remove the character entirely, including the hand holding it.` — V1 v03 위치 합격 |
-| L7 | AO-13 표정 5종 | REF-B 1행 1칸 | 표정 시트를 먼저 만든다: `Keep this exact character, pose and size. Make a 5-cell row of the same frame, identical except the facial expression: neutral, smile, grimace (focused frown), eyes closed, surprise. Only the eyes, eyebrows and mouth change.` 그다음 결과에 L2를 적용해 얼굴만 뗀다 |
+| L4 | AO-20 천옷 | REF-A, REF-B | **요청 중지(v1.4)** — 도구 `derive`가 뗀다. 기록: `Keep ONLY the cream quilted tunic and its brown waist cord with the repair patches. Remove the body, skin, head, hair, trousers, boots, sword and bread.` |
+| L5 | AO-21 가죽옷 | REF-C | **요청 중지(v1.4)** — `derive`. 기록: `Keep ONLY the leather vest, its straps and belt, and the grey-blue undershirt visible at the shoulders. Remove everything else.` |
+| L6 | AO-16·17 무기 | REF-B 2행(V1), §3.3 교체 결과(V2) | **요청 중지(v1.4)** — `derive`(v03 V1 공격 6은 합격본을 그대로 쓴다). 기록: `Keep ONLY the {sword / dagger} in each cell (blade, guard, grip). Remove the character entirely, including the hand holding it.` |
+| L7 | AO-13 표정 합성 12(둥근 눈 5 · 가는 눈 5 · 주름 2) | 생성(틀 `chr_face`) | 아래 L7 절. 결과에 P1 §3.3 홍조 편집 → L2로 얼굴만 뗀다 |
+| L8 | 얼굴 가림막(파생의 빼는 레이어) | v04 REF-D·REF-E, v03 REF-B | `Keep ONLY the eyes, eyebrows and mouth of each figure, pixel for pixel, with their exact colours. Remove everything else, including skin, hair, outline, body, clothing and held items. A cell whose face is not visible stays completely empty.` |
 
-- 걷기 부품(v03 `12`~`15`)은 불합격 걷기 시트에서 뗐으므로, 새 REF-A가 합격하면 다시 뗀다.
-- 잠·앉기 행에서 머리카락·옷을 뗄 때도 같은 문장을 쓴다. 칸이 비어 버리면(부품이 없는 포즈) 그 칸은 빈 채로 둔다.
+- **옷·무기 떼기를 요청하지 않는다(v1.4, §2.4).** 생성기의 옷·무기 떼기가 두 번 연달아 실패해, 옷·무기 레이어는 도구가 기준 시트의 생성 화소에서 골라 낸다(`derive`, D66 — 화소를 고르고 옮길 뿐 새로 그리지 않는다). 도구에 필요한 것은 기준 시트와 **빼는 레이어**(몸체 L1, 머리카락 L3, 얼굴 L8/L2)다. 빼는 레이어는 모양만 쓰고 색은 기준 시트에서 가져온다(`tools/art-check/README.md` 「색 출처 reference」).
+- 걷기 부품(v03 `12`~`15`)은 불합격 걷기 시트에서 뗐으므로, 새 REF-A가 합격하면 몸체(L1)·머리카락(L3)·얼굴(L8)만 다시 뗀다.
+- 잠·앉기 행에서 머리카락·얼굴을 뗄 때도 같은 문장을 쓴다. 칸이 비어 버리면(부품이 없는 포즈) 그 칸은 빈 채로 둔다.
 - 편집 결과를 입력과 겹쳐 봤을 때 남긴 부품의 위치가 1블록이라도 움직였으면 불합격이다(E8). **색이 달라졌어도 불합격이다**(E21, §2.3 머리카락).
-- L5의 어깨 속옷: 15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」가 가죽 팔레트에 속옷을 넣고, 몸체 속옷은 민소매(L1)이므로 어깨의 속옷 화소는 가죽 레이어가 가진다(P1 확인 필요 9 해결, `OPEN_DECISIONS.md`).
-- L1의 속옷은 회청 `#7EA6B8` `#546E7A`(속옷 묶음, D73)이다. 크림이던 속옷이 천옷 `#F0E6CC` `#C8C2B8`와 같은 색이어서 파생 도구가 천옷과 속옷을 가르지 못했다(천옷을 벗기면 구멍 난 천옷이 남았다). 이미 합격한 몸체 레이어(v03 `16-body-actions18-48-r3`, v04 `c03-body-ref-d-48`·`c03-body-ref-e-48`)는 모양만 쓰고, 다음 아트 차례에 이 L1로 다시 뗀다.
-- L1의 바지는 청록 캔버스 `#27978D` `#00766D`(바지 묶음, D73)다. 회색이던 바지 `#C8C2B8` `#9A948C`는 천옷 그늘·잿빛 머리와 같은 색이라 천옷 밑단·머리카락과 갈리지 않았다. 바지는 기준 시트에서도 **보이는** 자리라 파생 도구가 기준 시트의 색을 쓴다 — 그래서 몸체만이 아니라 기준 시트(REF-A~E)의 바지도 색 교체 편집(`prompts/P1_character.md` §3.1)으로 청록으로 바꾼 뒤 L1·L4를 다시 적용한다.
+- L5의 어깨 속옷(기록): 15 §6.4 A02 「밝은 가죽 + 회청 속옷 소매」가 가죽 팔레트에 속옷을 넣고, 몸체 속옷은 민소매(L1)이므로 어깨의 속옷 화소는 가죽 레이어가 가진다(OD-48). v1.4부터는 파생 도구가 가죽 부류로 가져간다.
+- L1의 속옷은 회청 `#7EA6B8` `#546E7A`(속옷 묶음, D73)이다. 크림이던 속옷이 천옷 `#F0E6CC` `#C8C2B8`와 같은 색이어서 파생 도구가 천옷과 속옷을 가르지 못했다(천옷을 벗기면 구멍 난 천옷이 남았다). 이미 합격한 몸체 레이어(v03 `16-body-actions18-48-r3`, v04 `c03-body-ref-d-48`·`c03-body-ref-e-48`)는 모양만 쓰고, 다음 아트 차례(`V05_REQUEST.md`)에 이 L1로 다시 뗀다.
+- L1의 바지는 청록 캔버스 `#27978D` `#00766D`(바지 묶음, D73)다. 회색이던 바지 `#C8C2B8` `#9A948C`는 천옷 그늘·잿빛 머리와 같은 색이라 천옷 밑단·머리카락과 갈리지 않았다. 바지는 기준 시트에서도 **보이는** 자리라 파생 도구가 기준 시트의 색을 쓴다 — 그래서 몸체만이 아니라 기준 시트(REF-B~E)의 바지도 색 교체 편집(`prompts/P1_character.md` §3.1)으로 청록으로 바꾼 뒤 L1을 다시 적용하고 파생을 다시 돌린다. 새 REF-A는 처음부터 청록이다.
+
+#### L7 · 표정 합성 12 (틀 `chr_face`, v1.4)
+
+v1.3의 「5칸 한 줄 편집」은 v04에서 눈감음 칸을 웃는 `^^`로 그렸고 출력 비율도 바뀌었다(§2.4). 틀 `chr_face`(얼굴 레이어의 게임 배치: 둥근 눈 5 · 가는 눈 5 · 주름 2)의 자리표시가 온몸 인물이므로, **합성 인물을 그 자리에 바로 그린다.** P1 §3.2(가는 눈 편집)와 P1 §11.2(주름 2칸)가 이 한 장의 2행·3행이 되었다.
+
+조립: A + B + T + NUM(chr_face) + C(`N=12, COLS=5, ROWS=3, EMPTY_CELLS=Row 3 holds two sprites; its last three cells stay completely empty.`) + 입력 역할 + 본문 + D. 입력 1 = `docs/art/templates/chr_face.placeholder.png`, 입력 2 = 기준 인물. 문: `pnpm art:gate <png> --spec chr_face`.
+
+```
+Input image 2 role: this is the exact character; copy its head, hair, face proportions, eye size, clothing and pixel density exactly (trousers teal as stated above). Do not copy its layout.
+TWELVE CELLS of the same frame: the relaxed idle stance of input image 2 (row 1, frame 1), facing right, identical in every cell. ONLY the eyes, eyebrows and mouth change (in row 3 also two small wrinkle marks). Hair, head outline, skin, body, clothing and pose are pixel-identical in all twelve cells.
+ROW 1, the round eyes of input image 2, five expressions: 1 neutral. 2 smile: the mouth curves up, the eyes stay round. 3 grimace: a focused frown, eyebrows angled down toward the nose, mouth a short flat line. 4 EYES CLOSED, NEUTRAL: each eye is one straight flat horizontal line, one block tall and as wide as the open eye; eyebrows and mouth exactly as in cell 1, a calm sleeping face. Never curved happy arcs, never a smile. 5 surprise: eyes one block taller, eyebrows raised, a small round open mouth.
+ROW 2, NARROW eyes, the same five expressions in the same order: each open eye is a short horizontal slit two blocks wide and one block tall, in the same place and spacing as the round eyes. Smile: the slits curve slightly upward. Surprise: the slits open to two blocks tall. Closed: the same straight flat line as row 1 cell 4.
+ROW 3, round eyes, neutral face, age marks in #A0664A: 1 MATURE: one short wrinkle line one block long at the outer corner of the near eye. 2 ELDER: two wrinkle lines at the outer eye corner and one short line under the eye. Cells 3, 4 and 5 of row 3 stay empty.
+```
+
+- 합격: 문 통과(E22) + E1, E2, E4, E9, E11. 12칸의 머리·몸이 같다(겹쳐 보면 차이가 눈·눈썹·입·주름에만 있다). 1행 4칸·2행 4칸은 평평한 한 줄이다. 둥근 눈과 가는 눈을 나란히 놓아 실크기에서 다른 얼굴형으로 읽힌다(P1 §3.2).
+- 2행 또는 3행이 1행과 다른 인물로 나오면(머리·몸 차이) 1행만 합격으로 두고 옛 방식(P1 §3.2 가는 눈 편집, P1 §11.2 주름 편집)으로 그 행을 만든다. 그때는 입력 = 합격한 이 장, 결과도 같은 `--spec chr_face`로 문을 통과해야 한다.
 
 ### 3.3 새로 만드는 부품
 
@@ -264,7 +399,7 @@ v03 단독 생성본(`05-dagger10-48-r2`)은 정규화에서 불합격이다(§2
 a DAGGER clearly shorter than the input sword, about 0.6 times its length: a straight silver blade #E8E6E0 #B4B2B0, a small brass guard #B07A3A and a grip wrapped with green cloth #6D8F5A. The blade points in the same direction as the input sword in each cell; only the length, guard and grip change.
 ```
 
-② 떼기 — 입력 = 합격한 ①. X + L6 문장(`dagger`).
+② 떼기 — v1.4부터 요청하지 않는다. 도구 `derive`가 합격한 ①에서 단검 부류를 골라 낸다(§3.2 L6).
 
 - 피격 3칸은 P1 c14(REF-D에 같은 교체), 착용 1칸은 P1 c17(REF-Q)에서 만든다. 15 §6.3·§12.2의 무기 시트 = 공격 6 + 피격 3 + 착용 1이다.
 - 합격: E1 E4 E8 E10 E11 E13 E21 + P1 E14. 단검 길이가 한손검의 약 0.6(15 §6.3: 10 / 16)이고, 정규화 뒤 16px 실크기에서 단검으로 읽힌다.
@@ -278,6 +413,7 @@ Prop-only sprites, no hand and no body. A SMALL open book as held by a chibi cha
 ```
 
 - 책도 손 소품이라 §2.3 단검과 같은 밀도 문제가 날 수 있다. 정규화 뒤 8블록 폭에서 뭉개지면 REF-B 3행(앉기)에서 빵을 책으로 바꾸는 교체 → 떼기로 바꾼다.
+- **틀 필요**(§0.4.3): 책의 게임 칸은 `prop_anim_b` 4행이지만 그 틀은 소품 8칸과 한 장이다. 틀이 생길 때까지 위 어림 문장(`about 8 blocks`)을 쓰고 문 검사 없이 본다.
 
 #### AO-01 · 발밑 그림자
 
@@ -288,25 +424,24 @@ Prop-only sprites, no hand and no body. A SMALL open book as held by a chibi cha
 One single flat horizontal ellipse, about 40% of the cell width and one twelfth of the cell height, centred horizontally near the bottom of a square cell. One fully opaque color only: dark plum #2B2233. Hard stepped pixel edges, no gradient, no blur, no grey, nothing else in the image.
 ```
 
+- **틀 필요**(§0.4.3). 그림자 규격(15 §3.1 레이어 0)을 담은 틀이 없다.
+
 #### AO-16 · 무기 V1 한손검 나머지 4프레임 (v1.2 교체)
 
 공격 6칸은 v03 합격본(`20-sword-actions18-48-r2`, REF-B에서 뗌)이다. 나머지 4칸은 단독 편집으로 만들지 않고 **합성에서 뗀다**(§2.3 단검과 같은 이유).
 
-- 피격 3 = P1 c13(REF-D 피격 행에서 X + L6). 카드의 「앞으로 든 3」은 15 §6.3의 「피격 3」이다.
+- 피격 3 = P1 c13(REF-D 피격 행, v1.4부터 `derive`가 뗀다. v04 생성기 떼기 `c13`은 칼을 다시 그려 불합격). 카드의 「앞으로 든 3」은 15 §6.3의 「피격 3」이다.
 - 착용 1 = P1 c17(REF-Q, 허리 뒤 칼집). 15 §3.1은 「허리나 등에 찬 모습 1프레임」이다.
 - 공격 2·3·4칸의 칼끝이 48 셀을 넘는다(§2.3). 무기 레이어만 셀 밖으로 나갈 수 있으므로(OD-03 결정, D65) 정규화가 잘라 내지 않고 무기 셀 80 × 64에 담는다.
 
 ### 3.4 적
 
-#### AO-31 · 여울 들쥐 EN01 (v02 유지 + 가장자리 수정)
+#### AO-31 · 여울 들쥐 EN01 — 합격(v03 r3), **몬스터 황금 표본**
 
-v02 `02-rat18.prompt.txt` 본문을 그대로 쓰고, 앞에 A(`{32x24}`), 뒤에 C의 BACKGROUND 문장과 D를 붙인다. 추가 문장:
+v03 `08-rat18-48-r3`은 합격했고 다시 만들지 않는다. 정규화본(`assets/game/rat18_48.png`)을 틀 `enm_rat` 위에 그대로 놓은 `docs/art/templates/enm_rat.placeholder.png`가 **몬스터 표준의 황금 표본**이다(P2 §2.0). 늑대·박쥐·코볼트·보스 이후 모든 적 시트는 이 표본을 입력으로 넣는다.
 
-```
-Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or semi-transparent fringe around any silhouette.
-```
-
-32 규격은 만들지 않는다(D64).
+- 기록(v02 → v03 r3 프롬프트): v02 `02-rat18.prompt.txt` 본문 + A(`{32x24}`) + C의 BACKGROUND 문장 + D + `Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or semi-transparent fringe around any silhouette.`
+- 32 규격은 만들지 않는다(D64).
 
 ### 3.5 배경
 
@@ -333,8 +468,9 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | E11 | 배경 전체가 같은 자홍색 한 값이다. 그라데이션·후광·어두운 테두리가 없다 |
 | E12 | (폐기 — 32 규격을 만들지 않는다, D64) |
 | E21 | **편집 색 유지**: 편집(떼기·교체·상태)으로 남긴 화소의 색이 입력과 같다. 레이어를 겹친 합성이 기준 시트와 같은 색으로 보이고, 더 밝거나 주황빛이거나 채도가 달라진 곳이 없다. E8·E13(P1)·W3(P2)을 보는 모든 편집에서 함께 본다 |
+| E22 | **문 통과**(v1.4): 틀 위에서 만든 시트(생성과 그 편집)는 `pnpm art:gate <png> --spec <시트>`가 종료 코드 0이다(§0.4). 육안 기준보다 먼저 본다. 틀 필요 시트(§0.4.3)는 해당 없음 |
 
-- 번호는 네 문서에서 겹치지 않는다: E1~E12·E21(이 문서), E13~E20(P1 §14), W1~W14(P2 §13.2), SE1~SE13·V-S1~V-S7(P3 §5·§6). 새 공통 기준은 E22부터 붙인다.
+- 번호는 네 문서에서 겹치지 않는다: E1~E12·E21·E22(이 문서), E13~E20(P1 §14), W1~W14(P2 §13.2), SE1~SE13·V-S1~V-S7(P3 §5·§6). 새 공통 기준은 E23부터 붙인다.
 
 ---
 
@@ -344,11 +480,13 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 
 | 문서 | 다루는 것 | 카드 | 파일 접두사 | 합격 기준 | 여기서 정의하는 블록 |
 | --- | --- | --- | --- | --- | --- |
-| `PROMPTS.md`(이 문서) | 제작 방법(§0), 공통 블록(§1), P0(§3), NPC 외형 단일 출처와 NPC 전신 기준 시트(§7), **전체 진행표(§6)** | AO-01~04·07·08·13·14·16·17·20·21·31·39·49의 P0 분 | P0는 번호만 `{2자리}-{이름}`(v02·v03 관례), NPC 기준 `n{번호}` | E1~E12, E21 | A B C D D-BG E S S-W X L1~L7, `[ID-…]` |
+| `PROMPTS.md`(이 문서) | 제작 방법(§0), **규격 고정 절차·틀 대응표·틀 필요(§0.4)**, 공통 블록(§1), P0(§3), NPC 외형 단일 출처와 NPC 전신 기준 시트(§7), **전체 진행표(§6)**, **틀 수치 블록(§8)** | AO-01~04·07·08·13·14·16·17·20·21·31·39·49의 P0 분 | P0는 번호만 `{2자리}-{이름}`(v02·v03 관례), NPC 기준 `n{번호}` | E1~E12, E21, E22 | A B C D D-BG E S S-W X L1~L8 T NUM GF, `[ID-…]` |
 | `prompts/P1_character.md` | 캐릭터의 나머지: 동작 5종(REF-D·E), 머리 자세(REF-H), 머리 6종, 방어구 3계열, 투구, 무기 V1·V2 나머지·V3~V6, 망토, 전문화, 장신구, 나이, 흡혈귀 확인 | AO-05~10, 13·14·15, 16·17 나머지, 18, 20~23, 25~29 | `c{번호}` | E13~E20 | F G |
-| `prompts/P2_world.md` | 적·보스·배경·장소 소품·날씨·효과·소품·UI 아이콘·아이템 아이콘·책 UI·초상 | AO-31~62의 P0 밖 | `w{번호}` | W1~W14 | A-UI A-POR C-E C-FX C-PROP C-ICON C-POR C-BG C-FREE D-FX D-UI D-MARK SW E-POR R-EN I-WOLF I-BAT I-KOBOLD I-BOSS I-HERO-POR |
+| `prompts/P2_world.md` | 적(**몬스터 표준 §2.0**)·보스·배경·장소 소품·날씨·효과·소품·UI 아이콘·아이템 아이콘·책 UI·초상 | AO-31~62의 P0 밖 | `w{번호}` | W1~W14 | A-UI A-POR C-E C-FX C-PROP C-ICON C-POR C-BG C-BGP C-FREE D-FX D-UI D-MARK D-B36 SW E-POR E-POR-T MS I-WOLF I-BAT I-KOBOLD I-BOSS I-HERO-POR |
 | `prompts/P3_scenes.md` | 이벤트 장면 ES01~ES20(15 §9.3, D63) | (카드 없음) | `es{번호}-{이름}-48[-k]` | SE1~SE13, V-S1~V-S7 | SC-A SC-K SC-E SC-C SC-D, HERO SLOT |
 | `OPEN_DECISIONS.md` | 네 문서의 「확인 필요」 통합표와 결정 결과(2026-09-24 사용자 결정 반영), 소유 문서·카드 변경 기록, 도구 작업 | — | — | — | — |
+| `V05_REQUEST.md` | 제작 AI에게 넘기는 v05 요청 묶음(순서·입력·틀·합격). 프롬프트 문장은 여기 네 문서를 가리킨다 | — | `assets/_imagegen/v05/` | — | — |
+| `templates/`(`specs.json`, `<시트>.json`·`.grid/.placeholder/.silhouette.png`) | 배치 틀과 수치(도구 `art:template` 산출). §8 NUM의 출처 | — | — | E22(`art:gate`) | — |
 
 - 블록은 표의 마지막 열 문서에서만 정의하고, 다른 문서는 이름으로만 부른다. 블록 문장을 고칠 때는 정의한 곳만 고친다.
 - 편집 머리말은 세 가지다: X(떼기, §3.2), S(캐릭터 교체, §1), SW(세계 에셋 교체·상태, P2 §1.4). 장면 띠 편집은 SC-E(P3 §3). 넷 모두 색 유지 문장을 가진다(E21).
@@ -364,12 +502,12 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 
 | 단계 | 무엇 (문서·번호) | 선행 | 막는 결정 (`OPEN_DECISIONS.md`) |
 | --- | --- | --- | --- |
-| 0 P0 마무리 | §3: REF-A 재생성 → 걷기 부품 다시 떼기, 천옷·가죽·머리카락 다시 떼기(색 유지), L7 표정(+ 볼 홍조 표지, P1 §3.3), V2 단검(REF-B 교체), 책, 그림자, 들판 합성 → 3층, 검 다시 정규화(무기 셀 80 × 64, 도구 T5) | 마스터(있음) | — |
+| 0 P0 마무리 (v05 = `V05_REQUEST.md`) | 기준 시트 바지 색 교체(REF-B~E) → 몸체 L1·가림막 L3·L8 → 도구 `derive`(옷·무기), REF-A 재생성 → 걷기 몸체·머리카락·얼굴 떼기, L7 표정 합성 12(+ 볼 홍조 표지, P1 §3.3), V2 단검(REF-B 교체 → `derive`), 책, 그림자, 검 다시 정규화(무기 셀 80 × 64, 도구 T5) | 마스터(있음) | — |
 | 1 O02 | **결정: 48 × 48(D64, 2026-09-24).** 참가자 비교 테스트는 플레이 검증(17 §6 S1)으로 미뤘다. 32 쌍은 만들지 않는다 | — | — |
-| 2 NPC·배경·UI·초상 | ① `n01` NPC 전신 기준 시트(§7.4) → P3 시범 ES15·ES18(인물 없음)·ES01. ② P2 배경 w10~w16(들판 합격 뒤), UI 아이콘 w25~w28, 책 UI w33. ③ P2 초상 w39~w42 → NPC 초상 w43·w44(`n01` 뒤) → w45 | 마스터, 들판 합성 | — |
+| 2 NPC·배경·UI·초상 | ① `n01` NPC 전신 기준 시트(§7.4, v04 첫 판 합격 = `nref`) → P3 시범 ES15·ES18(인물 없음)·ES01. ② P2 배경 w10~w16(시범: H1 한 곳 16변형 먼저, D72), UI 아이콘 두 장(`ui_icon_12`·`ui_icon_16`), 책 UI w33. ③ P2 초상 w39~w42 → NPC 초상 w43(+ w44, `por_npc_64` 11칸) → w45 | 마스터, 품질 기준 | — |
 | 2′ 효과·소품 | P2 효과 w17~w20, 소품 w22~w24 | — | — |
 | 3 캐릭터 | P1 c01~c23, c25. 걷기 행이 든 c08·c09·c15·c16·c21과 P2 w21 전리품 자루는 **새 REF-A 합격 뒤** | REF-A(걷기 행만) | — |
-| 4 적·보스 | P2 w01~w09, w34~w38 | 들쥐 합격본 | OD-12의 EB01 색값만(w08a 색, 소품 떼기는 진행) |
+| 4 적·보스 | P2 w01~w09, w34~w38 — 몬스터 표준(P2 §2.0) | 황금 표본(들쥐 r3 정규화본, 있음) | OD-12의 EB01 색값만(w08a 색, 소품 떼기는 진행) |
 | 5 장면 본 제작 | P3 §7.2 차례 3~6 | `n01` | — |
 | 6 아이템 아이콘 | P2 w29~w32 | P1 c14(무기 레이어, 권장) | `ASSET_BACKLOG.md` O-02(만들지 여부). 규격은 24 × 24로 정했다 |
 | 7 (폐기) 32 규격 | — | O02 = 48(D64) | — |
@@ -397,37 +535,38 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 
 ✅ 합격 · 🔶 일부 · ❌ 다시 · ⬜ 아직
 
-### 6.1 P0 (2026-09-24, v03 + 도구 결과 + 사용자 결정 기준)
+### 6.1 P0 (2026-09-24, v03·v04 + 도구 결과 + 사용자 결정 기준)
 
-32 열은 없앴다(O02 = 48, D64).
+32 열은 없앴다(O02 = 48, D64). 「V05-nn」은 `V05_REQUEST.md`의 항목 번호다.
 
 | 항목 | 카드 | 48 | 다음 할 일 |
 | --- | --- | --- | --- |
-| 기준 인물 동작 | AO-02·04·07·08 | ✅ v03 r4 | — |
-| 걷기 12 | AO-03 | ❌ 인물 불일치 | REF-A를 기준 인물 입력으로 재생성 |
-| 가죽옷 합성 | AO-21 | 🔶 동작 ✅(어깨 속옷이 크림) / 걷기는 새 REF-A 뒤 | 새 REF-A 편집. 동작 시트는 어깨 속옷을 `#7EA6B8`로 다시 교체(D73) |
-| 몸체 레이어 | AO-02~08 | 🔶 동작 모양 ✅, 속옷·바지 색 ❌(크림·회색, D73) / 걷기 재추출 | 기준 시트 바지 색 교체(P1 §3.1) 뒤 새 L1(회청 속옷·청록 바지)로 다시 떼기 |
-| 머리카락 HR01 | AO-14 | ❌ 동작: 위치 ✅·색 ❌(§2.3) / 걷기 재추출 | 색 유지 머리말로 다시 떼기 |
-| 얼굴 | AO-13 | ❌ | L7 → 볼 홍조 표지(P1 §3.3) → L2 |
-| 천옷 레이어 | AO-20 | ❌ 소매 늘림·배경 | 새 머리말로 재추출 |
-| 가죽옷 레이어 | AO-21 | ❌ 소매 늘림 | 새 머리말(L5 어깨 속옷 포함)로 재추출 |
+| 기준 인물 동작 | AO-02·04·07·08 | ✅ v03 r4(바지 회색) | 바지 색 교체(V05-01) |
+| 걷기 12 | AO-03 | ❌ v04: 인물 ✅, 2행 교대 없음·팔 권투 자세(§2.4) | 틀 위 재생성, 팔·2행 문장(V05-05) |
+| 가죽옷 합성 | AO-21 | 🔶 동작 ✅(v03 `04-…-r2`, 어깨 속옷 크림·바지 회색) / 걷기는 새 REF-A 뒤 | 바지 + 어깨 속옷 색 교체(V05-02). 걷기는 새 REF-A 교체 |
+| 몸체 레이어 | AO-02~08 | 🔶 동작 모양 ✅, 속옷·바지 색 ❌(D73) / 걷기 재추출 | 바지 색 교체 뒤 새 L1(V05-09) |
+| 머리카락 HR01 | AO-14 | 🔶 동작: 위치 ✅, 색 ❌(§2.3) — 파생이 모양만 쓰고 색은 기준에서 가져와 해결 / 걷기 재추출 | v04 D·E 머리카락 가림막 L3(V05-07), 새 REF-A 뒤 L3 |
+| 얼굴 | AO-13 | ❌ v04 표정: 눈감음이 `^^` | L7 표정 합성 12(틀 `chr_face`, V05-06) → 볼 홍조 표지(P1 §3.3) → L2 |
+| 얼굴 가림막(파생용) | — | ⬜ v03 REF-B, v04 D·E | L8(V05-08) |
+| 천옷 레이어 | AO-20 | 🔶 도구 `derive`: v03 18칸 통과(재합성 최저 98.9%) | 몸체 새 L1 뒤 `derive` 다시(도구) |
+| 가죽옷 레이어 | AO-21 | ⬜ 생성기 떼기 중지 | REF-C 색 교체 뒤 `derive`(도구) |
 | 한손검 | AO-16 | 🔶 공격 6 ✅(셀 넘침 허용, OD-03 결정) / 피격·착용은 P1 c13·c17 | 무기 셀 80 × 64로 다시 정규화(도구 T5) |
-| 단검 | AO-17 | ❌ 밀도(§2.3) | REF-B 교체 → 떼기(§3.3) |
-| 책 | AO-49 | ❌ 크기 | 재생성 |
-| 그림자 | AO-01 | ❌ 반투명 | 불투명 한 색으로 재생성 |
-| 들쥐 | AO-31 | ✅ | — |
-| 들판 3층 | AO-39 | ❌ 층 정합 → D72로 대체 | H1 `bg_river_meadow` 기본 장면(P2 w10)이 대신한다. 공용 들판 3층은 만들지 않는다 |
+| 단검 | AO-17 | ❌ 밀도(§2.3) | REF-B 교체 → `derive`(§3.3) |
+| 책 | AO-49 | ❌ 크기 | 재생성(틀 필요, §0.4.3) |
+| 그림자 | AO-01 | ❌ 반투명 | 불투명 한 색으로 재생성(틀 필요) |
+| 들쥐 | AO-31 | ✅ **몬스터 황금 표본** | 틀 `enm_rat` 자리표시 = 표본 18프레임 |
+| 들판 3층 | AO-39 | ❌ 층 정합 → D72로 대체 | H1 `bg_river_meadow` 기본 장면(P2 w10)이 대신한다(V05-13) |
 
 ### 6.2 P1 캐릭터 (P1 번호 `c`)
 
 | 항목 | 카드 | 합성 | 레이어 | 다음 할 일 |
 | --- | --- | --- | --- | --- |
-| 피격·발견·상호작용 | AO-05·06·09 | ⬜ | ⬜ | c01 |
-| 환호·쓰러짐 | AO-10 | ⬜ | ⬜ | c02 |
-| 머리 자세 3 | AO-14·15·23 | ⬜ | — | c04 |
-| 머리카락 HR01 6칸 | AO-14 | — | ⬜ | c05 |
+| 피격·발견·상호작용 | AO-05·06·09 | ✅ v04 `c01` | 🔶 몸체 모양 ✅·색 ❌, 천옷·검 생성기 떼기 ❌ | 바지 색 교체(V05-03) → L1·L3·L8(V05-07~09) → `derive` |
+| 환호·쓰러짐 | AO-10 | ✅ v04 `c02-r2` | 🔶 몸체 모양 ✅·색 ❌, 천옷 ❌ | 바지 색 교체(V05-04) → L1·L3·L8 → `derive` |
+| 머리 자세 3 | AO-14·15·23 | 🔶 v04 `c04` 보류(검증 전) | — | 검증 뒤 필요하면 틀 `chr_head_poses_ref`로 c04 |
+| 머리카락 HR01 6칸 | AO-14 | — | 🔶 v04 `c05` 기본 3 보류, 가림 3 ⬜ | c05 |
 | 머리카락 HR02~06 | AO-15 | ⬜ | ⬜ | c06 |
-| 얼굴 가는 눈 5 | AO-13 | ⬜ | ⬜ | c07 (P0 L7 합격 뒤) |
+| 얼굴 가는 눈 5 | AO-13 | ⬜ | ⬜ | L7 표정 합성 12의 2행(V05-06)에 합쳤다 |
 | 천옷 나머지 28 | AO-20 | ✅(기본 복장) | ⬜ | c03, c10 |
 | 가죽 44 | AO-21 | 🔶 A·B(P0) | ⬜ | c08 |
 | 금속 44 | AO-22 | ⬜ | ⬜ | c09 |
@@ -442,7 +581,7 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | 방패 20 | AO-27 | ⬜ | ⬜ | c16, c17 |
 | 깃 3·등불 2·빛 원 | AO-28 | ⬜ | ⬜ | c18~c20 |
 | 노년 몸체 10 | AO-29 | ⬜ | ⬜ | c21 |
-| 주름 2 | AO-13·29 | ⬜ | ⬜ | c22 |
+| 주름 2 | AO-13·29 | ⬜ | ⬜ | L7 표정 합성 12의 3행(V05-06)에 합쳤다 |
 | 흰머리 보조판 6장 | AO-29 | — | ⬜ | c25(OD-16) |
 | 흡혈귀 확인 | AO-30 | ⬜ | — | c23(선택) |
 
@@ -451,9 +590,9 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | 항목 | 카드 | 번호 | 결과물 | 상태 | 다음 할 일 |
 | --- | --- | --- | --- | --- | --- |
 | 들쥐 EN01 48 | AO-31 | (P0) | 18 | ✅ v03 r3 | 입력으로 사용 |
-| 늑대 | AO-32 | w01 | 18 | ⬜ | 생성(O02 = 48) |
-| 박쥐 | AO-33 | w02 | 18 | ⬜ | 〃 |
-| 코볼트 몸체 | AO-34 | w03·w04 | 18 | ⬜ | 〃 |
+| 늑대 | AO-32 | w01 | 18 | ❌ v04 여우·코기로 읽힘 | 몬스터 표준, 주둥이 길게·귀 작게(V05-10) |
+| 박쥐 | AO-33 | w02 | 18 | ❌ v04 r2 땅에 섬 | 몬스터 표준, NUM 부양 줄(V05-11) |
+| 코볼트 몸체 | AO-34 | w03·w04 | 18 | ❌ v04 r4 화풍 다름·대기/이동 정지 | 몬스터 표준으로 처음부터(V05-12) |
 | 코볼트 곡괭이 | AO-35 | w04 | 5(18에서) | ⬜ | w03 뒤 |
 | 들쥐 귀 EN02 | AO-35 | w05 | 2(18에서) | ⬜ | — |
 | 모자·녹슨 투구 | AO-35 | w07 | 2 + 2 | ⬜ | w03 뒤 |
@@ -462,7 +601,7 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | 변형 색 목표 EN04·06·07 | AO-36 | w06 | 검토용 3 | ⬜ | — |
 | 보스 본체 | AO-37 | w34~w36 | 31 | ⬜ | 7단계 |
 | 보스 균열·파동 | AO-38 | w37·w38 | 1 + 4(파동 셀 64 × 56) | ⬜ | 〃 |
-| 배경: 야외 기본 장면 8(T00·H1~H4·A1~A3) + 층 떼기 | AO-39·40 | w10 | 기본 8, 층 마스크 8 | ⬜ | H1 먼저(들판 P0 대신). 품질 기준 입력, `art:gate` 통과(D72) |
+| 배경: 야외 기본 장면 8(T00·H1~H4·A1~A3) + 층 떼기 | AO-39·40 | w10 | 기본 8, 층 마스크 8 | ⬜ 품질 기준 ✅(v04 r2) | **시범 H1 한 곳을 16변형까지 끝낸 뒤** 나머지(V05-13~17). 틀 `bg_far`·`bg_mid`·`bg_near` |
 | 배경: 야외 계절·시간대 변형 | — | w11 | 120(장소 8 × 15) | ⬜ | 기본 합격 뒤. 계절 → 시간대 순 |
 | 배경: 야외 먼 층 채움 · 마을 점등 | AO-40 | w12 | 층 타일 384 · 겹침 3 | ⬜ | 변형마다 FILL 1 |
 | 배경: 폐광 띠 H5·D1~D3 | AO-41 | w13 | 기본 4 + 변형 12(H5 시간대 3, 세대 특징 9) · 층 타일 48 | ⬜ | — |
@@ -475,11 +614,11 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | 효과 6종 | AO-46~48 | w18~w20 | 32 | ⬜ | — |
 | 소품 A | AO-49 | w21·w22 | 18(책 제외) | ⬜ | 자루는 REF-A 뒤 |
 | 소품 B | AO-50 | w23·w24 | 23 | ⬜ | — |
-| UI 아이콘 | AO-51~54 | w25~w28 | 42 | ⬜ | w25 먼저 |
+| UI 아이콘 | AO-51~54 | w25~w28 | 42 | ⬜ | 틀 두 장: `ui_icon_12`(w25 + w28b) 먼저, `ui_icon_16`(w26~w28a) |
 | 아이템 아이콘 | AO-55~58 | w29~w32 | 34 | ⬜ | 규격 24 승인. 만들지는 `ASSET_BACKLOG.md` O-02 |
 | 책 UI | AO-59 | w33 | 3 | ⬜ | — |
 | 초상 부품 64 | AO-60 | w39~w42 | 25 | ⬜ | — |
-| NPC 초상 64 | AO-61 | w43·w44 | 11 | ⬜ | `n01` 합격 뒤 |
+| NPC 초상 64 | AO-61 | w43·w44 | 11 | ⬜ | 틀 `por_npc_64` 11칸 한 장(V05-19). 선행 w39(V05-18), `nref` ✅ |
 | 초상 48 판 | AO-62 | w45 | 36 | ⬜ | 64 합격 뒤 |
 
 ### 6.4 NPC 기준과 이벤트 장면 (P3 번호 `es`)
@@ -488,10 +627,10 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 
 32 열은 없앴다(O02 = 48, D64). 정지 부분 떨림은 두 번 재생성 실패 뒤 정규화가 1칸에서 복사한다(D66, 도구 T10).
 
-| 장면 | 사건 | 입력 | 열쇠 칸 K | 띠 48 | 정규화 | 합성 검수(P3 §6) |
+| 장면 | 사건 | 입력 | 열쇠 띠 K | 띠 48 | 정규화 | 합성 검수(P3 §6) |
 | --- | --- | --- | --- | --- | --- | --- |
-| `n01` NPC 기준 | — | 마스터 | — | ⬜(시트) | — | — |
-| ES01 | L09 | nref 11 | ⬜ | ⬜ | ⬜ | ⬜ |
+| `n01` NPC 기준 | — | 마스터 | — | ✅ v04 첫 판(`nref`) | — | — |
+| ES01 | L09 | nref 11 | ⬜ 시범(V05-22) | ⬜ | ⬜ | ⬜ |
 | ES02 | L23 | nref 4 | ⬜ | ⬜ | ⬜ | ⬜ |
 | ES03 | C01-1 | — | ⬜ | ⬜ | ⬜ | ⬜ |
 | ES04 | C01-2 | nref 5 | ⬜ | ⬜ | ⬜ | ⬜ |
@@ -505,10 +644,10 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 | ES12 | S01 | nref 10 | ⬜ | ⬜ | ⬜ | ⬜ |
 | ES13 | S02 | nref 10, ES12 | ⬜ | ⬜ | ⬜ | ⬜ |
 | ES14 | S03 | nref 1·4 | ⬜ | ⬜ | ⬜ | ⬜ |
-| ES15 | S04 | — | ⬜ | ⬜ | ⬜ | ⬜ |
+| ES15 | S04 | — | ⬜ 시범(V05-20) | ⬜ | ⬜ | ⬜ |
 | ES16 | S05 | — | ⬜ | ⬜ | ⬜ | ⬜ |
 | ES17 | S06 | nref 1 | ⬜ | ⬜ | ⬜ | ⬜ |
-| ES18 | S07 | — | ⬜ | ⬜ | ⬜ | ⬜ |
+| ES18 | S07 | — | ⬜ 시범(V05-21) | ⬜ | ⬜ | ⬜ |
 | ES19 | S08 | nref 8, ES11 | ⬜ | ⬜ | ⬜ | ⬜ |
 | ES20 | EB03 | EB03 시트 | ⬜ | ⬜ | ⬜ | ⬜ |
 
@@ -573,7 +712,8 @@ P2 초상(옛 NB-01~NB-09)과 P3 장면(옛 등장인물 외형표·`[ID-…]`·
 하델·도담·토리·비엘·동반자는 두세 장면에 나오고, 아홉 명 모두 초상이 있다. 장면·초상마다 새로 생성하면 v03 걷기 시트처럼 인물이 바뀐다(§2.2). 그래서 **주인공 마스터와 같은 역할을 하는 NPC 시트를 먼저 만들고**, 모든 NPC 장면과 NPC 초상에 정체성 입력으로 넣는다.
 
 - 조립: A(`{48x48}`) + C(`N=11, COLS=4, ROWS=3, EMPTY_CELLS=Row 3 holds three sprites; its last cell stays completely empty.`) + 본문 + D. 입력 = 마스터 `assets/_imagegen/v03/02-ref-b-actions18-48-r4.png`(크기·화소 밀도 기준).
-- 파일: `assets/_imagegen/{판}/n01-npc-ref-48.png`. 합격본을 `nref`라 부른다.
+- 파일: `assets/_imagegen/{판}/n01-npc-ref-48.png`. 합격본을 `nref`라 부른다. **`nref` = `assets/_imagegen/v04/n01-npc-ref-48.png`(첫 판, §2.4).** r2는 쓰지 않는다.
+- 다시 만들게 되면 틀 위에서: A + T + NUM(npc_ref) + C + 본문 + D, 입력 1 = `docs/art/templates/npc_ref.placeholder.png`, 문 `--spec npc_ref`. 본문의 `about 90%`·`about 80%`는 §7.2 키(38 · 34 · 30, 논리 화소)로 바꿔 쓴다: `cell 5 is exactly 34 art px tall and cell 9 exactly 30 art px; every other adult exactly 38 art px`.
 
 ```
 Input image role: the provided sheet fixes the pixel style, the block size and the body scale only. Copy its pixel density, outline weight, head-to-body proportion and adult height exactly. Do NOT draw that character anywhere.
@@ -597,6 +737,420 @@ Eleven different people, one per cell in reading order, each standing in a relax
 
 | 쓰는 곳 | 입력 | 붙이는 문장 |
 | --- | --- | --- |
-| P3 장면 열쇠 칸 K | `nref` | 장면 인물의 `[ID-…]`(괄호 풀어서) + P3 §1의 입력 역할 문장 |
+| P3 장면 열쇠 띠 K | `nref` | 장면 인물의 `[ID-…]`(괄호 풀어서) + P3 §1의 입력 역할 문장 |
 | P2 NPC 초상 w43 | w39(스타일) + `nref`(정체성) | `[ID-N01]`~`[ID-N09]`(괄호째 뺀 판) + P2 §12.4의 입력 역할 문장 |
 | 검수 | `nref` | P3 SE9, P2 W12: 같은 인물끼리 나란히 놓고 본다 |
+
+---
+
+## 8 틀 수치 블록 NUM (v1.4)
+
+`docs/art/templates/<시트>.json`(도구 `pnpm art:template` 산출, 2026-09-24 판)을 영어로 옮긴 것이다. 생성 요청에서 T 바로 뒤에 **코드 블록 전문을 그대로** 붙인다(§0.4). 수치를 고치지 않는다 — 규격이 바뀌면 `specs.json` → `pnpm art:template` → 이 절을 다시 옮긴다(도구가 직접 찍게 하는 일은 `OPEN_DECISIONS.md` T13).
+
+- 이미지 좌표는 캔버스 왼쪽 위가 (0, 0)이고 범위 `a-b`는 양 끝을 포함한다. 「lowest figure pixels on image rows y a-b」는 그림 최하단 논리 행이 차지하는 이미지 줄이고, 그 바로 아래 줄이 지면선이다(ASSET_ORDERS 0.4). 「centre column」은 몸 가로 중심 논리 열(그림 화소 x 중앙값을 문이 잰다, 허용 ±2 논리 화소).
+- 문 허용치: 지면선 ±1, 중심 ±2, 키 ±8%, 블록 크기 ±15%, 그림 밖 배경 99% 이상, 속 반투명 1% 이하, 안내 색 0(`specs.json` `gate`).
+- `enm_rat` 자리표시는 황금 표본 18프레임이다(P2 §2.0). 그 표본도 9칸에서 칸 여백 2를 1~2블록 넘는다 — 새 적은 표본의 몸 길이가 아니라 이 수치를 따른다.
+- `NUM(chr_walk12)`는 임시다(§0.4.2). 나머지 틀 필요 시트는 §0.4.3.
+
+#### NUM(chr_actions_a)
+
+```
+NUMBERS - template chr_actions_a (docs/art/templates/chr_actions_a.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 4. One art pixel = one 4 x 4 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 5 rows of cells, each 48 x 48 art px = 192 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 23. Empty cells (stay flat #FF00FF): (5,1), (6,1), (4,4), (5,4), (6,4), (5,5), (6,5).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 204-207 (ground line y 208); height 40 art px = 160 px.
+- Row 2 walk (6 frames): lowest figure pixels on image rows y 396-399 (ground line y 400); height 40 art px = 160 px.
+- Row 3 attack (6 frames): lowest figure pixels on image rows y 588-591 (ground line y 592); height free.
+- Row 4 hit (3 frames): lowest figure pixels on image rows y 780-783 (ground line y 784); height 40 art px = 160 px.
+- Row 5 discover (4 frames): lowest figure pixels on image rows y 972-975 (ground line y 976); height 40 art px = 160 px.
+- Horizontal centre (the figure's middle column): column 1 x 284-287, column 2 x 476-479, column 3 x 668-671, column 4 x 860-863, column 5 x 1052-1055, column 6 x 1244-1247.
+```
+
+#### NUM(chr_actions_b)
+
+```
+NUMBERS - template chr_actions_b (docs/art/templates/chr_actions_b.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 4. One art pixel = one 4 x 4 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 5 rows of cells, each 48 x 48 art px = 192 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 21. Empty cells (stay flat #FF00FF): (5,1), (6,1), (5,2), (6,2), (5,3), (6,3), (5,4), (6,4), (6,5).
+- Row 1 sit_eat (4 frames): lowest figure pixels on image rows y 204-207 (ground line y 208); height 35 art px = 140 px.
+- Row 2 sleep (4 frames): lowest figure pixels on image rows y 396-399 (ground line y 400); height free; no centre rule for frame 1, 2, 3, 4.
+- Row 3 interact (4 frames): lowest figure pixels on image rows y 588-591 (ground line y 592); height 40 art px = 160 px.
+- Row 4 cheer (4 frames): lowest figure pixels: frame 1 y 780-783; frame 2 y 772-775; frame 3 y 764-767; frame 4 y 780-783; height frame 1 free, frame 2 40 art px = 160 px, frame 3 40 art px = 160 px, frame 4 40 art px = 160 px.
+- Row 5 collapse (5 frames): lowest figure pixels on image rows y 972-975 (ground line y 976); height frame 1 40 art px = 160 px, frame 2 free, frame 3 free, frame 4 free, frame 5 free; no centre rule for frame 4, 5.
+- Horizontal centre (the figure's middle column): column 1 x 284-287, column 2 x 476-479, column 3 x 668-671, column 4 x 860-863.
+- Cheer frames 2 and 3 are lifted 2 and 4 art px (numbers above). Sleep and collapse 4-5 lie down: the lowest pixel sits on the ground line, no centre rule.
+```
+
+#### NUM(chr_elder)
+
+```
+NUMBERS - template chr_elder (docs/art/templates/chr_elder.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 5. One art pixel = one 5 x 5 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 2 rows of cells, each 48 x 48 art px = 240 x 240 px. Grid top-left x 48, y 272; grid 1440 x 480 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 272 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 10. Empty cells (stay flat #FF00FF): (5,1), (6,1).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 487-491 (ground line y 492); height 40 art px = 200 px.
+- Row 2 walk (6 frames): lowest figure pixels on image rows y 727-731 (ground line y 732); height 40 art px = 200 px.
+- Horizontal centre (the figure's middle column): column 1 x 163-167, column 2 x 403-407, column 3 x 643-647, column 4 x 883-887, column 5 x 1123-1127, column 6 x 1363-1367.
+```
+
+#### NUM(chr_head_poses_ref)
+
+```
+NUMBERS - template chr_head_poses_ref (docs/art/templates/chr_head_poses_ref.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 10. One art pixel = one 10 x 10 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 3 columns x 1 rows of cells, each 48 x 48 art px = 480 x 480 px. Grid top-left x 48, y 272; grid 1440 x 480 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 480, y = 272 + (row-1) x 480. Nothing outside the grid.
+- Cells used: 3, no empty cell.
+- Row 1 head_poses (3 frames): lowest figure pixels on image rows y 702-711 (ground line y 712); height frame 1 40 art px = 400 px, frame 2 free, frame 3 free; no centre rule for frame 3.
+- Horizontal centre (the figure's middle column): column 1 x 278-287, column 2 x 758-767.
+```
+
+#### NUM(chr_hair)
+
+```
+NUMBERS - template chr_hair (docs/art/templates/chr_hair.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 5. One art pixel = one 5 x 5 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 1 rows of cells, each 48 x 48 art px = 240 x 240 px. Grid top-left x 48, y 392; grid 1440 x 240 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 392 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 6, no empty cell.
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+- The placeholder figure marks the base-body position (height 40 art px = 200 px).
+```
+
+#### NUM(chr_face)
+
+```
+NUMBERS - template chr_face (docs/art/templates/chr_face.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 5 columns x 3 rows of cells, each 48 x 48 art px = 288 x 288 px. Grid top-left x 48, y 80; grid 1440 x 864 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 288, y = 80 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 12. Empty cells (stay flat #FF00FF): (3,3), (4,3), (5,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+- The placeholder figure marks the base-body position (height 40 art px = 240 px).
+```
+
+#### NUM(chr_helm)
+
+```
+NUMBERS - template chr_helm (docs/art/templates/chr_helm.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1024 x 1536 px (portrait).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 3 columns x 5 rows of cells, each 48 x 48 art px = 288 x 288 px. Grid top-left x 80, y 48; grid 864 x 1440 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 80 + (column-1) x 288, y = 48 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 15, no empty cell.
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+- The placeholder figure marks the base-body position (height 40 art px = 240 px).
+```
+
+#### NUM(chr_weapon)
+
+```
+NUMBERS - template chr_weapon (docs/art/templates/chr_weapon.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 3 rows of cells, each 80 x 64 art px = 240 x 192 px. Grid top-left x 48, y 224; grid 1440 x 576 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 224 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 10. Empty cells (stay flat #FF00FF): (4,2), (5,2), (6,2), (2,3), (3,3), (4,3), (5,3), (6,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+- The placeholder figure marks the base-body position (height 39 art px = 117 px).
+- The placeholder body only marks where the hand is (body cell origin = (16,16) art px inside the 80 x 64 cell). Do NOT draw the body; draw only the weapon, gripped where the placeholder's front hand is.
+```
+
+#### NUM(npc_ref)
+
+```
+NUMBERS - template npc_ref (docs/art/templates/npc_ref.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 3 rows of cells, each 48 x 48 art px = 288 x 288 px. Grid top-left x 192, y 80; grid 1152 x 864 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 288, y = 80 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 11. Empty cells (stay flat #FF00FF): (4,3).
+- Row 1 npc (4 frames): lowest figure pixels on image rows y 338-343 (ground line y 344); height free.
+- Row 2 npc (4 frames): lowest figure pixels on image rows y 626-631 (ground line y 632); height free.
+- Row 3 npc (3 frames): lowest figure pixels on image rows y 914-919 (ground line y 920); height free.
+- Horizontal centre (the figure's middle column): column 1 x 330-335, column 2 x 618-623, column 3 x 906-911, column 4 x 1194-1199.
+```
+
+#### NUM(enm_rat)
+
+```
+NUMBERS - template enm_rat (docs/art/templates/enm_rat.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 8. One art pixel = one 8 x 8 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 32 x 24 art px = 256 x 192 px. Grid top-left x 256, y 32; grid 1024 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 256 + (column-1) x 256, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 184-191 (ground line y 192); height 14 art px = 112 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 376-383 (ground line y 384); height 14 art px = 112 px.
+- Row 3 attack (4 frames): lowest figure pixels on image rows y 568-575 (ground line y 576); height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 760-767 (ground line y 768); height 14 art px = 112 px.
+- Row 5 exit (4 frames): lowest figure pixels on image rows y 952-959 (ground line y 960); height free.
+- Horizontal centre (the figure's middle column): column 1 x 376-383, column 2 x 632-639, column 3 x 888-895, column 4 x 1144-1151.
+- Keep 2 art px = 16 px empty inside every cell edge.
+```
+
+#### NUM(enm_wolf)
+
+```
+NUMBERS - template enm_wolf (docs/art/templates/enm_wolf.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 48 x 32 art px = 288 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 288, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 194-199 (ground line y 200); height 25 art px = 150 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 386-391 (ground line y 392); height 25 art px = 150 px.
+- Row 3 attack (4 frames): lowest figure pixels: frame 1 y 578-583; frame 2 y 560-565; frame 3 y 578-583; frame 4 y 578-583; height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 770-775 (ground line y 776); height 25 art px = 150 px.
+- Row 5 exit (4 frames): lowest figure pixels on image rows y 962-967 (ground line y 968); height free.
+- Horizontal centre (the figure's middle column): column 1 x 330-335, column 2 x 618-623, column 3 x 906-911, column 4 x 1194-1199.
+- Keep 2 art px = 12 px empty inside every cell edge.
+- Attack frame 2 is a leap: its lowest pixel is 3 art px higher than in the other frames (numbers above).
+```
+
+#### NUM(enm_bat)
+
+```
+NUMBERS - template enm_bat (docs/art/templates/enm_bat.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1024 x 1536 px (portrait).
+- Block: S = 7. One art pixel = one 7 x 7 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 32 x 32 art px = 224 x 224 px. Grid top-left x 64, y 208; grid 896 x 1120 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 64 + (column-1) x 224, y = 208 + (row-1) x 224. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 320-326 (hovering: nothing below y 326; the ground line y 404 stays empty); height 14 art px = 98 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 544-550 (hovering: nothing below y 550; the ground line y 628 stays empty); height 14 art px = 98 px.
+- Row 3 attack (4 frames): lowest figure pixels on image rows y 768-774 (hovering: nothing below y 774; the ground line y 852 stays empty); height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 992-998 (hovering: nothing below y 998; the ground line y 1076 stays empty); height 14 art px = 98 px.
+- Row 5 exit (4 frames): no ground rule (the row text says where the figure goes); height free.
+- Horizontal centre (the figure's middle column): column 1 x 169-175, column 2 x 393-399, column 3 x 617-623, column 4 x 841-847.
+- Keep 2 art px = 14 px empty inside every cell edge.
+- HOVER: the bat never touches the ground. Its lowest pixel is on the lowest-pixel rows given above (art row 16 of 32), 12 art px above the ground line (art row 28). The flee row rises and has no ground rule.
+```
+
+#### NUM(enm_kobold)
+
+```
+NUMBERS - template enm_kobold (docs/art/templates/enm_kobold.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1024 x 1536 px (portrait).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 32 x 48 art px = 192 x 288 px. Grid top-left x 128, y 48; grid 768 x 1440 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 128 + (column-1) x 192, y = 48 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 306-311 (ground line y 312); height 30 art px = 180 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 594-599 (ground line y 600); height 30 art px = 180 px.
+- Row 3 attack (4 frames): lowest figure pixels on image rows y 882-887 (ground line y 888); height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 1170-1175 (ground line y 1176); height 30 art px = 180 px.
+- Row 5 exit (4 frames): lowest figure pixels on image rows y 1458-1463 (ground line y 1464); height free.
+- Horizontal centre (the figure's middle column): column 1 x 218-223, column 2 x 410-415, column 3 x 602-607, column 4 x 794-799.
+- Keep 2 art px = 12 px empty inside every cell edge.
+```
+
+#### NUM(boss_bellwarden_a)
+
+```
+NUMBERS - template boss_bellwarden_a (docs/art/templates/boss_bellwarden_a.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 3 rows of cells, each 64 x 56 art px = 192 x 168 px. Grid top-left x 192, y 260; grid 1152 x 504 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 260 + (row-1) x 168. Nothing outside the grid.
+- Cells used: 18, no empty cell.
+- Row 1 idle (6 frames): lowest figure pixels on image rows y 422-424 (ground line y 425); height 54 art px = 162 px.
+- Row 2 attack_a (6 frames): lowest figure pixels on image rows y 590-592 (ground line y 593); height free.
+- Row 3 attack_b (6 frames): lowest figure pixels on image rows y 758-760 (ground line y 761); height free.
+- Horizontal centre (the figure's middle column): column 1 x 285-287, column 2 x 477-479, column 3 x 669-671, column 4 x 861-863, column 5 x 1053-1055, column 6 x 1245-1247.
+```
+
+#### NUM(boss_bellwarden_b)
+
+```
+NUMBERS - template boss_bellwarden_b (docs/art/templates/boss_bellwarden_b.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 4 rows of cells, each 64 x 56 art px = 192 x 168 px. Grid top-left x 192, y 176; grid 1152 x 672 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 176 + (row-1) x 168. Nothing outside the grid.
+- Cells used: 17. Empty cells (stay flat #FF00FF): (4,1), (5,1), (6,1), (5,2), (6,2), (5,4), (6,4).
+- Row 1 hit (3 frames): lowest figure pixels on image rows y 338-340 (ground line y 341); height 54 art px = 162 px.
+- Row 2 phase (4 frames): lowest figure pixels on image rows y 506-508 (ground line y 509); height 54 art px = 162 px.
+- Row 3 exit (6 frames): lowest figure pixels on image rows y 674-676 (ground line y 677); height free.
+- Row 4 wave_fx (4 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2, 3, 4.
+- Horizontal centre (the figure's middle column): column 1 x 285-287, column 2 x 477-479, column 3 x 669-671, column 4 x 861-863, column 5 x 1053-1055, column 6 x 1245-1247.
+```
+
+#### NUM(fx_common)
+
+```
+NUMBERS - template fx_common (docs/art/templates/fx_common.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 8 columns x 6 rows of cells, each 48 x 48 art px = 144 x 144 px. Grid top-left x 192, y 80; grid 1152 x 864 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 144, y = 80 + (row-1) x 144. Nothing outside the grid.
+- Cells used: 32. Empty cells (stay flat #FF00FF): (5,1), (6,1), (7,1), (8,1), (7,2), (8,2), (5,3), (6,3), (7,3), (8,3), (5,5), (6,5), (7,5), (8,5), (7,6), (8,6).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(prop_anim_a)
+
+```
+NUMBERS - template prop_anim_a (docs/art/templates/prop_anim_a.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 4. One art pixel = one 4 x 4 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 5 rows of cells, each 48 x 48 art px = 192 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (5,1), (6,1), (5,3), (6,3), (3,4), (4,4), (5,4), (6,4), (3,5), (4,5), (5,5), (6,5).
+- Row 1 campfire (4 frames): lowest figure pixels on image rows y 204-207 (ground line y 208); height free.
+- Row 2 loot_sack (6 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2, 3, 4, 5, 6.
+- Row 3 star_spring (4 frames): lowest figure pixels on image rows y 588-591 (ground line y 592); height free.
+- Row 4 chest (2 frames): lowest figure pixels on image rows y 780-783 (ground line y 784); height free.
+- Row 5 door (2 frames): lowest figure pixels on image rows y 972-975 (ground line y 976); height free.
+- Horizontal centre (the figure's middle column): column 1 x 284-287, column 2 x 476-479, column 3 x 668-671, column 4 x 860-863.
+```
+
+#### NUM(prop_anim_b)
+
+```
+NUMBERS - template prop_anim_b (docs/art/templates/prop_anim_b.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 4. One art pixel = one 4 x 4 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 5 rows of cells, each 48 x 48 art px = 192 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 10. Empty cells (stay flat #FF00FF): (3,1), (4,1), (5,1), (6,1), (3,2), (4,2), (5,2), (6,2), (3,3), (4,3), (5,3), (6,3), (3,4), (4,4), (5,4), (6,4), (3,5), (4,5), (5,5), (6,5).
+- Row 1 spike_trap (2 frames): lowest figure pixels on image rows y 204-207 (ground line y 208); height free.
+- Row 2 minecart (2 frames): lowest figure pixels on image rows y 396-399 (ground line y 400); height free.
+- Row 3 lantern (2 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2.
+- Row 4 book (2 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2.
+- Row 5 exclaim_bubble (2 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2.
+- Horizontal centre (the figure's middle column): column 1 x 284-287, column 2 x 476-479.
+```
+
+#### NUM(prop_misc)
+
+```
+NUMBERS - template prop_misc (docs/art/templates/prop_misc.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 5. One art pixel = one 5 x 5 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 4 rows of cells, each 48 x 48 art px = 240 x 240 px. Grid top-left x 48, y 32; grid 1440 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 32 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 15. Empty cells (stay flat #FF00FF): (3,1), (4,1), (5,1), (6,1), (5,2), (6,2), (4,4), (5,4), (6,4).
+- Row 1 zz (2 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2.
+- Row 2 ground_singles (4 frames): lowest figure pixels on image rows y 487-491 (ground line y 492); height free.
+- Row 3 held_singles_a (6 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2, 3, 4, 5, 6.
+- Row 4 held_singles_b (3 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2, 3.
+- Horizontal centre (the figure's middle column): column 1 x 163-167, column 2 x 403-407, column 3 x 643-647, column 4 x 883-887.
+```
+
+#### NUM(ui_icon_12)
+
+```
+NUMBERS - template ui_icon_12 (docs/art/templates/ui_icon_12.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 20. One art pixel = one 20 x 20 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 3 rows of cells, each 12 x 12 art px = 240 x 240 px. Grid top-left x 48, y 152; grid 1440 x 720 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 152 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 15. Empty cells (stay flat #FF00FF): (4,3), (5,3), (6,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(ui_icon_16)
+
+```
+NUMBERS - template ui_icon_16 (docs/art/templates/ui_icon_16.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 11. One art pixel = one 11 x 11 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 8 columns x 4 rows of cells, each 16 x 16 art px = 176 x 176 px. Grid top-left x 64, y 160; grid 1408 x 704 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 64 + (column-1) x 176, y = 160 + (row-1) x 176. Nothing outside the grid.
+- Cells used: 27. Empty cells (stay flat #FF00FF): (8,2), (7,3), (8,3), (7,4), (8,4).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(por_npc_64)
+
+```
+NUMBERS - template por_npc_64 (docs/art/templates/por_npc_64.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 5. One art pixel = one 5 x 5 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 3 rows of cells, each 64 x 64 art px = 320 x 320 px. Grid top-left x 128, y 32; grid 1280 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 128 + (column-1) x 320, y = 32 + (row-1) x 320. Nothing outside the grid.
+- Cells used: 11. Empty cells (stay flat #FF00FF): (4,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(por_npc_48)
+
+```
+NUMBERS - template por_npc_48 (docs/art/templates/por_npc_48.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 3 rows of cells, each 48 x 48 art px = 288 x 288 px. Grid top-left x 192, y 80; grid 1152 x 864 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 288, y = 80 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 11. Empty cells (stay flat #FF00FF): (4,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(por_parts_64)
+
+```
+NUMBERS - template por_parts_64 (docs/art/templates/por_parts_64.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 5 rows of cells, each 64 x 64 art px = 192 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 25. Empty cells (stay flat #FF00FF): (6,2), (5,3), (6,3), (5,4), (6,4).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(por_parts_48)
+
+```
+NUMBERS - template por_parts_48 (docs/art/templates/por_parts_48.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 4. One art pixel = one 4 x 4 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 5 rows of cells, each 48 x 48 art px = 192 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 25. Empty cells (stay flat #FF00FF): (6,2), (5,3), (6,3), (5,4), (6,4).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+```
+
+#### NUM(bg_far)
+
+```
+NUMBERS - template bg_far (docs/art/templates/bg_far.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 1 panel(s) of 256 x 64 art px = 1536 x 384 px each, filling x 0-1535, y 320-703. Outside the strip everything is flat #FF00FF.
+- Ground line: art row 56 of 64 = image y 656; one straight horizontal line.
+- Fill the whole strip: every pixel inside it is painted (opaque).
+```
+
+#### NUM(bg_mid)
+
+```
+NUMBERS - template bg_mid (docs/art/templates/bg_mid.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 1 panel(s) of 256 x 64 art px = 1536 x 384 px each, filling x 0-1535, y 320-703. Outside the strip everything is flat #FF00FF.
+- Ground line: art row 56 of 64 = image y 656; one straight horizontal line.
+- Only middle-layer objects inside the strip; the sky and far areas inside the strip stay flat #FF00FF.
+```
+
+#### NUM(bg_near)
+
+```
+NUMBERS - template bg_near (docs/art/templates/bg_near.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 1 panel(s) of 256 x 64 art px = 1536 x 384 px each, filling x 0-1535, y 320-703. Outside the strip everything is flat #FF00FF.
+- Ground line: art row 56 of 64 = image y 656; one straight horizontal line.
+- Only the near layer; every pixel from the ground line down to the strip bottom is painted.
+```
+
+#### NUM(scene_event)
+
+```
+NUMBERS - template scene_event (docs/art/templates/scene_event.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 4 panel(s) of 128 x 64 art px = 384 x 192 px each, filling x 0-1535, y 416-607. Outside the strip everything is flat #FF00FF.
+- Panel left edges at x 0, 384, 768, 1152.
+- Ground line: art row 56 of 64 = image y 584; one straight horizontal line.
+- Each panel is one opaque scene edge to edge; panels touch with no gap or divider line.
+```
+
+#### NUM(chr_walk12) — 임시
+
+```
+NUMBERS - template chr_walk12 (computed by art:template for rows walk,walk; same geometry as chr_elder). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 5. One art pixel = one 5 x 5 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 2 rows of cells, each 48 x 48 art px = 240 x 240 px. Grid top-left x 48, y 272; grid 1440 x 480 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 272 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 12, no empty cell.
+- Row 1 walk (6 frames): lowest figure pixels on image rows y 487-491 (ground line y 492); height 40 art px = 200 px.
+- Row 2 walk (6 frames): lowest figure pixels on image rows y 727-731 (ground line y 732); height 40 art px = 200 px.
+- Horizontal centre (the figure's middle column): column 1 x 163-167, column 2 x 403-407, column 3 x 643-647, column 4 x 883-887, column 5 x 1123-1127, column 6 x 1363-1367.
+- INTERIM: chr_walk12 is not in specs.json yet. Attach docs/art/templates/chr_elder.grid.png (the same grid, byte for byte) and gate with --spec chr_elder --rows walk:6,walk:6.
+```

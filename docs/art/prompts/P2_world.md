@@ -1,11 +1,12 @@
 # P2_world — 세계 쪽 에셋 프롬프트 (적·보스·배경·장소 소품·날씨·효과·소품·아이콘·책 UI·초상)
 
-버전 1.4 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.5 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.5: PROMPTS v1.4 규격 고정 절차(틀 + T + NUM + 문 3번) 반영. **§2.0 몬스터 표준**(황금 표본 = 들쥐 r3 정규화본, 계열마다 종의 차이만) — R-EN을 MS로 바꿈, 늑대·박쥐·코볼트를 v04 검토대로 다시 씀(PROMPTS §2.4). 보스 파동을 시트 2의 4행으로(틀 `boss_bellwarden_b`), UI 아이콘을 틀 두 장으로 묶음, NPC 초상 11을 한 장으로(틀 `por_npc_64`), 48 초상은 틀 위에 다시 그림, 배경 문 이름을 실제 틀(`bg_far`·`bg_mid`·`bg_near`)로, 먼 층 FILL은 띠를 빈틈없이. 틀 없는 시트는 PROMPTS §0.4.3 「틀 필요」.
 1.4(배경만): 장소 × 계절 × 시간대를 기본 장면 편집으로 모두 그린다(D72). §4 전면 교체(템플릿 `bg_strip` 수치, 기본 15·패널 37, 계절·시간대·세대 특징·색조 편집, 먼 층 FILL, 점등 7), §5 장소 소품 없앰, C-BG 수치·C-BGP 추가, §0·§13 W7·§14 w10~w16·§16 배경 줄 갱신.
 1.3: 배경 품질 기준 v04 네 지역 합성(D71). C-BG에서 평탄·저대비·오른쪽 절반 비움 문장 삭제, §4를 띠 자르기 → 이음 판 → 불 끈 판 → 층 떼기로 교체.
 1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24, 권장안) 반영 — 48 규격만(D64), 배경 가로 이음·장면 떨림은 두 번 실패 뒤 정규화가 자르기·옮기기(D66), 장소 소품 20·정예 깃발 16 × 16·입자 스프라이트·흰빛 덮기 파일 없음·박쥐 색·변형 둘째 톤·마을 중간 층 승인, 종추 별도 파일 없음.
 1.1: PROMPTS v1.2 정합 — D-BG를 PROMPTS §1로 옮김, 표시용 D-MARK 추가, SW에 색 유지 문장, NPC 정체성 블록(NB)을 PROMPTS §7로 합치고 NPC 초상은 NPC 전신 기준 시트 `n01`에서 만듦, 호각은 나무, 같은 소품의 색을 카드(AO-19·49·50)에 맞춤, 진행표·확인 필요를 PROMPTS §6.3·`OPEN_DECISIONS.md`로 옮김.
-상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 공통 블록 A~E·D-BG·S, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21, NPC 외형(§7)은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.3이다. 캐릭터 쪽은 `P1_character.md`(이하 **P1**), 이벤트 장면 20개는 `P3_scenes.md`(이하 **P3**)가 가진다.
+상위 문서: `docs/art/PROMPTS.md` v1.4(이하 **PROMPTS**). 공통 블록 A~E·D-BG·S, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21, NPC 외형(§7)은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.3이다. 캐릭터 쪽은 `P1_character.md`(이하 **P1**), 이벤트 장면 20개는 `P3_scenes.md`(이하 **P3**)가 가진다.
 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거·복제를 하지 않는다. 규칙·수치는 `docs/design/15_아트_스프라이트_사양.md`(이하 **15**)가 소유한다. 카드 안 프롬프트보다 이 문서가 우선한다. 카드(AO-xx)와 15가 다른 곳은 `docs/art/OPEN_DECISIONS.md`(옛 번호 `P2-17-n`)에 있고, 2026-09-24 사용자 결정(권장안)으로 닫혔다. 이 문서는 그 결정을 반영했다.
 
 ---
@@ -36,7 +37,7 @@
 
 | 종류 | 무엇 | 조립 |
 | --- | --- | --- |
-| **생성** | 계열 기준 시트, 합성 장면, 새 소품·효과·아이콘 | A(또는 A-UI·A-POR) + 정체성 블록 + C 계열 + 본문 + D 계열 |
+| **생성** | 계열 기준 시트, 합성 장면, 새 소품·효과·아이콘 | A(또는 A-UI·A-POR) + T + NUM + (적은 MS) + 정체성 블록 + C 계열 + 본문 + D 계열. 입력 1 = 틀(PROMPTS §0.4). 틀 필요 시트는 T·NUM 없이 |
 | **교체 편집** | 합격한 시트를 입력으로 넣고 **색을 바꾸거나 부품을 더한다**(변형·정예·상태·장소 소품·점등) | SW + 문장 + D 계열 |
 | **떼기** | 합성 결과에서 **그 부품·층만 남긴다**. 보이는 화소만 | X(= PROMPTS §3.2 머리말) + 떼기 문장 |
 | **밀도 편집** | 초상 48 판(E-POR). 32 규격(PROMPTS E)은 폐기(D64) | E-POR |
@@ -88,9 +89,11 @@ PROMPTS의 A·C·D는 캐릭터 시트용 문장이 섞여 있다(C는 정사각
 
 ```
 LAYOUT: exactly {N} sprites in exactly {COLS} equal columns and {ROWS} equal rows of identical cells, each cell {W}:{H} (width to height), evenly spaced, reading order left to right then next row. {EMPTY_CELLS}
-One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, {G} of the cell height above the cell bottom, except where a pose line lifts it; no ground line is drawn.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, {G}, except where a pose line lifts it; no ground line is drawn.
 BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
 ```
+
+- `{G}`(v1.5): 틀 위 시트는 `exactly on the ground line given in the NUMBERS block`. 틀 필요 시트(보스 정체성 w34)만 `{비율} of the cell height above the cell bottom`(보스 `1/56`)을 쓴다.
 
 **C-FX 효과 칸**
 
@@ -121,7 +124,7 @@ LAYOUT: exactly {N} portraits in {COLS} equal columns and {ROWS} equal rows of i
 BACKGROUND: one single flat #FF00FF magenta color everywhere outside the busts, the exact same value in every pixel. No backdrop, vignette, halo or gradient.
 ```
 
-**C-BG 배경 띠** (PROMPTS §3.5의 띠 문장 + 배경 외곽선 규칙을 한 블록으로. v1.4: 템플릿 `bg_strip` 수치, §4.0)
+**C-BG 배경 띠** (PROMPTS §3.5의 띠 문장 + 배경 외곽선 규칙을 한 블록으로. v1.4: 띠 수치, v1.5: 틀 `bg_far`·`bg_mid`·`bg_near`와 같은 값 — NUM(bg_far) 등을 함께 붙인다, §4.0)
 
 ```
 LAYOUT: canvas 1536 x 1024 pixels. The scene is ONE horizontal pixel-art strip exactly 1536 x 384 pixels, from y 320 to y 703, full canvas width; every pixel above y 320 and below y 703 is one flat #FF00FF color and nothing is drawn there. One logical block is 6 x 6 pixels, so the strip is one side-view scene 256 blocks wide and 64 blocks high. The walkable ground surface is one perfectly straight horizontal line at block row 56 (image y 656) across the whole strip. The leftmost and rightmost columns continue into each other so the strip tiles: no object touches or crosses the left or right edge, and the horizon and the ground meet both edges at the same height and colour.
@@ -168,113 +171,148 @@ Use case: precise edit of the provided image. Keep the exact canvas, the exact c
 Use case: edit of the provided portrait sheet. Redraw the SAME sheet at a coarser pixel density, as if every cell were a 48x48 logical canvas instead of 64x64: every pixel block is one third larger than in the input. Same person in every cell, same expression, same colours, same cell layout and framing, same flat #FF00FF background. Keep every eye and mouth the same number of blocks as in the input (round eyes two blocks wide and three tall, narrow eyes two wide and one tall, mouth two wide); turn thin details (wrinkles, cords, small jewellery) into single blocks or leave them out. Re-place every block on the coarser grid; never blur or smooth.
 ```
 
-**R-EN 적 배치 참고 입력** (적 기준 시트를 생성할 때, 들쥐 합격본 `v03/08-rat18-48-r3.png`를 입력으로 넣고 본문 앞에)
+- **E-POR-T 틀 판**(v1.5, 틀 `por_npc_48`이 있는 NPC 초상): 48 틀은 64 틀과 격자 자리가 다르다(64: S 5, 원점 (128, 32) · 48: S 6, 원점 (192, 80)). 그래서 「same cell layout」 편집이 아니라 **틀 위에 다시 그린다**: A-POR(`{48x48}`) + T + NUM(por_npc_48) + C-POR(`N=11, COLS=4, ROWS=3, S=48, EMPTY=Row 3 holds three portraits; its last cell stays empty.`) + 아래 문장 + D. 입력 1 = `por_npc_48.grid.png`, 입력 2 = 합격한 64 판. 문 `--spec por_npc_48`.
 
 ```
-Input image role: layout and pixel-style reference only. Copy its grid (four columns, five rows, row 4 holding two sprites and two empty cells), its even cell spacing, its flat magenta background, its outline weight and its pixel-block size. Do NOT draw a rat and do not copy its poses.
+Input image 2 role: the accepted 64x64 portrait sheet. Redraw the SAME eleven portraits, in the same cell order, on the 48x48 art-pixel cells of input image 1: same person, same expression, same colours and framing in every cell. Keep every eye and mouth the same number of art px as in input image 2 (round eyes two wide and three tall, narrow eyes two wide and one tall, mouth two wide); turn thin details (wrinkles, cords, small jewellery) into single art px or leave them out. Never blur, smooth or shrink the image; re-draw it on the coarser grid.
 ```
+
+**R-EN** (v1.4까지의 적 배치 참고 입력)은 §2.0 **MS 몬스터 표준**으로 바꿨다. 옛 문장은 들쥐 원본의 「pixel-block size」를 따르게 해, 정규화 전 원본의 1.5배 밀도를 옮길 위험이 있었다.
 
 ---
 
 ## 2 적 (AO-31~36, 15 §7.1·7.2)
 
-### 2.0 공통
+### 2.0 몬스터 표준 (v1.5, 사용자 요청 2026-09-24)
 
-| 계열 | 셀 48 (W:H) | 몸 높이 / 셀 | C-E `{G}` | 참고 |
-| --- | --- | --- | --- | --- |
-| 들쥐 EN01·02 | 32 × 24 (4:3) | 15 / 24 | 1/6 | **P0 합격**(`08-rat18-48-r3`). 기준 시트로 쓴다 |
-| 늑대 EN03·04 | 48 × 32 (3:2) | 26 / 32 | 1/8 | §2.1 |
-| 박쥐 EN05~07 | 32 × 32 (1:1) | 몸통 12 × 12, 지면 위 12 부양 | 1/8(지면선) | §2.2 |
-| 코볼트 EN08~10·EB01·02 | 32 × 48 (2:3) | 30 / 48 (주인공 38의 0.8) | 1/12 | §2.3 |
+「몬스터는 샘플 하나를 만들고 그것과 같은 규격으로 만들라고 지시하는 게 빠르다.」 **황금 표본 한 장**이 스타일·배치·행 역할·시간을 모두 가진다. 계열 프롬프트는 **종의 차이**(실루엣·크기·색·특수 자세)만 적는다.
 
-- 시트는 모두 **4열 × 5행, 4행은 2칸 + 빈 칸 2**(들쥐와 같다). C-E의 `{N}=18, {COLS}=4, {ROWS}=5, {EMPTY_CELLS}=Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.`
-- 행과 시간(15 §7.1): 1 대기 200 × 4 반복 / 2 이동 120 × 4 반복 / 3 공격 100·80·100·160 / 4 피격 70·150 / 5 퇴장 120 × 4.
-- 적은 **왼쪽**을 본다. 퇴장은 **달아남**이다(쓰러짐·죽음 금지, 02 §7). 달아날 때만 오른쪽으로 돌아선다.
-- 조립(생성): A(`{계열 셀}`) + R-EN + 정체성 블록(I-…) + C-E + 본문 + D. 입력 = 들쥐 합격본(배치 참고).
+**황금 표본** = v03 `08-rat18-48-r3`(합격, PROMPTS §3.4)을 정규화한 `assets/game/rat18_48.png`(4열 × 5행, 칸 32 × 24, 키 14, 여백 2). 그것을 틀 `enm_rat` 위에 ×8로 **그대로** 놓은 `docs/art/templates/enm_rat.placeholder.png`가 입력 파일이다(`specs.json`의 `enm_rat` 자리표시 = 표본 18프레임. `assets/game/`은 저장소 밖이라 다시 만들 때는 `pnpm art:normalize --name rat18_48` → `pnpm art:template enm_rat`).
+
+**조립** — 모든 적 계열 시트(늑대·박쥐·코볼트. 변형·정예는 이 시트의 편집, §2.4):
+
+- 입력 1 = 그 계열의 틀 `docs/art/templates/enm_<계열>.grid.png`, 입력 2 = 황금 표본.
+- 글 = A(`{계열 셀}`) + T + NUM(enm_<계열>) + **MS** + 정체성 블록(I-…) + C-E(`{N}=18, {COLS}=4, {ROWS}=5`, `{W}:{H}` = 계열 칸, `{EMPTY_CELLS}=Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.`, `{G}` = NUM 문장) + 본문 + D. 본문의 시간(ms)은 MS가 가지므로 행 줄에 다시 쓰지 않는다.
+- 문: `pnpm art:gate <png> --spec enm_<계열>`. 떨어지면 GF를 붙여 다시(최대 3번, PROMPTS §0.4).
+
+**MS 몬스터 표준 블록**
+
+```
+MONSTER STANDARD (input image 2 = the golden sample: the accepted river rat sheet, laid out on its own template). Make this sheet exactly like the golden sample in everything except the species:
+- The same 4 x 5 grid and the same row roles and timing: row 1 IDLE, 4 frames, 200 ms each, looping; row 2 MOVE, 4 frames, 120 ms each, looping; row 3 ATTACK, 4 frames, 100/80/100/160 ms; row 4 HIT, 2 frames, 70/150 ms, then its last two cells stay empty; row 5 EXIT, 4 frames, 120 ms each, running away (never dying, never lying hurt).
+- The same pixel language: a one-art-pixel dark plum #2B2233 outline all around, the same three tones per material (light, mid, dark), flat colour clusters, at most 12 colours in the sprite, eyes 1 to 2 art px, no texture strokes, no thick or double outline, no flat unshaded fill, no anti-aliasing.
+- The same amount of detail per ART pixel as the golden sample (its art pixels are 8 x 8 image px; this sheet's are the S of the NUMBERS block).
+- Every looping row really moves: adjacent frames differ by at least one art px in body height, a limb, the head or the tail. Never four copies of the same pose.
+- Faces LEFT in rows 1 to 4; turns to the RIGHT only while fleeing in row 5.
+- The rat is only the example of the standard: do not draw a rat, do not copy its body, colours or poses.
+```
+
+**종의 차이** (크기 = D74·15 §7.1, 수치 = NUM)
+
+| 계열 | 틀 `--spec` · 캔버스 | 칸(논리) | 기준 키 | 입력 1 | 종의 차이(본문이 적는 것) |
+| --- | --- | --- | --- | --- | --- |
+| 들쥐 EN01·02 | `enm_rat` · 1536 × 1024 | 32 × 24 | 14 | — | **황금 표본 자체**(다시 만들지 않는다) |
+| 늑대 EN03·04 | `enm_wolf` · 1536 × 1024 | 48 × 32 | 25 | `enm_wolf.grid.png` — 자리표시는 v04 불합격 늑대라 쓰지 않는다 | 네 발 늑대, 긴 주둥이·작은 귀(v04 여우·코기 교정). 공격 2칸은 3 논리 화소 뜬다 |
+| 박쥐 EN05~07 | `enm_bat` · 1024 × 1536 | 32 × 32 | 14(날개 포함), 최하단 논리 행 16 | `enm_bat.grid.png` | 떠 있다(v04 서 있음 교정). 몸통 모양은 18칸 같고 날개만 바뀐다 |
+| 코볼트 EN08~10·EB01·02 | `enm_kobold` · 1024 × 1536 | 32 × 48 | 30 | `enm_kobold.grid.png` | 두 발로 선다, 곡괭이를 든다(v04 화풍·정지 교정) |
+
 - 적 1스프라이트 12색 이내(15 §2.2). 각 정체성 블록의 PALETTE ONLY가 그 목록이다.
+- **표본의 알려진 한계**: 황금 표본 자체가 문 `--spec enm_rat`에서 9칸이 칸 여백 2를 1~2블록 넘고(몸이 긴 이동·공격 칸), 이동 4칸 키가 16이다(OD-71 「몸이 가장 긴 공격 칸」). 새 계열은 표본의 몸 길이가 아니라 **NUM의 여백·키**를 따른다 — MS의 「everything except the species」는 스타일·배치·행 역할·시간을 뜻한다.
+- 합격(모든 계열): 문 통과(E22) + E1 E3 E4 E5 E6 E7 E11 + W1 W2 + 황금 표본과 나란히 놓아 같은 게임의 적으로 읽힌다(외곽선 굵기·음영 단계·세부 밀도, 사람 눈).
 
 ### 2.1 늑대 기준 시트 (AO-32, EN03 팔레트) — w01
+
+v04 `w01`은 여우·코기로 읽혀 불합격이다(PROMPTS §2.4). 주둥이·귀·다리 비율을 정체성 블록에 **비교**로 못 박는다.
 
 **I-WOLF**
 
 ```
-SUBJECT AND IDENTITY: the same chibi river wolf in every cell, a four-legged canine seen from the side, FACING LEFT. Big round head about two fifths of the body length, two tall pointed ears, short muzzle, small amber eyes, a fluffy cream chest ruff, a thick bushy tail, sturdy short legs. A cute storybook game enemy, never realistic, never a fox or a standing figure. Standing height about four fifths of the cell height. Keep ear size, ruff, tail and proportions identical in every cell.
+SUBJECT AND IDENTITY: the same chibi river WOLF in every cell, a four-legged canine seen from the side, FACING LEFT. It must read as a young wolf at a glance, never a fox, corgi, dog or cat: a LONG straight muzzle, about as long as the head is tall, clearly longer than a fox's; SMALL triangular ears set wide apart on the back of the head, each ear at most one quarter of the head height; a deep chest with a cream ruff; long straight legs, so the belly stands clearly above the ground (never short corgi legs); a thick bushy tail carried low behind, never curled over the back. Small amber eyes, sturdy paws. A cute storybook game enemy, never realistic. Keep ear size, muzzle length, leg length, ruff, tail and proportions identical in every cell.
 PALETTE ONLY: outline #2B2233; fur #8A96A6 #6C6A70; chest ruff #F0E6CC; inner ear #A0664A; eyes #FFE38A; teeth #F0E6CC; at most three blocks of #B04A42 inside an open mouth. The chest ruff is one clearly separate flat cream shape.
 ```
 
 본문:
 
 ```
-ROW 1 IDLE, 4 frames, 200 ms each: 1 standing; 2 breathe in, chest one block higher; 3 exactly the same as 1; 4 one ear twitches back.
-ROW 2 MOVE, 4 frames, 120 ms each, trotting in place: 1 near forepaw forward, far hind paw back; 2 body one block lower, legs gathering; 3 opposite legs forward; 4 body one block higher, legs passing. Planted paws never slide.
-ROW 3 ATTACK, 4 frames, 100/80/100/160 ms, a lunging bite to the left: 1 crouch, head low; 2 leap, all paws three blocks above the ground line; 3 bite, jaws open forward; 4 land back on the ground line.
-ROW 4 HIT, 2 frames, 70/150 ms: 1 flinch, eyes squeezed shut; 2 recoil one block to the right. Then two empty cells.
-ROW 5 FLEE, 4 frames, 120 ms each, running away to the RIGHT: 1 turns to face right; 2 tail tucked tightly under the belly, silhouette clearly narrower; 3 leaping away, tail still tucked; 4 a smaller escaping wolf, about half size. Frightened and cute, never hurt, lying down or defeated.
+ROW 1 IDLE: 1 standing; 2 breathe in, chest one art px higher; 3 exactly the same as 1; 4 one ear twitches back and the tail tip lifts one art px.
+ROW 2 MOVE, trotting in place: 1 near forepaw forward, far hind paw back; 2 body one art px lower, legs gathering; 3 opposite legs forward; 4 body one art px higher, legs passing. Planted paws never slide.
+ROW 3 ATTACK, a lunging bite to the left: 1 crouch, head low; 2 leap, all paws exactly 3 art px above the ground line (NUMBERS); 3 bite, jaws open forward; 4 land back on the ground line.
+ROW 4 HIT: 1 flinch, eyes squeezed shut; 2 recoil one art px to the right. Then two empty cells.
+ROW 5 FLEE, running away to the RIGHT: 1 turns to face right; 2 tail tucked tightly under the belly, silhouette clearly narrower; 3 leaping away, tail still tucked; 4 a smaller escaping wolf, about half size. Frightened and cute, never hurt, lying down or defeated.
 No tongue, no blood, no ground, no dust, no speed lines.
 ```
 
-- 합격: E1 E3(공격 2칸 제외) E4 E5 E6 E7 E11 + W1 W2. 공격 2칸만 발이 뜬다. 퇴장 2~4칸은 1칸보다 좁다(AO-32).
+- 조립: §2.0. 입력 1 = `enm_wolf.grid.png`(자리표시 판은 쓰지 않는다), 입력 2 = 황금 표본.
+- 합격: §2.0 + 공격 2칸만 발이 뜬다. 퇴장 2~4칸은 1칸보다 좁다(AO-32). 검게 칠해 실루엣만 봐도 여우가 아니라 늑대다(긴 주둥이, 작은 귀).
 
 ### 2.2 박쥐 기준 시트 (AO-33, EN05 팔레트) — w02
+
+v04 `w02-r2`는 땅에 서 있어 불합격이다(PROMPTS §2.4). 부양은 틀의 최하단 줄(논리 행 16, NUM(enm_bat))로 못 박는다. 틀의 기준 키 14와 최하단 16이면 대기·이동·피격의 그림은 **논리 행 3~16**을 채운다.
 
 **I-BAT** — 날개막 3색과 눈 색은 **박쥐의 다른 곳에 쓰지 않는 색**으로 둔다. 게임 정규화가 그 색을 인덱스 5·6·7·12로 옮겨 EN06·EN07 팔레트를 바꾼다(AO-33·36, P1 §1.5 표지 색과 같은 방식). EN05의 막·눈 색은 승인되어 카드 AO-33에 들어갔다(OD-13 결정).
 
 ```
-SUBJECT AND IDENTITY: the same chibi cave bat in every cell, FACING LEFT. A compact round torso about three eighths of the cell wide and tall, two big rounded ears, tiny feet, two small bright eyes, and two membrane wings with three finger ribs each. The torso has IDENTICAL size and shape in all eighteen cells and stays at the same place unless a pose line moves it; only the wings change. It hovers: the torso's lowest block is at the vertical middle of the cell, and nothing touches the lower quarter of the cell.
+SUBJECT AND IDENTITY: the same chibi cave bat in every cell, FACING LEFT. A compact round torso, two big rounded ears, tiny feet tucked under the body, two small bright eyes, and two membrane wings with three finger ribs each. The torso has IDENTICAL size and shape in all eighteen cells and stays at the same place unless a pose line moves it; only the wings change.
+HOVERING, NEVER STANDING: the bat flies in the air in every cell. In rows 1 to 4 the whole bat, wings included, fills exactly art rows 3 to 16 of its 32-row cell: the highest pixel (ear tips or raised wing tips) on art row 3, the lowest pixel (tucked feet or lowered wing tips) on art row 16, which is the lowest-pixel row given in the NUMBERS block. Every art row below row 16, down to the cell bottom, stays empty #FF00FF. No feet touching anything, no perch, no ground.
 PALETTE ONLY: outline #2B2233; body #7A5A6E #3A3050; wing membrane in three flat tones #9A8A78 #6E5A48 #4A3F55 used ONLY on the wings; eyes #FFE38A used ONLY on the eyes; teeth #F0E6CC.
 ```
 
 본문:
 
 ```
-ROW 1 IDLE, 4 frames, 200 ms each: wings fully up; wings half down; wings fully down; wings half up.
-ROW 2 MOVE, 4 frames, 120 ms each: the same four wing positions with the body tilted slightly forward to the left; the torso stays in place.
-ROW 3 ATTACK, 4 frames, 100/80/100/160 ms: 1 wings swept back, anticipation; 2 dash: wings folded, torso three blocks further left; 3 bite, small mouth open; 4 back to the idle position.
-ROW 4 HIT, 2 frames, 70/150 ms: 1 flinch, eyes shut, wings jerk up; 2 pushed one block right. Then two empty cells.
-ROW 5 FLEE, 4 frames, 120 ms each, flying away up and to the right: 1 turning right and rising four blocks; 2 rising four more blocks; 3 smaller, about three quarters size; 4 about half size, near the top of the cell.
+ROW 1 IDLE: wings fully up; wings half down; wings fully down; wings half up. The torso does not move.
+ROW 2 MOVE: the same four wing positions with the body tilted slightly forward to the left; the torso stays in place.
+ROW 3 ATTACK: 1 wings swept back, anticipation; 2 dash: wings folded, torso three art px further left; 3 bite, small mouth open; 4 back to the idle position. Still hovering: nothing below art row 16.
+ROW 4 HIT: 1 flinch, eyes shut, wings jerk up; 2 pushed one art px right. Then two empty cells.
+ROW 5 FLEE, flying away up and to the right: 1 turning right and rising four art px; 2 rising four more art px; 3 smaller, about three quarters size; 4 about half size, near the top of the cell.
 No blood, no shadow on the ground, no speed lines.
 ```
 
 - 부양 표시용 그림자는 그리지 않는다. 게임이 발밑 그림자(AO-01)를 지면선에 놓는다(§17-4).
-- 합격: E1 E4 E5 E6 E7 E11 + W1 W2. 18칸 몸통 크기가 같다(퇴장 3·4 제외). 대기·이동 인접 칸의 날개가 뚜렷이 다르다(1차 S4 문제).
+- 조립: §2.0. 입력 1 = `enm_bat.grid.png`, 입력 2 = 황금 표본.
+- 합격: §2.0 + 1~4행 최하단이 NUM의 줄(논리 16)이고 그 아래가 비었다(문 `ground`). 18칸 몸통 크기가 같다(퇴장 3·4 제외). 대기·이동 인접 칸의 날개가 뚜렷이 다르다(1차 S4 문제).
 
-### 2.3 코볼트 합성 시트 → 몸체·곡괭이 떼기 (AO-34·35, EN08 팔레트) — w03·w04
+### 2.3 코볼트 합성 시트 → 몸체·곡괭이 나누기 (AO-34·35, EN08 팔레트) — w03·w04
 
-AO-34는 「곡괭이를 그리지 않고 손 위치만」 생성하라고 했지만, 따로 생성한 곡괭이는 손에 맞지 않는다(PROMPTS §0.2와 같은 문제). **곡괭이를 든 합성 시트를 먼저 만들고 몸체와 곡괭이를 뗀다**(§17-9). 입력 = 들쥐 합격본(배치) + 마스터(키 비교).
+v04 `w03-r4`는 화풍이 달랐고(평면 채색, 두꺼운 외곽선) 대기·이동 프레임이 움직이지 않았다(PROMPTS §2.4). **처음부터 몬스터 표준으로** 만든다(입력에 v04 코볼트를 넣지 않는다).
+
+AO-34는 「곡괭이를 그리지 않고 손 위치만」 생성하라고 했지만, 따로 생성한 곡괭이는 손에 맞지 않는다(PROMPTS §0.2와 같은 문제). **곡괭이를 든 합성 시트를 먼저 만들고 몸체와 곡괭이를 나눈다**(§17-9).
 
 **I-KOBOLD**
 
 ```
-SUBJECT AND IDENTITY: the same small chibi kobold in every cell, a cave-dwelling little creature standing on two legs, FACING LEFT in a slight three-quarter side view. Big round head almost half its height, short blunt snout, two long pointed ears sweeping backward, round dark eyes, yellow-green skin, a brown sleeveless vest, a dark belt, a cream belly, bare three-toed feet, no tail. It is about four fifths as tall as the adventurer in the second input image. It carries a miner's pickaxe LONGER than its own height: small grey iron head, brown wooden haft. Keep head, ears, vest and pickaxe identical in every cell.
+SUBJECT AND IDENTITY: the same small chibi kobold in every cell, a cave-dwelling little creature standing upright on TWO legs (a biped, never on all fours), FACING LEFT in a slight three-quarter side view. Big round head almost half its height, short blunt snout, two long pointed ears sweeping backward, round dark eyes, yellow-green skin, a brown sleeveless vest, a dark belt, a cream belly, bare three-toed feet, no tail. Its height from the top of the ears to the soles is the height given in the NUMBERS block (30 art px), clearly shorter than the hero. It always holds a miner's pickaxe LONGER than its own height in its hands: small grey iron head, brown wooden haft. Keep head, ears, vest and pickaxe identical in every cell.
 PALETTE ONLY: outline #2B2233; skin #9AA85A #6E7A5A; vest #8E5E38; belt #5E3C24; belly #C8C2B8; eyes #2B2233; pickaxe head #7D7B80 #4C4A52; haft #C08A58 #8E5E38.
 ```
 
 본문(w03 생성):
 
 ```
-Second input image role: height reference only; do not draw that character.
-ROW 1 IDLE, 4 frames, 200 ms each, the pickaxe resting on the shoulder in the same grip in all four: 1 stand; 2 breathe, chest one block up; 3 same as 1; 4 sniff, snout one block forward.
-ROW 2 MOVE, 4 frames, 120 ms each, walking in place, pickaxe still on the shoulder: 1 near foot forward; 2 body one block lower; 3 far foot forward; 4 body one block higher.
-ROW 3 ATTACK, 4 frames, 100/80/100/160 ms, overhead swing to the left: 1 pickaxe raised behind the head; 2 top of the swing; 3 smashes down in front, pickaxe head near the ground line; 4 back to the shoulder grip. If a raised pickaxe would leave the cell, crouch one or two blocks and tilt the haft to 45 degrees; never shorten the pickaxe.
-ROW 4 HIT, 2 frames, 70/150 ms: 1 flinch, eyes squeezed; 2 recoil one block right. Then two empty cells.
-ROW 5 FLEE, 4 frames, 120 ms each: 1 trips and sits down hard; 2 pushes up with one hand; 3 stands, turned to the RIGHT; 4 runs away to the right hugging the pickaxe. Comic and cute, never hurt or left lying.
+ROW 1 IDLE, the pickaxe resting on the shoulder in the same grip in all four: 1 stand; 2 breathe: chest and head one art px higher; 3 same as 1; 4 sniff: snout one art px forward and both ears twitch back. Frames 1, 2 and 4 must visibly differ.
+ROW 2 MOVE, walking in place, pickaxe still on the shoulder: 1 near foot forward, far foot back; 2 feet passing, body one art px lower; 3 far foot forward, near foot back; 4 feet passing, body one art px higher. The legs are clearly different in every frame.
+ROW 3 ATTACK, overhead swing to the left: 1 pickaxe raised behind the head; 2 top of the swing; 3 smashes down in front, pickaxe head near the ground line; 4 back to the shoulder grip. If a raised pickaxe would leave the cell, crouch one or two art px and tilt the haft to 45 degrees; never shorten the pickaxe.
+ROW 4 HIT: 1 flinch, eyes squeezed; 2 recoil one art px right. Then two empty cells.
+ROW 5 FLEE: 1 trips and sits down hard; 2 pushes up with one hand; 3 stands, turned to the RIGHT; 4 runs away to the right hugging the pickaxe. Comic and cute, never hurt or left lying. The pickaxe is in every cell of every row.
 ```
 
-떼기(w04, 입력 = 합격한 w03):
+- 조립: §2.0. 입력 1 = `enm_kobold.grid.png`, 입력 2 = 황금 표본. v1.4의 둘째 입력(마스터, 키 비교)은 NUM의 키 30이 대신한다.
 
-| 결과 | 떼기 문장(X 뒤) |
+나누기(w04, 입력 = 합격한 w03):
+
+| 결과 | 방법 |
 | --- | --- |
-| `enm_kobold` 몸체 18 | `Remove the pickaxe entirely (iron head and wooden haft). Where the haft crossed in front of the kobold, continue the kobold's own existing colours across that small gap and nothing else; the hands keep their gripping shape, empty.` |
-| `enm_prop_kobold_pickaxe` 18 → 게임이 공격 4 + 쥠 1(대기 1칸)을 고른다 | `Keep ONLY the pickaxe in each cell (iron head and wooden haft). Remove the kobold entirely, including the hands holding it.` |
+| `enm_kobold` 몸체 18 | X + `Remove the pickaxe entirely (iron head and wooden haft). Where the haft crossed in front of the kobold, continue the kobold's own existing colours across that small gap and nothing else; the hands keep their gripping shape, empty.` 문: `--spec enm_kobold` |
+| `enm_prop_kobold_pickaxe` 18 → 게임이 공격 4 + 쥠 1(대기 1칸)을 고른다 | 도구 `derive`(무기 부류, 곡괭이 색 core) 먼저. 파생이 칸마다 재합성 98%를 못 채우면 X + `Keep ONLY the pickaxe in each cell (iron head and wooden haft). Remove the kobold entirely, including the hands holding it.` |
 
 - 몸체 떼기의 「가려진 틈 잇기」는 PROMPTS §3.5 먼 층과 같은 예외다(떼어 낸 몸체가 구멍 난 채 쓰일 수 없어서). 틈은 자루 폭(1~2블록)만 허용한다.
-- 합격: w03 E1 E3 E4 E5 E6 E7 E11 + W1 W2, 곡괭이가 몸보다 길다. w04 E8 E10 E11, 몸체 칸에 금속·나무 색이 남지 않는다.
+- 곡괭이를 먼저 `derive`로 뽑는 까닭: 캐릭터 무기의 생성기 떼기가 칼을 다시 그렸다(PROMPTS §2.4).
+- 합격: w03 §2.0 + 곡괭이가 몸보다 길다 + 대기 1·2·4칸과 이동 네 칸이 서로 다르다. w04 E8 E10 E11, 몸체 칸에 금속·나무 색이 남지 않는다.
 
 ### 2.4 변형·정예 — 교체 편집 → 떼기 (AO-35·36, 15 §7.2) — w05~w08
 
 15 §7.2의 변형은 **크기를 바꾸지 않고 팔레트와 소품으로만** 구분한다. 게임 파일은 계열 시트 1장 + 팔레트 JSON + 소품 레이어다. 여기서 만드는 교체 편집본은 두 가지로 쓴다: ① 소품을 **계열 시트와 같은 칸에서 떼는 원본** ② 게임이 만들 변형 팔레트의 **색 목표(검토용)**. 편집본 자체를 게임 시트로 쓰지 않는다.
 
-조립: SW + 문장 + D. 입력 = 합격한 계열 시트(들쥐 `08-rat18-48-r3`, w01, w02, w03).
+조립: SW + 문장 + D. 입력 = 합격한 계열 시트(들쥐 `08-rat18-48-r3`, w01, w02, w03). 늑대·박쥐·코볼트는 틀 위에서 만든 시트이므로 편집 결과도 **같은 `--spec enm_<계열>`로 문을 통과**해야 한다(E22). 들쥐 원본은 틀 이전이라 문 캔버스 모드가 없다.
 
 | 번호 | 적 | 입력 | 교체 문장 (SW 뒤) | 떼기 (X 뒤) → 결과 |
 | --- | --- | --- | --- | --- |
@@ -290,11 +328,12 @@ ROW 5 FLEE, 4 frames, 120 ms each: 1 trips and sits down hard; 2 pushes up with 
 - EN04·EN07·EN09·EN10 교체 색은 승인되어 15 §7.2에 들어갔다(OD-12 결정). EB01 「한 톤 짙게」는 새 색 2개를 `pal_master.json`에 등록하기로 했지만 **값은 아직 정하지 않았다**(OD-12, 사용자 확인 대기). 편집 문장의 `(see note)` 자리는 `#9AA85A becomes {EB01 본색} and #6E7A5A becomes {EB01 그늘}`로 바꾼다. 값이 정해지기 전에는 w08a를 **소품 떼기 원본**으로만 쓰고 색은 보지 않는다.
 - 등불은 P1 c18(J04 등불)과 같은 모양이어야 한다. P1 c18이 합격했으면 **둘째 입력 이미지**로 넣고 `the same lantern design as the second input image, at the kobold's scale`를 덧붙인다.
 - 정예 외곽선 `#7A5A1E`는 게임 팔레트가 외곽선 인덱스를 바꿔서도 낸다. 편집본은 색 목표와 소품 원본이다.
-- 합격: 모든 편집 W3(겹쳐 보면 윤곽이 같고 차이는 지정한 색·부품에만), E4 E11. 떼기 E8 E10 E11.
+- 합격: 모든 편집 W3(겹쳐 보면 윤곽이 같고 차이는 지정한 색·부품에만), E4 E11, E21, 틀 위 입력이면 E22. 떼기 E8 E10 E11.
+- w08a ②의 큰 곡괭이는 §2.3과 같이 `derive`를 먼저 쓴다(무기 부류).
 
 ### 2.5 정예 깃발 (AO-35 `elite_flag`) — w09
 
-**깃발 전용 16 × 16 셀**이다(OD-30 결정, 15 §7.2, 카드 AO-35·`assets.manifest.json` `enm_prop_elite_flag_48`). 정예는 코볼트 두 종만이 아니라 층의 `관문 잔당`(01 §8.2, 박쥐 포함)에도 붙으므로 계열 셀에 묶지 않는다.
+**깃발 전용 16 × 16 셀**이다(OD-30 결정, 15 §7.2, 카드 AO-35·`assets.manifest.json` `enm_prop_elite_flag_48`). **틀 필요**(PROMPTS §0.4.3) — 16 × 16 소품 계열 틀이 없어 아래 어림 문장으로 요청하고 문 검사가 없다. 정예는 코볼트 두 종만이 아니라 층의 `관문 잔당`(01 §8.2, 박쥐 포함)에도 붙으므로 계열 셀에 묶지 않는다.
 조립: A(`{16x16}`) + C(`N=2, COLS=2, ROWS=1, EMPTY_CELLS=없음`) + 본문 + D. C의 발바닥 문장은 「깃대 아래 끝」으로 읽는다.
 
 ```
@@ -307,56 +346,57 @@ A tiny gold pennant on a short pole, the whole thing about five by five blocks, 
 
 ## 3 보스 EB03 부서진 종의 파수꾼 (AO-37·38, 15 §7.3) — w34~w38
 
-셀 64 × 56(8:7), 지면선 y 55(`{G}` = 1/56), 폭 넓고 낮게. 31프레임을 한 번에 생성하면 칸이 무너지므로 **정체성 1칸 → 18칸 시트 두 장**으로 나눈다. 두 장은 한 몸 전체 그림이라 레이어 정합이 필요 없고, 칸 정렬은 게임 정규화(`align ground`)가 맞춘다.
+셀 64 × 56(8:7), 지면선 논리 행 55, 기준 키 54, 폭 넓고 낮게. 31프레임 + 파동 4를 한 번에 생성하면 칸이 무너지므로 **정체성 1칸 → 틀 두 장**(`boss_bellwarden_a` 18칸, `boss_bellwarden_b` 13칸 + 파동 4)으로 나눈다. 두 장은 한 몸 전체 그림이라 레이어 정합이 필요 없다. 수치는 NUM(boss_bellwarden_a)·NUM(boss_bellwarden_b)가 가진다.
 
 **균열은 표지 색 `#B0603A`로 그린다.** 파수꾼의 다른 곳에 쓰지 않는 색이라 게임 정규화가 그 화소를 인덱스 15로 옮기고 단계 팔레트(p1 `#7A4E24`, p3 `#FFE38A`)를 입힌다(AO-38, §17-12).
 
 **I-BOSS**
 
 ```
-SUBJECT AND IDENTITY: the same boss in every cell: the Broken-Bell Warden, a broad, low, heavy guardian golem of grey stone and bronze, FACING LEFT in a slight three-quarter side view. Instead of a head it carries one huge bronze bell resting on its shoulders, mouth down, with ONE jagged crack running down the bell's front: exactly the same crack shape and place in every cell. Blocky stone torso with bronze plates and rivets, a small round bell emblem on the chest, thick short legs. Its front arm ends in a heavy bronze bell-clapper mallet. Shoulders span about nine tenths of the cell width; the warden fills the cell height to one block below the top. Slow, silent, not evil; no face on the bell.
+SUBJECT AND IDENTITY: the same boss in every cell: the Broken-Bell Warden, a broad, low, heavy guardian golem of grey stone and bronze, FACING LEFT in a slight three-quarter side view. Instead of a head it carries one huge bronze bell resting on its shoulders, mouth down, with ONE jagged crack running down the bell's front: exactly the same crack shape and place in every cell. Blocky stone torso with bronze plates and rivets, a small round bell emblem on the chest, thick short legs. Its front arm ends in a heavy bronze bell-clapper mallet. Shoulders span about nine tenths of the cell width; standing, the warden is the height given in the NUMBERS block (54 art px of the 56-row cell). Slow, silent, not evil; no face on the bell.
 PALETTE ONLY: outline #2B2233; bronze #E0B06A #B07A3A #7A4E24; stone #B4B2B0 #7D7B80 #4C4A52; the crack ONLY in #B0603A, a colour used nowhere else.
 ```
 
 | 번호 | 무엇 | 조립 · 입력 | 본문 |
 | --- | --- | --- | --- |
-| w34 | 정체성 1칸 | A(`{64x56}`) + I-BOSS + C-E(`N=1, COLS=1, ROWS=1, W:H=8:7, G=1/56, EMPTY=없음`) + 본문 + D. 입력 = w03 코볼트(덩치 비교) | `Input image role: size reference only: the warden is nearly twice as tall and about three times as wide as this kobold; do not draw the kobold. One standing idle pose, the master image for every later boss sheet.` |
-| w35 | 시트 1: 대기·공격 A·공격 B (18) | A + I-BOSS + C-E(`N=18, COLS=6, ROWS=3, W:H=8:7, G=1/56, EMPTY=없음`) + 본문 + D. 입력 = w34(`Input image role: this is the exact boss to draw; copy it exactly, not its layout.`) | 아래 |
-| w36 | 시트 2: 피격·단계 전환·퇴장 (13) | 같음(`N=13, COLS=6, ROWS=3, EMPTY=Row 1 holds three sprites and row 2 four sprites; the remaining cells of those rows stay empty.`) | 아래 |
+| w34 | 정체성 1칸 — **틀 필요**(PROMPTS §0.4.3) | A(`{64x56}`) + I-BOSS + C-E(`N=1, COLS=1, ROWS=1, W:H=8:7, G=1/56 of the cell height above the cell bottom, EMPTY=없음`) + 본문 + D. 입력 = w03 코볼트(덩치 비교). 문 검사 없음 | `Input image role: size reference only: the warden is nearly twice as tall and about three times as wide as this kobold; do not draw the kobold. One standing idle pose, the master image for every later boss sheet.` |
+| w35 | 시트 1: 대기·공격 A·공격 B (18) — 틀 `boss_bellwarden_a` | A + T + NUM(boss_bellwarden_a) + I-BOSS + C-E(`N=18, COLS=6, ROWS=3, W:H=8:7, G=NUM, EMPTY=없음`) + 본문 + D. 입력 1 = `boss_bellwarden_a.grid.png`, 입력 2 = w34(`Input image 2 role: this is the exact boss to draw; copy it exactly, not its layout.`), 입력 3 = 황금 표본(§2.0, `Input image 3 role: pixel-language reference only (outline weight, three tones per material, detail per art pixel); do not draw a rat.`). 문 `--spec boss_bellwarden_a` | 아래 |
+| w36 | 시트 2: 피격 3·단계 전환 4·퇴장 6 + **파동 효과 4**(v1.5, 옛 w38) — 틀 `boss_bellwarden_b` | A + T + NUM(boss_bellwarden_b) + I-BOSS + C-E(`N=17, COLS=6, ROWS=4, W:H=8:7, G=NUM, EMPTY=Row 1 holds three sprites, row 2 four sprites and row 4 four sprites; the remaining cells of those rows stay empty.`) + 본문 + **D-B36**. 입력은 w35와 같다(입력 1만 `boss_bellwarden_b.grid.png`). 문 `--spec boss_bellwarden_b` | 아래 |
 
 w35 본문:
 
 ```
-ROW 1 IDLE, 6 frames, 180 ms each. The body, arms and legs do not move by even one block; only the bell rocks on the shoulders: 1 upright; 2 bell tilted one block left; 3 upright; 4 tilted one block right; 5 upright; 6 the bell sits one block lower.
+ROW 1 IDLE, 6 frames, 180 ms each. The body, arms and legs do not move by even one art px; only the bell rocks on the shoulders: 1 upright; 2 bell tilted one art px left; 3 upright; 4 tilted one art px right; 5 upright; 6 the bell sits one art px lower.
 ROW 2 ATTACK A, mallet slam, 6 frames, 100/80/60/60/140/200 ms: 1 ready, mallet low; 2 mallet raised to the shoulder; 3 mallet at its highest point beside the bell; 4 slams down in front on the left, mallet head at the ground line; 5 follow-through, body leaning forward; 6 back to ready.
-ROW 3 ATTACK B, bell toll, 6 frames, 120/120/100/100/160/240 ms: 1 crouches one block; 2 braces with arms spread; 3 the bell rings: body fixed, the bell silhouette two blocks larger; 4 bell still enlarged; 5 bell back to normal size, slight lean; 6 back to the idle pose.
-Draw NO sound waves, rings, lines, dust or light: the shockwave is a separate effect.
+ROW 3 ATTACK B, bell toll, 6 frames, 120/120/100/100/160/240 ms: 1 crouches one art px; 2 braces with arms spread; 3 the bell rings: body fixed, the bell silhouette two art px larger; 4 bell still enlarged; 5 bell back to normal size, slight lean; 6 back to the idle pose.
+Draw NO sound waves, rings, lines, dust or light: the shockwave is a separate row of the second sheet.
 ```
 
 w36 본문:
 
 ```
-ROW 1 HIT, 3 frames, 70/120/160 ms: 1 flinch, the bell jolts up one block; 2 pushed one block to the right, knees bent; 3 halfway back. All three poses clearly different.
+ROW 1 HIT, 3 frames, 70/120/160 ms: 1 flinch, the bell jolts up one art px; 2 pushed one art px to the right, knees bent; 3 halfway back. All three poses clearly different.
 ROW 2 PHASE SHIFT, 4 frames, 150/150/200/400 ms: pose and silhouette EXACTLY the same in all four; only the crack's colour changes step by step: #B0603A, #C8783A, #FFE38A, then #FFE38A with a one-block #FFFFFF core. No glow outside the crack.
 ROW 3 SHUTDOWN, 6 frames, 150/150/150/200/300 ms then hold: the ringing stops and the warden sinks down, never broken: 1 sways; 2 down on one knee; 3 on both knees; 4 the bell bows forward; 5 still, resting; 6 exactly the same as 5.
+ROW 4 BELL SOUND WAVE, 4 frames, 120 ms each, NO warden in this row, only the effect: three thin concentric arcs, each exactly ONE art px thick, bulging toward the LEFT, spaced four art px apart, their common centre near the right edge of the cell at mid-height. The outermost arc's radius grows 12, 18, 24, 30 art px over frames 1 to 4. Colours #FFE38A, #FFFFFF, #B07A3A only. Arcs are clipped at the cell edge. No red, no dust, no blur.
 ```
 
-균열·파동·종추:
+**D-B36** (w36만 — D의 `magic effects`가 4행 파동과 부딪혀서 뺀 판, PROMPTS §0.1 규칙)
+
+```
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, glow, blur, motion trails, speech bubbles, extra characters, duplicate items. Rows 1 to 3 show only the warden; row 4 shows only the sound-wave arcs. Output only the finished sprite sheet.
+```
+
+균열:
 
 | 번호 | 결과 | 만드는 법 |
 | --- | --- | --- |
-| w37a | 고정 균열 마스크(게임 인덱스 15 확인용) | w35를 X + `Keep ONLY the crack pixels (#B0603A) in each cell.` |
+| w37a | 고정 균열 마스크(게임 인덱스 15 확인용) | w35를 X + `Keep ONLY the crack pixels (#B0603A) in each cell.` 문 `--spec boss_bellwarden_a` |
 | w37b | `boss_bellwarden_crack` 1칸 (2단계 금 겹침) | w34를 SW + `Add two more short branching cracks to the bell, in #B0603A, starting from the existing crack.` → X + `Keep ONLY the newly added cracks; remove the original crack and the warden.` |
-| w38 | `fx_bell_wave` 4 | A(`{64x56}`) + C-FX(`N=4, COLS=4, ROWS=1, ANCHOR=the arc centre sits near the right edge at mid-height of the cell`) + 본문 + D-FX |
-
-w38 본문:
-
-```
-A bell's sound shockwave, 4 frames, 120 ms each: three thin concentric arcs, each exactly ONE block thick, bulging toward the LEFT, spaced four blocks apart. The outermost arc's radius grows 12, 18, 24, 30 blocks over frames 1 to 4. Colours #FFE38A, #FFFFFF, #B07A3A only. Arcs are clipped at the cell edge. No red, no dust, no blur.
-```
+| w38 | `fx_bell_wave` 4 — **w36 4행에 합쳤다**(v1.5, 틀 `boss_bellwarden_b`의 `wave_fx` 행) | 4행이 몸 행을 망치면(파동이 몸 칸에 번지거나 몸이 4행에 그려짐) 대체: A(`{64x56}`) + C-FX(`N=4, COLS=4, ROWS=1, ANCHOR=the arc centre sits near the right edge at mid-height of the cell`) + w36의 ROW 4 문장 + D-FX. 이 대체는 틀 필요 |
 
 - 파동 셀은 보스 셀 64 × 56이다(반지름 30이 48 셀에 들어가지 않는다, OD-60, 카드 AO-38 고침). 종추는 본체에 그리고 별도 파일을 만들지 않는다(OD-59).
-- 합격: w34~36 E1 E3(대기 전체) E4 E5 E6 E7 E11 + W4. w37 E8 E10. w38 E1 E4 E6 E7 + W9.
+- 합격: w35·w36 문 통과(E22) + E1 E3(대기 전체) E4 E5 E6 E7 E11 + W4, w36 4행 W9. w34 E1 E4 E7 E11 + W4. w37 E8 E10.
 
 ---
 
@@ -366,13 +406,13 @@ A bell's sound shockwave, 4 frames, 120 ms each: three thin concentric arcs, eac
 
 ### 4.0 공통
 
-**품질 기준 입력** — 모든 기본 장면 생성에 `assets/_imagegen/v04/bg-four-regions-quality-r2.png`를 넣고 본문 앞에 붙인다(편집에는 넣지 않는다. 입력 그림이 기본 장면이다):
+**틀과 품질 기준 입력** — 모든 기본 장면 생성에 입력 1 = 틀 `docs/art/templates/bg_far.grid.png`(T + NUM(bg_far), PROMPTS §0.4), 입력 2 = 품질 기준 `assets/_imagegen/v04/bg-four-regions-quality-r2.png`를 넣고 본문 앞에 다음을 붙인다(편집에는 넣지 않는다. 입력 그림이 틀이자 기본 장면이다):
 
 ```
-Input image role: quality and style reference only: match its pixel-block size, detail density, shading and colour richness. Do not copy its layout or objects.
+Input image 2 role: quality and style reference only: match its detail density, shading and colour richness (its block size is not the template's; the art pixel size comes from the NUMBERS block). Do not copy its layout or objects.
 ```
 
-**수치 블록** — C-BG(띠)·C-BGP(패널, §1.2)의 LAYOUT 줄이 이 값을 가진다. 템플릿 `docs/art/templates/bg_strip.*`와 같다.
+**수치 블록** — C-BG(띠)·C-BGP(패널, §1.2)의 LAYOUT 줄이 이 값을 가진다. 띠 값은 틀 `bg_far`·`bg_mid`·`bg_near`(NUM, PROMPTS §8)와 같다(캔버스 1536 × 1024, S 6, 띠 y 320~703, 지면선 y 656). 패널은 틀 필요(PROMPTS §0.4.3).
 
 | 값 | 띠 | 패널 |
 | --- | --- | --- |
@@ -385,7 +425,7 @@ Input image role: quality and style reference only: match its pixel-block size, 
 | 비울 바닥 | 없음(흐르므로 판독 검사로 지킨다) | 장마다 캐릭터 x 16~64, 적·소품 x 72~120 앞 바닥에 키 큰 물체 없음 |
 
 - `{DARKEST}` = `#4C4A52`(L* 약 32. 외곽선 `#2B2233` L* 약 15보다 15 이상 밝다, 15 §2.3). 모든 배경 공통.
-- **관문 검사**: 생성·편집 결과마다 `pnpm art:gate <결과 PNG> --spec bg_strip`(패널 두 장은 `--spec bg_panel2`, 짝 없는 패널은 `--spec bg_panel1`)을 돌려 통과해야 다음 편집으로 간다. 캔버스 크기, 그림 자리 밖이 `#FF00FF` 한 색인지, 지면선 높이, 띠 좌우 이음(패널은 x 768 끊는 선)을 본다. 명령 형식은 `tools/art-check` `gate`(`--spec <시트>`)를 따르고, 배경 시트 이름 셋은 도구 쪽 `template-spec`에 들어올 이름이다(임시).
+- **문**(v1.5, 실제 틀 이름): 생성·편집 결과마다 돌려 통과해야 다음 편집으로 간다(떨어지면 GF, 최대 3번). 기본 장면·계절·시간대·색조·세대 특징 편집과 먼 층 FILL = `pnpm art:gate <png> --spec bg_far`(띠 안 전부 칠함), 중간 층 떼기 = `--spec bg_mid`, 가까운 층 떼기 = `--spec bg_near`(지면선 아래 빈틈 없음). 문은 캔버스·띠 밖 `#FF00FF`·블록·반투명·채움을 본다. **띠 좌우 이음은 문이 보지 않는다** — W7 육안과 정규화(OD-07, 도구 T11)가 본다. 패널(`bg_panel2`·`bg_panel1`)은 틀이 아직 없다(v1.4의 `bg_strip`·`bg_panel*`은 임시 이름이었다).
 - **D-BG 변형**(PROMPTS §1 D-BG가 막는 것을 그려야 할 때만, 해당 단어만 뺀 판):
 
 | 블록 | 쓰는 곳 | 문장 |
@@ -403,7 +443,7 @@ Keep every silhouette, building, object and the ground line exactly where they a
 
 ### 4.1 기본 장면 15 (띠) — 생성
 
-조립: A(`{256x64}`) + 품질 기준 입력 문장 + C-BG + `SCENE:` 문장 + `Summer, full daylight. All windows and lanterns are unlit.` + D-BG(A2는 D-BG-SKY). 운명 장소 둘은 `Summer, full daylight` 대신 `Cool dim underground light.`, 폐광·틈은 `Cool even underground light, lantern hooks unlit.`을 붙인다.
+조립: A(`{256x64}`) + T + NUM(bg_far) + 품질 기준 입력 문장 + C-BG + `SCENE:` 문장 + `Summer, full daylight. All windows and lanterns are unlit.` + D-BG(A2는 D-BG-SKY). 운명 장소 둘은 `Summer, full daylight` 대신 `Cool dim underground light.`, 폐광·틈은 `Cool even underground light, lantern hooks unlit.`을 붙인다.
 
 | 세트 | 장소 | `SCENE:` 문장 | 층 마스크(먼 / 중간 / 가까운) |
 | --- | --- | --- | --- |
@@ -438,7 +478,7 @@ Keep every silhouette, building, object and the ground line exactly where they a
 **FILL 먼 층 채움 머리말** (기본 장면과 모든 변형에 한 번씩)
 
 ```
-Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: {FAR}. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. Everything that is not far layer becomes the same flat #FF00FF. No new objects.
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: {FAR}. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF. No new objects.
 ```
 
 - 도구는 FILL 결과에서 **기본의 중간·가까운 층 마스크 안 화소만** 가져온다. 나머지 먼 층 화소는 변형 그림에서 마스크로 자른다(15 §8.5).
@@ -503,7 +543,7 @@ Use case: edit of the provided background strip. Keep the exact canvas, the stri
 
 ### 4.6 패널 37 — 발견 지점 25 · 던전 특수 방 12
 
-조립(기본): A(`{128x64}`) + 품질 기준 입력 문장 + C-BGP + `SCENE L:` 문장 + `SCENE R:` 문장 + 조명 문장 + D-BG. 야외 패널은 `Summer, full daylight.`, 지하 패널은 `Cool dim underground light; lanterns may be lit.`(D-BG에서 `light sources, lit windows, flames, glow, `를 뺀다). 야외 패널 짝 9장은 §4.2·§4.3의 계절·시간대 편집을 **짝째로** 한다(한 편집이 두 장을 함께 바꾼다). 먼 층 채움은 없다(흐르지 않는다).
+조립(기본): A(`{128x64}`) + 품질 기준 입력 문장 + C-BGP + `SCENE L:` 문장 + `SCENE R:` 문장 + 조명 문장 + D-BG. 야외 패널은 `Summer, full daylight.`, 지하 패널은 `Cool dim underground light; lanterns may be lit.`(D-BG에서 `light sources, lit windows, flames, glow, `를 뺀다). 야외 패널 짝 9장은 §4.2·§4.3의 계절·시간대 편집을 **짝째로** 한다(한 편집이 두 장을 함께 바꾼다). 먼 층 채움은 없다(흐르지 않는다). **틀 필요**(`bg_panel2`·`bg_panel1`, PROMPTS §0.4.3) — C-BGP의 수치(띠 자리·S 6·x 768 끊는 선·지면선 y 656)는 띠 틀과 같은 값이지만 두 장면·끊는 선을 보는 문이 없어, 틀이 생길 때까지 `--spec bg_far`로 캔버스·띠 밖·채움만 보고 끊는 선은 W7 육안으로 본다.
 
 **발견 지점**(07 §6.3 지점 이름, 02 §6 키워드. 원문에 없는 모습은 `임시`)
 
@@ -561,7 +601,7 @@ Use case: edit of the provided background strip. Keep the exact canvas, the stri
 
 | 번호 | 무엇 | 요청 | 호출 | 결과 | 선행 |
 | --- | --- | --- | --- | --- | --- |
-| w10 | 야외 8곳 기본 장면 → 중간·가까운 X, 먼 층 FILL | 생성 8, 떼기 16, FILL 8 | 32 | 기본 8, 층 마스크 8 | 품질 기준(있음). H1 먼저(AO-39 들판을 대신) |
+| w10 | 야외 8곳 기본 장면 → 중간·가까운 X, 먼 층 FILL | 생성 8, 떼기 16, FILL 8 | 32 | 기본 8, 층 마스크 8 | 품질 기준(있음). **H1 시범 먼저**: H1 한 곳의 기본 → 층 → 계절 3 → 시간대 12 → FILL 15(= 16변형, w11·w12의 H1 분)를 문·W 기준까지 끝낸 뒤 나머지 7곳(`V05_REQUEST.md`) |
 | w11 | 야외 계절 편집 → 시간대 편집 | 편집 24 + 96 | 120 | 변형 120 | w10 그 장소 |
 | w12 | 야외 변형 먼 층 FILL, 마을 점등 | FILL 120, 편집 3 | 123 | 층 타일 128 × 3, 마을 겹침 3 | w11 |
 | w13 | 폐광 띠 H5·D1·D2·D3: 기본 → X·FILL → H5 시간대 3·세대 특징 9 → FILL | 생성 4, 떼기 8, FILL 4 + 12, 편집 12 | 40 | 기본 4 + 변형 12 | 품질 기준 |
@@ -603,7 +643,7 @@ D70의 장소 소품 20개(v1.3 확정안)는 **각 장소의 기본 장면에 �
 
 생성 모델은 **입자 수 정확히 40·30**과 **알파 40%**를 보장하지 못한다. 입자 **스프라이트**를 그리고 게임이 화면당 40·30개를 흩뿌린다(OD-25 결정, 15 §8.3, 카드 AO-45 `fx_particle_{rain,snow}_48`, 비·눈 각 2칸 16 × 16). 안개는 불투명 흰색으로 받고 알파 102는 게임이 준다(그림자·빛 원과 같은 방식).
 
-w17a 입자: A(`{16x16}`) + C-FX(`N=6, COLS=6, ROWS=1, ANCHOR=the particle is centred in the cell`) + 본문 + D-FX
+w17a 입자: A(`{16x16}`) + C-FX(`N=6, COLS=6, ROWS=1, ANCHOR=the particle is centred in the cell`) + 본문 + D-FX — **틀 필요**(16 × 16 계열 없음, PROMPTS §0.4.3)
 
 ```
 Tiny weather particles, one per cell, each only a few blocks in size and centred in a mostly empty cell. Cells 1-2: raindrops, a thin diagonal streak falling from upper right to lower left, one block thick, two blocks long in cell 1 and three blocks long in cell 2, pale blue #B9C8FF. Cells 3-4: snowflakes, a single block in cell 3 and a 2 by 2 block in cell 4, #FFFFFF with #E8EEF2. Cells 5-6: falling leaves, a 2 by 2 block leaf #B8A04A in cell 5 and #C8783A in cell 6.
@@ -611,7 +651,7 @@ Tiny weather particles, one per cell, each only a few blocks in size and centred
 
 - 5·6칸(낙엽)은 P-18이 승인될 때만 쓴다(B-09). 그전에는 버린다.
 
-w17b 안개 `fx_weather_fog`: A(`{256x64}`) + C-BG(`{DARKEST}`=`#FFFFFF`) + 본문 + D-FX
+w17b 안개 `fx_weather_fog`: A(`{256x64}`) + T + NUM(bg_mid) + C-BG(`{DARKEST}`=`#FFFFFF`) + 본문 + D-FX. 입력 1 = `bg_mid.grid.png`(같은 띠, 하늘 자리는 자홍). 문 `--spec bg_mid`
 
 ```
 Only a horizontal band of fog across the whole strip: one flat, fully opaque white #FFFFFF shape filling roughly the middle third of the strip's height, its top and bottom edges gently wavy in hard one-block steps, a few separate small white wisps above and below it. The band meets the left and right edges at the same height so it tiles. Nothing else: no sky, no ground, no scenery. The game makes it semi-transparent.
@@ -626,6 +666,8 @@ Only a horizontal band of fog across the whole strip: one flat, fully opaque whi
 ## 7 공용 효과 6종 (AO-46~48, 15 §9.1) — w18~w20
 
 조립: A(`{48x48}`) + C-FX + 본문 + D-FX. 효과마다 **따로 생성**한다(같은 장에 두면 모양이 서로 닮는다, 1차 S7). 기준점은 48 셀 좌표를 비율로 옮겼다. 파일당 4색 이내.
+
+**틀 필요**(PROMPTS §0.4.3, OD-74): 틀 `fx_common`은 여섯 효과 32프레임을 한 장에 담은 게임 배치라, 효과마다 따로 생성하는 이 절과 맞지 않는다. 효과별 틀이 생길 때까지 문 검사 없이 본다. 틀을 한 장으로 쓰기로 하면(OD-74 ②) 입력 1 = `fx_common.grid.png`, T + NUM(fx_common), 본문 여섯 개를 행 순서(타격·회복·발견·레벨업·부상·저주)로 한 글에 넣는다.
 
 | 번호 | 효과 | C-FX 값 | 본문 |
 | --- | --- | --- | --- |
@@ -656,6 +698,8 @@ P0의 책 2칸(PROMPTS AO-49)을 뺀 **23종 41프레임**이다. 소품 바닥�
 | `prop_bandage` 1 | 마스터 1행 1칸 | `Wrap two horizontal cream bandage strips #F0E6CC #C8C2B8 around the torso, each two blocks tall, following the torso's outline.` → `Keep ONLY the two bandage strips.` | 1칸 |
 
 - 떼기 문장은 PROMPTS §3.2 머리말을 앞에 붙이므로 **보이는 화소만** 남는다. 자루가 팔 뒤로 가려진 곳은 비어 있는 것이 맞다(E10).
+
+**틀 필요**(§8 전체, PROMPTS §0.4.3, OD-74): 틀 `prop_anim_a`·`prop_anim_b`·`prop_misc`는 게임 파일 묶음(15 §9.2)이라, 캐릭터 합성에서 떼는 소품(빵·자루·붕대)과 생성 묶음(손 소품·표시·장면 소품·상태 편집)의 행이 섞여 있다. 묶음이 정해질 때까지 C-PROP의 어림 문장(`about 10% above the cell bottom`)으로 요청하고 문 검사 없이 본다.
 
 ### 8.2 새로 생성하는 손 소품·표시 — w22
 
@@ -728,15 +772,17 @@ w24d 꺼진 등불: w24a를 SW + `Change ONLY cell 1: the lantern is out, the fl
 
 ## 9 UI 아이콘 42 (AO-51~54, 03 §4, 15 §11) — w25~w28
 
-조립: A-UI(`{12x12}` 또는 `{16x16}`) + C-ICON + 본문 + D-UI. **첫 장(w25)이 스타일 키다.** w26 이후에는 합격 w25를 `Input image role: style reference only: copy its outline weight, block size, shading style and fill; do not copy its icons.`로 넣는다. 아이콘마다 **지정색 1 + 그 어두운 명암 1 + 외곽선 `#2B2233`**, 3색 이내. 지정색은 03 §4 값 그대로 적는다(정확 일치는 게임 양자화가 맞춘다). 대응 글자는 아이콘에 그리지 않는다(`ui_icons.map.json`, 게임).
+조립(v1.5): **틀 두 장**으로 만든다. 게임 아이콘 시트(15 §11)의 행이 P2의 다섯 묶음을 그대로 모은 것이라, 생성 한 번 = 틀 한 장이다.
 
-| 번호 | 파일 | C-ICON 값 | 본문 |
-| --- | --- | --- | --- |
-| w25 | `ui_state_*_12` 12종 | `N=12, COLS=4, ROWS=3, S=12` | 아래 A |
-| w26 | `ui_hp_*`·`ui_fat_*` 8 | `N=8, COLS=4, ROWS=2, S=16` | 아래 B |
-| w27 | `ui_inj_*`·`ui_sp_*` 7 | `N=7, COLS=4, ROWS=2, S=16, EMPTY=the last cell of row 2 stays empty.` | 아래 C |
-| w28a | 표식·태도·메뉴·슬롯·트레이 12 | `N=12, COLS=4, ROWS=3, S=16` | 아래 D |
-| w28b | 배지·종료 표식 3 (12 × 12) | `N=3, COLS=3, ROWS=1, S=12` | 아래 E |
+| 장 | 틀(입력 1) · 문 | 담는 것 | C-ICON 값 | 본문 |
+| --- | --- | --- | --- | --- |
+| **스타일 키**(먼저) | `ui_icon_12.grid.png` · `--spec ui_icon_12` | w25 `ui_state_*_12` 12 + w28b 배지·종료 표식 3 = 15 | `N=15, COLS=6, ROWS=3, S=12, EMPTY=Row 3 holds three icons; its last three cells stay empty.` | `ROWS 1 AND 2, six glyphs per row in reading order:` + A + `ROW 3, cells 1 to 3:` + E |
+| 둘째 | `ui_icon_16.grid.png` · `--spec ui_icon_16` | w26 8 + w27 7 + w28a 12 = 27 | `N=27, COLS=8, ROWS=4, S=16, EMPTY=Row 2 holds seven icons (its last cell stays empty); rows 3 and 4 hold six icons each (their last two cells stay empty).` | `ROW 1:` + B + `ROW 2, cells 1 to 7:` + C + `ROWS 3 AND 4, six icons per row in reading order:` + D |
+
+- 글 = A-UI(`{12x12}` 또는 `{16x16}`) + T + NUM(ui_icon_12 또는 ui_icon_16) + C-ICON + 본문 + D-UI. 둘째 장에는 합격한 첫 장을 입력 2로 넣는다: `Input image 2 role: style reference only: copy its outline weight, art-pixel style, shading style and fill; do not copy its icons or its block size (the block size comes from the NUMBERS block).`
+- 아이콘마다 **지정색 1 + 그 어두운 명암 1 + 외곽선 `#2B2233`**, 3색 이내. 지정색은 03 §4 값 그대로 적는다(정확 일치는 게임 양자화가 맞춘다). 대응 글자는 아이콘에 그리지 않는다(`ui_icons.map.json`, 게임).
+- 행 순서는 틀 `specs.json`의 라벨과 같다: `ui_icon_16` 1행 hp 1~4·fatigue 1~4, 2행 injury light1·light2·heavy·paused·settling·curse·vampire, 3행 choice mark·heir mark·attitude 1~3·menu, 4행 slot 1~4·tray basic·tray choice dot. `ui_icon_12` 1~2행 state 1~12, 3행 fatal lantern_out·book lit·book moon.
+- v1.4까지의 다섯 장(w25 4 × 3, w26 4 × 2, w27 4 × 2, w28a 4 × 3, w28b 3 × 1)은 쓰지 않는다. 번호 w25~w28은 두 장을 부르는 이름으로 남긴다(§14).
 
 A (w25):
 
@@ -747,13 +793,13 @@ Twelve status glyphs, bold simple silhouettes readable at their real 12-pixel si
 B (w26):
 
 ```
-Eight status icons; the SHAPE changes with each stage, not only the colour. Row 1, health: 1 full heart #5DA85D; 2 heart filled only in its lower three quarters, the top quarter empty inside the outline, #D8B04A; 3 heart filled only in its lower half #E0823A; 4 empty heart outline with a one-block vertical crack down its middle #D9534F. Row 2, fatigue: 5 thin crescent moon #9AA5B1; 6 half moon #C9A34A; 7 full moon with one small zigzag mark beside it #D9822B; 8 full moon with two small zigzag marks #D9534F. Zigzags are plain zigzag lines, never the letter Z.
+Eight status icons; the SHAPE changes with each stage, not only the colour. Cells 1 to 4, health: 1 full heart #5DA85D; 2 heart filled only in its lower three quarters, the top quarter empty inside the outline, #D8B04A; 3 heart filled only in its lower half #E0823A; 4 empty heart outline with a one-block vertical crack down its middle #D9534F. Cells 5 to 8, fatigue: 5 thin crescent moon #9AA5B1; 6 half moon #C9A34A; 7 full moon with one small zigzag mark beside it #D9822B; 8 full moon with two small zigzag marks #D9534F. Zigzags are plain zigzag lines, never the letter Z.
 ```
 
 C (w27):
 
 ```
-Seven status icons: 1 one adhesive bandage strip, diagonal, #D9A441; 2 two bandage strips crossed #D9A441; 3 a bandaged forearm with a small cross #C8453C; 4 two vertical bars, the same shape as glyph 12 of the style reference, #6C7A89; 5 an hourglass #4A90C2; 6 a ring with a crack #8E4FA3; 7 a crescent moon with a single drop #A3243A.
+Seven status icons: 1 one adhesive bandage strip, diagonal, #D9A441; 2 two bandage strips crossed #D9A441; 3 a bandaged forearm with a small cross #C8453C; 4 two vertical bars, the same shape as glyph 12 of the style reference (input image 2), #6C7A89; 5 an hourglass #4A90C2; 6 a ring with a crack #8E4FA3; 7 a crescent moon with a single drop #A3243A.
 ```
 
 D (w28a):
@@ -769,14 +815,14 @@ Three small emblems: 1 a lantern frame with NO flame, the glass empty and dull, 
 ```
 
 - 명암 색은 03 §4에 값이 없다. 게임이 UI 확장 묶음에 등록한 명암으로 양자화한다(OD-29 결정, 15 §11).
-- 합격: E1 E4 E6 E7 E11 + W11. `ui_sp_pause_16`과 `ui_state_pause_12`가 같은 모양이다. 켜진 등불과 꺼진 등불의 불 화소 차가 보인다.
+- 합격: 문 통과(E22) + E1 E4 E6 E7 E11 + W11. `ui_sp_pause_16`과 `ui_state_pause_12`가 같은 모양이다. 켜진 등불과 꺼진 등불의 불 화소 차가 보인다.
 
 ---
 
 ## 10 아이템 아이콘 34 (AO-55~58, 24 × 24) — w29~w32
 
 15에는 아이템 아이콘이 없고 카드가 24 × 24로 신설했다. 만들면 24 × 24로 정했고(OD-08 결정, P-04 규격 승인), **만들지는 `ASSET_BACKLOG.md` O-02가 정한다**(그전에는 시작하지 않는다). 16 × 16 판은 B-02로 미뤄져 있다. **첫 장(w29 무기)이 스타일 키**이고, P1의 무기·방어구 레이어가 합격했으면 **정체성 입력**으로 함께 넣는다(`Input image role: the in-game look of these items; match their shapes and colours.`).
-조립: A-UI(`{24x24}`) + C-ICON(`S=24`) + 본문 + D-UI. 공통: 빛은 왼쪽 위, 아이콘당 4색 + 외곽선, 등급 표시(보석·광채) 없음.
+조립: A-UI(`{24x24}`) + C-ICON(`S=24`) + 본문 + D-UI. 공통: 빛은 왼쪽 위, 아이콘당 4색 + 외곽선, 등급 표시(보석·광채) 없음. **틀 필요**(24 × 24 계열 없음, PROMPTS §0.4.3).
 
 | 번호 | 카드 | C-ICON 값 |
 | --- | --- | --- |
@@ -815,7 +861,7 @@ Eight consumables. Items 1-5 are the SAME healing potion in five tiers: the liqu
 
 ## 11 책 UI 부품 3 (AO-59, 15 §11) — w33
 
-조립: A-UI(`{20x96}`) + C-FREE(`N=3`) + 본문 + D-UI. 세 부품을 **같은 블록 크기**로 한 장에 그려 크기 비율을 지킨다. 게임이 bbox로 자르고 9-slice 경계·팔레트 3개(은퇴·사망·긴 잠)를 정한다.
+조립: A-UI(`{20x96}`) + C-FREE(`N=3`) + 본문 + D-UI. **틀 필요**(자유 배치, PROMPTS §0.4.3). 세 부품을 **같은 블록 크기**로 한 장에 그려 크기 비율을 지킨다. 게임이 bbox로 자르고 9-slice 경계·팔레트 3개(은퇴·사망·긴 잠)를 정한다.
 
 ```
 Three flat UI parts drawn with the same pixel-block size: 1 a book spine exactly 20 blocks wide and 96 blocks tall, leather #8E5E38 #5E3C24 with a #2B2233 border, an EMPTY 12 by 12 block square slot near the top for an emblem, two thin bands near the top and bottom, and plain vertical banding in the middle so it can be stretched sideways; no letters or title. 2 a shelf plank tile 16 by 16 blocks, wood #8E5E38 #5E3C24 with grain lines running horizontally so it tiles left to right. 3 a ribbon bookmark exactly 4 blocks wide and 16 blocks tall, red #B04A42 with a notched V end at the bottom.
@@ -833,7 +879,7 @@ Three flat UI parts drawn with the same pixel-block size: 1 a book spine exactly
 
 ### 12.1 주인공 초상 마스터 — w39
 
-조립: A-POR(`{64x64}`) + C-POR(`N=1, COLS=1, ROWS=1, S=64`) + 본문 + D. 입력 = 마스터 스프라이트.
+조립: A-POR(`{64x64}`) + C-POR(`N=1, COLS=1, ROWS=1, S=64`) + 본문 + D. 입력 = 마스터 스프라이트. **틀 필요**(1 × 1 초상 틀 없음, PROMPTS §0.4.3) — 문 검사 없이 W12로 본다.
 
 **I-HERO-POR**
 
@@ -844,7 +890,7 @@ Front-facing bust of this youthful androgynous adventurer: short chestnut hair (
 
 ### 12.2 주인공 초상 부품 25 — w40~w42
 
-조립: SW + 문장 + D (A·C 없음, 입력이 배치를 가진다). 교체 편집은 **한 칸을 여러 칸으로 늘리는** 편집이므로 첫 문장에 배치를 적는다.
+조립: SW + 문장 + D (A·C 없음, 입력이 배치를 가진다). 교체 편집은 **한 칸을 여러 칸으로 늘리는** 편집이므로 첫 문장에 배치를 적는다. **틀 필요**(3 × 2 · 4 × 2 · 3 × 3 합성 틀 없음. `por_parts_64`는 뗀 결과의 게임 배치다, PROMPTS §0.4.3).
 
 | 번호 | 입력 | 교체 문장 (SW 뒤) |
 | --- | --- | --- |
@@ -872,20 +918,20 @@ v1.0의 NB-01~NB-09는 P3의 외형표와 합쳐 PROMPTS §7.3 `[ID-N01]`~`[ID-N
 
 ### 12.4 NPC 초상 11 — w43·w44
 
-w43 (9명): A-POR(`{64x64}`) + C-POR(`N=9, COLS=3, ROWS=3, S=64`) + 본문 + PROMPTS §7.3 `[ID-N01]`~`[ID-N09]`(괄호째 뺀 판) + D. 입력 = 이미지 1 w39(스타일), 이미지 2 `nref`(PROMPTS §7.4, 정체성).
+w43 (v1.5: 11칸 한 장 = 9명 + 추가 표정 2, 틀 `por_npc_64`): A-POR(`{64x64}`) + T + NUM(por_npc_64) + C-POR(`N=11, COLS=4, ROWS=3, S=64, EMPTY=Row 3 holds three portraits; its last cell stays empty.`) + 본문 + PROMPTS §7.3 `[ID-N01]`~`[ID-N09]`(괄호째 뺀 판) + D. 입력 1 = `docs/art/templates/por_npc_64.grid.png`(틀), 입력 2 = w39(스타일), 입력 3 = `nref`(PROMPTS §7.4, 정체성 = `v04/n01-npc-ref-48.png`). 문 `--spec por_npc_64`.
 
 ```
-Input image roles: image 1 is a style reference only: copy its pixel density, outline, shading, framing and proportions; do not copy the person. Image 2 is the identity reference sheet: its cells 1 to 9 are the nine people below in the same order; copy each person's hair, face, skin, colours and clothing exactly and draw them as front-facing busts; do not copy its layout, poses or its cells 10 and 11.
-Nine different villagers, one per cell, in this order: cell 1 Hadel, 2 Boreum, 3 Miru, 4 Dodam, 5 Sena, 6 Dohan, 7 Yuan, 8 Biel, 9 Tori. Each keeps a neutral, characterful expression. Every person must be recognisable by silhouette alone: hair and headwear shapes all differ. No helmets.
+Input image roles: image 2 is a style reference only: copy its outline, shading, framing and proportions (the art pixel size comes from the NUMBERS block); do not copy the person. Image 3 is the identity reference sheet: its cells 1 to 9 are the nine people below in the same order; copy each person's hair, face, skin, colours and clothing exactly and draw them as front-facing busts; do not copy its layout, poses or its cells 10 and 11.
+Eleven portraits in reading order. Cells 1 to 9: nine different villagers, cell 1 Hadel, 2 Boreum, 3 Miru, 4 Dodam, 5 Sena, 6 Dohan, 7 Yuan, 8 Biel, 9 Tori, each with a neutral, characterful expression. Cell 10: Sena again, exactly the bust of cell 5, only the face worried (brows raised in the middle, small tight mouth). Cell 11: Biel again, exactly the bust of cell 8, only the face cold and resolute (level brows, firm closed mouth). Every person must be recognisable by silhouette alone: hair and headwear shapes all differ. No helmets.
 ```
 
-w44 (추가 표정 2): w43을 SW + `Change ONLY the face of cell 5 (Sena) to a worried expression and the face of cell 8 (Biel) to a cold, resolute expression. Nothing else changes.` → 게임이 5칸 = `por_npc_n05_worry`, 8칸 = `por_npc_n08_resolve`.
+w44 (추가 표정 2): v1.5부터 w43의 10·11칸이다 → 게임이 10칸 = `por_npc_n05_worry`, 11칸 = `por_npc_n08_resolve`. 대체(10·11칸이 5·8칸과 다른 사람으로 나올 때): 합격한 w43을 SW + `Make cell 10 an exact copy of cell 5 and cell 11 an exact copy of cell 8, then change ONLY the face of cell 10 to a worried expression and the face of cell 11 to a cold, resolute expression. Nothing else changes.` 문 `--spec por_npc_64`.
 
 ### 12.5 48 × 48 판 36 — w45
 
-w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 결과에서 12.2의 떼기를 **다시** 한다. NPC는 떼기 없이 칸 그대로다.
+주인공 부품 합성(w40·w41·w42)에는 E-POR를 적용하고(틀 필요), 결과에서 12.2의 떼기를 **다시** 한다. NPC(w43, 11칸)는 **E-POR-T**로 틀 `por_npc_48` 위에 다시 그리고 떼기 없이 칸 그대로 쓴다.
 
-- 합격: E1 E4 E6 E7 E8 E10 E11 E21 + W12 W13 W14. NPC는 9명을 나란히 놓고 역할이 구분된다(AO-61 육안). 흉상에 투구가 없다. NPC 초상을 `nref`와 나란히 놓고 같은 사람으로 읽힌다(W12).
+- 합격: 틀 위 시트는 문 통과(E22) + E1 E4 E6 E7 E8 E10 E11 E21 + W12 W13 W14. NPC는 9명을 나란히 놓고 역할이 구분된다(AO-61 육안). 흉상에 투구가 없다. NPC 초상을 `nref`와 나란히 놓고 같은 사람으로 읽힌다(W12).
 
 ---
 
@@ -893,9 +939,11 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 
 ### 13.1 PROMPTS E1~E12 적용
 
+틀 위에서 만든 시트(생성과 그 편집)는 모두 **E22(문 통과)**를 먼저 본다(PROMPTS §0.4). 틀 필요 시트는 해당 없음.
+
 | 묶음 | 적용하는 E |
 | --- | --- |
-| 적 기준 시트·보스 시트 | E1 E3 E4 E5 E6 E7 E11 (E2는 「같은 개체」로 읽는다) |
+| 적 기준 시트·보스 시트 | E1 E3 E4 E5 E6 E7 E11 (E2는 「같은 개체」로 읽는다) + 황금 표본과 나란히(§2.0) |
 | 교체 편집(변형·정예·상태·장소·점등·초상) | E4 E11 E21 + W3 |
 | 떼기(층·소품·부품) | E8 E10 E11 E21 |
 | 배경 합성 | E4 E7 E11 |
@@ -931,10 +979,10 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 
 | 번호 | 내용 | 요청 | 입력 | 선행 | 카드 | 15 단계 |
 | --- | --- | --- | --- | --- | --- | --- |
-| w01 | 늑대 기준 시트 18 | 생성 | 들쥐 합격본 | — | AO-32 | 5 |
-| w02 | 박쥐 기준 시트 18 | 생성 | 들쥐 합격본 | — | AO-33 | 5 |
-| w03 | 코볼트 합성 18 | 생성 | 들쥐 합격본, 마스터 | — | AO-34 | 5 |
-| w04 | 코볼트 몸체·곡괭이 떼기 | 떼기 ×2 | w03 | w03 | AO-34·35 | 5 |
+| w01 | 늑대 기준 시트 18(몬스터 표준) | 생성 | 틀 `enm_wolf`, 황금 표본 | — | AO-32 | 5 |
+| w02 | 박쥐 기준 시트 18(몬스터 표준) | 생성 | 틀 `enm_bat`, 황금 표본 | — | AO-33 | 5 |
+| w03 | 코볼트 합성 18(몬스터 표준) | 생성 | 틀 `enm_kobold`, 황금 표본 | — | AO-34 | 5 |
+| w04 | 코볼트 몸체 떼기 · 곡괭이 `derive`(대체 떼기) | 떼기 ×1(+1) | w03 | w03 | AO-34·35 | 5 |
 | w05 | EN02 교체 → 귀 떼기 | 교체, 떼기 | 들쥐 합격본 | — | AO-35 | 5 |
 | w06 | EN04·06·07 색 목표(검토용) | 교체 ×3 | w01, w02 | w01·w02 | AO-36 | 5 |
 | w07 | EN09·EN10 교체 → 모자·투구 떼기 | 교체 ×2, 떼기 ×2 | w03 | w03 | AO-35 | 5 |
@@ -955,19 +1003,19 @@ w39~w44의 **합성 결과**(w40·w41·w42·w43·w44)에 E-POR를 적용하고, 
 | w22 | 손 소품 6·표시 4 | 생성 ×2 | 마스터 | — | AO-49 | 6 |
 | w23 | 모닥불 4 | 생성 | 마스터 | — | AO-50 | 6 |
 | w24 | 장면 소품 10 → 상태 편집 → 꺼진 등불 | 생성, 교체 ×4 | 마스터, (P1 c18) | — | AO-50 | 6 |
-| w25 | UI 상태 12(스타일 키) | 생성 | — | — | AO-51 | 6 |
-| w26~w28 | UI 8 · 7 · 12 · 3 | 생성 ×4 | w25 | w25 | AO-52~54 | 6 |
+| w25 | UI 12 × 12 15(w25 + w28b, 스타일 키, 틀 `ui_icon_12`) | 생성 | — | — | AO-51·54 | 6 |
+| w26~w28a | UI 16 × 16 27(w26 + w27 + w28a, 틀 `ui_icon_16`) | 생성 | w25 | w25 | AO-52~54 | 6 |
 | w29 | 아이템 무기 10(스타일 키) | 생성 | (P1 무기 레이어) | `ASSET_BACKLOG.md` O-02, P1 c14 권장 | AO-55 | 6 |
 | w30~w32 | 아이템 방어구·장신구·소모품 | 생성 ×3 | w29, (P1 방어구) | w29 | AO-56~58 | 6 |
 | w33 | 책 UI 3 | 생성 | — | — | AO-59 | 7 |
 | w34 | 보스 정체성 1 | 생성 | w03 | w03 | AO-37 | 7 |
-| w35·w36 | 보스 시트 18 + 13 | 생성 ×2 | w34 | w34 | AO-37 | 7 |
+| w35·w36 | 보스 시트 18 + (13 + 파동 4)(틀 `boss_bellwarden_a`·`_b`) | 생성 ×2 | w34, 황금 표본 | w34 | AO-37·38 | 7 |
 | w37 | 균열 마스크·균열 겹침 | 떼기, 교체, 떼기 | w35, w34 | w35 | AO-38 | 7 |
-| w38 | 보스 파동 4 | 생성 | — | — | AO-38 | 7 |
+| w38 | 보스 파동 4 — w36 4행에 합쳤다(대체 생성만) | (w36) | — | — | AO-38 | 7 |
 | w39 | 주인공 초상 마스터 | 생성 | 마스터 | — | AO-60 | 7 |
 | w40~w42 | 초상 머리·표정·목깃/나이/장신구 → 떼기 | 교체 ×3, 떼기 ×6 | w39 | w39 | AO-60 | 7 |
-| w43·w44 | NPC 9 + 표정 2 | 생성, 교체 | w39, `n01` | w39, `n01` | AO-61 | 7 |
-| w45 | 초상 48 판 → 다시 떼기 | 밀도 ×5, 떼기 ×6 | w40~w44 | 64 판 합격 | AO-62 | 7 |
+| w43·w44 | NPC 9 + 표정 2 = 11칸 한 장(틀 `por_npc_64`, w44는 대체 편집) | 생성 | w39, `nref` | w39, `nref` | AO-61 | 7 |
+| w45 | 초상 48 판: 부품 합성 E-POR ×3 → 다시 떼기, NPC E-POR-T ×1(틀 `por_npc_48`) | 밀도 ×4, 떼기 ×6 | w40~w43 | 64 판 합격 | AO-62 | 7 |
 
 - 한 번호가 §13 기준을 통과하지 못하면 프롬프트를 고쳐 다시 생성하고 다음 번호로 넘어가지 않는다(ASSET_ORDERS §1.2). 같은 표면 지적이 두 번 반복되면 세 번째 수정 전에 구조를 다시 본다(원인 한 줄 + 다른 방법).
 

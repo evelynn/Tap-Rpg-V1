@@ -1,9 +1,10 @@
 # P3_scenes — 이벤트 장면 20개 프롬프트
 
-버전 1.2 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.3 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.3: PROMPTS v1.4 규격 고정 절차 반영 — 모든 장면을 틀 `scene_event`(1536 × 1024, S 3, 띠 y 416~607) 위에서 만든다. 열쇠 칸 K는 한 칸 대신 **네 칸이 모두 1프레임인 정지 띠**(틀 위, S 3)로 바꿨다: 한 칸(S 12)에서 띠(S 3)로 줄이는 편집은 화소를 보존할 수 없다. SC-A의 「약 38블록」을 NUM 수치로, SE1을 틀 수치로. 문 `pnpm art:gate --spec scene_event`(E22).
 1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24, 권장안) 반영 — 48 규격만(D64, §7.3 폐기, O02 대기 줄 삭제), ES10 장소 = 길바뀜의 틈 안쪽(OD-11), ES15 무기 한 점은 게임이 얹음(OD-18), 정지 부분 떨림은 두 번 실패 뒤 정규화가 1칸에서 복사(D66, OD-05), NPC `임시` 외형 승인(OD-02).
 1.1: 15 §9.3 보정(커밋 e878cce) 반영 — 표의 x는 인물 가로 중심, 주인공 비움 폭 x ± 16(`잠` ± 22, `환호` 위로 y 6), 축소 창은 장면을 쓰지 않음(y 16 제약·320 × 48 검사 삭제), 반복 장면은 처음 자세로 돌아오는 몸짓, ES09 `끝 유지`. PROMPTS v1.2 정합 — 등장인물 외형·NPC 전신 기준 시트를 PROMPTS §7로 옮김(`[ID-N0n]`, `nref` 칸 번호 바뀜), 장면 블록 이름 S-* → SC-*, 호각은 나무, 같은 소품 문장을 P2와 맞춤, 진행표·확인 필요를 PROMPTS §6.4·`OPEN_DECISIONS.md`로 옮김.
-상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거를 하지 않는다. 색인·전체 제작 순서는 PROMPTS §5다.
+상위 문서: `docs/art/PROMPTS.md` v1.4(이하 **PROMPTS**). 제작 방식은 `ASSET_ORDERS.md` §0.0(D56): 이미지 생성·편집만 쓰고, 코드로 그리기·자르기·축소·배경 제거를 하지 않는다. 색인·전체 제작 순서는 PROMPTS §5다.
 사양은 `docs/design/15_아트_스프라이트_사양.md` §9.3(D63, 이하 **15 §9.3**)이 소유한다. 이 문서는 그 표를 프롬프트로 옮기기만 한다. 표와 이 문서가 다르면 표가 맞다.
 관련: 등장인물 외형은 PROMPTS §7(02 §8이 출처), 사건 도입 문장은 11, 장소 모습은 02 §6·15 §8, 소품 모양은 15 §9.2와 `ASSET_ORDERS.md` AO-49·AO-50·AO-57(프롬프트는 P2 §8), 적은 15 §7, 사망 연출은 09 §5.2, 동반자는 12 §2.1.
 
@@ -19,7 +20,7 @@
 
 | 항목 | 규칙 | 프롬프트에서 막는 곳 |
 | --- | --- | --- |
-| 한 칸 | 128 × 64, 불투명한 완성 장면. 지면선 y 56 | SC-K·SC-C |
+| 한 칸 | 128 × 64, 불투명한 완성 장면. 지면선 y 56. 틀 `scene_event`(NUM(scene_event), PROMPTS §8): 캔버스 1536 × 1024, S 3(논리 화소 1 = 3 × 3), 띠 x 0~1535 · y 416~607, 칸 왼쪽 이미지 x 0 · 384 · 768 · 1152, 지면선 이미지 y 584 | T·NUM·SC-K·SC-C |
 | 프레임 | 4칸. 반복 장면은 **처음 자세로 돌아오는 몸짓**(1→2→3→2, 0·1·2·1 등)이라 4→1이 튀지 않는다. 한 번 일어나고 끝나는 움직임은 `끝 유지`(ES09·ES15·ES19)로 4칸째에서 멈춘다 | 장면별 FRAMES |
 | 주인공 | **그리지 않는다.** 게임이 현재 인물을 표의 x·동작으로 얹는다. 표의 x = 인물 가로 중심(`center_x`), 발바닥 y 56. 비울 자리는 x ± 16, `잠` ± 22, `환호`는 위로 y 6까지 | 장면별 HERO SLOT + SC-D |
 | NPC | 초상(15 §10)과 같은 인물, 2.2등신 SD(48 규격 어른 키 약 38). 표의 NPC x도 인물 중심 | PROMPTS §7 외형 + `nref` 입력 |
@@ -51,16 +52,17 @@
 
 | 단계 | 조립 | 쓰는 때 |
 | --- | --- | --- |
-| ① 열쇠 칸 K | [SC-A] + [SC-K] + [입력 역할 문장] + [장면 본문] + [SC-D] | 먼저 한 칸(프레임 1)만 만든다. 구도·주인공 자리·NPC 정체성을 여기서 확정한다 |
-| ② 띠 | 합격한 K를 입력으로 넣고 [SC-E] + [장면 본문의 FRAMES 줄만] + [SC-D] | K의 화소를 네 칸에 그대로 옮기고 움직이는 부분만 바꾼다 |
-| (대안) 한 번에 띠 | [SC-A] + [SC-C] + [입력 역할 문장] + [장면 본문] + [SC-D] | ①②가 안 될 때. 정지 부분이 칸마다 흔들리기 쉽다 |
+| ① 열쇠 띠 K | [SC-A] + [T] + [NUM(scene_event)] + [SC-K] + [입력 역할 문장] + [장면 본문] + [SC-D]. 입력 1 = `docs/art/templates/scene_event.grid.png`(틀), 입력 2부터 `nref`·소품·장소 | 먼저 **네 칸이 모두 1프레임인 정지 띠**를 만든다. 구도·주인공 자리·NPC 정체성을 여기서 확정한다. 문 `--spec scene_event` |
+| ② 띠 | 합격한 K를 입력으로 넣고 [SC-E] + [장면 본문의 FRAMES 줄만] + [SC-D] | 1칸을 2~4칸에 그대로 옮기고 움직이는 부분만 바꾼다. 문 `--spec scene_event` |
+| (대안) 한 번에 띠 | [SC-A] + [T] + [NUM(scene_event)] + [SC-C] + [입력 역할 문장] + [장면 본문] + [SC-D] | ①②가 안 될 때. 정지 부분이 칸마다 흔들리기 쉽다 |
 
-- 두 단계로 나누는 이유는 v03 교훈과 같다(PROMPTS §2.2: 따로 생성한 층은 맞지 않았고, 합성 후 편집이 맞았다). 네 칸을 따로 그리면 배경이 칸마다 조금씩 달라져 반복 재생에서 떨린다. 열쇠 칸을 먼저 합격시키면 구도 실패를 네 칸 비용 없이 고칠 수 있다.
+- 두 단계로 나누는 이유는 v03 교훈과 같다(PROMPTS §2.2: 따로 생성한 층은 맞지 않았고, 합성 후 편집이 맞았다). 네 칸을 따로 그리면 배경이 칸마다 조금씩 달라져 반복 재생에서 떨린다. 열쇠 띠를 먼저 합격시키면 구도 실패를 움직임 비용 없이 고칠 수 있다.
+- v1.3: 열쇠를 한 칸(캔버스 폭 전체 = S 12)으로 그리면 ② 띠(S 3)로 옮길 때 넷으로 줄여야 해 화소가 보존되지 않는다. 그래서 열쇠도 처음부터 틀 `scene_event` 위의 띠로 그리고, 네 칸을 같은 1프레임으로 둔다. ②는 1칸을 복사하고 FRAMES만 바꾼다.
 - 공통 블록은 줄이지 않고 전문을 붙인다. 장면 본문의 영어 프롬프트는 각 장면 절의 코드 블록이다.
 
 ### 0.5 저장
 
-PROMPTS §0.3 그대로. 파일 이름은 `assets/_imagegen/{판}/es{번호}-{이름}-48-k.png`(열쇠 칸), `…-48.png`(띠)와 같은 이름 `.prompt.txt`. 폴더 `README.md`에 입력으로 넣은 이미지 경로(`nref`·소품·장소 배경)를 적는다. 게임 규격 파일 `assets/scenes/es_{사건 id}_48.png`(512 × 64)와 `.frames.json`은 게임 쪽 정규화가 만든다(15 §9.3 파일 행).
+PROMPTS §0.3 그대로. 파일 이름은 `assets/_imagegen/{판}/es{번호}-{이름}-48-k.png`(열쇠 띠), `…-48.png`(띠)와 같은 이름 `.prompt.txt`. 폴더 `README.md`에 입력으로 넣은 이미지 경로(`nref`·소품·장소 배경)를 적는다. 게임 규격 파일 `assets/scenes/es_{사건 id}_48.png`(512 × 64)와 `.frames.json`은 게임 쪽 정규화가 만든다(15 §9.3 파일 행).
 
 ---
 
@@ -76,7 +78,7 @@ v1.0의 등장인물 외형표·영어 정체성 문장·NPC 전신 기준 시�
 - 입력 역할 문장(장면 K 단계에서 본문 앞에 붙인다):
 
 ```
-Input image role: identity reference sheet. Copy ONLY the people named in this scene from it (cell {n} = {name}): the same head shape, hair, face, clothing, colors and body height. Do not copy its layout, its magenta background, its poses or any other person in it.
+Input image 2 role: identity reference sheet. Copy ONLY the people named in this scene from it (cell {n} = {name}): the same head shape, hair, face, clothing, colors and body height. Do not copy its layout, its magenta background, its poses or any other person in it.
 ```
 
 ---
@@ -111,28 +113,28 @@ v1.0의 S-A·S-K·S-E·S-C·S-D를 SC-A·SC-K·SC-E·SC-C·SC-D로 이름만 바
 Asset type: Tap RPG 2D pixel-art EVENT SCENE, a short looping animation of one small side-view scene for a 128x64-pixel game window. This is real game pixel art, not an illustration, poster, UI or pixel-art-themed painting.
 PIXEL LANGUAGE: each panel must look designed on a genuine logical 128x64 pixel canvas and shown with large, uniform, perfectly square pixel blocks. Crisp hard square clusters, deliberate one-block stair-steps, flat color fills in large coherent areas, restrained detail.
 OUTLINE RULE: people, creatures and props have a one-block outer contour in dark plum #2B2233. Background surfaces (sky, walls, floor, ground, water, hills, buildings, tent cloth) have NO dark outlines: their edges use a slightly darker shade of the same hue, and no background pixel is darker than #4C4A52.
-SCALE: chibi people about 2.2 heads tall; an adult stands about 38 blocks tall with the feet on row 56 of 64 and the top of the head near row 18. Children are shorter as stated.
+SCALE: chibi people about 2.2 heads tall. Every panel is exactly 128 x 64 art px (NUMBERS). An adult stands exactly 38 art px tall, the feet on art row 56 of 64 (the ground line) and the top of the head on art row 18; Sena is 34, Tori 30 and a seated adult 26 art px tall.
 Light is shown only with flat stepped bands of a lighter color. Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, bloom, painterly strokes, noisy dithering, fur texture, glossy or 3D rendering, photographic detail.
 ```
 
-### SC-K 열쇠 칸 배치 (① 단계)
+### SC-K 열쇠 띠 배치 (① 단계, v1.3: 틀 위 네 칸 정지 띠)
 
 ```
-LAYOUT: one single panel exactly twice as wide as it is tall, spanning the full canvas width and placed in the vertical middle of the canvas. Above and below the panel the canvas is one single flat #FF00FF magenta, the exact same value in every pixel. The panel is a complete opaque scene from edge to edge, with no border or frame. Draw FRAME 1 only.
-A straight flat ground line runs across the panel at 7/8 of its height (row 56 of 64); every person and prop stands on it. The top eighth of the panel (rows 0-7) is one quiet flat color.
+LAYOUT (key strip): draw on the template strip of input image 1: four panels side by side, each exactly 128 x 64 art px, at the image positions given in the NUMBERS block. ALL FOUR PANELS SHOW FRAME 1 and are pixel-identical copies of one another: this is a still key frame, not yet an animation. Each panel is a complete opaque scene from edge to edge; the panels touch with no gap, border or dividing line. Above and below the strip the canvas is one flat #FF00FF magenta, the exact same value in every pixel.
+A straight flat ground line runs across each panel at art row 56 of 64; every person and prop stands on it. The top eight art rows of each panel (rows 0-7) are one quiet flat color. A position given as a fraction f of the panel width is art x = f x 128 inside the panel.
 ```
 
-### SC-E 띠 만들기 편집 (② 단계, 입력 = 합격한 열쇠 칸)
+### SC-E 띠 만들기 편집 (② 단계, 입력 = 합격한 열쇠 띠)
 
 ```
-Use case: precise edit of the provided single scene panel. Make one horizontal strip of four copies of this exact panel placed side by side, edge to edge, with no gap, border or dividing line; the strip is exactly eight times as wide as it is tall, spans the full canvas width and sits in the vertical middle; above and below it the canvas is one flat #FF00FF magenta, one exact value everywhere. Copy every pixel of the panel unchanged, with its exact colour, into all four copies, then apply ONLY the changes listed under FRAMES (panel 1 = frame 1, left to right). Do not redraw, move, restyle, recolour, relight, brighten or saturate anything else. The empty hero slot stays empty in all four panels.
+Use case: precise edit of the provided key strip (four panels on the scene template). Keep the exact canvas, the strip position, panel 1 and the flat #FF00FF outside the strip exactly. Make panels 2, 3 and 4 exact copies of panel 1, pixel for pixel with the exact colours, then apply ONLY the changes listed under FRAMES (panel 1 = frame 1, left to right). Do not redraw, move, restyle, recolour, relight, brighten or saturate anything else. The empty hero slot stays empty in all four panels.
 ```
 
 ### SC-C 한 번에 띠 배치 (대안)
 
 ```
-LAYOUT: one single horizontal strip of exactly four equal panels in one row, edge to edge. Each panel is exactly twice as wide as it is tall, so the whole strip is exactly eight times as wide as it is tall. The strip spans the full canvas width and sits in the vertical middle; everything above and below it is one flat #FF00FF magenta, the exact same value in every pixel. No gaps, borders, frames or dividing lines between panels; every panel is a complete opaque scene from edge to edge.
-The four panels are four animation frames of the SAME scene seen from the SAME fixed camera: every background shape, person and prop keeps the identical position, size, pose and colors in all four panels; only the changes listed under FRAMES happen, each by one or two blocks. A straight flat ground line runs at row 56 of 64 (7/8 of the panel height) in every panel and everyone stands on it. The top eight rows of each panel are one quiet flat color.
+LAYOUT: draw on the template strip of input image 1: exactly four panels in one row, edge to edge, each exactly 128 x 64 art px at the image positions given in the NUMBERS block; everything above and below the strip is one flat #FF00FF magenta, the exact same value in every pixel. No gaps, borders, frames or dividing lines between panels; every panel is a complete opaque scene from edge to edge.
+The four panels are four animation frames of the SAME scene seen from the SAME fixed camera: every background shape, person and prop keeps the identical position, size, pose and colors in all four panels; only the changes listed under FRAMES happen, each by one or two blocks. A straight flat ground line runs at art row 56 of 64 in every panel and everyone stands on it. The top eight art rows of each panel are one quiet flat color.
 ```
 
 ### SC-D 장면 금지
@@ -557,7 +559,7 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 
 | 번호 | 기준 | 대응 |
 | --- | --- | --- |
-| SE1 | 띠가 같은 크기 4칸, 전체 가로:세로 = 8:1(±2%), 칸 사이 선·틈 없음. 열쇠 칸은 2:1 한 칸 | E1 |
+| SE1 | 문 통과(E22, `--spec scene_event`): 캔버스 1536 × 1024, 띠 y 416~607에 128 × 64 칸 4개(S 3), 띠 밖 `#FF00FF`, 칸 채움·지면선 아래 채움. 칸 사이 선·틈 없음. 열쇠 띠는 네 칸이 같다 | E1 E22 |
 | SE2 | 띠 밖이 `#FF00FF` 한 값. 후광·비네트·그라데이션 없음 | E4 E11 |
 | SE3 | FRAMES에 적지 않은 부분(배경·인물 위치·크기·색)이 네 칸에서 같다. 반복 재생에서 떨리는 곳이 없다. 허용 한도: 정지 부분 칸 사이 차이 화소 0.5% 이하. 넘으면 다시 생성하고, 같은 장면이 두 번 넘으면 게임 정규화가 정지 부분을 1칸에서 복사한다(D66, `OPEN_DECISIONS.md` OD-05) | 12.3 체크 8 |
 | SE4 | FRAMES에 적은 변화만 있고 크기는 1~2블록. 반복 장면은 처음 자세로 돌아오는 몸짓이라 4→1이 이어진다. `끝 유지`(ES09·ES15·ES19)는 4칸이 최종 상태다 | 15 §9.3 |
@@ -571,7 +573,7 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 | SE12 | 1칸 한 장만 보고도 사건이 읽힌다(`끝 유지`는 4칸) | 03 §14 움직임 줄이기 |
 | SE13 | 장면별 팔레트 목록 밖 색이 없다(정규화 뒤 art-check M5로 센다) | 15 §2.2 |
 
-- SE1~SE8·SE11·SE12는 생성 직후 육안으로 본다. SE3은 네 칸을 250 ms 반복으로 재생해 본다(§6).
+- SE1은 문이 먼저 본다. SE2~SE8·SE11·SE12는 문을 통과한 뒤 육안으로 본다. SE3은 네 칸을 250 ms 반복으로 재생해 본다(§6).
 - SE9는 nref와 나란히 놓고 본다. 두 장면 이상에 나오는 인물(하델·도담·토리·비엘·동반자)은 앞서 합격한 장면과도 나란히 놓는다.
 
 ---
@@ -622,15 +624,15 @@ PROMPTS E1~E12 가운데 E1·E4·E7·E9·E11을 장면에 맞게 바꾸고 장�
 ### 7.1 현재 상태 (2026-09-24)
 
 - 합격한 장소 배경은 **아직 없다.** 들판 3층(AO-39)은 v03에서 층 정합 불합격이고(PROMPTS §6), 마을·폐광 배경은 시작 전이다. 그래서 「이미 합격한 장소를 다시 쓰는 장면부터」는 지금 적용할 수 없다. 대신 **입력 의존이 적은 장면부터** 한다.
-- 합격한 인물은 주인공 마스터뿐이다. NPC 전신 기준 시트 `n01`(PROMPTS §7.4)은 아직 없다. NPC 초상(P2 w43)은 `n01` 뒤에 만들고, 장면은 초상을 기다리지 않는다.
+- 합격한 인물은 주인공 마스터와 NPC 전신 기준 `nref`(v04 `n01-npc-ref-48.png` 첫 판, PROMPTS §7.4)다. NPC 초상(P2 w43)은 `n01` 뒤에 만들고, 장면은 초상을 기다리지 않는다.
 
 ### 7.2 순서
 
 | 차례 | 대상 | 이유 | 선행 |
 | --- | --- | --- | --- |
 | 0 | `n01` NPC 기준(PROMPTS §7.4) | 다섯 명이 여러 장면에 나온다. 정체성 기준이 먼저 있어야 한다 | 마스터(있음). 외형 승인됨(OD-02, 2026-09-24) |
-| 1 | **시범** ES15, ES18 | NPC가 없어 정체성 위험 없이 띠 형식·두 단계 제작·주인공 자리·끝 유지·preview 합성을 먼저 검증한다 | 없음 |
-| 2 | 시범 ES01 | 한 번만 나오는 NPC(여행자) + 소품(모닥불) + 들판. 반복 장면 형식 검증 | nref |
+| 1 | **시범** ES15, ES18 (`V05_REQUEST.md`) | NPC가 없어 정체성 위험 없이 틀·문·두 단계 제작·주인공 자리·끝 유지·preview 합성을 먼저 검증한다 | 없음 |
+| 2 | 시범 ES01 (`V05_REQUEST.md`) | 한 번만 나오는 NPC(여행자) + 소품(모닥불) + 들판. 반복 장면 형식 검증 | nref(v04 `n01` 첫 판, 합격) |
 | 3 | 들판·여울: ES06, ES07, ES12, ES13 | 들판 배경(AO-39)이 합격하면 장소 참고 입력으로 쓴다 | AO-39 합격이면 더 좋음 |
 | 4 | 마을: ES02, ES04, ES08, ES09, ES14, ES16, ES17 | 하델·도담·토리 반복 등장 — 같은 인물끼리 나란히 검수 | 마을 배경 합격이면 더 좋음 |
 | 5 | 폐광: ES03, ES05, ES20 | 폐광 배경·보스 시트 뒤가 좋다 | 폐광 배경, EB03 |
