@@ -308,29 +308,9 @@ Every outline pixel is fully opaque dark plum #2B2233; there is no reddish or se
 
 ### 3.5 배경
 
-#### AO-39 · 들판 3층 — 합성 후 분리 (v03 방식 교체)
+#### AO-39 · 들판 3층 — P2 §4로 옮김 (v1.4, D71)
 
-세 층을 따로 생성하면 띠 높이·위치가 달라 겹쳐지지 않는다(v03). 캐릭터와 같은 방식으로 **한 장의 합성 장면을 먼저 만들고 편집으로 층을 뗀다.**
-
-① 합성 장면 — 조립: A(`{256x64}`) + 본문 + **D-BG** (C 없음). v1.1은 D를 붙였는데 D는 `landscape or scenery`를 금지해 배경 요청과 부딪혔다(v1.2 수정).
-
-```
-A single wide horizontal pixel-art strip with an exact 4:1 aspect ratio, filling the full canvas width and placed in the vertical middle of the canvas; the area above and below the strip is one flat #FF00FF color. Soft, low-contrast daytime meadow for a calm idle game, seamlessly tileable left to right.
-Inside the strip, from back to front: pale sky #B9C8FF with two or three flat clouds #E8EEF2; low rolling hills #8FC06A #5E9A4A with the horizon at about one third of the strip height; in the left half two small round trees (trunk #8E5E38, crown #6D8F5A #4D6A3E), a short wooden fence #C08A58 #8E5E38 and one grey boulder #9A948C, all standing on the ground; a flat walkable grass surface #6D8F5A #4D6A3E whose top edge is one perfectly straight horizontal line at 7/8 of the strip height, a thin soil band #8E5E38 #C08A58 below it, and a few tiny cream and yellow flowers #F0E6CC #FFE38A. The left quarter is plain because the character stands there. The right half has no objects.
-BACKGROUND OUTLINES: no dark outlines at all. Edges of each shape use a slightly darker shade of the same hue; nothing darker than #4D6A3E. No light sources, no sun disc, no characters, no animals.
-```
-
-- 마을·폐광 합성은 이 문장을 블록으로 정리한 P2 §1.2 C-BG를 쓰고, 합격한 ①을 틀 참고 입력으로 넣는다(P2 §4.0).
-
-② 층 떼기 — 입력 = 합격한 ①. X(§3.2) 뒤에 붙인다.
-
-| 층 | 머리말 뒤 문장 |
-| --- | --- |
-| 먼 층 | `Keep ONLY the sky, clouds and hills. Remove the trees, fence, boulder, grass surface, soil and flowers, and continue the sky and hills naturally where they were hidden (this layer alone is fully opaque inside the strip).` |
-| 중간 층 | `Keep ONLY the two trees, the fence and the boulder. Everything else inside and outside the strip becomes flat #FF00FF.` |
-| 가까운 층 | `Keep ONLY the grass surface, the soil band and the flowers. Everything else inside and outside the strip becomes flat #FF00FF.` |
-
-- 먼 층만 가려진 부분을 이어 그린다(배경에 빈 곳이 있으면 안 되므로). §0.2 3번 「보이는 화소만」의 예외다(같은 이유의 예외: P2 §2.3 코볼트 몸체의 자루 틈).
+배경 네 장면(마을·들판·폐광·틈)은 v04 품질 기준 합성 `assets/_imagegen/v04/bg-four-regions-quality-r2.png`에서 출발한다. 띠 자르기 → 이음 판 → 불 끈 판 → 층 떼기 순서와 문장은 `prompts/P2_world.md` §4가 가진다. v1.3까지 여기 있던 "부드럽고 저대비·왼쪽 4분의 1은 평탄·오른쪽 절반 비움" 들판 프롬프트는 배경을 지나치게 단순하게 만들어(v04 `00-field-composite`) 폐기했다.
 
 ---
 

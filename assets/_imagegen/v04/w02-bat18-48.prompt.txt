@@ -1,0 +1,24 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x32 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+Input image role: layout and pixel-style reference only. Copy only its row and column assignment (four columns, five rows, row 4 holding two sprites and two empty cells), its even cell spacing, its outline weight and its pixel-block size. Do NOT draw a rat and do not copy its poses.
+
+SUBJECT AND IDENTITY: the same chibi cave bat in every cell, FACING LEFT. A compact round torso about three eighths of the cell wide and tall, two big rounded ears, tiny feet, two small bright eyes, and two membrane wings with three finger ribs each. The torso has IDENTICAL size and shape in all eighteen cells and stays at the same place unless a pose line moves it; only the wings change. It hovers: the torso's lowest block is at the vertical middle of the cell, and nothing touches the lower quarter of the cell.
+PALETTE ONLY: outline #2B2233; body #7A5A6E #3A3050; wing membrane in three flat tones #9A8A78 #6E5A48 #4A3F55 used ONLY on the wings; eyes #FFE38A used ONLY on the eyes; teeth #F0E6CC.
+
+LAYOUT: exactly 18 sprites in exactly 4 equal columns and 5 equal rows of identical cells, each cell 32:32 (width to height), evenly spaced, reading order left to right then next row. Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, 1/8 of the cell height above the cell bottom, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: genuinely transparent PNG alpha channel everywhere outside the sprites, including all unused cells and gaps. No magenta, no matte, no solid backdrop, no drawn checkerboard. Crisp opaque sprite interiors, hard clean pixel edges. No soft translucent halos, fringes, shadows, vignette or glow.
+
+ROW 1 IDLE, 4 frames, 200 ms each: wings fully up; wings half down; wings fully down; wings half up.
+ROW 2 MOVE, 4 frames, 120 ms each: the same four wing positions with the body tilted slightly forward to the left; the torso stays in place.
+ROW 3 ATTACK, 4 frames, 100/80/100/160 ms: 1 wings swept back, anticipation; 2 dash: wings folded, torso three blocks further left; 3 bite, small mouth open; 4 back to the idle position.
+ROW 4 HIT, 2 frames, 70/150 ms: 1 flinch, eyes shut, wings jerk up; 2 pushed one block right. Then two empty cells.
+ROW 5 FLEE, 4 frames, 120 ms each, flying away up and to the right: 1 turning right and rising four blocks; 2 rising four more blocks; 3 smaller, about three quarters size; 4 about half size, near the top of the cell.
+No blood, no shadow on the ground, no speed lines.
+SIZE INVARIANT: identical torso scale in rows 1-4 and row 5 frames 1-2; only the explicit fleeing frames 3-4 become smaller.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+OUTPUT GEOMETRY: 1024x1280 transparent PNG. Four equal columns, five equal rows, zero outer padding. Each cell has the exact 32:32 width:height ratio, unlike the rat reference's cell shape. Keep visible empty safety margins inside each cell. Strictly eighteen sprites total. Reference images provide style and layout assignment ONLY; never copy their magenta backdrop or their creatures. Real alpha-zero background, never a painted checkerboard.

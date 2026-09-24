@@ -1,6 +1,7 @@
 # P2_world — 세계 쪽 에셋 프롬프트 (적·보스·배경·장소 소품·날씨·효과·소품·아이콘·책 UI·초상)
 
-버전 1.2 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+버전 1.3 · 2026년 9월 24일 · 대상: 이미지 생성 모델을 쓰는 제작 AI
+1.3: 배경 품질 기준 v04 네 지역 합성(D71). C-BG에서 평탄·저대비·오른쪽 절반 비움 문장 삭제, §4를 띠 자르기 → 이음 판 → 불 끈 판 → 층 떼기로 교체.
 1.2: `OPEN_DECISIONS.md` 사용자 결정(2026-09-24, 권장안) 반영 — 48 규격만(D64), 배경 가로 이음·장면 떨림은 두 번 실패 뒤 정규화가 자르기·옮기기(D66), 장소 소품 20·정예 깃발 16 × 16·입자 스프라이트·흰빛 덮기 파일 없음·박쥐 색·변형 둘째 톤·마을 중간 층 승인, 종추 별도 파일 없음.
 1.1: PROMPTS v1.2 정합 — D-BG를 PROMPTS §1로 옮김, 표시용 D-MARK 추가, SW에 색 유지 문장, NPC 정체성 블록(NB)을 PROMPTS §7로 합치고 NPC 초상은 NPC 전신 기준 시트 `n01`에서 만듦, 호각은 나무, 같은 소품의 색을 카드(AO-19·49·50)에 맞춤, 진행표·확인 필요를 PROMPTS §6.3·`OPEN_DECISIONS.md`로 옮김.
 상위 문서: `docs/art/PROMPTS.md` v1.3(이하 **PROMPTS**). 공통 블록 A~E·D-BG·S, 떼기 머리말 X(§3.2), 육안 기준 E1~E12·E21, NPC 외형(§7)은 PROMPTS에 있고 여기서 다시 적지 않는다. 색인·전체 제작 순서는 PROMPTS §5, 진행표는 PROMPTS §6.3이다. 캐릭터 쪽은 `P1_character.md`(이하 **P1**), 이벤트 장면 20개는 `P3_scenes.md`(이하 **P3**)가 가진다.
@@ -123,8 +124,8 @@ BACKGROUND: one single flat #FF00FF magenta color everywhere outside the busts, 
 **C-BG 배경 띠** (PROMPTS §3.5의 띠 문장 + 배경 외곽선 규칙을 한 블록으로)
 
 ```
-LAYOUT: a single wide horizontal pixel-art strip with an exact 4:1 aspect ratio, filling the full canvas width and placed in the vertical middle of the canvas; the area above and below the strip is one flat #FF00FF color. The strip is one side-view scene, logically 256 blocks wide and 64 blocks high. The walkable ground surface is one perfectly straight horizontal line at 7/8 of the strip height. The top quarter holds only flat sky or plain wall. Landmarks stand in the left 47% of the strip; the right half is quiet and low in detail. The leftmost and rightmost columns continue into each other so the strip tiles: no object touches or crosses the left or right edge, and the horizon and the ground meet both edges at the same height and colour.
-BACKGROUND OUTLINES: no dark outlines at all. Edges of each shape use a slightly darker shade of the same hue; nothing darker than {DARKEST}. Flat, soft, low contrast; the scene is evenly lit.
+LAYOUT: a single wide horizontal pixel-art strip with an exact 4:1 aspect ratio, filling the full canvas width and placed in the vertical middle of the canvas; the area above and below the strip is one flat #FF00FF color. The strip is one side-view scene, logically 256 blocks wide and 64 blocks high. The walkable ground surface is one perfectly straight horizontal line at 7/8 of the strip height. The leftmost and rightmost columns continue into each other so the strip tiles: no object touches or crosses the left or right edge, and the horizon and the ground meet both edges at the same height and colour.
+DETAIL AND STYLE: match the attached quality reference exactly in pixel-block size, detail density and rendering: clustered foliage with several shades, visible material texture on walls, roofs, wood and stone, overlapping terrain layers with depth, deliberate small pixel details (flowers, pebbles, planks, crystals). Spread interesting shapes across the WHOLE strip; do not leave empty halves. Shading uses darker shades of the same hue; small dark accents are fine, but no pure black and no large area darker than {DARKEST}. Do not place a long row of large brown rounded shapes right above the ground line at character height (they swallow a brown-haired character standing in front).
 ```
 
 **C-FREE 자유 배치** (크기가 서로 다른 물체 몇 개를 한 장에)
@@ -352,86 +353,30 @@ A bell's sound shockwave, 4 frames, 120 ms each: three thin concentric arcs, eac
 
 ---
 
-## 4 배경 (AO-39~42, 15 §8)
+## 4 배경 (AO-39~42, 15 §8) — v1.3: 품질 기준 합성에서 출발 (D71)
 
 ### 4.0 공통
 
-- **합성 후 분리**(PROMPTS §3.5): 장면 하나를 C-BG 띠로 생성 → 합격본에서 X로 먼 층·중간 층·가까운 층을 뗀다. 먼 층만 가려진 곳을 이어 그린다(PROMPTS §3.5의 유일한 예외).
-- 조립(합성): A(`{256x64}`) + C-BG(`{DARKEST}`는 장면마다) + 본문 + D-BG. **입력 = 합격한 들판 합성(PROMPTS §3.5 ①)**을 `Input image role: framing and style reference only: copy its strip size and position on the canvas, its ground line height, its pixel-block size and its soft outline-free style; do not copy its scenery.`로 넣는다. 들판이 합격하기 전에는 마을·폐광을 시작하지 않는다.
-- 층 떼기 문장 = PROMPTS §3.5 ②와 같은 형식: 먼 층 `Keep ONLY the {far}. Remove …, and continue the {far} naturally where they were hidden (this layer alone is fully opaque inside the strip).`, 중간·가까운 층 `Keep ONLY the {…}. Everything else inside and outside the strip becomes flat #FF00FF.`
-- **계절·낮밤은 그리지 않는다.** 기본 팔레트 한 벌만 만들고 LUT 16개(AO-44, 게임)가 봄·여름·가을·겨울 × 낮·밤을 만든다. 폐광·틈에는 LUT가 없다. 불빛은 **꺼진 채** 그리고 켜진 불빛은 겹침 파일로 뗀다(P-15).
-- 장소별 차이(H1~A4)는 장소 팔레트(게임, OD-23)와 §5 장소 소품이 낸다.
-- 가로 이음(A17)이 두 번 어긋나면 §0.5 가로 이음 행의 절차(5:1 재생성 → 정규화가 구간 선택해 자르기, D66)를 쓴다.
+- **품질 기준**: `assets/_imagegen/v04/bg-four-regions-quality-r2.png`(위에서부터 마을·들판·폐광·틈, 사용자 지정 기준 `output/pixel-art-v01/images/bg_four_regions_draft.png` 이상). 모든 배경 요청에 이 그림을 **품질·화풍 참고 입력**으로 넣는다: `Input image role: quality and style reference: match its pixel-block size, detail density, shading and colour richness.` v1.2까지의 "평탄·저대비·오른쪽 절반 비움" 방식(v04 `00-field-composite`)은 품질 미달로 폐기했다.
+- **네 장면은 이미 합성본이다.** 순서:
+  1. **띠 자르기(게임 도구, D66)**: 품질 기준 그림을 네 띠로 자른다. 띠마다 4:1에 가깝다.
+  2. **이음 판**: 띠가 좌우로 이어지지 않으면, 그 띠를 입력으로 SW + `Make this strip seamlessly tileable left to right: rework only the leftmost and rightmost eighth so they continue into each other; keep everything else exactly.`로 편집한다. 두 번 어긋나면 §0.5 이음 절차(5:1 재생성 → 도구가 구간 선택해 자르기, D66).
+  3. **불 끈 판**: 마을 창·폐광 등불이 켜져 있으면 SW + `Turn every lit window and lantern flame dark and unlit (window panes #6E6862, lantern glass #7D7B80). Change nothing else.` → 이것이 기본 판이다. 켠 판과 끈 판의 **차이 화소를 도구가 골라** 점등 겹침(`bg_town_window_lit`, `bg_mine_lantern_lit`)으로 쓴다(옷·무기 레이어와 같은 방식).
+  4. **층 떼기**: 기본 판에서 X 머리말로 먼 층·중간 층·가까운 층을 뗀다(아래 표). 먼 층만 가려진 곳을 이어 그린다. 뗀 세 층을 다시 겹쳐 기본 판과 같은지 도구가 확인한다.
+- **판독 검사**(15 §2.3, D71): 도구가 캐릭터 대기 프레임을 타일 전체에 밀며 명도 대비를 잰다. 미달 구간이 폭의 10%를 넘으면 그 층을 SW 편집(`Darken/lighten ONLY the {shape} behind the character height band by one shade`)으로 고친다.
+- **계절·낮밤은 그리지 않는다.** LUT(AO-44, 게임). 불빛은 3의 겹침 파일로만.
 
-### 4.1 들판 (AO-39) — PROMPTS §3.5 그대로
+### 4.1 층 떼기 표
 
-P0다. 여기서는 새로 쓰지 않는다. PROMPTS v1.2 §3.5 ①은 D 대신 D-BG를 쓴다(이 문서의 제안을 반영했다).
+| 장면 | 먼 층 `Keep ONLY …` | 중간 층 `Keep ONLY …` | 가까운 층 `Keep ONLY …` |
+| --- | --- | --- | --- |
+| 마을 | `the sky, clouds, distant mountains, far hills and the far village with its tower` | `the acorn-roofed inn, the timber shop with the water wheel, the stone bridge and river, the big trees, banners, lamp posts, notice board, barrels, fences and flower boxes` | `the dirt road with its grass edge and the cobble strip below it` |
+| 들판 | `the sky, clouds, distant mountains, rolling hills, far trees and the far village` | `the willow tree, the river, the plank bridge, the wooden fences, boulders and tall grass clumps` | `the grass strip with flowers, the dirt path and the cobble strip below it` |
+| 폐광 | `the rock wall, the cave depth with its pale stalactites, and the blue crystal clusters on the wall` | `the timber support frames, the mine entrance with its cart, the hanging lanterns (unlit), the crates, barrels and tools` | `the rail track and the cobble floor` |
+| 틈 | `the violet cave wall, the glowing star crack and the floating stones` | `the ruined stone arches, the stairs, the thorny vines with black roses and the boulders` | `the cobble floor` |
 
-### 4.2 마을 (AO-40) — w10·w11
-
-`{DARKEST}` = `#8E5E38`. 창 불빛 없음. 시설 배치는 AO-40을 따른다(여관·길드·치료소 = 중간 층, 대장간·잡화점 = 장소 소품. OD-10 결정으로 15 §8.1도 이렇게 고쳤다).
-
-w10 합성 본문:
-
-```
-Soft, low-contrast daytime riverside village for a calm idle game. Inside the strip, from back to front:
-Far: pale sky #B9C8FF with two flat clouds #E8EEF2; a low range of soft distant mountains #C8C2B8 #9A948C, the horizon at about one third of the strip height.
-Mid, all inside the left 47% of the strip, standing on the ground line, roof tops below the top quarter: (1) the inn 'Acorn Cap': a small cream-walled house #F0E6CC #C8C2B8 whose roof is a round brown dome shaped like an acorn cap #8E5E38 #C08A58 with a tiny stem, and a window box with flowers; (2) the guild post: a small timber house #C08A58 #8E5E38 with a green banner #6D8F5A on a pole showing a simple forked-road emblem in cream, and a notice board; (3) the clinic: a white canvas tent #F0E6CC with a small wooden water wheel beside it. Exactly four small windows in total, all dark and unlit #6E6862.
-Near: a flat dirt road #C08A58 #8E5E38 whose top edge is the ground line, a low dry-stone wall #9A948C #C8C2B8 in front of the buildings in the left part only, grass tufts #6D8F5A #8FC06A.
-The right half: only sky, mountains, road and a little grass.
-No people, no animals, no smoke, no light.
-```
-
-층 떼기(입력 = 합격 w10):
-
-| 층 | 문장 |
-| --- | --- |
-| `bg_town_far` | 먼 층 형식, `{far}` = `sky, clouds and mountains`, 지울 것 = `the buildings, banner, notice board, water wheel, stone wall, road and grass` |
-| `bg_town_mid` | `Keep ONLY the three buildings, the banner with its pole, the notice board and the water wheel.` |
-| `bg_town_near` | `Keep ONLY the dirt road, the stone wall and the grass tufts.` |
-
-w11 창 불빛 `bg_town_window_lit`: w10을 SW + `Light the four windows: fill every window pane with flat gold #FFE38A. Change nothing else; no glow around the windows.` → X + `Keep ONLY the four gold window panes.` 이 겹침에는 LUT를 적용하지 않는다(P-15).
-
-- 합격: E4 E7 E8 E11 + W5 W6 W7. 기본 3층에 따뜻한 불빛 화소가 없다(AO-40).
-
-### 4.3 폐광 (AO-41, D1 기본) — w13·w14
-
-`{DARKEST}` = `#6E6862`. 어둠은 칠하지 않는다(D3의 어둠·등불 빛 원은 게임 연출).
-
-w13 합성 본문:
-
-```
-Abandoned mine tunnel interior for a calm idle game, evenly lit mid-grey, never black: the game darkens it later. Inside the strip:
-Far: a rough rock tunnel wall filling the whole strip #9A948C #6E6862, one diagonal band of blue ore vein #5A7FA8 and a few paler stones #C8C2B8.
-Mid, inside the left 47%: two timber support arches #C08A58 #8E5E38 (two posts and a crossbeam each), their tops below the top quarter; an EMPTY iron lantern hook #7D7B80 hanging from each crossbeam; cart rails #7D7B80 on wooden sleepers #8E5E38 running along the floor across the full width.
-Near: a gravel floor #9A948C #6E6862 with a few pebbles #C8C2B8, its top edge the ground line.
-The right half: plain wall, rails and gravel only.
-No lanterns, no flames, no light beams, no creatures.
-```
-
-층 떼기: `bg_mine_far` = 먼 층 형식(`rock wall and ore vein`), `bg_mine_mid` = `Keep ONLY the two timber arches, the empty hooks and the rails with their sleepers.`, `bg_mine_near` = `Keep ONLY the gravel floor and pebbles.`
-
-w14 등불 `bg_mine_lantern_lit` 2프레임:
-1. w13을 SW + `Hang one small lit bronze lantern on each empty hook: frame #E0B06A #B07A3A, flat gold flame pane #FFE38A, no glow.` (P1 c18 합격 시 둘째 입력으로 같은 등불 모양)
-2. 1의 결과를 SW + `Change ONLY each lantern's flame pane: one block smaller and lower.`
-3. 두 결과 각각 X + `Keep ONLY the two lanterns.`
-
-- 합격: E4 E7 E8 E11 + W5 W6 W7. 기본 3층에 불빛 0.
-
-### 4.4 A4 길바뀜의 틈 먼 층 (AO-42) — w15
-
-틈은 먼 층만 바뀌고 중간·가까운 층은 폐광이다(15 §8.3). 그래서 **폐광 합성 w13을 편집**해 틈 벽을 넣고 먼 층만 뗀다(지평·바닥이 폐광과 맞는다).
-카드 색 중 `#4A3F55`(바탕)·`#7A1F33`(장미)는 L\* 30 미만이라 배경 규칙에 걸린다. 아래처럼 바꾼다(§17-14).
-
-```
-Replace ONLY the far rock wall with the wall of a dimensional rift. Keep the timber arches, hooks, rails and gravel exactly as they are.
-The rift wall: muted ash stone #9A948C #6E6862; a jagged crack in the left part of the strip, from about 8% to 23% of the width, leaking pale starlight #B9C8FF with tiny white star specks #FFFFFF; small flat stone shards #C8C2B8 floating beside it; low dark-green vines #4D6A3E with small deep-red roses #B04A42 creeping along the bottom of the wall; two cold, unlit iron candlesticks #7D7B80 on a rock ledge. Muted, low saturation. No moon, no crescent, no cup or chalice.
-```
-
-조립: SW + 위 문장 + D-BG → X + 먼 층 형식(`rift wall, crack, starlight, floating shards, vines, roses and candlesticks`). 결과 = `bg_rift_far`.
-
-- 식은 촛대(02 §6.4)는 장소 소품 대신 이 먼 층에 넣는다(§5의 20개에 넣지 않는다). 별잠 샘은 `prop_star_spring`(§8)을 쓴다.
-- 합격: E4 E7 E8 E11 + W5 W7. 초승달·잔 모양이 없다(AO-42).
+- 틈의 중간·가까운 층은 15 §8.3대로 폐광 것을 써도 된다. 기준 그림의 틈 전용 아치·계단은 장소 소품(§5)으로 옮길 수 있다(OD-09 20개 안에서 교체).
+- 합격: E4 E7 E8 E11 + W5 W6 W7 + **품질 기준과 나란히 놓았을 때 밀도가 같거나 높다**(사람 눈) + 판독 검사 통과.
 
 ### 4.5 계절·낮밤·장소 팔레트 (그림 없음)
 

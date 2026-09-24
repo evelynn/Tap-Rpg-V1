@@ -1,0 +1,24 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 48x48 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+SUBJECT AND IDENTITY: one and the same youthful androgynous human adventurer in every cell, chibi proportions about 2.2 heads tall (the head is close to half of the body height). Facing RIGHT in a slight three-quarter side view, never front-facing. Short chestnut hair (HR01) with two flat browns, medium warm skin, round dark eyes, tiny mouth. Cream quilted short tunic with elbow-length sleeves, thin brown waist cord, two or three small square repair patches, muted grey-beige trousers, brown boots. Keep every hair lock, facial feature, garment detail, body proportion and limb thickness identical across all cells. Expressive and charming, not a stiff stick figure.
+FAR-SIDE LIMBS: the arm and leg farther from the viewer are always one shade darker than the near-side limbs, so left and right steps are distinguishable.
+PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord and boots #8E5E38; trousers #C8C2B8 #9A948C.
+
+LAYOUT: exactly 3 sprites in exactly 3 equal columns and 1 equal rows of identical square cells, evenly spaced, reading order left to right then next row. 
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell. Every figure's lowest point (feet, or hips when seated, or body when lying) sits on the SAME local ground line in its cell, about 10% above the cell bottom; no ground line is drawn. The body's horizontal center is at the same local x in every cell unless the pose itself moves it.
+BACKGROUND: genuinely transparent PNG with alpha=0 throughout every gap and unused cell. No magenta, matte, opaque backdrop, painted checkerboard, grid lines, guide marks, shadow, halos or vignette. Every sprite interior and its hard dark outline is opaque. Preserve crisp uniform square pixel blocks.
+
+SCALE: exactly the figure scale of the input sheet. A standing figure is about four fifths of the cell height, the top of the head about one eighth of the cell height below the cell top, and the head about three eighths of the cell width. Seated, crouched and lying poses keep the same head size.
+
+Input image role: image 1 is the exact character and supplies cells 1 and 3; image 2 supplies cell 2. Copy the identity, pixel-block size and figure size relative to the cell exactly. Do not copy the layouts.
+THREE HEAD POSES of the same fully dressed character, no held objects, no sword, no bread:
+1 UPRIGHT: the relaxed idle stance of image 1, row 1 frame 1, head upright.
+2 BOWED: the interact pose of image 2, row 3 frame 2: standing, head bowed forward one step so the face looks down, the front hand gripping forward at waist height.
+3 LYING: the sleep pose of image 1, row 4 frame 1: lying on its side, head to the right resting on the lower arm, eyes closed.
+The head, hair and face are exactly the same size in all three cells; only the head angle differs.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+BACKGROUND: genuinely transparent PNG with alpha=0 throughout every gap and unused cell. No magenta, matte, opaque backdrop, painted checkerboard, grid lines, guide marks, shadow, halos or vignette. Every sprite interior and its hard dark outline is opaque. Preserve crisp uniform square pixel blocks.

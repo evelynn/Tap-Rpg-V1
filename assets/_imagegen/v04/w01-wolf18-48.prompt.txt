@@ -1,0 +1,23 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 48x32 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+Input image role: layout and pixel-style reference only. Copy only its row and column assignment (four columns, five rows, row 4 holding two sprites and two empty cells), its even cell spacing, its outline weight and its pixel-block size. Do NOT draw a rat and do not copy its poses.
+
+SUBJECT AND IDENTITY: the same chibi river wolf in every cell, a four-legged canine seen from the side, FACING LEFT. Big round head about two fifths of the body length, two tall pointed ears, short muzzle, small amber eyes, a fluffy cream chest ruff, a thick bushy tail, sturdy short legs. A cute storybook game enemy, never realistic, never a fox or a standing figure. Standing height about four fifths of the cell height. Keep ear size, ruff, tail and proportions identical in every cell.
+PALETTE ONLY: outline #2B2233; fur #8A96A6 #6C6A70; chest ruff #F0E6CC; inner ear #A0664A; eyes #FFE38A; teeth #F0E6CC; at most three blocks of #B04A42 inside an open mouth. The chest ruff is one clearly separate flat cream shape.
+
+LAYOUT: exactly 18 sprites in exactly 4 equal columns and 5 equal rows of identical cells, each cell 48:32 (width to height), evenly spaced, reading order left to right then next row. Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, 1/8 of the cell height above the cell bottom, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: genuinely transparent PNG alpha channel everywhere outside the sprites, including all unused cells and gaps. No magenta, no matte, no solid backdrop, no drawn checkerboard. Crisp opaque sprite interiors, hard clean pixel edges. No soft translucent halos, fringes, shadows, vignette or glow.
+
+ROW 1 IDLE, 4 frames, 200 ms each: 1 standing; 2 breathe in, chest one block higher; 3 exactly the same as 1; 4 one ear twitches back.
+ROW 2 MOVE, 4 frames, 120 ms each, trotting in place: 1 near forepaw forward, far hind paw back; 2 body one block lower, legs gathering; 3 opposite legs forward; 4 body one block higher, legs passing. Planted paws never slide.
+ROW 3 ATTACK, 4 frames, 100/80/100/160 ms, a lunging bite to the left: 1 crouch, head low; 2 leap, all paws three blocks above the ground line; 3 bite, jaws open forward; 4 land back on the ground line.
+ROW 4 HIT, 2 frames, 70/150 ms: 1 flinch, eyes squeezed shut; 2 recoil one block to the right. Then two empty cells.
+ROW 5 FLEE, 4 frames, 120 ms each, running away to the RIGHT: 1 turns to face right; 2 tail tucked tightly under the belly, silhouette clearly narrower; 3 leaping away, tail still tucked; 4 a smaller escaping wolf, about half size. Frightened and cute, never hurt, lying down or defeated.
+No tongue, no blood, no ground, no dust, no speed lines.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+OUTPUT GEOMETRY: 1536x1280 transparent PNG. Four equal columns, five equal rows, zero outer padding. Each cell has the exact 48:32 width:height ratio, unlike the rat reference's cell shape. Keep visible empty safety margins inside each cell. Strictly eighteen sprites total. Reference images provide style and layout assignment ONLY; never copy their magenta backdrop or their creatures. Real alpha-zero background, never a painted checkerboard.
