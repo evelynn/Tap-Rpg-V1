@@ -1,0 +1,534 @@
+{
+  "name": "chr_weapon",
+  "family": "weapon",
+  "note": "무기 1종당 한 장. 셀 80×64, 몸체 셀 원점 = (16,16)(D65). 자리표시 몸은 손 위치 기준일 뿐 납품에 그리지 않는다",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 3,
+  "cell": [
+    80,
+    64
+  ],
+  "cell_px": [
+    240,
+    192
+  ],
+  "grid": {
+    "cols": 6,
+    "rows": 3,
+    "x0": 48,
+    "y0": 224,
+    "width": 1440,
+    "height": 576
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "attack",
+      "frames": 6,
+      "labels": [
+        "attack 1",
+        "attack 2",
+        "attack 3",
+        "attack 4",
+        "attack 5",
+        "attack 6"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "hit",
+      "frames": 3,
+      "labels": [
+        "hit 1",
+        "hit 2",
+        "hit 3"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "equip",
+      "frames": 1,
+      "labels": [
+        "equip 1"
+      ],
+      "lift": [
+        0
+      ],
+      "height": [
+        null
+      ]
+    }
+  ],
+  "used_cells": 10,
+  "empty_cells": 8,
+  "placeholder": {
+    "source": "assets/game/ref_actions18_48.png",
+    "height": 39,
+    "note": "자리표시는 크기·위치 기준일 뿐이다. 생성기는 그 자리에 새로 그린다(자세는 행 동작을 따른다)"
+  },
+  "files": {
+    "grid": "chr_weapon.grid.png",
+    "placeholder": "chr_weapon.placeholder.png",
+    "silhouette": "chr_weapon.silhouette.png"
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "attack",
+      "frame": 0,
+      "label": "attack 1",
+      "used": true,
+      "rect": [
+        48,
+        224,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        1
+      ]
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "attack",
+      "frame": 1,
+      "label": "attack 2",
+      "used": true,
+      "rect": [
+        288,
+        224,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        1,
+        1
+      ]
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "attack",
+      "frame": 2,
+      "label": "attack 3",
+      "used": true,
+      "rect": [
+        528,
+        224,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        2,
+        1
+      ]
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "attack",
+      "frame": 3,
+      "label": "attack 4",
+      "used": true,
+      "rect": [
+        768,
+        224,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        3,
+        1
+      ]
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "attack",
+      "frame": 4,
+      "label": "attack 5",
+      "used": true,
+      "rect": [
+        1008,
+        224,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        4,
+        1
+      ]
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "action": "attack",
+      "frame": 5,
+      "label": "attack 6",
+      "used": true,
+      "rect": [
+        1248,
+        224,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        5,
+        1
+      ]
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "hit",
+      "frame": 0,
+      "label": "hit 1",
+      "used": true,
+      "rect": [
+        48,
+        416,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "hit",
+      "frame": 1,
+      "label": "hit 2",
+      "used": true,
+      "rect": [
+        288,
+        416,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        1,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "hit",
+      "frame": 2,
+      "label": "hit 3",
+      "used": true,
+      "rect": [
+        528,
+        416,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        2,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        416,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "action": "hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1008,
+        416,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "action": "hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1248,
+        416,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "equip",
+      "frame": 0,
+      "label": "equip 1",
+      "used": true,
+      "rect": [
+        48,
+        608,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "equip",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        288,
+        608,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "equip",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        528,
+        608,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "equip",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        608,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "action": "equip",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1008,
+        608,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "action": "equip",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1248,
+        608,
+        240,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

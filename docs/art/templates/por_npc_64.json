@@ -1,0 +1,377 @@
+{
+  "name": "por_npc_64",
+  "family": "portrait64",
+  "note": "NPC 초상 11(15 §10) 64×64",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 5,
+  "cell": [
+    64,
+    64
+  ],
+  "cell_px": [
+    320,
+    320
+  ],
+  "grid": {
+    "cols": 4,
+    "rows": 3,
+    "x0": 128,
+    "y0": 32,
+    "width": 1280,
+    "height": 960
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "portrait",
+      "frames": 4,
+      "labels": [
+        "portrait 1",
+        "portrait 2",
+        "portrait 3",
+        "portrait 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "portrait",
+      "frames": 4,
+      "labels": [
+        "portrait 5",
+        "portrait 6",
+        "portrait 7",
+        "portrait 8"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "portrait",
+      "frames": 3,
+      "labels": [
+        "portrait 9",
+        "portrait 10",
+        "portrait 11"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 11,
+  "empty_cells": 1,
+  "placeholder": null,
+  "files": {
+    "grid": "por_npc_64.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "portrait",
+      "frame": 0,
+      "label": "portrait 1",
+      "used": true,
+      "rect": [
+        128,
+        32,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "portrait",
+      "frame": 1,
+      "label": "portrait 2",
+      "used": true,
+      "rect": [
+        448,
+        32,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "portrait",
+      "frame": 2,
+      "label": "portrait 3",
+      "used": true,
+      "rect": [
+        768,
+        32,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "portrait",
+      "frame": 3,
+      "label": "portrait 4",
+      "used": true,
+      "rect": [
+        1088,
+        32,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "portrait",
+      "frame": 0,
+      "label": "portrait 5",
+      "used": true,
+      "rect": [
+        128,
+        352,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "portrait",
+      "frame": 1,
+      "label": "portrait 6",
+      "used": true,
+      "rect": [
+        448,
+        352,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "portrait",
+      "frame": 2,
+      "label": "portrait 7",
+      "used": true,
+      "rect": [
+        768,
+        352,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "portrait",
+      "frame": 3,
+      "label": "portrait 8",
+      "used": true,
+      "rect": [
+        1088,
+        352,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "portrait",
+      "frame": 0,
+      "label": "portrait 9",
+      "used": true,
+      "rect": [
+        128,
+        672,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "portrait",
+      "frame": 1,
+      "label": "portrait 10",
+      "used": true,
+      "rect": [
+        448,
+        672,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "portrait",
+      "frame": 2,
+      "label": "portrait 11",
+      "used": true,
+      "rect": [
+        768,
+        672,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "portrait",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1088,
+        672,
+        320,
+        320
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

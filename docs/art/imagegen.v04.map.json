@@ -40,6 +40,7 @@
     {
       "name": "derived_d_48",
       "role": "derived",
+      "color_source": "reference",
       "ref": "ref_d_hit_discover_interact11_48",
       "subtract": ["body_d_48"],
       "order": ["body_d_48", "cloth", "weapon"],
@@ -66,6 +67,7 @@
     {
       "name": "derived_e_48",
       "role": "derived",
+      "color_source": "reference",
       "ref": "ref_e_cheer_collapse9_48",
       "subtract": ["body_e_48"],
       "order": ["body_e_48", "cloth", "weapon"],

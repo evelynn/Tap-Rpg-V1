@@ -18,7 +18,9 @@
     "demo": "tsx tools/demo/src/cli.ts",
     "art:check": "tsx tools/art-check/src/cli.ts check",
     "art:normalize": "tsx tools/art-check/src/cli.ts normalize",
-    "art:preview": "tsx tools/art-check/src/cli.ts preview"
+    "art:preview": "tsx tools/art-check/src/cli.ts preview",
+    "art:template": "tsx tools/art-check/src/cli.ts template",
+    "art:gate": "tsx tools/art-check/src/cli.ts gate"
   },
   "pnpm": {
     "overrides": {

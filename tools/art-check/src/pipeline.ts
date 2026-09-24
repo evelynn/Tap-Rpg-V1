@@ -11,6 +11,7 @@ import {
   stackLayers,
   type DeriveCellReport,
   type DeriveOptions,
+  type LayerColorStats,
   type OverlapCell,
   type RecomposeCell,
   type StackSlot,
@@ -129,6 +130,8 @@ export interface DerivedRun {
   ref: EntryResult
   /** 부류 순서 */
   classes: { name: string; output: string; raster: Raster }[]
+  /** 색 출처 reference일 때만: 색을 바꾼 빼는 레이어(subtract 순서), 아니면 빈 배열 */
+  layers: { name: string; output: string; raster: Raster }[]
   /** 그리기 순서대로 쌓은 재합성 */
   recomposed: Raster
   options: DeriveOptions & { minRecompose: number }
@@ -167,10 +170,12 @@ export function runDerived(norm: Normalizer, e: DerivedEntry, minRecompose?: num
       order,
       classes: e.classes.map((c) => ({ name: c.name, core: c.core, extra: c.extra ?? [], place: c.place, loose: c.loose ?? [] })),
       groupOf: (rgb) => groupOf.get(rgb),
+      colorSource: e.color_source ?? 'layer',
     },
     options,
   )
-  const stack = order.map((s) => ('raster' in s ? s.raster : result.layers[s.cls]!))
+  const recolored = new Map((result.recolored ?? []).map((l) => [l.layer, l.raster]))
+  const stack = order.map((s) => ('raster' in s ? recolored.get(s.layer) ?? s.raster : result.layers[s.cls]!))
   const recomposed = stackLayers(ref.raster.width, ref.raster.height, stack)
   const recompose = compareRecompose(ref.raster, recomposed, refEntry.cell, refEntry.grid, filled, options.matchDistance, options.minRecompose)
   const overlap = e.classes.flatMap((c, k) =>
@@ -180,6 +185,10 @@ export function runDerived(norm: Normalizer, e: DerivedEntry, minRecompose?: num
     entry: e,
     ref,
     classes: e.classes.map((c, k) => ({ name: c.name, output: `${e.name}_${c.name}`, raster: result.layers[k]! })),
+    layers: e.subtract.flatMap((n) => {
+      const r = recolored.get(n)
+      return r === undefined ? [] : [{ name: n, output: `${e.name}_${n}`, raster: r }]
+    }),
     recomposed,
     options,
     cells: result.cells,
@@ -193,7 +202,7 @@ export function runDerived(norm: Normalizer, e: DerivedEntry, minRecompose?: num
 export function writeDerived(lm: LoadedMap, run: DerivedRun): { files: string[]; json: string } {
   mkdirSync(lm.outDir, { recursive: true })
   const files: string[] = []
-  for (const c of run.classes) {
+  for (const c of [...run.classes, ...run.layers]) {
     const png = join(lm.outDir, `${c.output}.png`)
     writeFileSync(png, encodeIndexedPng(c.raster.width, c.raster.height, c.raster.rgba))
     files.push(png)
@@ -208,7 +217,8 @@ export function writeDerived(lm: LoadedMap, run: DerivedRun): { files: string[];
     subtract: e.subtract,
     order: e.order,
     classes: e.classes,
-    outputs: run.classes.map((c) => c.output),
+    color_source: e.color_source ?? 'layer',
+    outputs: [...run.classes, ...run.layers].map((c) => c.output),
     options: run.options,
     pass: run.pass,
     totals: {
@@ -219,10 +229,26 @@ export function writeDerived(lm: LoadedMap, run: DerivedRun): { files: string[];
       residual: run.cells.reduce((s, c) => s + c.residual_no_class + c.residual_blocked + c.residual_unreached + c.residual_rejected, 0),
       recompose_min: Math.min(...run.recompose.map((r) => r.rate)),
       recompose_mean: Math.round((run.recompose.reduce((s, r) => s + r.rate, 0) / Math.max(1, run.recompose.length)) * 10000) / 10000,
+      ...(run.layers.length === 0 ? {} : { layers: layerTotals(run), missing: run.cells.reduce((s, c) => s + (c.missing ?? 0), 0) }),
     },
     cells: run.cells.map((c) => ({ ...c, recompose: recomposeByCell.get(`${c.col},${c.row}`) ?? null })),
     overlap: run.overlap,
   }
   writeFileSync(json, JSON.stringify(report, null, 2) + '\n')
   return { files, json }
+}
+
+/** 색 출처 reference: 빼는 레이어별 칸 합계와 평균 색 이동(바뀐 화소 기준) */
+export function layerTotals(run: DerivedRun): Record<string, LayerColorStats & { mean_shift: number }> {
+  const out: Record<string, LayerColorStats & { mean_shift: number }> = {}
+  for (const l of run.layers) {
+    const t: LayerColorStats = { visible: 0, recolored: 0, shift_sum: 0, grown: 0, absorbed: 0, hidden: 0, trimmed: 0, dropped: 0 }
+    for (const c of run.cells) {
+      const s = c.layers?.[l.name]
+      if (s === undefined) continue
+      for (const k of Object.keys(t) as (keyof LayerColorStats)[]) t[k] += s[k]
+    }
+    out[l.name] = { ...t, mean_shift: t.recolored === 0 ? 0 : Math.round((t.shift_sum / t.recolored) * 10) / 10 }
+  }
+  return out
 }

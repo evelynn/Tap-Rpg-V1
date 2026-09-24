@@ -1,0 +1,168 @@
+{
+  "name": "scene_event",
+  "family": "scene",
+  "note": "이벤트 장면 128×64 × 4프레임 = 512×64 띠(15 §9.3). 지면선 y 56",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 3,
+  "cell": [
+    128,
+    64
+  ],
+  "cell_px": [
+    384,
+    192
+  ],
+  "grid": {
+    "cols": 4,
+    "rows": 1,
+    "x0": 0,
+    "y0": 416,
+    "width": 1536,
+    "height": 192
+  },
+  "align": "none",
+  "ground_y": 56,
+  "ground_y_px": [
+    584
+  ],
+  "bottom": 55,
+  "center_x": null,
+  "margin": 0,
+  "fill": "opaque",
+  "ground_band": true,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "scene",
+      "frames": 4,
+      "labels": [
+        "scene 1",
+        "scene 2",
+        "scene 3",
+        "scene 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 4,
+  "empty_cells": 0,
+  "placeholder": null,
+  "files": {
+    "grid": "scene_event.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "scene",
+      "frame": 0,
+      "label": "scene 1",
+      "used": true,
+      "rect": [
+        0,
+        416,
+        384,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "scene",
+      "frame": 1,
+      "label": "scene 2",
+      "used": true,
+      "rect": [
+        384,
+        416,
+        384,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "scene",
+      "frame": 2,
+      "label": "scene 3",
+      "used": true,
+      "rect": [
+        768,
+        416,
+        384,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "scene",
+      "frame": 3,
+      "label": "scene 4",
+      "used": true,
+      "rect": [
+        1152,
+        416,
+        384,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

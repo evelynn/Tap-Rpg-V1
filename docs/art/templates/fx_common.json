@@ -1,0 +1,1229 @@
+{
+  "name": "fx_common",
+  "family": "fx",
+  "note": "공용 효과 6종 32프레임(15 §9.1)",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 3,
+  "cell": [
+    48,
+    48
+  ],
+  "cell_px": [
+    144,
+    144
+  ],
+  "grid": {
+    "cols": 8,
+    "rows": 6,
+    "x0": 192,
+    "y0": 80,
+    "width": 1152,
+    "height": 864
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "fx_hit",
+      "frames": 4,
+      "labels": [
+        "fx_hit 1",
+        "fx_hit 2",
+        "fx_hit 3",
+        "fx_hit 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "fx_heal",
+      "frames": 6,
+      "labels": [
+        "fx_heal 1",
+        "fx_heal 2",
+        "fx_heal 3",
+        "fx_heal 4",
+        "fx_heal 5",
+        "fx_heal 6"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "fx_sparkle",
+      "frames": 4,
+      "labels": [
+        "fx_sparkle 1",
+        "fx_sparkle 2",
+        "fx_sparkle 3",
+        "fx_sparkle 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 3,
+      "action": "fx_levelup",
+      "frames": 8,
+      "labels": [
+        "fx_levelup 1",
+        "fx_levelup 2",
+        "fx_levelup 3",
+        "fx_levelup 4",
+        "fx_levelup 5",
+        "fx_levelup 6",
+        "fx_levelup 7",
+        "fx_levelup 8"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 4,
+      "action": "fx_injury",
+      "frames": 4,
+      "labels": [
+        "fx_injury 1",
+        "fx_injury 2",
+        "fx_injury 3",
+        "fx_injury 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 5,
+      "action": "fx_curse",
+      "frames": 6,
+      "labels": [
+        "fx_curse 1",
+        "fx_curse 2",
+        "fx_curse 3",
+        "fx_curse 4",
+        "fx_curse 5",
+        "fx_curse 6"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 32,
+  "empty_cells": 16,
+  "placeholder": null,
+  "files": {
+    "grid": "fx_common.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": 0,
+      "label": "fx_hit 1",
+      "used": true,
+      "rect": [
+        192,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": 1,
+      "label": "fx_hit 2",
+      "used": true,
+      "rect": [
+        336,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": 2,
+      "label": "fx_hit 3",
+      "used": true,
+      "rect": [
+        480,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": 3,
+      "label": "fx_hit 4",
+      "used": true,
+      "rect": [
+        624,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        912,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1056,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "action": "fx_hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1200,
+        80,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": 0,
+      "label": "fx_heal 1",
+      "used": true,
+      "rect": [
+        192,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": 1,
+      "label": "fx_heal 2",
+      "used": true,
+      "rect": [
+        336,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": 2,
+      "label": "fx_heal 3",
+      "used": true,
+      "rect": [
+        480,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": 3,
+      "label": "fx_heal 4",
+      "used": true,
+      "rect": [
+        624,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": 4,
+      "label": "fx_heal 5",
+      "used": true,
+      "rect": [
+        768,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": 5,
+      "label": "fx_heal 6",
+      "used": true,
+      "rect": [
+        912,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1056,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "action": "fx_heal",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1200,
+        224,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": 0,
+      "label": "fx_sparkle 1",
+      "used": true,
+      "rect": [
+        192,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": 1,
+      "label": "fx_sparkle 2",
+      "used": true,
+      "rect": [
+        336,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": 2,
+      "label": "fx_sparkle 3",
+      "used": true,
+      "rect": [
+        480,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": 3,
+      "label": "fx_sparkle 4",
+      "used": true,
+      "rect": [
+        624,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        912,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1056,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "action": "fx_sparkle",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1200,
+        368,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 0,
+      "label": "fx_levelup 1",
+      "used": true,
+      "rect": [
+        192,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 1,
+      "label": "fx_levelup 2",
+      "used": true,
+      "rect": [
+        336,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 2,
+      "label": "fx_levelup 3",
+      "used": true,
+      "rect": [
+        480,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 3,
+      "label": "fx_levelup 4",
+      "used": true,
+      "rect": [
+        624,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 4,
+      "label": "fx_levelup 5",
+      "used": true,
+      "rect": [
+        768,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 5,
+      "label": "fx_levelup 6",
+      "used": true,
+      "rect": [
+        912,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 6,
+      "label": "fx_levelup 7",
+      "used": true,
+      "rect": [
+        1056,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "action": "fx_levelup",
+      "frame": 7,
+      "label": "fx_levelup 8",
+      "used": true,
+      "rect": [
+        1200,
+        512,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": 0,
+      "label": "fx_injury 1",
+      "used": true,
+      "rect": [
+        192,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": 1,
+      "label": "fx_injury 2",
+      "used": true,
+      "rect": [
+        336,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": 2,
+      "label": "fx_injury 3",
+      "used": true,
+      "rect": [
+        480,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": 3,
+      "label": "fx_injury 4",
+      "used": true,
+      "rect": [
+        624,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        912,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1056,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 4,
+      "action": "fx_injury",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1200,
+        656,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": 0,
+      "label": "fx_curse 1",
+      "used": true,
+      "rect": [
+        192,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": 1,
+      "label": "fx_curse 2",
+      "used": true,
+      "rect": [
+        336,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": 2,
+      "label": "fx_curse 3",
+      "used": true,
+      "rect": [
+        480,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": 3,
+      "label": "fx_curse 4",
+      "used": true,
+      "rect": [
+        624,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": 4,
+      "label": "fx_curse 5",
+      "used": true,
+      "rect": [
+        768,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": 5,
+      "label": "fx_curse 6",
+      "used": true,
+      "rect": [
+        912,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1056,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 5,
+      "action": "fx_curse",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1200,
+        800,
+        144,
+        144
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

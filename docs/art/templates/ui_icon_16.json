@@ -1,0 +1,856 @@
+{
+  "name": "ui_icon_16",
+  "family": "icon16",
+  "note": "16×16 아이콘 27(15 §11)",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 11,
+  "cell": [
+    16,
+    16
+  ],
+  "cell_px": [
+    176,
+    176
+  ],
+  "grid": {
+    "cols": 8,
+    "rows": 4,
+    "x0": 64,
+    "y0": 160,
+    "width": 1408,
+    "height": 704
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "hp_fatigue",
+      "frames": 8,
+      "labels": [
+        "hp 1",
+        "hp 2",
+        "hp 3",
+        "hp 4",
+        "fatigue 1",
+        "fatigue 2",
+        "fatigue 3",
+        "fatigue 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "injury_special",
+      "frames": 7,
+      "labels": [
+        "injury light1",
+        "injury light2",
+        "injury heavy",
+        "paused",
+        "settling",
+        "curse",
+        "vampire"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "mark_attitude",
+      "frames": 6,
+      "labels": [
+        "choice mark",
+        "heir mark",
+        "attitude 1",
+        "attitude 2",
+        "attitude 3",
+        "menu"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 3,
+      "action": "slot_tray",
+      "frames": 6,
+      "labels": [
+        "slot 1",
+        "slot 2",
+        "slot 3",
+        "slot 4",
+        "tray basic",
+        "tray choice dot"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 27,
+  "empty_cells": 5,
+  "placeholder": null,
+  "files": {
+    "grid": "ui_icon_16.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 0,
+      "label": "hp 1",
+      "used": true,
+      "rect": [
+        64,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 1,
+      "label": "hp 2",
+      "used": true,
+      "rect": [
+        240,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 2,
+      "label": "hp 3",
+      "used": true,
+      "rect": [
+        416,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 3,
+      "label": "hp 4",
+      "used": true,
+      "rect": [
+        592,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 4,
+      "label": "fatigue 1",
+      "used": true,
+      "rect": [
+        768,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 5,
+      "label": "fatigue 2",
+      "used": true,
+      "rect": [
+        944,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 6,
+      "label": "fatigue 3",
+      "used": true,
+      "rect": [
+        1120,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 0,
+      "action": "hp_fatigue",
+      "frame": 7,
+      "label": "fatigue 4",
+      "used": true,
+      "rect": [
+        1296,
+        160,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 0,
+      "label": "injury light1",
+      "used": true,
+      "rect": [
+        64,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 1,
+      "label": "injury light2",
+      "used": true,
+      "rect": [
+        240,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 2,
+      "label": "injury heavy",
+      "used": true,
+      "rect": [
+        416,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 3,
+      "label": "paused",
+      "used": true,
+      "rect": [
+        592,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 4,
+      "label": "settling",
+      "used": true,
+      "rect": [
+        768,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 5,
+      "label": "curse",
+      "used": true,
+      "rect": [
+        944,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 1,
+      "action": "injury_special",
+      "frame": 6,
+      "label": "vampire",
+      "used": true,
+      "rect": [
+        1120,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 1,
+      "action": "injury_special",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1296,
+        336,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": 0,
+      "label": "choice mark",
+      "used": true,
+      "rect": [
+        64,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": 1,
+      "label": "heir mark",
+      "used": true,
+      "rect": [
+        240,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": 2,
+      "label": "attitude 1",
+      "used": true,
+      "rect": [
+        416,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": 3,
+      "label": "attitude 2",
+      "used": true,
+      "rect": [
+        592,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": 4,
+      "label": "attitude 3",
+      "used": true,
+      "rect": [
+        768,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": 5,
+      "label": "menu",
+      "used": true,
+      "rect": [
+        944,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1120,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 2,
+      "action": "mark_attitude",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1296,
+        512,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": 0,
+      "label": "slot 1",
+      "used": true,
+      "rect": [
+        64,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": 1,
+      "label": "slot 2",
+      "used": true,
+      "rect": [
+        240,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": 2,
+      "label": "slot 3",
+      "used": true,
+      "rect": [
+        416,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": 3,
+      "label": "slot 4",
+      "used": true,
+      "rect": [
+        592,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": 4,
+      "label": "tray basic",
+      "used": true,
+      "rect": [
+        768,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": 5,
+      "label": "tray choice dot",
+      "used": true,
+      "rect": [
+        944,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 6,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1120,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 7,
+      "row": 3,
+      "action": "slot_tray",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1296,
+        688,
+        176,
+        176
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

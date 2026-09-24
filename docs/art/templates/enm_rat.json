@@ -1,0 +1,760 @@
+{
+  "name": "enm_rat",
+  "family": "rat",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 8,
+  "cell": [
+    32,
+    24
+  ],
+  "cell_px": [
+    256,
+    192
+  ],
+  "grid": {
+    "cols": 4,
+    "rows": 5,
+    "x0": 256,
+    "y0": 32,
+    "width": 1024,
+    "height": 960
+  },
+  "align": "ground",
+  "ground_y": 20,
+  "ground_y_px": [
+    192,
+    384,
+    576,
+    768,
+    960
+  ],
+  "bottom": 19,
+  "center_x": 15,
+  "margin": 3,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "idle",
+      "frames": 4,
+      "labels": [
+        "idle 1",
+        "idle 2",
+        "idle 3",
+        "idle 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "row": 1,
+      "action": "move",
+      "frames": 4,
+      "labels": [
+        "move 1",
+        "move 2",
+        "move 3",
+        "move 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        15,
+        15,
+        15,
+        15
+      ]
+    },
+    {
+      "row": 2,
+      "action": "attack",
+      "frames": 4,
+      "labels": [
+        "attack 1",
+        "attack 2",
+        "attack 3",
+        "attack 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 3,
+      "action": "hit",
+      "frames": 2,
+      "labels": [
+        "hit 1",
+        "hit 2"
+      ],
+      "lift": [
+        0,
+        0
+      ],
+      "height": [
+        15,
+        15
+      ]
+    },
+    {
+      "row": 4,
+      "action": "exit",
+      "frames": 4,
+      "labels": [
+        "exit 1",
+        "exit 2",
+        "exit 3",
+        "exit 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ],
+      "note": "달아나며 줄어든다"
+    }
+  ],
+  "used_cells": 18,
+  "empty_cells": 2,
+  "placeholder": {
+    "source": "assets/game/rat18_48.png",
+    "height": 14,
+    "note": "자리표시는 크기·위치 기준일 뿐이다. 생성기는 그 자리에 새로 그린다(자세는 행 동작을 따른다)"
+  },
+  "files": {
+    "grid": "enm_rat.grid.png",
+    "placeholder": "enm_rat.placeholder.png",
+    "silhouette": "enm_rat.silhouette.png"
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "idle",
+      "frame": 0,
+      "label": "idle 1",
+      "used": true,
+      "rect": [
+        256,
+        32,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        184,
+        192
+      ],
+      "center_x": 15,
+      "center_px": [
+        376,
+        384
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "idle",
+      "frame": 1,
+      "label": "idle 2",
+      "used": true,
+      "rect": [
+        512,
+        32,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        184,
+        192
+      ],
+      "center_x": 15,
+      "center_px": [
+        632,
+        640
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "idle",
+      "frame": 2,
+      "label": "idle 3",
+      "used": true,
+      "rect": [
+        768,
+        32,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        184,
+        192
+      ],
+      "center_x": 15,
+      "center_px": [
+        888,
+        896
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "idle",
+      "frame": 3,
+      "label": "idle 4",
+      "used": true,
+      "rect": [
+        1024,
+        32,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        184,
+        192
+      ],
+      "center_x": 15,
+      "center_px": [
+        1144,
+        1152
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "move",
+      "frame": 0,
+      "label": "move 1",
+      "used": true,
+      "rect": [
+        256,
+        224,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        376,
+        384
+      ],
+      "center_x": 15,
+      "center_px": [
+        376,
+        384
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "move",
+      "frame": 1,
+      "label": "move 2",
+      "used": true,
+      "rect": [
+        512,
+        224,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        376,
+        384
+      ],
+      "center_x": 15,
+      "center_px": [
+        632,
+        640
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "move",
+      "frame": 2,
+      "label": "move 3",
+      "used": true,
+      "rect": [
+        768,
+        224,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        376,
+        384
+      ],
+      "center_x": 15,
+      "center_px": [
+        888,
+        896
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "move",
+      "frame": 3,
+      "label": "move 4",
+      "used": true,
+      "rect": [
+        1024,
+        224,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        376,
+        384
+      ],
+      "center_x": 15,
+      "center_px": [
+        1144,
+        1152
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "attack",
+      "frame": 0,
+      "label": "attack 1",
+      "used": true,
+      "rect": [
+        256,
+        416,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        568,
+        576
+      ],
+      "center_x": 15,
+      "center_px": [
+        376,
+        384
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "attack",
+      "frame": 1,
+      "label": "attack 2",
+      "used": true,
+      "rect": [
+        512,
+        416,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        568,
+        576
+      ],
+      "center_x": 15,
+      "center_px": [
+        632,
+        640
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "attack",
+      "frame": 2,
+      "label": "attack 3",
+      "used": true,
+      "rect": [
+        768,
+        416,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        568,
+        576
+      ],
+      "center_x": 15,
+      "center_px": [
+        888,
+        896
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "attack",
+      "frame": 3,
+      "label": "attack 4",
+      "used": true,
+      "rect": [
+        1024,
+        416,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        568,
+        576
+      ],
+      "center_x": 15,
+      "center_px": [
+        1144,
+        1152
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "hit",
+      "frame": 0,
+      "label": "hit 1",
+      "used": true,
+      "rect": [
+        256,
+        608,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        760,
+        768
+      ],
+      "center_x": 15,
+      "center_px": [
+        376,
+        384
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "hit",
+      "frame": 1,
+      "label": "hit 2",
+      "used": true,
+      "rect": [
+        512,
+        608,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        760,
+        768
+      ],
+      "center_x": 15,
+      "center_px": [
+        632,
+        640
+      ],
+      "height": 15,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        608,
+        256,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "action": "hit",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1024,
+        608,
+        256,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "action": "exit",
+      "frame": 0,
+      "label": "exit 1",
+      "used": true,
+      "rect": [
+        256,
+        800,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        952,
+        960
+      ],
+      "center_x": 15,
+      "center_px": [
+        376,
+        384
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "action": "exit",
+      "frame": 1,
+      "label": "exit 2",
+      "used": true,
+      "rect": [
+        512,
+        800,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        952,
+        960
+      ],
+      "center_x": 15,
+      "center_px": [
+        632,
+        640
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "action": "exit",
+      "frame": 2,
+      "label": "exit 3",
+      "used": true,
+      "rect": [
+        768,
+        800,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        952,
+        960
+      ],
+      "center_x": 15,
+      "center_px": [
+        888,
+        896
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "action": "exit",
+      "frame": 3,
+      "label": "exit 4",
+      "used": true,
+      "rect": [
+        1024,
+        800,
+        256,
+        192
+      ],
+      "bottom": 19,
+      "bottom_px": [
+        952,
+        960
+      ],
+      "center_x": 15,
+      "center_px": [
+        1144,
+        1152
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    }
+  ]
+}

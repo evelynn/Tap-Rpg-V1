@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict'
 import { describe, it } from 'node:test'
 import { compareOverlap, compareRecompose, deriveLayers, stackLayers, type DeriveClassSpec, type DeriveOptions, type StackSlot } from '../src/derive'
-import { validateMap, type ImagegenMap } from '../src/imagegen-map'
+import { derivedOutputs, validateMap, type ImagegenMap } from '../src/imagegen-map'
 import { createRaster, type Raster } from '../src/raster'
 
 // 글자 → [RGB, 팔레트 묶음]
@@ -10,6 +10,7 @@ const COLORS: Record<string, [number, string]> = {
   s: [0xe8b89a, 'skin'],
   t: [0xe3b48e, 'skin'], // s와 가중 거리 약 21(음영 차이)
   h: [0x7a4e30, 'hair'],
+  H: [0xa4523a, 'hair'], // h를 밝게 다시 칠한 머리카락(가중 거리 약 69)
   m: [0xb4b2b0, 'metal'],
   w: [0xe8e6e0, 'metal'],
   l: [0x8e5e38, 'leather'],
@@ -281,6 +282,122 @@ describe('재합성 비교', () => {
   })
 })
 
+describe('색 출처 reference (모양은 레이어, 색은 기준)', () => {
+  /** order: 이름·래스터 또는 'cloth'(CLOTH 부류). 한 칸짜리 */
+  function deriveRef(ref: Raster, order: (['cloth'] | [string, Raster])[], opts = OPTS) {
+    const slots: StackSlot[] = order.map((s) => (s[0] === 'cloth' ? { cls: 0 } : { layer: s[0], raster: s[1]! }))
+    const cell: [number, number] = [ref.width, ref.height]
+    const r = deriveLayers({ ref, cell, grid: [1, 1], filled: [true], order: slots, classes: [CLOTH], groupOf, colorSource: 'reference' }, opts)
+    const byName = new Map((r.recolored ?? []).map((l) => [l.layer, l.raster]))
+    const stack = slots.map((s) => ('raster' in s ? byName.get(s.layer)! : r.layers[s.cls]!))
+    const recompose = compareRecompose(ref, stackLayers(ref.width, ref.height, stack), cell, [1, 1], [true], opts.matchDistance, 0.98)[0]!
+    return { ...r, byName, recompose, stats: r.cells[0]!.layers! }
+  }
+
+  it('보이는 화소는 그리기 순서에서 맨 위 레이어가 기준 색으로 갖고, 가려진 화소는 생성기 색을 지킨다', () => {
+    const ref = raster([
+      'hhhhhh',
+      'tttttt',
+      'sccccs',
+      'ssssss',
+    ])
+    const body = raster([
+      'tttttt', // 머리카락 아래 — 가려짐, t 그대로
+      'ssssss', // 보임, 음영 t로
+      'tttttt', // 양 끝은 보임(s로), 가운데 4는 옷 아래라 가려짐(t 그대로)
+      'ssssss',
+    ])
+    const hair = raster([
+      'HHHHHH', // 다시 칠한 머리카락 → 기준 색 h
+      '......',
+      '......',
+      '......',
+    ])
+    const r = deriveRef(ref, [['body', body], ['cloth'], ['hair', hair]])
+    assert.deepEqual(read(r.byName.get('hair')!), ['hhhhhh', '......', '......', '......'])
+    assert.deepEqual(read(r.byName.get('body')!), ['tttttt', 'tttttt', 'stttts', 'ssssss'])
+    assert.deepEqual(read(r.layers[0]!), ['......', '......', '.cccc.', '......'])
+    assert.deepEqual(r.stats['hair'], { visible: 6, recolored: 6, shift_sum: r.stats['hair']!.shift_sum, grown: 0, absorbed: 0, hidden: 0, trimmed: 0, dropped: 0 })
+    assert.equal(r.stats['body']!.visible, 14)
+    assert.equal(r.stats['body']!.recolored, 8)
+    assert.equal(r.stats['body']!.hidden, 10)
+    assert.equal(r.recompose.rate, 1)
+    assert.equal(r.recompose.exact_rate, 1)
+  })
+
+  it('위에 부류가 없는 레이어는 색이 멀어도 그 레이어의 화소다(머리카락 아래 옷은 가질 수 없다)', () => {
+    const ref = raster(['cccc'])
+    const body = raster(['ssss'])
+    const hair = raster(['HH..'])
+    const r = deriveRef(ref, [['body', body], ['cloth'], ['hair', hair]], { ...OPTS, minCore: 1 })
+    assert.deepEqual(read(r.byName.get('hair')!), ['cc..'])
+    assert.deepEqual(read(r.layers[0]!), ['..cc'])
+    assert.deepEqual(read(r.byName.get('body')!), ['ssss'])
+    assert.equal(r.stats['body']!.hidden, 4)
+  })
+
+  it('피부 위 소매: 몸체 색과 멀면 옷, 가까우면(속옷 = 겉옷 크림) 몸체', () => {
+    const ref = raster(['cccccc'])
+    const body = raster(['cccsss'])
+    const r = deriveRef(ref, [['body', body], ['cloth']])
+    assert.deepEqual(read(r.layers[0]!), ['...ccc'])
+    // 앞 셋은 보이는 몸체(크림 속옷), 뒤 셋은 소매 아래 가려진 피부
+    assert.deepEqual(read(r.byName.get('body')!), ['cccsss'])
+    assert.equal(r.stats['body']!.visible, 3)
+    assert.equal(r.stats['body']!.hidden, 3)
+  })
+
+  it('맨 위 레이어가 삐져나온 덩어리는 색이 맞는 아래 레이어로, 실루엣 밖은 버리고, 가장자리 틈은 이웃 레이어로 넓힌다', () => {
+    const ref = raster([
+      'ssssmm..',
+      '.sos...l',
+      '.sss....',
+    ])
+    const body = raster([
+      '.sss....',
+      '.sss....',
+      '.sss....',
+    ])
+    const sword = raster([
+      '...mmmmm',
+      '...m....',
+      '...m....',
+    ])
+    const r = deriveRef(ref, [['body', body], ['cloth'], ['sword', sword]])
+    // x3 세 화소: 칼이 덮었지만 기준은 피부(손) → 몸체, 칼 화소는 버림 · (6~7,0): 기준 밖 → 버림
+    assert.deepEqual(read(r.byName.get('sword')!), ['....mm..', '........', '........'])
+    // (0,0): 어느 레이어도 안 덮은 피부 → 이웃 몸체로 넓힘 · (2,1) 눈(윤곽색): 옷이 못 가져 몸체가 흡수
+    assert.deepEqual(read(r.byName.get('body')!), ['ssss....', '.sos....', '.sss....'])
+    assert.equal(r.stats['sword']!.trimmed, 3)
+    assert.equal(r.stats['sword']!.dropped, 2)
+    assert.equal(r.stats['body']!.grown, 1)
+    assert.equal(r.stats['body']!.absorbed, 1)
+    // (7,1) 떨어진 가죽 점: 덮는 레이어도 이웃도 없어 빠짐
+    assert.equal(r.cells[0]!.missing, 1)
+    assert.equal(r.recompose.missing, 1)
+    assert.equal(r.recompose.extra, 0)
+    assert.equal(r.recompose.color_off, 0)
+  })
+
+  it('아래 레이어로 내려줄 화소가 min_core 미만 덩어리면(흩어진 음영 차이) 맨 위 레이어가 기준 색으로 갖는다', () => {
+    const ref = raster(['hhhhhh'])
+    const body = raster(['hhhhhh'])
+    const hair = raster(['wwhwww']) // w(금속색)은 h와 멀다 — 다시 칠한 화소
+    const r = deriveRef(ref, [['body', body], ['cloth'], ['hair', hair]])
+    // 내려갈 후보는 (0,0)(1,0) 2화소 + (3..5,0) 3화소 → 3화소 덩어리만 몸체로
+    assert.deepEqual(read(r.byName.get('hair')!), ['hhh...'])
+    assert.equal(r.stats['hair']!.trimmed, 3)
+    assert.equal(r.stats['body']!.visible, 3)
+  })
+
+  it('색 출처 layer(기본)는 예전처럼 빼는 레이어를 그대로 두고 recolored를 만들지 않는다', () => {
+    const ref = raster(['hh'])
+    const r = deriveLayers({ ref, cell: [2, 1], grid: [1, 1], filled: [true], order: [{ layer: 'hair', raster: raster(['HH']) }, { cls: 0 }], classes: [CLOTH], groupOf }, OPTS)
+    assert.equal(r.recolored, undefined)
+    assert.equal(r.cells[0]!.layers, undefined)
+  })
+})
+
 describe('대응표 derived 항목', () => {
   const MANIFEST = { palettes: { outline: ['#2B2233'], skin: ['#E8B89A'], metal: ['#B4B2B0'], cloth: ['#F0E6CC'] }, palette_sets: { base: ['outline', 'skin'] } }
   function map(): ImagegenMap {
@@ -335,5 +452,16 @@ describe('대응표 derived 항목', () => {
     derived(m4).subtract = ['ref']
     derived(m4).order = ['ref', 'cloth', 'weapon']
     assert.throws(() => validateMap(m4, MANIFEST), /layer여야/)
+  })
+
+  it('color_source는 layer·reference만 받고, reference면 색을 바꾼 빼는 레이어도 산출한다', () => {
+    const m1 = map()
+    ;(derived(m1) as { color_source?: string }).color_source = 'generator'
+    assert.throws(() => validateMap(m1, MANIFEST), /color_source/)
+    const m2 = map()
+    assert.deepEqual(derivedOutputs(derived(m2)), ['split_weapon', 'split_cloth'])
+    derived(m2).color_source = 'reference'
+    assert.doesNotThrow(() => validateMap(m2, MANIFEST))
+    assert.deepEqual(derivedOutputs(derived(m2)), ['split_weapon', 'split_cloth', 'split_body'])
   })
 })

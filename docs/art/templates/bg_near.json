@@ -1,0 +1,96 @@
+{
+  "name": "bg_near",
+  "family": "bg",
+  "note": "가까운 층: 지면선 y 56 아래는 빈틈 없이 채운다",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 6,
+  "cell": [
+    256,
+    64
+  ],
+  "cell_px": [
+    1536,
+    384
+  ],
+  "grid": {
+    "cols": 1,
+    "rows": 1,
+    "x0": 0,
+    "y0": 320,
+    "width": 1536,
+    "height": 384
+  },
+  "align": "none",
+  "ground_y": 56,
+  "ground_y_px": [
+    656
+  ],
+  "bottom": 55,
+  "center_x": null,
+  "margin": 0,
+  "fill": "partial",
+  "ground_band": true,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "near",
+      "frames": 1,
+      "labels": [
+        "near 1"
+      ],
+      "lift": [
+        0
+      ],
+      "height": [
+        null
+      ]
+    }
+  ],
+  "used_cells": 1,
+  "empty_cells": 0,
+  "placeholder": null,
+  "files": {
+    "grid": "bg_near.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "near",
+      "frame": 0,
+      "label": "near 1",
+      "used": true,
+      "rect": [
+        0,
+        320,
+        1536,
+        384
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

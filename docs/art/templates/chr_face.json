@@ -1,0 +1,483 @@
+{
+  "name": "chr_face",
+  "family": "head",
+  "note": "얼굴형 2 × 표정 5 + 노화 주름 2(15 §6.1)",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 6,
+  "cell": [
+    48,
+    48
+  ],
+  "cell_px": [
+    288,
+    288
+  ],
+  "grid": {
+    "cols": 5,
+    "rows": 3,
+    "x0": 48,
+    "y0": 80,
+    "width": 1440,
+    "height": 864
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "face_round",
+      "frames": 5,
+      "labels": [
+        "round_basic",
+        "round_smile",
+        "round_frown",
+        "round_closed",
+        "round_surprised"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "face_narrow",
+      "frames": 5,
+      "labels": [
+        "narrow_basic",
+        "narrow_smile",
+        "narrow_frown",
+        "narrow_closed",
+        "narrow_surprised"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "aging",
+      "frames": 2,
+      "labels": [
+        "wrinkle_veteran",
+        "wrinkle_elder"
+      ],
+      "lift": [
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 12,
+  "empty_cells": 3,
+  "placeholder": {
+    "source": "assets/game/ref_actions18_48.png",
+    "height": 40,
+    "note": "자리표시는 크기·위치 기준일 뿐이다. 생성기는 그 자리에 새로 그린다(자세는 행 동작을 따른다)"
+  },
+  "files": {
+    "grid": "chr_face.grid.png",
+    "placeholder": "chr_face.placeholder.png",
+    "silhouette": "chr_face.silhouette.png"
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "face_round",
+      "frame": 0,
+      "label": "round_basic",
+      "used": true,
+      "rect": [
+        48,
+        80,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "face_round",
+      "frame": 1,
+      "label": "round_smile",
+      "used": true,
+      "rect": [
+        336,
+        80,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "face_round",
+      "frame": 2,
+      "label": "round_frown",
+      "used": true,
+      "rect": [
+        624,
+        80,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "face_round",
+      "frame": 3,
+      "label": "round_closed",
+      "used": true,
+      "rect": [
+        912,
+        80,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "face_round",
+      "frame": 4,
+      "label": "round_surprised",
+      "used": true,
+      "rect": [
+        1200,
+        80,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "face_narrow",
+      "frame": 0,
+      "label": "narrow_basic",
+      "used": true,
+      "rect": [
+        48,
+        368,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "face_narrow",
+      "frame": 1,
+      "label": "narrow_smile",
+      "used": true,
+      "rect": [
+        336,
+        368,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "face_narrow",
+      "frame": 2,
+      "label": "narrow_frown",
+      "used": true,
+      "rect": [
+        624,
+        368,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "face_narrow",
+      "frame": 3,
+      "label": "narrow_closed",
+      "used": true,
+      "rect": [
+        912,
+        368,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "action": "face_narrow",
+      "frame": 4,
+      "label": "narrow_surprised",
+      "used": true,
+      "rect": [
+        1200,
+        368,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "aging",
+      "frame": 0,
+      "label": "wrinkle_veteran",
+      "used": true,
+      "rect": [
+        48,
+        656,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "aging",
+      "frame": 1,
+      "label": "wrinkle_elder",
+      "used": true,
+      "rect": [
+        336,
+        656,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "aging",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        624,
+        656,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "aging",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        912,
+        656,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "action": "aging",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1200,
+        656,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

@@ -1,0 +1,484 @@
+{
+  "name": "npc_ref",
+  "family": "npc",
+  "note": "NPC 전신 기준 4×3(11명)",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 6,
+  "cell": [
+    48,
+    48
+  ],
+  "cell_px": [
+    288,
+    288
+  ],
+  "grid": {
+    "cols": 4,
+    "rows": 3,
+    "x0": 192,
+    "y0": 80,
+    "width": 1152,
+    "height": 864
+  },
+  "align": "ground",
+  "ground_y": 44,
+  "ground_y_px": [
+    344,
+    632,
+    920
+  ],
+  "bottom": 43,
+  "center_x": 23,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "npc",
+      "frames": 4,
+      "labels": [
+        "npc 1",
+        "npc 2",
+        "npc 3",
+        "npc 4"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "npc",
+      "frames": 4,
+      "labels": [
+        "npc 5",
+        "npc 6",
+        "npc 7",
+        "npc 8"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "npc",
+      "frames": 3,
+      "labels": [
+        "npc 9",
+        "npc 10",
+        "npc 11"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 11,
+  "empty_cells": 1,
+  "placeholder": {
+    "source": "assets/game/ref_actions18_48.png",
+    "height": 40,
+    "note": "자리표시는 크기·위치 기준일 뿐이다. 생성기는 그 자리에 새로 그린다(자세는 행 동작을 따른다)"
+  },
+  "files": {
+    "grid": "npc_ref.grid.png",
+    "placeholder": "npc_ref.placeholder.png",
+    "silhouette": "npc_ref.silhouette.png"
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "npc",
+      "frame": 0,
+      "label": "npc 1",
+      "used": true,
+      "rect": [
+        192,
+        80,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        338,
+        344
+      ],
+      "center_x": 23,
+      "center_px": [
+        330,
+        336
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "npc",
+      "frame": 1,
+      "label": "npc 2",
+      "used": true,
+      "rect": [
+        480,
+        80,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        338,
+        344
+      ],
+      "center_x": 23,
+      "center_px": [
+        618,
+        624
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "npc",
+      "frame": 2,
+      "label": "npc 3",
+      "used": true,
+      "rect": [
+        768,
+        80,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        338,
+        344
+      ],
+      "center_x": 23,
+      "center_px": [
+        906,
+        912
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "npc",
+      "frame": 3,
+      "label": "npc 4",
+      "used": true,
+      "rect": [
+        1056,
+        80,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        338,
+        344
+      ],
+      "center_x": 23,
+      "center_px": [
+        1194,
+        1200
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "npc",
+      "frame": 0,
+      "label": "npc 5",
+      "used": true,
+      "rect": [
+        192,
+        368,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        626,
+        632
+      ],
+      "center_x": 23,
+      "center_px": [
+        330,
+        336
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "npc",
+      "frame": 1,
+      "label": "npc 6",
+      "used": true,
+      "rect": [
+        480,
+        368,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        626,
+        632
+      ],
+      "center_x": 23,
+      "center_px": [
+        618,
+        624
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "npc",
+      "frame": 2,
+      "label": "npc 7",
+      "used": true,
+      "rect": [
+        768,
+        368,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        626,
+        632
+      ],
+      "center_x": 23,
+      "center_px": [
+        906,
+        912
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "npc",
+      "frame": 3,
+      "label": "npc 8",
+      "used": true,
+      "rect": [
+        1056,
+        368,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        626,
+        632
+      ],
+      "center_x": 23,
+      "center_px": [
+        1194,
+        1200
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "npc",
+      "frame": 0,
+      "label": "npc 9",
+      "used": true,
+      "rect": [
+        192,
+        656,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        914,
+        920
+      ],
+      "center_x": 23,
+      "center_px": [
+        330,
+        336
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "npc",
+      "frame": 1,
+      "label": "npc 10",
+      "used": true,
+      "rect": [
+        480,
+        656,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        914,
+        920
+      ],
+      "center_x": 23,
+      "center_px": [
+        618,
+        624
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "npc",
+      "frame": 2,
+      "label": "npc 11",
+      "used": true,
+      "rect": [
+        768,
+        656,
+        288,
+        288
+      ],
+      "bottom": 43,
+      "bottom_px": [
+        914,
+        920
+      ],
+      "center_x": 23,
+      "center_px": [
+        906,
+        912
+      ],
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "npc",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1056,
+        656,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

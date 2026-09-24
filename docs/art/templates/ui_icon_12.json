@@ -1,0 +1,515 @@
+{
+  "name": "ui_icon_12",
+  "family": "icon12",
+  "note": "12×12 아이콘 15(행동 상태 12 + 치명 배지 1 + 생애의 책 표식 2)",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 20,
+  "cell": [
+    12,
+    12
+  ],
+  "cell_px": [
+    240,
+    240
+  ],
+  "grid": {
+    "cols": 6,
+    "rows": 3,
+    "x0": 48,
+    "y0": 152,
+    "width": 1440,
+    "height": 720
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "state",
+      "frames": 6,
+      "labels": [
+        "state 1",
+        "state 2",
+        "state 3",
+        "state 4",
+        "state 5",
+        "state 6"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "state",
+      "frames": 6,
+      "labels": [
+        "state 7",
+        "state 8",
+        "state 9",
+        "state 10",
+        "state 11",
+        "state 12"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "badge",
+      "frames": 3,
+      "labels": [
+        "fatal lantern_out",
+        "book lit",
+        "book moon"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 15,
+  "empty_cells": 3,
+  "placeholder": null,
+  "files": {
+    "grid": "ui_icon_12.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "state",
+      "frame": 0,
+      "label": "state 1",
+      "used": true,
+      "rect": [
+        48,
+        152,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "state",
+      "frame": 1,
+      "label": "state 2",
+      "used": true,
+      "rect": [
+        288,
+        152,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "state",
+      "frame": 2,
+      "label": "state 3",
+      "used": true,
+      "rect": [
+        528,
+        152,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "state",
+      "frame": 3,
+      "label": "state 4",
+      "used": true,
+      "rect": [
+        768,
+        152,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "state",
+      "frame": 4,
+      "label": "state 5",
+      "used": true,
+      "rect": [
+        1008,
+        152,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "action": "state",
+      "frame": 5,
+      "label": "state 6",
+      "used": true,
+      "rect": [
+        1248,
+        152,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "state",
+      "frame": 0,
+      "label": "state 7",
+      "used": true,
+      "rect": [
+        48,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "state",
+      "frame": 1,
+      "label": "state 8",
+      "used": true,
+      "rect": [
+        288,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "state",
+      "frame": 2,
+      "label": "state 9",
+      "used": true,
+      "rect": [
+        528,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "state",
+      "frame": 3,
+      "label": "state 10",
+      "used": true,
+      "rect": [
+        768,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "action": "state",
+      "frame": 4,
+      "label": "state 11",
+      "used": true,
+      "rect": [
+        1008,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "action": "state",
+      "frame": 5,
+      "label": "state 12",
+      "used": true,
+      "rect": [
+        1248,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "badge",
+      "frame": 0,
+      "label": "fatal lantern_out",
+      "used": true,
+      "rect": [
+        48,
+        632,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "badge",
+      "frame": 1,
+      "label": "book lit",
+      "used": true,
+      "rect": [
+        288,
+        632,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "badge",
+      "frame": 2,
+      "label": "book moon",
+      "used": true,
+      "rect": [
+        528,
+        632,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "badge",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        768,
+        632,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "action": "badge",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1008,
+        632,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "action": "badge",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1248,
+        632,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

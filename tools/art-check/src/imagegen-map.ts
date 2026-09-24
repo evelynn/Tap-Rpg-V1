@@ -82,6 +82,11 @@ export interface DerivedEntry {
   min_core?: number
   /** 재합성 칸별 합격 비율. 기본 0.98 */
   min_recompose?: number
+  /**
+   * layer(기본) = 빼는 레이어를 생성기 색 그대로 쌓는다.
+   * reference = 모양은 생성 레이어, 보이는 화소의 색은 기준 시트. 빼는 레이어마다 <파생>_<레이어>.png도 만든다
+   */
+  color_source?: 'layer' | 'reference'
 }
 
 export type MapEntry = ReferenceEntry | LayerEntry | DerivedEntry
@@ -235,6 +240,12 @@ function validateDerived(e: DerivedEntry, names: Map<string, MapEntry>, manifest
     }
     if (c.compare !== undefined) sameRefLayer(c.compare, '비교 레이어')
   }
+  if (e.color_source !== undefined && e.color_source !== 'layer' && e.color_source !== 'reference') {
+    fail(where, `color_source는 layer 또는 reference다: ${String(e.color_source)}`)
+  }
+  if (e.color_source === 'reference') {
+    for (const n of e.subtract) if (names.has(`${e.name}_${n}`)) fail(where, `산출 이름 ${e.name}_${n}이 다른 항목과 겹친다`)
+  }
   const want = [...e.subtract, ...clsNames].sort()
   const got = [...e.order].sort()
   if (want.length !== got.length || want.some((n, i) => n !== got[i])) {
@@ -246,9 +257,10 @@ function validateDerived(e: DerivedEntry, names: Map<string, MapEntry>, manifest
   if (e.min_recompose !== undefined && !(e.min_recompose >= 0 && e.min_recompose <= 1)) fail(where, 'min_recompose는 0~1이다')
 }
 
-/** 파생 항목의 부류별 산출 이름 */
+/** 파생 항목의 부류별 산출 이름. 색 출처 reference면 색을 바꾼 빼는 레이어(subtract 순서)가 뒤에 붙는다 */
 export function derivedOutputs(e: DerivedEntry): string[] {
-  return e.classes.map((c) => `${e.name}_${c.name}`)
+  const layers = e.color_source === 'reference' ? e.subtract.map((n) => `${e.name}_${n}`) : []
+  return [...e.classes.map((c) => `${e.name}_${c.name}`), ...layers]
 }
 
 /** 이름으로 항목을 찾는다. 레이어면 기준 항목도 함께 */

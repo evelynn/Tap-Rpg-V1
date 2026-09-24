@@ -13,6 +13,17 @@
 //     가려짐 : 그리기 순서에서 부류보다 위인 빼는 레이어가 불투명한 자리는 그 부류가 가질 수 없다(보이지 않는다)
 //   3 어느 부류도 갖지 않은 남은 화소 = 잔여(이유별로 센다)
 // 재합성(oracle): 빼는 레이어와 부류 레이어를 그리기 순서(15 §3.1)대로 쌓아 기준 시트와 칸마다 비교한다.
+//
+// 색 출처 reference(모양은 생성 레이어, 색은 기준 시트):
+//   1 보이는 화소 배정 = 기준 불투명 화소는 그 자리를 덮는 맨 위 빼는 레이어의 것이다.
+//     같은 재질 = 가중 거리 ≤ match_distance 또는 같은 팔레트 묶음(다시 칠한 음영).
+//     맨 위가 같은 재질이 아니고 아래 레이어가 같은 재질이면 아래 레이어의 것(삐져나온 칼 아래 손, 머리카락 앞 팔) —
+//     단 그런 화소의 8방향 덩어리가 min_core 이상일 때만(흩어진 점은 다시 칠한 음영 차이다).
+//     예외: 그 레이어보다 위에 그리는 부류가 있고(몸체 위 옷) 같은 재질이 아니면 남은 화소
+//     (피부 위 소매). 같은 재질이면 레이어에 둔다(크림 속옷 = 크림 겉옷 몸판, 눈으로 구별되지 않는다).
+//   2 남은 화소는 위 부류 나누기 규칙 그대로.
+//   3 빼는 레이어 산출 = 배정된 화소는 기준 색, 가려진 화소(위 레이어·부류 아래)와 잔여 아래에 드러난 화소는
+//     생성기 자기 색(장비를 바꿀 때 필요하다). 기준 실루엣 밖 화소는 버린다(기준에 없는 화소, 1px 어긋남).
 import { formatHex } from './manifest'
 import { colorDistance } from './normalize'
 import { blit, createRaster, type Raster } from './raster'
@@ -45,6 +56,8 @@ export interface DeriveInput {
   classes: DeriveClassSpec[]
   /** 스냅된 RGB → 팔레트 묶음 이름 */
   groupOf: (rgb: number) => string | undefined
+  /** layer(기본) = 빼는 레이어를 그대로 쓴다 · reference = 모양은 레이어, 보이는 화소의 색은 기준 시트(recolored) */
+  colorSource?: 'layer' | 'reference'
 }
 
 export interface DeriveOptions {
@@ -76,12 +89,38 @@ export interface DeriveCellReport {
   residual_offset: number
   /** 잔여 화소의 묶음별 수 */
   residual_groups: Record<string, number>
+  /** 색 출처 reference일 때만: 빼는 레이어 이름 → 색 바꾸기 통계 */
+  layers?: Record<string, LayerColorStats>
+  /** 색 출처 reference일 때만: 어느 부류·레이어도 갖지 못한 기준 화소(재합성에서 빠진다) */
+  missing?: number
+}
+
+/** 색 출처 reference에서 빼는 레이어 하나의 칸별 통계 */
+export interface LayerColorStats {
+  /** 기준에서 이 레이어가 보이는 화소 — 기준 색을 받는다(grown·absorbed 포함) */
+  visible: number
+  /** visible 가운데 레이어에도 있던 화소에서 생성기 색과 기준 색이 다른 것 */
+  recolored: number
+  /** recolored 화소의 가중 거리 합(평균 = shift_sum / recolored) */
+  shift_sum: number
+  /** 어느 레이어도 덮지 않은 기준 화소를, 이웃한 이 레이어 화소와 기준 색이 가까워 넓혀 받은 것(실루엣 가장자리 1px 어긋남) */
+  grown: number
+  /** 부류도 이웃 레이어도 갖지 않아 덮고 있던 이 레이어가 기준 색으로 흡수한 남은 화소(분류 못 한 화소 — 눈·허리끈·음영 차이 등) */
+  absorbed: number
+  /** 기준에서 더 위 레이어·부류 아래에 가려진 화소 — 생성기 색 그대로 둔다 */
+  hidden: number
+  /** 기준에서 이 레이어보다 아래 것이 보이는 자리라 버린 화소(레이어가 삐져나옴) */
+  trimmed: number
+  /** 기준 실루엣 밖이라 버린 화소 */
+  dropped: number
 }
 
 export interface DeriveResult {
   /** classes 순서, 기준 시트와 같은 크기 */
   layers: Raster[]
   cells: DeriveCellReport[]
+  /** 색 출처 reference일 때만: order에 나오는 빼는 레이어 순서(뒤 → 앞)대로, 색을 바꾼 레이어 */
+  recolored?: { layer: string; raster: Raster }[]
 }
 
 const N8: [number, number][] = [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]
@@ -138,8 +177,16 @@ export function deriveLayers(input: DeriveInput, opts: DeriveOptions = DEFAULT_D
   const inLoose = classes.map((c) => matcher([...c.core, ...(c.loose ?? [])], groupOf))
   // 부류 k보다 위(앞)에 그리는 빼는 레이어들
   const clsPos = classes.map((_, k) => order.findIndex((s) => 'cls' in s && s.cls === k))
-  const subtract = order.flatMap((s, i) => ('raster' in s ? [{ raster: s.raster, pos: i }] : []))
+  const subtract = order.flatMap((s, i) => ('raster' in s ? [{ name: s.layer, raster: s.raster, pos: i }] : []))
+  const byRef = input.colorSource === 'reference'
+  const recolored = byRef ? subtract.map((s) => ({ layer: s.name, raster: createRaster(ref.width, ref.height) })) : undefined
   const cells: DeriveCellReport[] = []
+  /** 색 출처 reference: 레이어 화소가 기준 화소와 같은 재질인가 = 가중 거리 ≤ match_distance 또는 같은 팔레트 묶음(다시 칠한 음영) */
+  const sameMaterial = (r: Raster, o: number): boolean => {
+    if (distAt(ref, r, o) <= opts.matchDistance) return true
+    const g = groupOf(rgbAt(ref, o))
+    return g !== undefined && g === groupOf(rgbAt(r, o))
+  }
 
   for (let row = 0; row < grid[1]; row++) {
     for (let col = 0; col < grid[0]; col++) {
@@ -153,21 +200,62 @@ export function deriveLayers(input: DeriveInput, opts: DeriveOptions = DEFAULT_D
       const allowed: Uint8Array[] = classes.map(() => new Uint8Array(n))
       let refPixels = 0
       const tops: (Raster | null)[] = new Array<Raster | null>(n).fill(null)
+      /** 맨 위 빼는 레이어 번호(subtract 순서), 없으면 -1 */
+      const topIdx = new Int16Array(n).fill(-1)
+      /** 색 출처 reference: 보이는 화소의 주인 레이어 번호(subtract 순서), 없으면 -1 */
+      const owner = new Int16Array(n).fill(-1)
+      /** 아래 레이어로 내려줄 후보(아래 레이어 번호 + 1). 덩어리가 min_core 미만이면 맨 위 레이어에 둔다 */
+      const passDown = new Int16Array(n)
       for (let p = 0; p < n; p++) {
         const o = at(p)
         let top: Raster | null = null
-        for (const s of subtract) if (s.raster.rgba[o + 3]! > 0) top = s.raster
+        for (let i = 0; i < subtract.length; i++) {
+          if (subtract[i]!.raster.rgba[o + 3]! === 0) continue
+          top = subtract[i]!.raster
+          topIdx[p] = i
+        }
         tops[p] = top
         if (ref.rgba[o + 3]! === 0) continue
         refPixels++
         if (top === null) outside[p] = 1
-        if (top !== null && distAt(ref, top, o) <= opts.matchDistance) continue
+        if (byRef && top !== null) {
+          const t = topIdx[p]!
+          if (sameMaterial(top, o)) {
+            owner[p] = t
+            continue
+          }
+          // 맨 위 레이어 색이 멀면, 색이 가까운 아래 레이어(칼 가장자리 아래 손 등)
+          let low = -1
+          for (let i = t - 1; i >= 0 && low < 0; i--) {
+            const r = subtract[i]!.raster
+            if (r.rgba[o + 3]! > 0 && sameMaterial(r, o)) low = i
+          }
+          if (low >= 0) {
+            owner[p] = t
+            passDown[p] = low + 1
+            continue
+          }
+          // 위에 그릴 부류가 없으면 색이 멀어도 맨 위 레이어의 화소(다시 칠한 머리카락)
+          if (!clsPos.some((cp) => cp > subtract[t]!.pos)) {
+            owner[p] = t
+            continue
+          }
+        } else if (top !== null && distAt(ref, top, o) <= opts.matchDistance) continue
         leftover[p] = 1
         const rgb = rgbAt(ref, o)
         for (let k = 0; k < K; k++) {
           if (!inPalette[k]!(rgb)) continue
           if (subtract.some((s) => s.pos > clsPos[k]! && s.raster.rgba[o + 3]! > 0)) continue
           allowed[k]![p] = 1
+        }
+      }
+
+      // 내려주기: 다시 칠한 머리카락 속 화소가 몸체의 어두운 음영과 가까워 흩어져 내려가면 머리카락에 구멍이 난다 —
+      // min_core 이상 덩어리(머리카락 앞으로 올린 팔, 칼자루를 쥔 손)만 내려준다
+      if (byRef) {
+        for (const comp of components(Uint8Array.from(passDown, (v) => (v > 0 ? 1 : 0)), cw, ch)) {
+          if (comp.length < opts.minCore) continue
+          for (const p of comp) owner[p] = passDown[p]! - 1
         }
       }
 
@@ -280,6 +368,90 @@ export function deriveLayers(input: DeriveInput, opts: DeriveOptions = DEFAULT_D
         else if (allowed.some((a) => a[p])) unreached++
         else blocked++
       }
+      let layerStats: Record<string, LayerColorStats> | undefined
+      let missing = 0
+      if (recolored !== undefined) {
+        // 부류가 갖지 않은 남은 화소:
+        //   1) 어느 레이어도 덮지 않은 자리(실루엣 가장자리 1px 어긋남)는 이웃한 레이어 화소와 기준 색이 가까우면 그 레이어로 넓힌다
+        //   2) 레이어가 덮은 자리는 맨 위 레이어가 흡수한다 — 더 위 레이어로 넓히면 눈(어두운 색)이 앞머리를 따라 머리카락으로 간다
+        //   3) 둘 다 아니면 빠짐
+        const grown = new Uint8Array(n)
+        for (let step = 0; step < Math.max(1, opts.reach); step++) {
+          const claims: [number, number][] = []
+          for (let p = 0; p < n; p++) {
+            if (!leftover[p] || label[p]! >= 0 || owner[p]! >= 0 || topIdx[p]! >= 0) continue
+            const o = at(p)
+            const x = p % cw
+            const y = (p - x) / cw
+            const votes = new Array<number>(subtract.length).fill(0)
+            for (const [dx, dy] of N8) {
+              const nx = x + dx
+              const ny = y + dy
+              if (nx < 0 || ny < 0 || nx >= cw || ny >= ch) continue
+              const q = ny * cw + nx
+              const w = owner[q]!
+              if (w < 0) continue
+              const oq = at(q)
+              if (colorDistance(ref.rgba[o]!, ref.rgba[o + 1]!, ref.rgba[o + 2]!, ref.rgba[oq]!, ref.rgba[oq + 1]!, ref.rgba[oq + 2]!) <= opts.matchDistance) votes[w]! += 1
+            }
+            let best = -1
+            for (let i = 0; i < votes.length; i++) if (votes[i]! > 0 && (best < 0 || votes[i]! >= votes[best]!)) best = i
+            if (best >= 0) claims.push([p, best])
+          }
+          if (claims.length === 0) break
+          for (const [p, i] of claims) {
+            owner[p] = i
+            grown[p] = 1
+          }
+        }
+        const absorbed = new Uint8Array(n)
+        for (let p = 0; p < n; p++) {
+          if (!leftover[p] || label[p]! >= 0 || owner[p]! >= 0) continue
+          if (topIdx[p]! >= 0) {
+            owner[p] = topIdx[p]!
+            absorbed[p] = 1
+          } else missing++
+        }
+        layerStats = {}
+        subtract.forEach((s, i) => {
+          const st: LayerColorStats = { visible: 0, recolored: 0, shift_sum: 0, grown: 0, absorbed: 0, hidden: 0, trimmed: 0, dropped: 0 }
+          const dst = recolored[i]!.raster
+          for (let p = 0; p < n; p++) {
+            const o = at(p)
+            const mine = s.raster.rgba[o + 3]! > 0
+            if (owner[p] === i) {
+              if (grown[p]) st.grown++
+              else if (absorbed[p]) st.absorbed++
+              else st.visible++
+              if (mine && !absorbed[p]) {
+                const d = distAt(ref, s.raster, o)
+                if (d > 0) {
+                  st.recolored++
+                  st.shift_sum += d
+                }
+              }
+              dst.rgba.set(ref.rgba.subarray(o, o + 4), o)
+              continue
+            }
+            if (!mine) continue
+            if (ref.rgba[o + 3]! === 0) {
+              st.dropped++
+              continue
+            }
+            // 기준에서 이 레이어보다 아래 것이 보이는 자리 = 이 레이어가 삐져나온 화소(버린다)
+            const w = owner[p]!
+            const below = w >= 0 ? subtract[w]!.pos < s.pos : label[p]! >= 0 && clsPos[label[p]!]! < s.pos
+            if (below) {
+              st.trimmed++
+              continue
+            }
+            st.hidden++
+            dst.rgba.set(s.raster.rgba.subarray(o, o + 4), o)
+          }
+          st.shift_sum = Math.round(st.shift_sum)
+          layerStats![s.name] = st
+        })
+      }
       cells.push({
         col,
         row,
@@ -293,10 +465,11 @@ export function deriveLayers(input: DeriveInput, opts: DeriveOptions = DEFAULT_D
         residual_rejected: rejectedN,
         residual_offset: offset,
         residual_groups: residualGroups,
+        ...(layerStats === undefined ? {} : { layers: layerStats, missing }),
       })
     }
   }
-  return { layers, cells }
+  return recolored === undefined ? { layers, cells } : { layers, cells, recolored }
 }
 
 export interface RecomposeCell {

@@ -1,0 +1,819 @@
+{
+  "name": "por_parts_48",
+  "family": "portrait48",
+  "note": "초상 부품 25, 48×48",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 4,
+  "cell": [
+    48,
+    48
+  ],
+  "cell_px": [
+    192,
+    192
+  ],
+  "grid": {
+    "cols": 6,
+    "rows": 5,
+    "x0": 192,
+    "y0": 32,
+    "width": 1152,
+    "height": 960
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "hair_front",
+      "frames": 6,
+      "labels": [
+        "HR01",
+        "HR02",
+        "HR03",
+        "HR04",
+        "HR05",
+        "HR06"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "face_base",
+      "frames": 5,
+      "labels": [
+        "face_round",
+        "face_narrow",
+        "wrinkle_veteran",
+        "wrinkle_elder",
+        "neck_J05"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "expr_round",
+      "frames": 4,
+      "labels": [
+        "round basic",
+        "round smile",
+        "round worry",
+        "round resolute"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 3,
+      "action": "expr_narrow",
+      "frames": 4,
+      "labels": [
+        "narrow basic",
+        "narrow smile",
+        "narrow worry",
+        "narrow resolute"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 4,
+      "action": "collar_neck",
+      "frames": 6,
+      "labels": [
+        "collar_cloth",
+        "collar_leather",
+        "collar_metal",
+        "collar_vampire",
+        "neck_J01",
+        "neck_J02"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 25,
+  "empty_cells": 5,
+  "placeholder": null,
+  "files": {
+    "grid": "por_parts_48.grid.png",
+    "placeholder": null,
+    "silhouette": null
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "hair_front",
+      "frame": 0,
+      "label": "HR01",
+      "used": true,
+      "rect": [
+        192,
+        32,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "hair_front",
+      "frame": 1,
+      "label": "HR02",
+      "used": true,
+      "rect": [
+        384,
+        32,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "hair_front",
+      "frame": 2,
+      "label": "HR03",
+      "used": true,
+      "rect": [
+        576,
+        32,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "hair_front",
+      "frame": 3,
+      "label": "HR04",
+      "used": true,
+      "rect": [
+        768,
+        32,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "hair_front",
+      "frame": 4,
+      "label": "HR05",
+      "used": true,
+      "rect": [
+        960,
+        32,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "action": "hair_front",
+      "frame": 5,
+      "label": "HR06",
+      "used": true,
+      "rect": [
+        1152,
+        32,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "face_base",
+      "frame": 0,
+      "label": "face_round",
+      "used": true,
+      "rect": [
+        192,
+        224,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "face_base",
+      "frame": 1,
+      "label": "face_narrow",
+      "used": true,
+      "rect": [
+        384,
+        224,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "face_base",
+      "frame": 2,
+      "label": "wrinkle_veteran",
+      "used": true,
+      "rect": [
+        576,
+        224,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "face_base",
+      "frame": 3,
+      "label": "wrinkle_elder",
+      "used": true,
+      "rect": [
+        768,
+        224,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 1,
+      "action": "face_base",
+      "frame": 4,
+      "label": "neck_J05",
+      "used": true,
+      "rect": [
+        960,
+        224,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 1,
+      "action": "face_base",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1152,
+        224,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "expr_round",
+      "frame": 0,
+      "label": "round basic",
+      "used": true,
+      "rect": [
+        192,
+        416,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "expr_round",
+      "frame": 1,
+      "label": "round smile",
+      "used": true,
+      "rect": [
+        384,
+        416,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "expr_round",
+      "frame": 2,
+      "label": "round worry",
+      "used": true,
+      "rect": [
+        576,
+        416,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "expr_round",
+      "frame": 3,
+      "label": "round resolute",
+      "used": true,
+      "rect": [
+        768,
+        416,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 2,
+      "action": "expr_round",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        960,
+        416,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 2,
+      "action": "expr_round",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1152,
+        416,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "expr_narrow",
+      "frame": 0,
+      "label": "narrow basic",
+      "used": true,
+      "rect": [
+        192,
+        608,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "expr_narrow",
+      "frame": 1,
+      "label": "narrow smile",
+      "used": true,
+      "rect": [
+        384,
+        608,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "expr_narrow",
+      "frame": 2,
+      "label": "narrow worry",
+      "used": true,
+      "rect": [
+        576,
+        608,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "action": "expr_narrow",
+      "frame": 3,
+      "label": "narrow resolute",
+      "used": true,
+      "rect": [
+        768,
+        608,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 3,
+      "action": "expr_narrow",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        960,
+        608,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 3,
+      "action": "expr_narrow",
+      "frame": null,
+      "label": null,
+      "used": false,
+      "rect": [
+        1152,
+        608,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "action": "collar_neck",
+      "frame": 0,
+      "label": "collar_cloth",
+      "used": true,
+      "rect": [
+        192,
+        800,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "action": "collar_neck",
+      "frame": 1,
+      "label": "collar_leather",
+      "used": true,
+      "rect": [
+        384,
+        800,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "action": "collar_neck",
+      "frame": 2,
+      "label": "collar_metal",
+      "used": true,
+      "rect": [
+        576,
+        800,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "action": "collar_neck",
+      "frame": 3,
+      "label": "collar_vampire",
+      "used": true,
+      "rect": [
+        768,
+        800,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 4,
+      "row": 4,
+      "action": "collar_neck",
+      "frame": 4,
+      "label": "neck_J01",
+      "used": true,
+      "rect": [
+        960,
+        800,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    },
+    {
+      "col": 5,
+      "row": 4,
+      "action": "collar_neck",
+      "frame": 5,
+      "label": "neck_J02",
+      "used": true,
+      "rect": [
+        1152,
+        800,
+        192,
+        192
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": null
+    }
+  ]
+}

@@ -1,0 +1,523 @@
+{
+  "name": "chr_helm",
+  "family": "head",
+  "note": "투구 5형태 × 3자세(15 §6.2)",
+  "canvas": [
+    1024,
+    1536
+  ],
+  "orientation": "portrait",
+  "S": 6,
+  "cell": [
+    48,
+    48
+  ],
+  "cell_px": [
+    288,
+    288
+  ],
+  "grid": {
+    "cols": 3,
+    "rows": 5,
+    "x0": 80,
+    "y0": 48,
+    "width": 864,
+    "height": 1440
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "miner_cap",
+      "frames": 3,
+      "labels": [
+        "miner_cap basic",
+        "miner_cap bowed",
+        "miner_cap lying"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 1,
+      "action": "leather_cap",
+      "frames": 3,
+      "labels": [
+        "leather_cap basic",
+        "leather_cap bowed",
+        "leather_cap lying"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 2,
+      "action": "hood",
+      "frames": 3,
+      "labels": [
+        "hood basic",
+        "hood bowed",
+        "hood lying"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 3,
+      "action": "plate_helm",
+      "frames": 3,
+      "labels": [
+        "plate_helm basic",
+        "plate_helm bowed",
+        "plate_helm lying"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    },
+    {
+      "row": 4,
+      "action": "bell_helm",
+      "frames": 3,
+      "labels": [
+        "bell_helm basic",
+        "bell_helm bowed",
+        "bell_helm lying"
+      ],
+      "lift": [
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 15,
+  "empty_cells": 0,
+  "placeholder": {
+    "source": "assets/game/ref_actions18_48.png",
+    "height": 40,
+    "note": "자리표시는 크기·위치 기준일 뿐이다. 생성기는 그 자리에 새로 그린다(자세는 행 동작을 따른다)"
+  },
+  "files": {
+    "grid": "chr_helm.grid.png",
+    "placeholder": "chr_helm.placeholder.png",
+    "silhouette": "chr_helm.silhouette.png"
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "miner_cap",
+      "frame": 0,
+      "label": "miner_cap basic",
+      "used": true,
+      "rect": [
+        80,
+        48,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "miner_cap",
+      "frame": 1,
+      "label": "miner_cap bowed",
+      "used": true,
+      "rect": [
+        368,
+        48,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "miner_cap",
+      "frame": 2,
+      "label": "miner_cap lying",
+      "used": true,
+      "rect": [
+        656,
+        48,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "leather_cap",
+      "frame": 0,
+      "label": "leather_cap basic",
+      "used": true,
+      "rect": [
+        80,
+        336,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "leather_cap",
+      "frame": 1,
+      "label": "leather_cap bowed",
+      "used": true,
+      "rect": [
+        368,
+        336,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "leather_cap",
+      "frame": 2,
+      "label": "leather_cap lying",
+      "used": true,
+      "rect": [
+        656,
+        336,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "hood",
+      "frame": 0,
+      "label": "hood basic",
+      "used": true,
+      "rect": [
+        80,
+        624,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "hood",
+      "frame": 1,
+      "label": "hood bowed",
+      "used": true,
+      "rect": [
+        368,
+        624,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "hood",
+      "frame": 2,
+      "label": "hood lying",
+      "used": true,
+      "rect": [
+        656,
+        624,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "plate_helm",
+      "frame": 0,
+      "label": "plate_helm basic",
+      "used": true,
+      "rect": [
+        80,
+        912,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "plate_helm",
+      "frame": 1,
+      "label": "plate_helm bowed",
+      "used": true,
+      "rect": [
+        368,
+        912,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "plate_helm",
+      "frame": 2,
+      "label": "plate_helm lying",
+      "used": true,
+      "rect": [
+        656,
+        912,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "action": "bell_helm",
+      "frame": 0,
+      "label": "bell_helm basic",
+      "used": true,
+      "rect": [
+        80,
+        1200,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "action": "bell_helm",
+      "frame": 1,
+      "label": "bell_helm bowed",
+      "used": true,
+      "rect": [
+        368,
+        1200,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "action": "bell_helm",
+      "frame": 2,
+      "label": "bell_helm lying",
+      "used": true,
+      "rect": [
+        656,
+        1200,
+        288,
+        288
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    }
+  ]
+}

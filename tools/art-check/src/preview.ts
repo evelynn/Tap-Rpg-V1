@@ -4,6 +4,7 @@
 //   window-small.x4.png      320 × 48 축소 창(03 §3) — 배경 아래 48줄, 적은 x 56~92
 //   layers.x4.png            칸마다 [기준 | 레이어 합성 | 차이] (빨강 = 기준 실루엣 밖 레이어, 파랑 = 레이어가 안 덮은 기준)
 //   derived-<파생>.x4.png     칸마다 [기준 | 재합성 | 파생 부류만 | 차이] (derive를 먼저 돌린 파생 항목만)
+//                            색 출처 reference면 다섯째 칸 [빼는 레이어만] — 부류(옷·무기)를 벗긴 모습(가려진 화소 = 생성기 색)
 //   <48>_vs_<32>.x1.png/.x2.png  32·48 실크기·2배 비교
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
@@ -211,14 +212,17 @@ function loadRaster(lm: LoadedMap, name: string): Raster {
  */
 function derivedPreview(lm: LoadedMap, e: DerivedEntry): Raster {
   const ref = loadSheet(lm, e.ref)
+  const byRef = e.color_source === 'reference'
   const outputs = new Map(e.classes.map((c, k) => [c.name, derivedOutputs(e)[k]!]))
+  if (byRef) for (const n of e.subtract) outputs.set(n, `${e.name}_${n}`)
   const stack = e.order.map((n) => loadRaster(lm, outputs.get(n) ?? n))
   const classes = e.classes.map((c) => loadRaster(lm, outputs.get(c.name)!))
+  const bare = byRef ? e.order.filter((n) => e.subtract.includes(n)).map((n) => loadRaster(lm, outputs.get(n)!)) : []
   const matchDistance = e.match_distance ?? 100
   const [cw, ch] = ref.entry.cell
   const [cols, rows] = ref.entry.grid
   const gap = 6
-  const tw = cw * 4 + gap
+  const tw = cw * (byRef ? 5 : 4) + gap
   const out = checker(cols * tw, rows * (ch + gap))
   for (const [col, row] of filledCells(ref)) {
     const x = col * tw
@@ -245,6 +249,7 @@ function derivedPreview(lm: LoadedMap, e: DerivedEntry): Raster {
     blit(out, comp, x + cw, y)
     blit(out, only, x + cw * 2, y)
     blit(out, diff, x + cw * 3, y)
+    for (const l of bare) blit(out, crop(l, col * cw, row * ch, cw, ch), x + cw * 4, y)
   }
   return upscale(out, 4)
 }

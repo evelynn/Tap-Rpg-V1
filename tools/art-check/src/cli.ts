@@ -12,10 +12,11 @@ import { checkFile, imageFacts, type FileResult, type FileSource } from './check
 import { findEntry, loadMap, referenceOf, type DerivedEntry, type LoadedMap, type SourceEntry } from './imagegen-map'
 import { DEFAULT_REGISTRATION, measureRegistration, type CellRegistration } from './layers'
 import { formatHex, loadManifest, resolveFiles, type Manifest } from './manifest'
-import { Normalizer, runDerived, skinColors, writeDerived, writeResult, type EntryResult } from './pipeline'
+import { layerTotals, Normalizer, runDerived, skinColors, writeDerived, writeResult, type EntryResult } from './pipeline'
 import { renderPreviews } from './preview'
 import { renderFindings, renderSummary, renderTable, summarize } from './report'
 import { decodePng, PngError } from './png'
+import { templateMain } from './template-cli'
 
 const PKG_ROOT = fileURLToPath(new URL('../../..', import.meta.url))
 const DEFAULT_MANIFEST = join(PKG_ROOT, 'docs/art/assets.manifest.json')
@@ -35,7 +36,8 @@ inspect   매니페스트에 없는 PNG의 사실만 센다(크기·알파·색 
 normalize 생성 원본을 대응표(기본 docs/art/imagegen.map.json)대로 게임 규격 시트로 바꿔 out_dir에 PNG와 보고 JSON을 쓴다.
 preview   정규화 결과로 ×4 검수 확대본(시트·520×64 창 모형·320×48 축소 창·레이어 정합·파생 재합성·32/48 비교)을 out_dir/_preview에 쓴다.
 derive    대응표의 derived 항목마다 기준 시트 화소에서 옷·무기 같은 부류 레이어를 골라 out_dir/<파생>_<부류>.png와
-          <파생>.json을 쓴다. 빼는 레이어와 부류를 그리기 순서대로 쌓은 재합성이 한 칸이라도 기준 시트와
+          <파생>.json을 쓴다. color_source가 reference면 빼는 레이어도 모양은 그대로, 보이는 화소의 색은 기준 시트로 바꿔
+          out_dir/<파생>_<레이어>.png로 쓴다. 빼는 레이어와 부류를 그리기 순서대로 쌓은 재합성이 한 칸이라도 기준 시트와
           min_recompose(기본 0.98) 미만으로 같으면 종료 코드 1.
 layers    레이어가 기준 시트에 정합하는지 칸마다 잰다. 기준·레이어는 대응표 이름이고, 레이어는 원본 PNG 경로도 된다
           (경로면 기준 시트의 변환으로 정규화한다). 한 칸이라도 기준을 넘으면 종료 코드 1.`
@@ -349,7 +351,7 @@ function runDerive(args: Args): number {
     const run = runDerived(norm, e, args.minRecompose ?? undefined)
     const { files, json } = writeDerived(lm, run)
     if (!run.pass) failed = true
-    out.push({ name: e.name, pass: run.pass, options: run.options, cells: run.cells, recompose: run.recompose, overlap: run.overlap })
+    out.push({ name: e.name, pass: run.pass, options: run.options, cells: run.cells, recompose: run.recompose, overlap: run.overlap, ...(run.layers.length === 0 ? {} : { layers: layerTotals(run) }) })
     if (args.json) continue
     const bad = run.recompose.filter((c) => !c.pass)
     process.stdout.write(
@@ -368,6 +370,12 @@ function runDerive(args: Args): number {
         (r.pass ? '' : '  ✗') + NL,
       )
     })
+    for (const [name, t] of Object.entries(run.layers.length === 0 ? {} : layerTotals(run))) {
+      process.stdout.write(
+        `    ${name} (색 = 기준): 보임 ${t.visible} 중 색 바뀜 ${t.recolored} (평균 이동 ${t.mean_shift}) · 이웃으로 넓힘 ${t.grown} · 흡수 ${t.absorbed}` +
+        ` · 가려짐 ${t.hidden} (생성기 색) · 삐져나옴 버림 ${t.trimmed} · 실루엣 밖 버림 ${t.dropped}${NL}`,
+      )
+    }
     for (const o of run.overlap) {
       const both = o.cells.reduce((s, c) => s + c.both, 0)
       const d = o.cells.reduce((s, c) => s + c.derived, 0)
@@ -432,6 +440,8 @@ function runLayers(args: Args): number {
 }
 
 export function main(argv: string[]): number {
+  // 배치 틀·납품 문은 template-cli.ts가 맡는다
+  if (argv[0] === 'template' || argv[0] === 'gate') return templateMain(argv)
   let args: Args
   try {
     args = parseArgs(argv)

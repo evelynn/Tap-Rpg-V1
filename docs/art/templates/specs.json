@@ -1,0 +1,213 @@
+{
+  "version": 1,
+  "root": "../../..",
+  "out_dir": "docs/art/templates",
+  "notes": [
+    "배치 틀 규격(tools/art-check/README.md 「배치 틀 규격」). 수치 출처: 15 §1.1·§4·§6·§7·§9·§10·§11·§12.2, ASSET_ORDERS 0.4~0.6.",
+    "S = cols·cellW·S ≤ 캔버스 폭 − 2·여백 이고 rows·cellH·S ≤ 캔버스 높이 − 2·여백 인 가장 큰 정수. 세로 캔버스는 S가 더 클 때만.",
+    "bottom = 가장 아래 불투명 논리 행(기본 ground_y − 1). lift = 그 프레임이 지면선에서 떠야 하는 논리 화소. height null = 키 검사 안 함."
+  ],
+  "canvas": { "landscape": [1536, 1024], "portrait": [1024, 1536], "margin": [32, 32] },
+  "colors": { "key": "#FF00FF", "guide": "#00FFFF", "silhouette": "#808080" },
+  "key": { "tolerance": 90, "alpha_threshold": 128, "despill": 60 },
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "families": {
+    "character": {
+      "cell": [48, 48], "cols": 6, "align": "ground", "ground_y": 44, "center_x": 23, "height": 38, "margin": 0,
+      "placeholder": { "source": "assets/game/ref_actions18_48.png", "cell": [48, 48], "frame": [0, 0] },
+      "actions": {
+        "idle": { "frames": 4 },
+        "walk": { "frames": 6 },
+        "attack": { "frames": 6, "height": null, "note": "합성 기준 시트는 칼이 머리 위로 올라가 키를 재지 않는다" },
+        "hit": { "frames": 3 },
+        "discover": { "frames": 4 },
+        "sit_eat": { "frames": 4, "height": null, "placeholder": { "frame": [0, 2] }, "note": "ASSET_ORDERS 앉은 키 25와 합격 v03 r4의 35가 다르다 — 결정 전이라 키를 재지 않는다" },
+        "sleep": { "frames": 4, "height": null, "center": false, "placeholder": { "frame": [0, 3] }, "note": "누운 자세: 몸 최하단이 지면선(0.4절), 중심·키 검사 없음" },
+        "interact": { "frames": 4 },
+        "cheer": { "frames": 4, "lift": [0, 2, 4, 0], "height": [null, 38, 38, 38], "note": "2·3프레임만 +2·+4 뜬다(15 §12.3 검수 2). 1프레임 웅크림은 키를 재지 않는다" },
+        "collapse": { "frames": 5, "height": [38, null, null, null, null], "center": [true, true, true, false, false], "note": "4·5프레임 엎드림: 몸 최하단이 지면선" },
+        "head_poses": { "frames": 3, "labels": ["basic", "bowed", "lying"], "height": [38, null, null], "center": [true, true, false], "placeholder": { "frames": [[0, 0], [0, 2], [0, 3]] } }
+      }
+    },
+    "npc": {
+      "cell": [48, 48], "cols": 4, "align": "ground", "ground_y": 44, "center_x": 23, "height": null, "margin": 0,
+      "placeholder": { "source": "assets/game/ref_actions18_48.png", "cell": [48, 48], "frame": [0, 0] },
+      "note": "어른·아이 키가 달라(02 §8.9) 키를 재지 않는다"
+    },
+    "head": {
+      "cell": [48, 48], "cols": 6, "align": "none", "margin": 0,
+      "placeholder": { "source": "assets/game/ref_actions18_48.png", "cell": [48, 48], "frame": [0, 0], "offset": [0, 0] }
+    },
+    "weapon": {
+      "cell": [80, 64], "cols": 6, "align": "none", "margin": 0,
+      "placeholder": { "source": "assets/game/ref_actions18_48.png", "cell": [48, 48], "frame": [0, 0], "offset": [16, 16] },
+      "actions": {
+        "attack": { "frames": 6, "placeholder": { "frames": [[0, 1], [1, 1], [2, 1], [3, 1], [4, 1], [5, 1]] } },
+        "hit": { "frames": 3, "placeholder": { "source": "assets/game/v04/ref_d_hit_discover_interact11_48.png", "frames": [[0, 0], [1, 0], [2, 0]] } },
+        "equip": { "frames": 1 }
+      }
+    },
+    "rat": {
+      "cell": [32, 24], "cols": 4, "align": "ground", "ground_y": 20, "center_x": 15, "height": 15, "margin": 3,
+      "placeholder": { "source": "assets/game/rat18_48.png", "cell": [32, 24], "frame": [0, 0] },
+      "actions": {
+        "idle": { "frames": 4 }, "move": { "frames": 4 },
+        "attack": { "frames": 4, "height": null },
+        "hit": { "frames": 2 },
+        "exit": { "frames": 4, "height": null, "note": "달아나며 줄어든다" }
+      }
+    },
+    "wolf": {
+      "cell": [48, 32], "cols": 4, "align": "ground", "ground_y": 28, "center_x": 23, "height": 26, "margin": 3,
+      "placeholder": { "source": "assets/game/v04/wolf18_48.png", "cell": [48, 32], "frame": [0, 0] },
+      "actions": {
+        "idle": { "frames": 4 }, "move": { "frames": 4 },
+        "attack": { "frames": 4, "lift": [0, 3, 0, 0], "height": null, "note": "2프레임 도약 3px(AO 늑대 카드)" },
+        "hit": { "frames": 2 },
+        "exit": { "frames": 4, "height": null }
+      }
+    },
+    "bat": {
+      "cell": [32, 32], "cols": 4, "align": "ground", "ground_y": 28, "bottom": 16, "center_x": 15, "height": 14, "margin": 3,
+      "note": "부양 12: 몸 최하단 y 16(0.5절). 그림자는 그리지 않는다",
+      "actions": {
+        "idle": { "frames": 4 }, "move": { "frames": 4 },
+        "attack": { "frames": 4, "height": null },
+        "hit": { "frames": 2 },
+        "exit": { "frames": 4, "ground": false, "height": null, "note": "위로 날아간다" }
+      }
+    },
+    "kobold": {
+      "cell": [32, 48], "cols": 4, "align": "ground", "ground_y": 44, "center_x": 15, "height": 30, "margin": 3,
+      "actions": {
+        "idle": { "frames": 4 }, "move": { "frames": 4 },
+        "attack": { "frames": 4, "height": null, "note": "곡괭이가 머리 위로" },
+        "hit": { "frames": 2 },
+        "exit": { "frames": 4, "height": null, "note": "넘어졌다 일어나 도망" }
+      }
+    },
+    "boss": {
+      "cell": [64, 56], "cols": 6, "align": "ground", "ground_y": 55, "center_x": 31, "height": 54, "margin": 0,
+      "actions": {
+        "idle": { "frames": 6 },
+        "attack_a": { "frames": 6, "height": null },
+        "attack_b": { "frames": 6, "height": null },
+        "hit": { "frames": 3 },
+        "phase": { "frames": 4 },
+        "exit": { "frames": 6, "height": null, "note": "주저앉는다" },
+        "wave_fx": { "frames": 4, "ground": false, "center": false, "height": null, "note": "종소리 파동 효과(몸 없음)" }
+      }
+    },
+    "prop": { "cell": [48, 48], "cols": 6, "align": "ground", "ground_y": 44, "center_x": 23, "height": null, "margin": 0 },
+    "fx": { "cell": [48, 48], "cols": 8, "align": "none", "margin": 0 },
+    "portrait64": { "cell": [64, 64], "cols": 6, "align": "none", "margin": 0 },
+    "portrait48": { "cell": [48, 48], "cols": 6, "align": "none", "margin": 0 },
+    "icon16": { "cell": [16, 16], "cols": 8, "align": "none", "margin": 0 },
+    "icon12": { "cell": [12, 12], "cols": 6, "align": "none", "margin": 0 },
+    "bg": { "cell": [256, 64], "cols": 1, "align": "none", "ground_y": 56, "margin": 0, "canvas_margin": [0, 32] },
+    "scene": { "cell": [128, 64], "cols": 4, "align": "none", "ground_y": 56, "margin": 0, "canvas_margin": [0, 32], "fill": "opaque", "ground_band": true }
+  },
+  "sheets": [
+    { "name": "chr_actions_a", "family": "character", "rows": ["idle", "walk", "attack", "hit", "discover"], "note": "몸체 10행의 앞 5행(15 §4, 0.6절 순서)" },
+    { "name": "chr_actions_b", "family": "character", "rows": ["sit_eat", "sleep", "interact", "cheer", "collapse"], "note": "몸체 10행의 뒤 5행" },
+    { "name": "chr_elder", "family": "character", "rows": ["idle", "walk"], "note": "노년 몸체 변형(15 §5.1)" },
+    { "name": "chr_head_poses_ref", "family": "character", "cols": 3, "rows": ["head_poses"], "note": "머리 3자세 기준(기본·숙임·누움) 합성. 숙임 자리표시는 앉기 프레임으로 대신한다" },
+    { "name": "chr_hair", "family": "head", "rows": [{ "action": "hair", "frames": 6, "labels": ["basic", "bowed", "lying", "basic_covered", "bowed_covered", "lying_covered"], "placeholder": { "frames": [[0, 0], [0, 2], [0, 3], [0, 0], [0, 2], [0, 3]] } }], "note": "머리 모양 1종당 한 장(기본 3 + 투구 가림 3). 숙임 자리표시는 앉기 프레임으로 대신한다" },
+    { "name": "chr_face", "family": "head", "cols": 5, "rows": [
+      { "action": "face_round", "frames": 5, "labels": ["round_basic", "round_smile", "round_frown", "round_closed", "round_surprised"] },
+      { "action": "face_narrow", "frames": 5, "labels": ["narrow_basic", "narrow_smile", "narrow_frown", "narrow_closed", "narrow_surprised"] },
+      { "action": "aging", "frames": 2, "labels": ["wrinkle_veteran", "wrinkle_elder"] }
+    ], "note": "얼굴형 2 × 표정 5 + 노화 주름 2(15 §6.1)" },
+    { "name": "chr_helm", "family": "head", "cols": 3, "rows": [
+      { "action": "miner_cap", "frames": 3, "labels": ["miner_cap basic", "miner_cap bowed", "miner_cap lying"] },
+      { "action": "leather_cap", "frames": 3, "labels": ["leather_cap basic", "leather_cap bowed", "leather_cap lying"] },
+      { "action": "hood", "frames": 3, "labels": ["hood basic", "hood bowed", "hood lying"] },
+      { "action": "plate_helm", "frames": 3, "labels": ["plate_helm basic", "plate_helm bowed", "plate_helm lying"] },
+      { "action": "bell_helm", "frames": 3, "labels": ["bell_helm basic", "bell_helm bowed", "bell_helm lying"] }
+    ], "placeholder": { "source": "assets/game/ref_actions18_48.png", "cell": [48, 48], "frames": [[0, 0], [0, 2], [0, 3]], "offset": [0, 0] }, "note": "투구 5형태 × 3자세(15 §6.2)" },
+    { "name": "chr_weapon", "family": "weapon", "rows": ["attack", "hit", "equip"], "note": "무기 1종당 한 장. 셀 80×64, 몸체 셀 원점 = (16,16)(D65). 자리표시 몸은 손 위치 기준일 뿐 납품에 그리지 않는다" },
+    { "name": "enm_rat", "family": "rat", "rows": ["idle", "move", "attack", "hit", "exit"] },
+    { "name": "enm_wolf", "family": "wolf", "rows": ["idle", "move", "attack", "hit", "exit"] },
+    { "name": "enm_bat", "family": "bat", "rows": ["idle", "move", "attack", "hit", "exit"] },
+    { "name": "enm_kobold", "family": "kobold", "rows": ["idle", "move", "attack", "hit", "exit"] },
+    { "name": "boss_bellwarden_a", "family": "boss", "rows": ["idle", "attack_a", "attack_b"], "note": "보스 6행의 앞 3행(15 §7.3)" },
+    { "name": "boss_bellwarden_b", "family": "boss", "rows": ["hit", "phase", "exit", "wave_fx"], "note": "보스 뒤 3행 + 파동 효과 4" },
+    { "name": "fx_common", "family": "fx", "rows": [
+      { "action": "fx_hit", "frames": 4 }, { "action": "fx_heal", "frames": 6 }, { "action": "fx_sparkle", "frames": 4 },
+      { "action": "fx_levelup", "frames": 8 }, { "action": "fx_injury", "frames": 4 }, { "action": "fx_curse", "frames": 6 }
+    ], "note": "공용 효과 6종 32프레임(15 §9.1)" },
+    { "name": "prop_anim_a", "family": "prop", "rows": [
+      { "action": "campfire", "frames": 4 },
+      { "action": "loot_sack", "frames": 6, "ground": false, "center": false, "note": "걷기 6과 맞춰 등에 진다" },
+      { "action": "star_spring", "frames": 4 },
+      { "action": "chest", "frames": 2, "labels": ["chest closed", "chest open"] },
+      { "action": "door", "frames": 2, "labels": ["door closed", "door open"] }
+    ], "note": "움직이는 소품(15 §9.2)" },
+    { "name": "prop_anim_b", "family": "prop", "rows": [
+      { "action": "spike_trap", "frames": 2, "labels": ["trap hidden", "trap out"] },
+      { "action": "minecart", "frames": 2 },
+      { "action": "lantern", "frames": 2, "ground": false, "center": false },
+      { "action": "book", "frames": 2, "labels": ["book open", "book turning"], "ground": false, "center": false },
+      { "action": "exclaim_bubble", "frames": 2, "ground": false, "center": false }
+    ] },
+    { "name": "prop_misc", "family": "prop", "rows": [
+      { "action": "zz", "frames": 2, "ground": false, "center": false },
+      { "action": "ground_singles", "frames": 4, "labels": ["notice_board", "bedroll", "infirmary_bed", "lantern_out_belongings"] },
+      { "action": "held_singles_a", "frames": 6, "labels": ["mushroom_umbrella", "letter", "potion", "bread", "staff", "bandage_overlay"], "ground": false, "center": false },
+      { "action": "held_singles_b", "frames": 3, "labels": ["silver_chalice", "torn_map", "whistle"], "ground": false, "center": false }
+    ], "note": "1프레임 소품 13 + zZ 2. 소품 합계 43 = prop_anim_a 18 + prop_anim_b 10 + prop_misc 15" },
+    { "name": "npc_ref", "family": "npc", "rows": [
+      { "action": "npc", "frames": 4, "labels": ["npc 1", "npc 2", "npc 3", "npc 4"] },
+      { "action": "npc", "frames": 4, "labels": ["npc 5", "npc 6", "npc 7", "npc 8"] },
+      { "action": "npc", "frames": 3, "labels": ["npc 9", "npc 10", "npc 11"] }
+    ], "note": "NPC 전신 기준 4×3(11명)" },
+    { "name": "por_npc_64", "family": "portrait64", "cols": 4, "rows": [
+      { "action": "portrait", "frames": 4, "labels": ["portrait 1", "portrait 2", "portrait 3", "portrait 4"] },
+      { "action": "portrait", "frames": 4, "labels": ["portrait 5", "portrait 6", "portrait 7", "portrait 8"] },
+      { "action": "portrait", "frames": 3, "labels": ["portrait 9", "portrait 10", "portrait 11"] }
+    ], "note": "NPC 초상 11(15 §10) 64×64" },
+    { "name": "por_npc_48", "family": "portrait48", "cols": 4, "rows": [
+      { "action": "portrait", "frames": 4, "labels": ["portrait 1", "portrait 2", "portrait 3", "portrait 4"] },
+      { "action": "portrait", "frames": 4, "labels": ["portrait 5", "portrait 6", "portrait 7", "portrait 8"] },
+      { "action": "portrait", "frames": 3, "labels": ["portrait 9", "portrait 10", "portrait 11"] }
+    ], "note": "NPC 초상 11, 48×48(64를 줄이지 않고 따로 찍는다)" },
+    { "name": "por_parts_64", "family": "portrait64", "rows": [
+      { "action": "hair_front", "frames": 6, "labels": ["HR01", "HR02", "HR03", "HR04", "HR05", "HR06"] },
+      { "action": "face_base", "frames": 5, "labels": ["face_round", "face_narrow", "wrinkle_veteran", "wrinkle_elder", "neck_J05"] },
+      { "action": "expr_round", "frames": 4, "labels": ["round basic", "round smile", "round worry", "round resolute"] },
+      { "action": "expr_narrow", "frames": 4, "labels": ["narrow basic", "narrow smile", "narrow worry", "narrow resolute"] },
+      { "action": "collar_neck", "frames": 6, "labels": ["collar_cloth", "collar_leather", "collar_metal", "collar_vampire", "neck_J01", "neck_J02"] }
+    ], "note": "초상 부품 25(15 §10) 64×64" },
+    { "name": "por_parts_48", "family": "portrait48", "rows": [
+      { "action": "hair_front", "frames": 6, "labels": ["HR01", "HR02", "HR03", "HR04", "HR05", "HR06"] },
+      { "action": "face_base", "frames": 5, "labels": ["face_round", "face_narrow", "wrinkle_veteran", "wrinkle_elder", "neck_J05"] },
+      { "action": "expr_round", "frames": 4, "labels": ["round basic", "round smile", "round worry", "round resolute"] },
+      { "action": "expr_narrow", "frames": 4, "labels": ["narrow basic", "narrow smile", "narrow worry", "narrow resolute"] },
+      { "action": "collar_neck", "frames": 6, "labels": ["collar_cloth", "collar_leather", "collar_metal", "collar_vampire", "neck_J01", "neck_J02"] }
+    ], "note": "초상 부품 25, 48×48" },
+    { "name": "ui_icon_16", "family": "icon16", "rows": [
+      { "action": "hp_fatigue", "frames": 8, "labels": ["hp 1", "hp 2", "hp 3", "hp 4", "fatigue 1", "fatigue 2", "fatigue 3", "fatigue 4"] },
+      { "action": "injury_special", "frames": 7, "labels": ["injury light1", "injury light2", "injury heavy", "paused", "settling", "curse", "vampire"] },
+      { "action": "mark_attitude", "frames": 6, "labels": ["choice mark", "heir mark", "attitude 1", "attitude 2", "attitude 3", "menu"] },
+      { "action": "slot_tray", "frames": 6, "labels": ["slot 1", "slot 2", "slot 3", "slot 4", "tray basic", "tray choice dot"] }
+    ], "note": "16×16 아이콘 27(15 §11)" },
+    { "name": "ui_icon_12", "family": "icon12", "rows": [
+      { "action": "state", "frames": 6, "labels": ["state 1", "state 2", "state 3", "state 4", "state 5", "state 6"] },
+      { "action": "state", "frames": 6, "labels": ["state 7", "state 8", "state 9", "state 10", "state 11", "state 12"] },
+      { "action": "badge", "frames": 3, "labels": ["fatal lantern_out", "book lit", "book moon"] }
+    ], "note": "12×12 아이콘 15(행동 상태 12 + 치명 배지 1 + 생애의 책 표식 2)" },
+    { "name": "bg_far", "family": "bg", "rows": [{ "action": "far", "frames": 1 }], "fill": "opaque", "note": "먼 층 256×64 불투명 띠(15 §8.1). y 320..703" },
+    { "name": "bg_mid", "family": "bg", "rows": [{ "action": "mid", "frames": 1 }], "fill": "partial", "note": "중간 층: 하늘 자리는 자홍" },
+    { "name": "bg_near", "family": "bg", "rows": [{ "action": "near", "frames": 1 }], "fill": "partial", "ground_band": true, "note": "가까운 층: 지면선 y 56 아래는 빈틈 없이 채운다" },
+    { "name": "scene_event", "family": "scene", "rows": [{ "action": "scene", "frames": 4 }], "note": "이벤트 장면 128×64 × 4프레임 = 512×64 띠(15 §9.3). 지면선 y 56" }
+  ]
+}

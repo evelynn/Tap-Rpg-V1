@@ -1,0 +1,236 @@
+{
+  "name": "chr_hair",
+  "family": "head",
+  "note": "머리 모양 1종당 한 장(기본 3 + 투구 가림 3). 숙임 자리표시는 앉기 프레임으로 대신한다",
+  "canvas": [
+    1536,
+    1024
+  ],
+  "orientation": "landscape",
+  "S": 5,
+  "cell": [
+    48,
+    48
+  ],
+  "cell_px": [
+    240,
+    240
+  ],
+  "grid": {
+    "cols": 6,
+    "rows": 1,
+    "x0": 48,
+    "y0": 392,
+    "width": 1440,
+    "height": 240
+  },
+  "align": "none",
+  "ground_y": null,
+  "ground_y_px": null,
+  "bottom": null,
+  "center_x": null,
+  "margin": 0,
+  "fill": null,
+  "ground_band": false,
+  "key_color": "#FF00FF",
+  "guide_color": "#00FFFF",
+  "gate": {
+    "ground_tol": 1,
+    "center_tol": 2,
+    "height_tol": 0.08,
+    "block_tol": 0.15,
+    "min_background": 0.99,
+    "max_partial_alpha": 0.01,
+    "min_fill": 0.98,
+    "max_guide_pixels": 0
+  },
+  "rows": [
+    {
+      "row": 0,
+      "action": "hair",
+      "frames": 6,
+      "labels": [
+        "basic",
+        "bowed",
+        "lying",
+        "basic_covered",
+        "bowed_covered",
+        "lying_covered"
+      ],
+      "lift": [
+        0,
+        0,
+        0,
+        0,
+        0,
+        0
+      ],
+      "height": [
+        null,
+        null,
+        null,
+        null,
+        null,
+        null
+      ]
+    }
+  ],
+  "used_cells": 6,
+  "empty_cells": 0,
+  "placeholder": {
+    "source": "assets/game/ref_actions18_48.png",
+    "height": 40,
+    "note": "자리표시는 크기·위치 기준일 뿐이다. 생성기는 그 자리에 새로 그린다(자세는 행 동작을 따른다)"
+  },
+  "files": {
+    "grid": "chr_hair.grid.png",
+    "placeholder": "chr_hair.placeholder.png",
+    "silhouette": "chr_hair.silhouette.png"
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "hair",
+      "frame": 0,
+      "label": "basic",
+      "used": true,
+      "rect": [
+        48,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "hair",
+      "frame": 1,
+      "label": "bowed",
+      "used": true,
+      "rect": [
+        288,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "hair",
+      "frame": 2,
+      "label": "lying",
+      "used": true,
+      "rect": [
+        528,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "hair",
+      "frame": 3,
+      "label": "basic_covered",
+      "used": true,
+      "rect": [
+        768,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        0
+      ]
+    },
+    {
+      "col": 4,
+      "row": 0,
+      "action": "hair",
+      "frame": 4,
+      "label": "bowed_covered",
+      "used": true,
+      "rect": [
+        1008,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        2
+      ]
+    },
+    {
+      "col": 5,
+      "row": 0,
+      "action": "hair",
+      "frame": 5,
+      "label": "lying_covered",
+      "used": true,
+      "rect": [
+        1248,
+        392,
+        240,
+        240
+      ],
+      "bottom": null,
+      "bottom_px": null,
+      "center_x": null,
+      "center_px": null,
+      "height": null,
+      "lift": 0,
+      "placeholder_frame": [
+        0,
+        3
+      ]
+    }
+  ]
+}
