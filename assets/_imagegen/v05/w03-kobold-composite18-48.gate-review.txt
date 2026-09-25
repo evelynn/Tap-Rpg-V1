@@ -1,0 +1,75 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w03-kobold-composite18-48.png" "--spec" "enm_kobold"
+
+assets/_imagegen/v05/w03-kobold-composite18-48.png
+PASS enm_kobold · canvas · 이미지 1024×1536 (틀 1024×1536) · S 6 (template) · 칸 격자 · 시트 블록 5.3 · 키 비율 1.177 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 44
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              19149     0   -1 -12.9  35.3(30)       5.5   0.0%  ok (경고 bbox,center)
+  (1,0)   idle 2              19113     0   -1  -4.4  35.3(30)       5.3   0.0%  ok (경고 bbox,center)
+  (2,0)   idle 3              19138     0   -1   4.1  35.3(30)       5.5   0.0%  ok (경고 bbox,center)
+  (3,0)   idle 4              19979     0   -1  13.6  34.5(30)       5.4   0.0%  ok (경고 bbox,center)
+  (0,1)   move 1              19675     0   -1 -12.9  35.3(30)       5.3   0.0%  ok (경고 bbox,center)
+  (1,1)   move 2              19077     0   -1  -4.2  35.3(30)       5.3   0.0%  ok (경고 bbox,center)
+  (2,1)   move 3              19706     0   -1   4.3  35.3(30)       5.3   0.0%  ok (경고 bbox,center)
+  (3,1)   move 4              19232     0   -1  13.4  35.3(30)       5.3   0.0%  ok (경고 bbox,center)
+  (0,2)   attack 1            21057     0    0 -13.9  36.7(-)        5.3   0.0%  ok (경고 bbox,center)
+  (1,2)   attack 2            20357     0    0  -4.9  41.3(-)        5.3   0.0%  ok (경고 bbox,center)
+  (2,2)   attack 3            17445     0    0   2.6  28.0(-)        5.3   0.0%  ok (경고 bbox,center)
+  (3,2)   attack 4            19561     0    0  13.4  35.7(-)        5.4   0.0%  ok (경고 bbox,center)
+  (0,3)   hit 1               19180     0   -2 -12.6  34.0(30)       5.3   0.0%  ok (경고 bbox,ground,center)
+  (1,3)   hit 2               19188     0   -2  -5.1  34.0(30)       5.3   0.0%  ok (경고 bbox,ground,center)
+  (0,4)   exit 1              16275     0   -3 -13.4  26.8(-)        5.3   0.0%  ok (경고 bbox,ground,center)
+  (1,4)   exit 2              17484     0   -3  -2.2  29.3(-)        5.3   0.0%  ok (경고 bbox,ground,center)
+  (2,4)   exit 3              17536     0   -3   6.1  33.2(-)        5.3   0.0%  ok (경고 bbox,ground,center)
+  (3,4)   exit 4              18996     0   -3  16.4  32.2(-)        5.3   0.0%  ok (경고 bbox,ground,center)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 11.3 blocks).
+- Cell (0,0) "idle 1": horizontal center 12.9 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (left 3 blocks).
+- Cell (1,0) "idle 2": horizontal center 4.4 blocks left of the template center mark.
+- Cell (2,0) "idle 3": crosses the template cell boundary (right 5.5 blocks).
+- Cell (2,0) "idle 3": horizontal center 4.1 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 15.7 blocks).
+- Cell (3,0) "idle 4": horizontal center 13.6 blocks right of the template center mark.
+- Cell (0,1) "move 1": crosses the template cell boundary (left 11.3 blocks).
+- Cell (0,1) "move 1": horizontal center 12.9 blocks left of the template center mark.
+- Cell (1,1) "move 2": crosses the template cell boundary (left 2.8 blocks).
+- Cell (1,1) "move 2": horizontal center 4.3 blocks left of the template center mark.
+- Cell (2,1) "move 3": crosses the template cell boundary (right 5.5 blocks).
+- Cell (2,1) "move 3": horizontal center 4.3 blocks right of the template center mark.
+- Cell (3,1) "move 4": crosses the template cell boundary (right 14.7 blocks).
+- Cell (3,1) "move 4": horizontal center 13.4 blocks right of the template center mark.
+- Cell (0,2) "attack 1": crosses the template cell boundary (left 13.7 blocks).
+- Cell (0,2) "attack 1": horizontal center 13.9 blocks left of the template center mark.
+- Cell (1,2) "attack 2": crosses the template cell boundary (left 3 blocks, top 0.2 blocks).
+- Cell (1,2) "attack 2": horizontal center 4.9 blocks left of the template center mark.
+- Cell (2,2) "attack 3": crosses the template cell boundary (left 0.2 blocks, right 3.8 blocks).
+- Cell (2,2) "attack 3": horizontal center 2.6 blocks right of the template center mark.
+- Cell (3,2) "attack 4": crosses the template cell boundary (right 15.3 blocks).
+- Cell (3,2) "attack 4": horizontal center 13.4 blocks right of the template center mark.
+- Cell (0,3) "hit 1": crosses the template cell boundary (left 11.2 blocks).
+- Cell (0,3) "hit 1": lowest pixel 2 blocks above the template ground line.
+- Cell (0,3) "hit 1": horizontal center 12.6 blocks left of the template center mark.
+- Cell (1,3) "hit 2": crosses the template cell boundary (left 5.2 blocks).
+- Cell (1,3) "hit 2": lowest pixel 2 blocks above the template ground line.
+- Cell (1,3) "hit 2": horizontal center 5.1 blocks left of the template center mark.
+- Cell (0,4) "exit 1": crosses the template cell boundary (left 15.7 blocks).
+- Cell (0,4) "exit 1": lowest pixel 3 blocks above the template ground line.
+- Cell (0,4) "exit 1": horizontal center 13.4 blocks left of the template center mark.
+- Cell (1,4) "exit 2": crosses the template cell boundary (left 5.2 blocks).
+- Cell (1,4) "exit 2": lowest pixel 3 blocks above the template ground line.
+- Cell (1,4) "exit 2": horizontal center 2.3 blocks left of the template center mark.
+- Cell (2,4) "exit 3": crosses the template cell boundary (right 3.8 blocks).
+- Cell (2,4) "exit 3": lowest pixel 3 blocks above the template ground line.
+- Cell (2,4) "exit 3": horizontal center 6.1 blocks right of the template center mark.
+- Cell (3,4) "exit 4": crosses the template cell boundary (right 15.7 blocks).
+- Cell (3,4) "exit 4": lowest pixel 3 blocks above the template ground line.
+- Cell (3,4) "exit 4": horizontal center 16.4 blocks right of the template center mark.
+- Figures are 117.7% of the spec height; normalization resamples the sheet by x0.85 (map scale_to_spec).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F904F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the enm_kobold template. No regeneration needed.
+

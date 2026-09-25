@@ -1,0 +1,80 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w02-bat18-48-r2.png" "--spec" "enm_bat"
+
+assets/_imagegen/v05/w02-bat18-48-r2.png
+FAIL enm_bat · canvas · 이미지 1024×1536 (틀 1024×1536) · S 7 (template) · 칸 격자 · 시트 블록 7.0 · 키 비율 1.504 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 40
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              16813     0    2  -4.0  23.3(14)       7.1   0.0%  ✗ scale (경고 bbox,ground,center)
+  (1,0)   idle 2              14501    -1    0  -0.9  19.4(14)       7.1   0.0%  ✗ scale (경고 bbox)
+  (2,0)   idle 3              13011     0    2   1.4  18.9(14)       7.0   0.0%  ✗ scale (경고 bbox,ground)
+  (3,0)   idle 4              16938     0    1   2.1  22.7(14)       7.1   0.0%  ✗ scale (경고 bbox,center)
+  (0,1)   move 1              16237     0    3  -4.3  23.0(14)       7.0   0.0%  ✗ scale (경고 bbox,ground,center)
+  (1,1)   move 2              14129    -1    2  -1.4  19.9(14)       7.1   0.0%  ok (경고 bbox,ground)
+  (2,1)   move 3              13268     1    4   1.0  19.1(14)       6.8   0.0%  ✗ scale (경고 bbox,ground)
+  (3,1)   move 4              15758     0    3   1.9  21.7(14)       7.1   0.0%  ok (경고 bbox,ground)
+  (0,2)   attack 1            15087     0    2  -2.1  21.0(-)        6.8   0.0%  ok (경고 bbox,ground,center)
+  (1,2)   attack 2            13378     0    2  -1.3  17.3(-)        6.9   0.0%  ok (경고 bbox,ground)
+  (2,2)   attack 3            15514     0    3  -0.9  19.6(-)        7.1   0.0%  ok (경고 bbox,ground)
+  (3,2)   attack 4            15981     0    2   2.1  22.0(-)        6.9   0.0%  ok (경고 bbox,ground,center)
+  (0,3)   hit 1               16094     0    4  -4.4  23.0(14)       7.0   0.0%  ✗ scale (경고 bbox,ground,center)
+  (1,3)   hit 2               13096     0    5  -0.9  19.1(14)       7.0   0.0%  ✗ scale (경고 ground)
+  (0,4)   exit 1              13112     -    -  -0.9  19.0(-)        6.9   0.0%  ok (경고 bbox)
+  (1,4)   exit 2              12665     -    -   3.1  19.6(-)        6.7   0.0%  ok (경고 bbox,center)
+  (2,4)   exit 3               7917     -    -   4.1  16.3(-)        7.1   0.0%  ok (경고 bbox,center)
+  (3,4)   exit 4               6955     -    -   5.9  14.3(-)        7.3   0.0%  ok (경고 bbox,center)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 0.9 blocks, top 7.1 blocks).
+- Cell (0,0) "idle 1": lowest pixel 2 blocks below the template hover line.
+- Cell (0,0) "idle 1": horizontal center 4 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (right 0.1 blocks, top 5 blocks).
+- Cell (2,0) "idle 3": crosses the template cell boundary (top 2.7 blocks).
+- Cell (2,0) "idle 3": lowest pixel 2 blocks below the template hover line.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 2.3 blocks, top 7.1 blocks).
+- Cell (3,0) "idle 4": horizontal center 2.1 blocks right of the template center mark.
+- Cell (0,1) "move 1": crosses the template cell boundary (left 1.1 blocks, top 5.1 blocks).
+- Cell (0,1) "move 1": lowest pixel 3 blocks below the template hover line.
+- Cell (0,1) "move 1": horizontal center 4.3 blocks left of the template center mark.
+- Cell (1,1) "move 2": crosses the template cell boundary (right 0.3 blocks, top 2.9 blocks).
+- Cell (1,1) "move 2": lowest pixel 2 blocks below the template hover line.
+- Cell (2,1) "move 3": crosses the template cell boundary (top 0.3 blocks).
+- Cell (2,1) "move 3": lowest pixel 4 blocks below the template hover line.
+- Cell (3,1) "move 4": crosses the template cell boundary (right 1.7 blocks, top 3.9 blocks).
+- Cell (3,1) "move 4": lowest pixel 3 blocks below the template hover line.
+- Cell (0,2) "attack 1": crosses the template cell boundary (left 1.1 blocks, top 4 blocks).
+- Cell (0,2) "attack 1": lowest pixel 2 blocks below the template hover line.
+- Cell (0,2) "attack 1": horizontal center 2.1 blocks left of the template center mark.
+- Cell (1,2) "attack 2": crosses the template cell boundary (top 0.4 blocks).
+- Cell (1,2) "attack 2": lowest pixel 2 blocks below the template hover line.
+- Cell (2,2) "attack 3": crosses the template cell boundary (right 2.6 blocks, top 2.3 blocks).
+- Cell (2,2) "attack 3": lowest pixel 3 blocks below the template hover line.
+- Cell (3,2) "attack 4": crosses the template cell boundary (right 1.9 blocks, top 5.3 blocks).
+- Cell (3,2) "attack 4": lowest pixel 2 blocks below the template hover line.
+- Cell (3,2) "attack 4": horizontal center 2.1 blocks right of the template center mark.
+- Cell (0,3) "hit 1": crosses the template cell boundary (left 1.1 blocks, top 4.3 blocks).
+- Cell (0,3) "hit 1": lowest pixel 4 blocks below the template hover line.
+- Cell (0,3) "hit 1": horizontal center 4.4 blocks left of the template center mark.
+- Cell (1,3) "hit 2": lowest pixel 5 blocks below the template hover line.
+- Cell (0,4) "exit 1": crosses the template cell boundary (left 0.6 blocks, top 1.1 blocks).
+- Cell (1,4) "exit 2": crosses the template cell boundary (top 4.3 blocks).
+- Cell (1,4) "exit 2": horizontal center 3.1 blocks right of the template center mark.
+- Cell (2,4) "exit 3": crosses the template cell boundary (top 1.7 blocks).
+- Cell (2,4) "exit 3": horizontal center 4.1 blocks right of the template center mark.
+- Cell (3,4) "exit 4": crosses the template cell boundary (top 3.7 blocks).
+- Cell (3,4) "exit 4": horizontal center 5.9 blocks right of the template center mark.
+- Figures are 150.4% of the spec height; normalization resamples the sheet by x0.67 (map scale_to_spec).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the enm_bat template (one art pixel = 7x7 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "idle 1": the figure is 11% taller than the other frames of this row (23.3 vs 21.1 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (1,0) "idle 2": the figure is 8% shorter than the other frames of this row (19.4 vs 21.1 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (2,0) "idle 3": the figure is 10% shorter than the other frames of this row (18.9 vs 21.1 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (3,0) "idle 4": the figure is 8% taller than the other frames of this row (22.7 vs 21.1 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (0,1) "move 1": the figure is 11% taller than the other frames of this row (23 vs 20.8 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (2,1) "move 3": the figure is 8% shorter than the other frames of this row (19.1 vs 20.8 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (0,3) "hit 1": the figure is 9% taller than the other frames of this row (23 vs 21.1 blocks). Draw every frame of the row at the same character scale (±6%).
+- Cell (1,3) "hit 2": the figure is 9% shorter than the other frames of this row (19.1 vs 21.1 blocks). Draw every frame of the row at the same character scale (±6%).
+ ELIFECYCLE  Command failed with exit code 1.
+

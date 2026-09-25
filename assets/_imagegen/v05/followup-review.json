@@ -1,0 +1,195 @@
+{
+  "date": "2026-09-25",
+  "gate_source_sha256": "ED0CBFC9B3A13976A00A4F79AD5FBCA4E071C3700A4B0C1211C74A18C2BEC23A",
+  "reviews": [
+    {
+      "name": "w10-h1-river-meadow-summer-day",
+      "exit_code": 1,
+      "visual": [
+        "보류",
+        "원경 마을·여울·울타리·갈대·굴·도토리를 담은 밀도 높은 배경. 1983×793으로 캔버스 불일치, 양 끝 수목이 잘려 W7 반복 이음 불합격."
+      ],
+      "log": "w10-h1-river-meadow-summer-day.gate-review.txt"
+    },
+    {
+      "name": "es15-end-of-life-48-k",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "사람 없이 등불·배낭, 동일한 첫 상태 네 칸. 실제 띠 y384–615로 틀과 다르나 띠 밖은 키로 분리 가능."
+      ],
+      "log": "es15-end-of-life-48-k.gate-review.txt"
+    },
+    {
+      "name": "w01-wolf18-48",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "18칸·빈 칸 구성은 맞음. 새 검사에서도 이동2 상대 키와 공격/퇴장 행 발 높이에서 실패."
+      ],
+      "log": "w01-wolf18-48.gate-review.txt"
+    },
+    {
+      "name": "w10-h1-river-meadow-summer-day-r2",
+      "exit_code": 1,
+      "visual": [
+        "보류·배경 비교용 권장",
+        "1536×1024, 장면 밀도와 깊이는 기준에 근접. 실제 띠 y312–711. 좌우 나무가 잘려 W7 불합격이므로 계절·시간대·층 파생의 원본으로 확정하지 않음. 안내색 유사 화소 18개는 로그에 보존."
+      ],
+      "log": "w10-h1-river-meadow-summer-day-r2.gate-review.txt"
+    },
+    {
+      "name": "w01-wolf18-48-r2",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "늑대 실루엣과 단색 배경은 읽힘. 이동2 크기·퇴장 행 기준점 실패. 공격2 뜀과 대기 자세의 차이가 약함."
+      ],
+      "log": "w01-wolf18-48-r2.gate-review.txt"
+    },
+    {
+      "name": "w10-h1-river-meadow-summer-day-r3",
+      "exit_code": 1,
+      "visual": [
+        "보류·3회 종료",
+        "풍경 밀도는 충분하지만 1983×793 캔버스와 가장자리에서 잘리는 수목이 반복됨. 세 번째이므로 추가 배경 변형을 시작하지 않음."
+      ],
+      "log": "w10-h1-river-meadow-summer-day-r3.gate-review.txt"
+    },
+    {
+      "name": "w01-wolf18-48-r3",
+      "exit_code": 0,
+      "visual": [
+        "신규 문 통과·인계 후보",
+        "18프레임, 4행 뒤 두 빈 칸, 왼쪽 진행과 오른쪽 퇴장 확인. 신규 문 PASS. 키 89.6%와 퇴장 위치는 경고이며 재생성 이유로 삼지 않음. 대기 변화가 미세하므로 게임 재생에서 호흡·꼬리 변화 판독을 확인해야 함."
+      ],
+      "log": "w01-wolf18-48-r3.gate-review.txt"
+    },
+    {
+      "name": "es15-end-of-life-48-k-r2",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "등불·배낭 키 반복. 수치 보정으로 새 지형 모양이 섞여 다음 시도에서 단순한 배경으로 다시 제한."
+      ],
+      "log": "es15-end-of-life-48-k-r2.gate-review.txt"
+    },
+    {
+      "name": "es15-end-of-life-48-k-r3",
+      "exit_code": 1,
+      "visual": [
+        "장면 원본 인계·위치 경고",
+        "등불·배낭과 조용한 배경, 네 칸 첫 상태. 실제 띠 y391–623, 띠 밖 키 분리 비율100%. 신규 문 FAIL은 절대 띠 경계 밖 그림을 stray/background로 세는 잔여 규칙이며, 문서의 위치 경고 원칙과 구분해 인계."
+      ],
+      "log": "es15-end-of-life-48-k-r3.gate-review.txt"
+    },
+    {
+      "name": "w03-kobold-composite18-48",
+      "exit_code": 0,
+      "visual": [
+        "신규 문 통과·r2 권장",
+        "18칸 모두 곡괭이, 두 발 체형, 넘어짐→일어남→도주 순서 확인. 대기1·2/걷기 자세 차이가 약해 r2로 보완."
+      ],
+      "log": "w03-kobold-composite18-48.gate-review.txt"
+    },
+    {
+      "name": "w02-bat18-48-r2",
+      "exit_code": 1,
+      "visual": [
+        "보류",
+        "피격2 방향은 왼쪽으로 수정. 날개 높이 변화가 커서 신규 문에서 상대 크기 실패."
+      ],
+      "log": "w02-bat18-48-r2.gate-review.txt"
+    },
+    {
+      "name": "es18-parent-letter-48-k",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "편지·탁자·촛불·창밖 여울은 읽힘. 봉투 대각선 무늬, 상단 나무 결, 추가 의자를 r2에서 수정."
+      ],
+      "log": "es18-parent-letter-48-k.gate-review.txt"
+    },
+    {
+      "name": "w02-bat18-48",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "부양·날개 동작·18칸 구성은 있음. 피격2가 오른쪽을 보는 W2 오류, 상대 키/부양선 오류."
+      ],
+      "log": "w02-bat18-48.gate-review.txt"
+    },
+    {
+      "name": "es18-parent-letter-48-k-r2",
+      "exit_code": 1,
+      "visual": [
+        "장면 원본 인계·위치 경고",
+        "무문자 크림 봉투와 붉은 원형 봉인, 의자 제거, 상단 단색 띠, 비어 있는 주인공 자리 확인. 실제 띠 y384–639. 미세한 정지 부분의 칸별 드리프트는 게임 정규화 검수 필요."
+      ],
+      "log": "es18-parent-letter-48-k-r2.gate-review.txt"
+    },
+    {
+      "name": "es15-end-of-life-48",
+      "exit_code": 1,
+      "visual": [
+        "장면 원본 인계·정규화 검수 필요",
+        "등불 큰 불꽃→작은 불꽃→불씨→꺼진 유리, 4칸 마지막 유지가 눈으로 읽힘. 배낭/배경 유지, 사람·무기 없음. 밝은 황색 계열 하이라이트가 4칸 소품에 일부 남아 팔레트 정규화 후 #FFE38A 0개 조건을 반드시 확인. 게임 최종 합격 아님."
+      ],
+      "log": "es15-end-of-life-48.gate-review.txt"
+    },
+    {
+      "name": "w03-kobold-composite18-48-r2",
+      "exit_code": 0,
+      "visual": [
+        "신규 문 통과·인계 후보",
+        "18칸·피격 행 빈 두 칸·왼쪽 방향·모든 칸 곡괭이·퇴장 단계 확인. 대기4 귀/주둥이와 이동 발의 변화를 보완. 신규 문 PASS, 행 바닥 차 0. 절대 크기116.2%·중심·블록·키색 차이는 경고로 인계. 대기2의 미세한 호흡은 정규화 후 재생 확인 대상."
+      ],
+      "log": "w03-kobold-composite18-48-r2.gate-review.txt"
+    },
+    {
+      "name": "es01-stranger-campfire-48-k",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "nref 여행자와 비슷한 회색 후드·눈·닳은 신발, 모닥불 네 반복 칸. 상단 별(SE7), 넓은 불빛과 밝은 풀무늬가 주인공 자리(SE5)에 남음."
+      ],
+      "log": "es01-stranger-campfire-48-k.gate-review.txt"
+    },
+    {
+      "name": "es18-parent-letter-48",
+      "exit_code": 1,
+      "visual": [
+        "장면 원본 인계·정규화 검수 필요",
+        "입력과 같은 캔버스·탁자/편지 배치·상단 단색 띠 유지. 잎·촛불·물결의 작은 변화로 제작. 정지 부분 떨림과 반복 연결은 게임의 정규화/주인공 합성 후 V-S 검사 필요."
+      ],
+      "log": "es18-parent-letter-48.gate-review.txt"
+    },
+    {
+      "name": "es01-stranger-campfire-48-k-r2",
+      "exit_code": 1,
+      "visual": [
+        "교체됨",
+        "상단 단색 띠는 개선. 불빛 왼쪽 반경이 여전히 크고 주인공 자리의 밝은 풀/별이 남음."
+      ],
+      "log": "es01-stranger-campfire-48-k-r2.gate-review.txt"
+    },
+    {
+      "name": "w02-bat18-48-r3",
+      "exit_code": 1,
+      "visual": [
+        "보류·3회 종료",
+        "방향·빈 칸·퇴장 축소는 맞음. 신규 문에서 7칸 상대 키 실패(행 중앙값 대비 약 −13%~+9%, 허용 ±6%). 숫자/블록 경고 때문이 아님. 날개 자세 변화와 전체 bbox 키 기준의 양립을 게임 쪽에서 재검토할 필요가 있음."
+      ],
+      "log": "w02-bat18-48-r3.gate-review.txt"
+    },
+    {
+      "name": "es01-stranger-campfire-48-k-r3",
+      "exit_code": 1,
+      "visual": [
+        "보류·3회 종료",
+        "불빛 반경을 줄였으나 첫 칸 기준 x약109–119의 빛과 좌측 밝은 풀/별이 주인공 예약 영역에 남음. SE5를 만족했다고 확정할 수 없어 애니메이션 단계는 시작하지 않음."
+      ],
+      "log": "es01-stranger-campfire-48-k-r3.gate-review.txt"
+    }
+  ]
+}

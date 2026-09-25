@@ -1,0 +1,20 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 3.8 · 키 비율 - · 배경 97.5% · 안내색 18 · 격자 밖 24525 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589772     -    -     -  64.0(-)        3.8   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Drawn pixel blocks are 3.8-3.8 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA02FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Only 97.5% of the area outside the figures is clean background; the background must be one flat #FF00FF magenta (or fully transparent) everywhere, with no gradient, texture, floor, shadow or stray marks.
+- Remove the cyan #00FFFF guide marks: 18 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+- Remove the drawing outside the grid: 24525 px of figures were found in the canvas margin. Everything must be inside the grid cells.
+ ELIFECYCLE  Command failed with exit code 1.
+

@@ -1,0 +1,24 @@
+{
+  "date": "2026-09-25",
+  "assets": {
+    "generated_pngs": 21,
+    "reviewed_pngs": 21,
+    "raw_hash_matches": 21,
+    "prompt_matches": 21,
+    "partial_alpha_pixels": 0,
+    "missing_required_files": 0
+  },
+  "current_gate": {
+    "passed_pngs": 3,
+    "passed_subjects": 2,
+    "source_hash": "ED0CBFC9B3A13976A00A4F79AD5FBCA4E071C3700A4B0C1211C74A18C2BEC23A"
+  },
+  "code": {
+    "initial_strip_fix_tests": "94/94 pass before concurrent gate redesign",
+    "latest_typecheck": "pass exit 0",
+    "intermediate_tests": "90/94; 4 legacy expectations failed during concurrent redesign",
+    "latest_full_tests": "incomplete: 86 dot progress marks then no progress for minutes, own test runner interrupted via Ctrl+C",
+    "diff_check": "pass"
+  },
+  "note": "Gate logs preserve actual exit codes. Scene absolute-strip-placement failures are distinguished from unkeyable backgrounds under V05_REQUEST 2026-09-25. Final game normalization/composition acceptance is pending."
+}

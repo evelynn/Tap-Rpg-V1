@@ -1,0 +1,84 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x48 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/enm_kobold.grid.png, the layout template of sheet enm_kobold): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1024 x 1536 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 6 x 6 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template enm_kobold (docs/art/templates/enm_kobold.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1024 x 1536 px (portrait).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 32 x 48 art px = 192 x 288 px. Grid top-left x 128, y 48; grid 768 x 1440 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 128 + (column-1) x 192, y = 48 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 306-311 (ground line y 312); height 30 art px = 180 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 594-599 (ground line y 600); height 30 art px = 180 px.
+- Row 3 attack (4 frames): lowest figure pixels on image rows y 882-887 (ground line y 888); height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 1170-1175 (ground line y 1176); height 30 art px = 180 px.
+- Row 5 exit (4 frames): lowest figure pixels on image rows y 1458-1463 (ground line y 1464); height free.
+- Horizontal centre (the figure's middle column): column 1 x 218-223, column 2 x 410-415, column 3 x 602-607, column 4 x 794-799.
+- Keep 2 art px = 12 px empty inside every cell edge.
+
+MONSTER STANDARD (input image 2 = the golden sample: the accepted river rat sheet, laid out on its own template). Make this sheet exactly like the golden sample in everything except the species:
+- The same 4 x 5 grid and the same row roles and timing: row 1 IDLE, 4 frames, 200 ms each, looping; row 2 MOVE, 4 frames, 120 ms each, looping; row 3 ATTACK, 4 frames, 100/80/100/160 ms; row 4 HIT, 2 frames, 70/150 ms, then its last two cells stay empty; row 5 EXIT, 4 frames, 120 ms each, running away (never dying, never lying hurt).
+- The same pixel language: a one-art-pixel dark plum #2B2233 outline all around, the same three tones per material (light, mid, dark), flat colour clusters, at most 12 colours in the sprite, eyes 1 to 2 art px, no texture strokes, no thick or double outline, no flat unshaded fill, no anti-aliasing.
+- The same amount of detail per ART pixel as the golden sample (its art pixels are 8 x 8 image px; this sheet's are the S of the NUMBERS block).
+- Every looping row really moves: adjacent frames differ by at least one art px in body height, a limb, the head or the tail. Never four copies of the same pose.
+- Faces LEFT in rows 1 to 4; turns to the RIGHT only while fleeing in row 5.
+- The rat is only the example of the standard: do not draw a rat, do not copy its body, colours or poses.
+
+SUBJECT AND IDENTITY: the same small chibi kobold in every cell, a cave-dwelling little creature standing upright on TWO legs (a biped, never on all fours), FACING LEFT in a slight three-quarter side view. Big round head almost half its height, short blunt snout, two long pointed ears sweeping backward, round dark eyes, yellow-green skin, a brown sleeveless vest, a dark belt, a cream belly, bare three-toed feet, no tail. Its height from the top of the ears to the soles is the height given in the NUMBERS block (30 art px), clearly shorter than the hero. It always holds a miner's pickaxe LONGER than its own height in its hands: small grey iron head, brown wooden haft. Keep head, ears, vest and pickaxe identical in every cell.
+PALETTE ONLY: outline #2B2233; skin #9AA85A #6E7A5A; vest #8E5E38; belt #5E3C24; belly #C8C2B8; eyes #2B2233; pickaxe head #7D7B80 #4C4A52; haft #C08A58 #8E5E38.
+
+LAYOUT: exactly 18 sprites in exactly 4 equal columns and 5 equal rows of identical cells, each cell 32:48 (width to height), evenly spaced, reading order left to right then next row. Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, exactly on the ground line given in the NUMBERS block, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+ROW 1 IDLE, the pickaxe resting on the shoulder in the same grip in all four: 1 stand; 2 breathe: chest and head one art px higher; 3 same as 1; 4 sniff: snout one art px forward and both ears twitch back. Frames 1, 2 and 4 must visibly differ.
+ROW 2 MOVE, walking in place, pickaxe still on the shoulder: 1 near foot forward, far foot back; 2 feet passing, body one art px lower; 3 far foot forward, near foot back; 4 feet passing, body one art px higher. The legs are clearly different in every frame.
+ROW 3 ATTACK, overhead swing to the left: 1 pickaxe raised behind the head; 2 top of the swing; 3 smashes down in front, pickaxe head near the ground line; 4 back to the shoulder grip. If a raised pickaxe would leave the cell, crouch one or two art px and tilt the haft to 45 degrees; never shorten the pickaxe.
+ROW 4 HIT: 1 flinch, eyes squeezed; 2 recoil one art px right. Then two empty cells.
+ROW 5 FLEE: 1 trips and sits down hard; 2 pushes up with one hand; 3 stands, turned to the RIGHT; 4 runs away to the right hugging the pickaxe. Comic and cute, never hurt or left lying. The pickaxe is in every cell of every row.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+Input image 3 is the previous kobold DESIGN only. Preserve its identity, two-legged anatomy, shoulder-held pickaxe, colors and exact ROW 5 sequence specified above: comic sit after trip, pushes up, stands facing right, runs right. CRITICAL ANIMATION CORRECTION: Idle frame 2 must visibly raise the chest and head ONE art pixel with the feet unchanged; idle frame 4 must visibly move the snout ONE pixel forward and twitch BOTH ears backward. Idle frame 3 matches frame 1. Walking must visibly alternate the leading feet; frame 2 has the body one pixel lower and frame 4 one pixel higher. Keep fixed head/body scale, a stable foot baseline within each row and identical shoulder grip. Maintain one-art-pixel outline, never a double outline. Do not repeat identical idle 1/2/4 or identical walking poses.
+
+Regeneration feedback (absolute size and template placement warnings are advisory under the updated V05 delivery rules):
+Regenerate this sheet on the enm_kobold template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "idle 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 11.3 blocks. Keep every pixel inside its own cell.
+- Cell (0,0) "idle 1": the figure's horizontal center is 12.9 blocks left of the center mark; move it 12.9 blocks right.
+- Cell (0,0) "idle 1": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (1,0) "idle 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 3 blocks. Keep every pixel inside its own cell.
+- Cell (1,0) "idle 2": the figure's horizontal center is 4.4 blocks left of the center mark; move it 4.4 blocks right.
+- Cell (1,0) "idle 2": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (2,0) "idle 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 5.5 blocks. Keep every pixel inside its own cell.
+- Cell (2,0) "idle 3": the figure's horizontal center is 4.1 blocks right of the center mark; move it 4.1 blocks left.
+- Cell (2,0) "idle 3": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (3,0) "idle 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 15.7 blocks. Keep every pixel inside its own cell.
+- Cell (3,0) "idle 4": the figure's horizontal center is 13.6 blocks right of the center mark; move it 13.6 blocks left.
+- Cell (3,0) "idle 4": the figure is 34.5 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (0,1) "move 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 11.3 blocks. Keep every pixel inside its own cell.
+- Cell (0,1) "move 1": the figure's horizontal center is 12.9 blocks left of the center mark; move it 12.9 blocks right.
+- Cell (0,1) "move 1": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (1,1) "move 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 2.8 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "move 2": the figure's horizontal center is 4.3 blocks left of the center mark; move it 4.3 blocks right.
+- Cell (1,1) "move 2": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (2,1) "move 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 5.5 blocks. Keep every pixel inside its own cell.
+- Cell (2,1) "move 3": the figure's horizontal center is 4.3 blocks right of the center mark; move it 4.3 blocks left.
+- Cell (2,1) "move 3": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (3,1) "move 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 14.7 blocks. Keep every pixel inside its own cell.
+- Cell (3,1) "move 4": the figure's horizontal center is 13.4 blocks right of the center mark; move it 13.4 blocks left.
+- Cell (3,1) "move 4": the figure is 35.3 blocks tall but must be 30 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (0,2) "attack 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 13.7 blocks. Keep every pixel inside its own cell.
+- Cell (0,2) "attack 1": the figure's horizontal center is 13.9 blocks left of the center mark; move it 13.9 blocks right.
+- Cell (1,2) "attack 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 3 blocks, top by 0.2 blocks. Keep every pixel inside its own cell.
+- Cell (1,2) "attack 2": the figure's horizontal center is 4.9 blocks left of the center mark; move it 4.9 blocks right.
+- Cell (2,2) "attack 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 0.2 blocks, right by 3.8 blocks. Keep every pixel inside its own cell.
+- Cell (2,2) "attack 3": the figure's horizontal center is 2.6 blocks right of the center mark; move it 2.6 blocks left.
+- ...and 22 more problems of the same kinds.

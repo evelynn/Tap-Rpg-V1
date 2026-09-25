@@ -1,0 +1,532 @@
+{
+  "date": "2026-09-25",
+  "method": "Read-only PNG metadata, source SHA-256 equality, saved prompt equality, RGB-based key/strip measurements. No image pixels were edited. Thresholded panel RGB differences include intended animation and are not normalized SE3 verdicts.",
+  "files": [
+    {
+      "name": "w10-h1-river-meadow-summer-day",
+      "size": [
+        1983,
+        793
+      ],
+      "mode": "RGB",
+      "sha256": "173ad3120faf11ab3020b35faf0903c3bb4fe8fac4ab3b2be0f72749a6252505",
+      "source_sha256": "173ad3120faf11ab3020b35faf0903c3bb4fe8fac4ab3b2be0f72749a6252505",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        200,
+        1983,
+        610
+      ]
+    },
+    {
+      "name": "w01-wolf18-48",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "b18fd52c832906d94e8322285dd2bca64c9b2a73a98dd49e636108cb5bd924af",
+      "source_sha256": "b18fd52c832906d94e8322285dd2bca64c9b2a73a98dd49e636108cb5bd924af",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        227,
+        53,
+        1311,
+        973
+      ]
+    },
+    {
+      "name": "es15-end-of-life-48-k",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "5efd7475396b8a168f0c6b4336778d6daae06eb7c23ad42ccac1af5eb299366b",
+      "source_sha256": "5efd7475396b8a168f0c6b4336778d6daae06eb7c23ad42ccac1af5eb299366b",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        616
+      ],
+      "actual_strip_y": [
+        384,
+        616
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.0018745510057471264,
+        0.000695941091954023,
+        0.0016388290229885057
+      ]
+    },
+    {
+      "name": "w01-wolf18-48-r2",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "b4710b992f55b6befb3b0b3df0b46ca3b24db63f86b7e132362b2f08c08e08de",
+      "source_sha256": "b4710b992f55b6befb3b0b3df0b46ca3b24db63f86b7e132362b2f08c08e08de",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        224,
+        55,
+        1353,
+        967
+      ]
+    },
+    {
+      "name": "w10-h1-river-meadow-summer-day-r2",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "0d4673e8a54c71b2c06dd388c90e7d5ac058f345d0b2e247b73ca4e33e9a9a04",
+      "source_sha256": "0d4673e8a54c71b2c06dd388c90e7d5ac058f345d0b2e247b73ca4e33e9a9a04",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        311,
+        1536,
+        712
+      ]
+    },
+    {
+      "name": "w10-h1-river-meadow-summer-day-r3",
+      "size": [
+        1983,
+        793
+      ],
+      "mode": "RGB",
+      "sha256": "6073dfd3defd6e02625f634cbed21b7ee83671d7d10c9d198f63b76be20c97ff",
+      "source_sha256": "6073dfd3defd6e02625f634cbed21b7ee83671d7d10c9d198f63b76be20c97ff",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        202,
+        1983,
+        595
+      ]
+    },
+    {
+      "name": "w01-wolf18-48-r3",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "4c147c6ad61affad2cda0915aff8f1bd064448cd1ccfb7272033942dd9da84ea",
+      "source_sha256": "4c147c6ad61affad2cda0915aff8f1bd064448cd1ccfb7272033942dd9da84ea",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        215,
+        59,
+        1328,
+        958
+      ]
+    },
+    {
+      "name": "es15-end-of-life-48-k-r2",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "c074ece54f84109865576ce0b7b248fbdf9b10211fc1c9e48bc24de9f67f7a4e",
+      "source_sha256": "c074ece54f84109865576ce0b7b248fbdf9b10211fc1c9e48bc24de9f67f7a4e",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        391,
+        1536,
+        624
+      ],
+      "actual_strip_y": [
+        391,
+        624
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.002391809728183119,
+        0.001609442060085837,
+        0.002436516452074392
+      ]
+    },
+    {
+      "name": "es15-end-of-life-48-k-r3",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "dfcc793c86d664aed1fb7e5a88cf6b678352291ecd7538fc0707ecfc4d643378",
+      "source_sha256": "dfcc793c86d664aed1fb7e5a88cf6b678352291ecd7538fc0707ecfc4d643378",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        391,
+        1536,
+        624
+      ],
+      "actual_strip_y": [
+        391,
+        624
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.0044371423462088696,
+        0.0026376967095851217,
+        0.00344241773962804
+      ]
+    },
+    {
+      "name": "w02-bat18-48",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "69474bc1b7bfaebae6be8f8ec87bc12dc43874647d87f9ba31d633d7b5453276",
+      "source_sha256": "69474bc1b7bfaebae6be8f8ec87bc12dc43874647d87f9ba31d633d7b5453276",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        49,
+        131,
+        975,
+        1326
+      ]
+    },
+    {
+      "name": "w03-kobold-composite18-48",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "cc9e4f222f5f1e56005bf05d179026caa61ffe4e58a370b9b45e8377ef933ed3",
+      "source_sha256": "cc9e4f222f5f1e56005bf05d179026caa61ffe4e58a370b9b45e8377ef933ed3",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        46,
+        91,
+        978,
+        1444
+      ]
+    },
+    {
+      "name": "w02-bat18-48-r2",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "42596701af8b5cdc1a5767d6cab29dbca17aa6e47d1c81c1d0e8838a18b34b93",
+      "source_sha256": "42596701af8b5cdc1a5767d6cab29dbca17aa6e47d1c81c1d0e8838a18b34b93",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        69,
+        171,
+        962,
+        1244
+      ]
+    },
+    {
+      "name": "es18-parent-letter-48-k",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "97f4cc01d41651cef58f1d3efc2647c6c084b946b4f7ac635bac553b2d08c7b2",
+      "source_sha256": "97f4cc01d41651cef58f1d3efc2647c6c084b946b4f7ac635bac553b2d08c7b2",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        640
+      ],
+      "actual_strip_y": [
+        384,
+        640
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.008961995442708334,
+        0.0111083984375,
+        0.013336181640625
+      ]
+    },
+    {
+      "name": "es18-parent-letter-48-k-r2",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "fb38ea3063905eec9436827c549a69dddc397bcae9c8d3e3e9c7dfd7e0018b5c",
+      "source_sha256": "fb38ea3063905eec9436827c549a69dddc397bcae9c8d3e3e9c7dfd7e0018b5c",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        640
+      ],
+      "actual_strip_y": [
+        384,
+        640
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.020375569661458332,
+        0.015899658203125,
+        0.023173014322916668
+      ]
+    },
+    {
+      "name": "es15-end-of-life-48",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "9123e00927e641da4da839de5db0e733abbbb632b4c8597f8dc4ea6519d73387",
+      "source_sha256": "9123e00927e641da4da839de5db0e733abbbb632b4c8597f8dc4ea6519d73387",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        391,
+        1536,
+        624
+      ],
+      "actual_strip_y": [
+        391,
+        624
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.019078594420600857,
+        0.03292650214592275,
+        0.034770654506437765
+      ],
+      "bright_yellow_pixels_per_panel": [
+        1071,
+        763,
+        93,
+        102
+      ]
+    },
+    {
+      "name": "w03-kobold-composite18-48-r2",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "d86144a1574bdf0f68c19715371aec1a86942b424665ac0cf568b0cd80709edd",
+      "source_sha256": "d86144a1574bdf0f68c19715371aec1a86942b424665ac0cf568b0cd80709edd",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        46,
+        94,
+        978,
+        1446
+      ]
+    },
+    {
+      "name": "es01-stranger-campfire-48-k",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "77bd316ab13a42c360eecd62dee12d38d6ccbfa9acac0a3366e913b61dd58a5d",
+      "source_sha256": "77bd316ab13a42c360eecd62dee12d38d6ccbfa9acac0a3366e913b61dd58a5d",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        639
+      ],
+      "actual_strip_y": [
+        385,
+        639
+      ],
+      "outside_actual_strip_keyable_fraction": 0.9997006899350649,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.008786499343832022,
+        0.008899278215223096,
+        0.011913549868766405
+      ]
+    },
+    {
+      "name": "es18-parent-letter-48",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "1340f4eec5dbebe7a573a6238fb316e76f794b6165fe4578759247df2c4def4d",
+      "source_sha256": "1340f4eec5dbebe7a573a6238fb316e76f794b6165fe4578759247df2c4def4d",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        640
+      ],
+      "actual_strip_y": [
+        384,
+        640
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.021840413411458332,
+        0.0145263671875,
+        0.023345947265625
+      ]
+    },
+    {
+      "name": "es01-stranger-campfire-48-k-r2",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "b6410691e477ce0086db7f8c477044b463ee1849366bd87a0b52227e90ef3728",
+      "source_sha256": "b6410691e477ce0086db7f8c477044b463ee1849366bd87a0b52227e90ef3728",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        640
+      ],
+      "actual_strip_y": [
+        385,
+        640
+      ],
+      "outside_actual_strip_keyable_fraction": 0.9999983067837018,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.008517156862745097,
+        0.006301062091503268,
+        0.011325571895424836
+      ]
+    },
+    {
+      "name": "w02-bat18-48-r3",
+      "size": [
+        1024,
+        1536
+      ],
+      "mode": "RGB",
+      "sha256": "6793fcd912d936700450d78a2bb709dca18ae8d1a10bb6fc251e3b71b5a8cadf",
+      "source_sha256": "6793fcd912d936700450d78a2bb709dca18ae8d1a10bb6fc251e3b71b5a8cadf",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        61,
+        135,
+        974,
+        1332
+      ]
+    },
+    {
+      "name": "es01-stranger-campfire-48-k-r3",
+      "size": [
+        1536,
+        1024
+      ],
+      "mode": "RGB",
+      "sha256": "d5600128b90145460908e23ff8cf60b17cb3758f94d79280b0326987a39a1c31",
+      "source_sha256": "d5600128b90145460908e23ff8cf60b17cb3758f94d79280b0326987a39a1c31",
+      "raw_copy_identical": true,
+      "prompt_matches_record": true,
+      "partial_alpha_pixels": 0,
+      "transparent_pixels": 0,
+      "foreground_bbox": [
+        0,
+        384,
+        1536,
+        640
+      ],
+      "actual_strip_y": [
+        384,
+        640
+      ],
+      "outside_actual_strip_keyable_fraction": 1,
+      "all_panel_pixels_difference_rgb_gt24": [
+        0.01849365234375,
+        0.014790852864583334,
+        0.026570638020833332
+      ]
+    }
+  ]
+}

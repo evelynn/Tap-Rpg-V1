@@ -1,0 +1,40 @@
+Asset type: Tap RPG 2D pixel-art EVENT SCENE, a short looping animation of one small side-view scene for a 128x64-pixel game window. This is real game pixel art, not an illustration, poster, UI or pixel-art-themed painting.
+PIXEL LANGUAGE: each panel must look designed on a genuine logical 128x64 pixel canvas and shown with large, uniform, perfectly square pixel blocks. Crisp hard square clusters, deliberate one-block stair-steps, flat color fills in large coherent areas, restrained detail.
+OUTLINE RULE: people, creatures and props have a one-block outer contour in dark plum #2B2233. Background surfaces (sky, walls, floor, ground, water, hills, buildings, tent cloth) have NO dark outlines: their edges use a slightly darker shade of the same hue, and no background pixel is darker than #4C4A52.
+SCALE: chibi people about 2.2 heads tall. Every panel is exactly 128 x 64 art px (NUMBERS). An adult stands exactly 38 art px tall, the feet on art row 56 of 64 (the ground line) and the top of the head on art row 18; Sena is 34, Tori 30 and a seated adult 26 art px tall.
+Light is shown only with flat stepped bands of a lighter color. Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, bloom, painterly strokes, noisy dithering, fur texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/scene_event.grid.png, the layout template of sheet scene_event): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 3 x 3 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template scene_event (docs/art/templates/scene_event.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 4 panel(s) of 128 x 64 art px = 384 x 192 px each, filling x 0-1535, y 416-607. Outside the strip everything is flat #FF00FF.
+- Panel left edges at x 0, 384, 768, 1152.
+- Ground line: art row 56 of 64 = image y 584; one straight horizontal line.
+- Each panel is one opaque scene edge to edge; panels touch with no gap or divider line.
+
+LAYOUT (key strip): draw on the template strip of input image 1: four panels side by side, each exactly 128 x 64 art px, at the image positions given in the NUMBERS block. ALL FOUR PANELS SHOW FRAME 1 and are pixel-identical copies of one another: this is a still key frame, not yet an animation. Each panel is a complete opaque scene from edge to edge; the panels touch with no gap, border or dividing line. Above and below the strip the canvas is one flat #FF00FF magenta, the exact same value in every pixel.
+A straight flat ground line runs across each panel at art row 56 of 64; every person and prop stands on it. The top eight art rows of each panel (rows 0-7) are one quiet flat color. A position given as a fraction f of the panel width is art x = f x 128 inside the panel.
+
+Input image 2 role: identity reference sheet. Copy ONLY the people named in this scene from it (cell 11 = the hooded traveler): the same head shape, hair, face, clothing, colors and body height. Do not copy its layout, its magenta background, its poses or any other person in it.
+
+SCENE: a stranger by the campfire. A night meadow campsite under the stars, calm and warm, not scary. Night sky #3E5A7E with a lower band #5A6A9A, a few single-block stars #FFE38A #FFFFFF, low hill silhouettes #5A6A9A, dark grass #4D6A3E with a #5E9A4A top edge on the ground line. Around the fire the ground shows two flat stepped rings of warm light, #B8A04A inside and #8E5E38 outside.
+HERO SLOT (keep empty): 0.06 to 0.31 of the panel width, ground line up to row 10, show only plain night grass and sky. No person, prop, shadow or bright detail (the player character is added later).
+PROPS AND PEOPLE:
+- Campfire centered at 0.47: three crossed logs #8E5E38 that stay pixel-identical in every frame, flames #FFE38A #C8783A, about 22 blocks wide and 24 tall.
+- A hooded traveler: a long grey hooded travel cloak #9A948C #6E6862, the face shaded by the hood with only two small eyes visible, gender not shown, worn-out boot soles #8E5E38 with a pale worn patch #C8C2B8. Sitting on the ground centered at 0.66, facing LEFT toward the fire, knees up, both hands held out to the flames, the boot soles turned toward the fire so the worn patches show. Seated height about 26 blocks.
+FRAMES: flames change shape every frame; frames 2 and 4 the traveler's hands rub together one block closer, frames 1 and 3 hands apart; one star blinks off in frame 3.
+
+Do NOT draw: the player character, any young adventurer who could be mistaken for it, any person in the empty hero slot, any person or creature not listed, text, letters, numbers, runes, writing on signs, paper or banners, labels, frame numbers, arrows, musical notes, zZ letters, speech bubbles, UI elements, panel borders, grid lines, dividing lines, watermark, blood, wounds, corpses, weapons being swung, magic effects not listed, motion trails, vignette, spotlight, glow halo, lens flare, gradient sky. Output only the finished image.
+
+KEY-STRIP STAGE ONLY: every panel shows the FIRST frame of the FRAMES paragraph. All four panels repeat that first frame; the later animation states are for a subsequent edit. Preserve the template canvas and its exact narrow strip; keep all artwork inside the strip.
+
+Input image 3 is the previous key-strip DESIGN only. Preserve its grey hooded traveler identity, three-log campfire, pixel scale, palette and four identical FIRST-FRAME panels. Correct these two visible acceptance failures: (1) TOP EIGHT ART ROWS in every panel must be ONE FLAT blue #3E5A7E with ZERO stars, highlights, mountains or details; stars begin only BELOW this top band. (2) HERO SLOT x 0.06 to 0.31 is reserved and must have plain muted sky/ground only, absolutely no firelight, bright grass flecks, branches, stars, objects or shadows; keep the complete warm firelight patches to the RIGHT of art x 43 (0.336 panel width). Keep a visible plain grass gap between that slot and the fire. Use just two hard flat warm light bands, never a soft halo. Hands point toward the flame, knees up, worn boot soles visible. Retain the exact 1536 x 1024 template canvas; four equal panels without divider lines.

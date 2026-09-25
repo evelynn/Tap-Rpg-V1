@@ -1,0 +1,24 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/es01-stranger-campfire-48-k.png" "--spec" "scene_event"
+
+
+node:internal/modules/run_main:123
+    triggerUncaughtException(
+    ^
+Error [TransformError]: Transform failed with 1 error:
+E:\AI_work\Tap_rpg\tools\art-check\src\gate.ts:379:8: ERROR: The symbol "minContent" has already been declared
+    at failureErrorWithLog (E:\AI_work\Tap_rpg\node_modules\.pnpm\esbuild@0.25.9\node_modules\esbuild\lib\main.js:1467:15)
+    at E:\AI_work\Tap_rpg\node_modules\.pnpm\esbuild@0.25.9\node_modules\esbuild\lib\main.js:736:50
+    at responseCallbacks.<computed> (E:\AI_work\Tap_rpg\node_modules\.pnpm\esbuild@0.25.9\node_modules\esbuild\lib\main.js:603:9)
+    at handleIncomingPacket (E:\AI_work\Tap_rpg\node_modules\.pnpm\esbuild@0.25.9\node_modules\esbuild\lib\main.js:658:12)
+    at Socket.readFromStdout (E:\AI_work\Tap_rpg\node_modules\.pnpm\esbuild@0.25.9\node_modules\esbuild\lib\main.js:581:7)
+    at Socket.emit (node:events:518:28)
+    at addChunk (node:internal/streams/readable:561:12)
+    at readableAddChunkPushByteMode (node:internal/streams/readable:512:3)
+    at Readable.push (node:internal/streams/readable:392:5)
+    at Pipe.onStreamRead (node:internal/stream_base_commons:189:23)
+
+Node.js v22.17.0
+ ELIFECYCLE  Command failed with exit code 1.
+

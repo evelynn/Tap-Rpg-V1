@@ -1,0 +1,75 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 48x32 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/enm_wolf.grid.png, the layout template of sheet enm_wolf): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 6 x 6 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template enm_wolf (docs/art/templates/enm_wolf.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 48 x 32 art px = 288 x 192 px. Grid top-left x 192, y 32; grid 1152 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 288, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 194-199 (ground line y 200); height 25 art px = 150 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 386-391 (ground line y 392); height 25 art px = 150 px.
+- Row 3 attack (4 frames): lowest figure pixels: frame 1 y 578-583; frame 2 y 560-565; frame 3 y 578-583; frame 4 y 578-583; height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 770-775 (ground line y 776); height 25 art px = 150 px.
+- Row 5 exit (4 frames): lowest figure pixels on image rows y 962-967 (ground line y 968); height free.
+- Horizontal centre (the figure's middle column): column 1 x 330-335, column 2 x 618-623, column 3 x 906-911, column 4 x 1194-1199.
+- Keep 2 art px = 12 px empty inside every cell edge.
+- Attack frame 2 is a leap: its lowest pixel is 3 art px higher than in the other frames (numbers above).
+
+MONSTER STANDARD (input image 2 = the golden sample: the accepted river rat sheet, laid out on its own template). Make this sheet exactly like the golden sample in everything except the species:
+- The same 4 x 5 grid and the same row roles and timing: row 1 IDLE, 4 frames, 200 ms each, looping; row 2 MOVE, 4 frames, 120 ms each, looping; row 3 ATTACK, 4 frames, 100/80/100/160 ms; row 4 HIT, 2 frames, 70/150 ms, then its last two cells stay empty; row 5 EXIT, 4 frames, 120 ms each, running away (never dying, never lying hurt).
+- The same pixel language: a one-art-pixel dark plum #2B2233 outline all around, the same three tones per material (light, mid, dark), flat colour clusters, at most 12 colours in the sprite, eyes 1 to 2 art px, no texture strokes, no thick or double outline, no flat unshaded fill, no anti-aliasing.
+- The same amount of detail per ART pixel as the golden sample (its art pixels are 8 x 8 image px; this sheet's are the S of the NUMBERS block).
+- Every looping row really moves: adjacent frames differ by at least one art px in body height, a limb, the head or the tail. Never four copies of the same pose.
+- Faces LEFT in rows 1 to 4; turns to the RIGHT only while fleeing in row 5.
+- The rat is only the example of the standard: do not draw a rat, do not copy its body, colours or poses.
+
+SUBJECT AND IDENTITY: the same chibi river WOLF in every cell, a four-legged canine seen from the side, FACING LEFT. It must read as a young wolf at a glance, never a fox, corgi, dog or cat: a LONG straight muzzle, about as long as the head is tall, clearly longer than a fox's; SMALL triangular ears set wide apart on the back of the head, each ear at most one quarter of the head height; a deep chest with a cream ruff; long straight legs, so the belly stands clearly above the ground (never short corgi legs); a thick bushy tail carried low behind, never curled over the back. Small amber eyes, sturdy paws. A cute storybook game enemy, never realistic. Keep ear size, muzzle length, leg length, ruff, tail and proportions identical in every cell.
+PALETTE ONLY: outline #2B2233; fur #8A96A6 #6C6A70; chest ruff #F0E6CC; inner ear #A0664A; eyes #FFE38A; teeth #F0E6CC; at most three blocks of #B04A42 inside an open mouth. The chest ruff is one clearly separate flat cream shape.
+
+LAYOUT: exactly 18 sprites in exactly 4 equal columns and 5 equal rows of identical cells, each cell 48:32 (width to height), evenly spaced, reading order left to right then next row. Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, exactly on the ground line given in the NUMBERS block, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+ROW 1 IDLE: 1 standing; 2 breathe in, chest one art px higher; 3 exactly the same as 1; 4 one ear twitches back and the tail tip lifts one art px.
+ROW 2 MOVE, trotting in place: 1 near forepaw forward, far hind paw back; 2 body one art px lower, legs gathering; 3 opposite legs forward; 4 body one art px higher, legs passing. Planted paws never slide.
+ROW 3 ATTACK, a lunging bite to the left: 1 crouch, head low; 2 leap, all paws exactly 3 art px above the ground line (NUMBERS); 3 bite, jaws open forward; 4 land back on the ground line.
+ROW 4 HIT: 1 flinch, eyes squeezed shut; 2 recoil one art px to the right. Then two empty cells.
+ROW 5 FLEE, running away to the RIGHT: 1 turns to face right; 2 tail tucked tightly under the belly, silhouette clearly narrower; 3 leaping away, tail still tucked; 4 a smaller escaping wolf, about half size. Frightened and cute, never hurt, lying down or defeated.
+No tongue, no blood, no ground, no dust, no speed lines.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+Use the fixed cell coordinates, shorten and lower the tail within its own rectangle, and keep the tail entirely clear of the right margin. Keep ears small, muzzle long, wolf identity and one-block outline. Do not repeat a static pose in all idle cells.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the enm_wolf template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "idle 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 2 blocks. Keep every pixel inside its own cell.
+- Cell (1,0) "idle 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1 block. Keep every pixel inside its own cell.
+- Cell (2,0) "idle 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1 block. Keep every pixel inside its own cell.
+- Cell (3,0) "idle 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1.7 blocks. Keep every pixel inside its own cell.
+- Cell (0,1) "move 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 3.8 blocks. Keep every pixel inside its own cell.
+- Cell (0,1) "move 1": the figure's horizontal center is 2.3 blocks right of the center mark; move it 2.3 blocks left.
+- Cell (1,1) "move 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1.7 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "move 2": the figure is 21.3 blocks tall but must be 25 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (2,1) "move 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (3,1) "move 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 3.5 blocks. Keep every pixel inside its own cell.
+- Cell (0,2) "attack 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1 block. Keep every pixel inside its own cell.
+- Cell (2,2) "attack 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1.8 blocks. Keep every pixel inside its own cell.
+- Cell (3,2) "attack 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 2.3 blocks. Keep every pixel inside its own cell.
+- Cell (0,3) "hit 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1 block. Keep every pixel inside its own cell.
+- Cell (0,3) "hit 1": the figure is 21.3 blocks tall but must be 25 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6x6 block.
+- Cell (0,4) "exit 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 0.5 blocks. Keep every pixel inside its own cell.
+- Cell (0,4) "exit 1": the figure's horizontal center is 5.3 blocks right of the center mark; move it 5.3 blocks left.
+- Cell (2,4) "exit 3": the lowest pixel is 4 blocks above the ground line; move the figure down 4 blocks so the lowest pixel sits directly on the ground line.
+- Cell (2,4) "exit 3": the figure's horizontal center is 4.3 blocks right of the center mark; move it 4.3 blocks left.
+- Cell (3,4) "exit 4": the lowest pixel is 3 blocks above the ground line; move the figure down 3 blocks so the lowest pixel sits directly on the ground line.

@@ -1,0 +1,7 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/es18-parent-letter-48-k-r2.png" "--spec" "scene_event"
+
+comps is not defined
+ ELIFECYCLE  Command failed with exit code 2.
+

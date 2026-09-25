@@ -1,0 +1,61 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w02-bat18-48-r2.png" "--spec" "enm_bat"
+
+assets/_imagegen/v05/w02-bat18-48-r2.png
+FAIL enm_bat · canvas · 이미지 1024×1536 (틀 1024×1536) · S 7 (template) · 시트 블록 7.0 · 배경 100.0% · 안내색 0 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              16813     2  -4.0  23.3(14)       7.1   0.0%  ✗ bbox,ground,center,height
+  (1,0)   idle 2              14501     0  -0.9  19.4(14)       7.1   0.0%  ✗ bbox,height
+  (2,0)   idle 3              13011     2   1.4  18.9(14)       7.0   0.0%  ✗ bbox,ground,height
+  (3,0)   idle 4              16938     1   2.1  22.7(14)       7.1   0.0%  ✗ bbox,center,height
+  (0,1)   move 1              16237     3  -4.3  23.0(14)       7.0   0.0%  ✗ bbox,ground,center,height
+  (1,1)   move 2              14129     2  -1.4  19.9(14)       7.1   0.0%  ✗ bbox,ground,height
+  (2,1)   move 3              13268     4   1.0  19.1(14)       6.8   0.0%  ✗ bbox,ground,height
+  (3,1)   move 4              15758     3   1.9  21.7(14)       7.1   0.0%  ✗ bbox,ground,height
+  (0,2)   attack 1            15087     2  -2.1  21.0(-)        6.8   0.0%  ✗ bbox,ground,center
+  (1,2)   attack 2            13378     2  -1.3  17.3(-)        6.9   0.0%  ✗ bbox,ground
+  (2,2)   attack 3            15514     3  -0.9  19.6(-)        7.1   0.0%  ✗ bbox,ground
+  (3,2)   attack 4            15981     2   2.1  22.0(-)        6.9   0.0%  ✗ bbox,ground,center
+  (0,3)   hit 1               16094     4  -4.4  23.0(14)       7.0   0.0%  ✗ bbox,ground,center,height
+  (1,3)   hit 2               13096     5  -0.9  19.1(14)       7.0   0.0%  ✗ ground,height
+  (0,4)   exit 1              13112     -  -0.9  19.0(-)        6.9   0.0%  ✗ bbox
+  (1,4)   exit 2              12665     -   3.1  19.6(-)        6.7   0.0%  ✗ bbox,center
+  (2,4)   exit 3               7917     -   4.1  16.3(-)        7.1   0.0%  ✗ bbox,center
+  (3,4)   exit 4               6955     -   5.9  14.3(-)        7.3   0.0%  ✗ bbox,center
+
+Regeneration feedback:
+Regenerate this sheet on the enm_bat template (one art pixel = 7x7 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "idle 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 0.9 blocks, top by 7.1 blocks. Keep every pixel inside its own cell.
+- Cell (0,0) "idle 1": the lowest pixel is 2 blocks below the hover line; move the figure up 2 blocks so the lowest pixel sits directly on the hover line.
+- Cell (0,0) "idle 1": the figure's horizontal center is 4 blocks left of the center mark; move it 4 blocks right.
+- Cell (0,0) "idle 1": the figure is 23.3 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (1,0) "idle 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 0.1 blocks, top by 5 blocks. Keep every pixel inside its own cell.
+- Cell (1,0) "idle 2": the figure is 19.4 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (2,0) "idle 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the top by 2.7 blocks. Keep every pixel inside its own cell.
+- Cell (2,0) "idle 3": the lowest pixel is 2 blocks below the hover line; move the figure up 2 blocks so the lowest pixel sits directly on the hover line.
+- Cell (2,0) "idle 3": the figure is 18.9 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (3,0) "idle 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 2.3 blocks, top by 7.1 blocks. Keep every pixel inside its own cell.
+- Cell (3,0) "idle 4": the figure's horizontal center is 2.1 blocks right of the center mark; move it 2.1 blocks left.
+- Cell (3,0) "idle 4": the figure is 22.7 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (0,1) "move 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 1.1 blocks, top by 5.1 blocks. Keep every pixel inside its own cell.
+- Cell (0,1) "move 1": the lowest pixel is 3 blocks below the hover line; move the figure up 3 blocks so the lowest pixel sits directly on the hover line.
+- Cell (0,1) "move 1": the figure's horizontal center is 4.3 blocks left of the center mark; move it 4.3 blocks right.
+- Cell (0,1) "move 1": the figure is 23 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (1,1) "move 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 0.3 blocks, top by 2.9 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "move 2": the lowest pixel is 2 blocks below the hover line; move the figure up 2 blocks so the lowest pixel sits directly on the hover line.
+- Cell (1,1) "move 2": the figure is 19.9 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (2,1) "move 3": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the top by 0.3 blocks. Keep every pixel inside its own cell.
+- Cell (2,1) "move 3": the lowest pixel is 4 blocks below the hover line; move the figure up 4 blocks so the lowest pixel sits directly on the hover line.
+- Cell (2,1) "move 3": the figure is 19.1 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (3,1) "move 4": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the right by 1.7 blocks, top by 3.9 blocks. Keep every pixel inside its own cell.
+- Cell (3,1) "move 4": the lowest pixel is 3 blocks below the hover line; move the figure up 3 blocks so the lowest pixel sits directly on the hover line.
+- Cell (3,1) "move 4": the figure is 21.7 blocks tall but must be 14 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 7x7 block.
+- Cell (0,2) "attack 1": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the left by 1.1 blocks, top by 4 blocks. Keep every pixel inside its own cell.
+- Cell (0,2) "attack 1": the lowest pixel is 2 blocks below the hover line; move the figure up 2 blocks so the lowest pixel sits directly on the hover line.
+- Cell (0,2) "attack 1": the figure's horizontal center is 2.1 blocks left of the center mark; move it 2.1 blocks right.
+- Cell (1,2) "attack 2": the drawing crosses the cell boundary (keep a 2-block empty margin inside the cell) on the top by 0.4 blocks. Keep every pixel inside its own cell.
+- Cell (1,2) "attack 2": the lowest pixel is 2 blocks below the hover line; move the figure up 2 blocks so the lowest pixel sits directly on the hover line.
+- ...and 18 more problems of the same kinds.
+ ELIFECYCLE  Command failed with exit code 1.
+

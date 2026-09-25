@@ -1,0 +1,47 @@
+Asset type: Tap RPG 2D pixel-art EVENT SCENE, a short looping animation of one small side-view scene for a 128x64-pixel game window. This is real game pixel art, not an illustration, poster, UI or pixel-art-themed painting.
+PIXEL LANGUAGE: each panel must look designed on a genuine logical 128x64 pixel canvas and shown with large, uniform, perfectly square pixel blocks. Crisp hard square clusters, deliberate one-block stair-steps, flat color fills in large coherent areas, restrained detail.
+OUTLINE RULE: people, creatures and props have a one-block outer contour in dark plum #2B2233. Background surfaces (sky, walls, floor, ground, water, hills, buildings, tent cloth) have NO dark outlines: their edges use a slightly darker shade of the same hue, and no background pixel is darker than #4C4A52.
+SCALE: chibi people about 2.2 heads tall. Every panel is exactly 128 x 64 art px (NUMBERS). An adult stands exactly 38 art px tall, the feet on art row 56 of 64 (the ground line) and the top of the head on art row 18; Sena is 34, Tori 30 and a seated adult 26 art px tall.
+Light is shown only with flat stepped bands of a lighter color. Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, bloom, painterly strokes, noisy dithering, fur texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/scene_event.grid.png, the layout template of sheet scene_event): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 3 x 3 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template scene_event (docs/art/templates/scene_event.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 4 panel(s) of 128 x 64 art px = 384 x 192 px each, filling x 0-1535, y 416-607. Outside the strip everything is flat #FF00FF.
+- Panel left edges at x 0, 384, 768, 1152.
+- Ground line: art row 56 of 64 = image y 584; one straight horizontal line.
+- Each panel is one opaque scene edge to edge; panels touch with no gap or divider line.
+
+LAYOUT (key strip): draw on the template strip of input image 1: four panels side by side, each exactly 128 x 64 art px, at the image positions given in the NUMBERS block. ALL FOUR PANELS SHOW FRAME 1 and are pixel-identical copies of one another: this is a still key frame, not yet an animation. Each panel is a complete opaque scene from edge to edge; the panels touch with no gap, border or dividing line. Above and below the strip the canvas is one flat #FF00FF magenta, the exact same value in every pixel.
+A straight flat ground line runs across each panel at art row 56 of 64; every person and prop stands on it. The top eight art rows of each panel (rows 0-7) are one quiet flat color. A position given as a fraction f of the panel width is art x = f x 128 inside the panel.
+
+SCENE: the end of a life. A hold scene: the last panel stays on screen. A quiet empty floor that is not any real place: a flat dusk-grey floor #6E6862 below the ground line with a slightly lighter top edge #7D7B80, and behind it one deep flat blue-grey #4C4A52 with a slightly lighter band #5A6A9A near the horizon (rows 44-55). No walls, no enemies, no people, no player character anywhere. Calm, dignified, sad but gentle; never scary.
+EMPTY LEFT SIDE: from 0 to 0.42 of the panel width only plain floor and background; nothing is added there. EMPTY RIGHT OF THE BACKPACK: from 0.63 to 0.81 only plain floor and background (the game adds one item there later).
+PROPS (between 0.44 and 0.62, standing on the ground line):
+- A small standing lantern centered at 0.48, about 14 by 20 blocks, bronze frame #B07A3A #7A4E24, glass panel.
+- A left-behind small boxy travel backpack #8E5E38 #5E3C24 with a rolled flap, centered at 0.57, leaning slightly toward the lantern.
+FRAMES (one way, frame 4 is held): the lantern goes out in four steps. 1 flame #FFE38A with two flat light rings on the floor #9A948C and #7D7B80; 2 smaller flame, one ring; 3 a tiny ember #C8783A, no ring; 4 extinguished: glass #6E6862, no yellow pixel anywhere. Frame 4 alone must read as a lantern gone out beside a backpack.
+
+Do NOT draw: the player character, any young adventurer who could be mistaken for it, any person in the empty hero slot, any person or creature not listed, text, letters, numbers, runes, writing on signs, paper or banners, labels, frame numbers, arrows, musical notes, zZ letters, speech bubbles, UI elements, panel borders, grid lines, dividing lines, watermark, blood, wounds, corpses, weapons being swung, magic effects not listed, motion trails, vignette, spotlight, glow halo, lens flare, gradient sky. Output only the finished image.
+
+KEY-STRIP STAGE ONLY: every panel shows the FIRST frame of the FRAMES paragraph. All four panels repeat that first frame; the later animation states are for a subsequent edit. Preserve the template canvas and its exact narrow strip; keep all artwork inside the strip.
+
+The scene occupies ONLY the exact rectangle x=0..1535, y=416..607. All pixels above row 416 and below row 607 remain magenta. The straight floor begins on image row 584. Use hard 3x3 image-pixel blocks and flat colours without texture noise. All four panels show the same lit lantern, backpack and first-frame floor light rings.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the scene_event template (one art pixel = 3x3 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "scene 1": the art pixels are about 4.3 image pixels wide, but every art pixel must be a 3x3 block. Redraw on the 3-pixel grid; do not rescale or blur.
+- Cell (1,0) "scene 2": the art pixels are about 4.3 image pixels wide, but every art pixel must be a 3x3 block. Redraw on the 3-pixel grid; do not rescale or blur.
+- Cell (2,0) "scene 3": the art pixels are about 4.3 image pixels wide, but every art pixel must be a 3x3 block. Redraw on the 3-pixel grid; do not rescale or blur.
+- Cell (3,0) "scene 4": the art pixels are about 4.3 image pixels wide, but every art pixel must be a 3x3 block. Redraw on the 3-pixel grid; do not rescale or blur.
+- Only 95.2% of the area outside the figures is clean background; the background must be one flat #FF00FF magenta (or fully transparent) everywhere, with no gradient, texture, floor, shadow or stray marks.
+- Remove the drawing outside the grid: 61301 px of figures were found in the canvas margin. Everything must be inside the grid cells.

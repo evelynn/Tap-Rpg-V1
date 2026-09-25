@@ -1,0 +1,15 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 시트 블록 3.8 · 배경 100.0% · 안내색 18 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              614297     -     -  66.7(-)        3.8   0.0%  ✗ bbox,block 채움 100%/100%
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "far 1": the drawing crosses the cell boundary on the top by 1.3 blocks, bottom by 1.3 blocks. Keep every pixel inside its own cell.
+- Cell (0,0) "far 1": the art pixels are about 3.8 image pixels wide, but every art pixel must be a 6x6 block. Redraw on the 6-pixel grid; do not rescale or blur.
+- Remove the cyan #00FFFF guide marks: 18 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.

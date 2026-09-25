@@ -1,0 +1,20 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/es15-end-of-life-48-k.png" "--spec" "scene_event"
+
+assets/_imagegen/v05/es15-end-of-life-48-k.png
+FAIL scene_event · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (template) · 시트 블록 4.3 · 배경 100.0% · 안내색 0 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   scene 1                 0     -     -  -                -   0.0%  ✗ missing 채움 100%/100%
+  (1,0)   scene 2            356213     -     -  77.3(-)        4.3   0.0%  ✗ bbox,block 채움 100%/100%
+  (2,0)   scene 3                 0     -     -  -                -   0.0%  ✗ missing 채움 100%/100%
+  (3,0)   scene 4                 0     -     -  -                -   0.0%  ✗ missing 채움 100%/100%
+
+Regeneration feedback:
+Regenerate this sheet on the scene_event template (one art pixel = 3x3 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "scene 1": the cell is empty or nearly empty (0 px). Draw the "scene 1" frame here.
+- Cell (1,0) "scene 2": the drawing crosses the cell boundary on the left by 128 blocks, right by 256 blocks, top by 10.7 blocks, bottom by 2.7 blocks. Keep every pixel inside its own cell.
+- Cell (1,0) "scene 2": the art pixels are about 4.3 image pixels wide, but every art pixel must be a 3x3 block. Redraw on the 3-pixel grid; do not rescale or blur.
+- Cell (2,0) "scene 3": the cell is empty or nearly empty (0 px). Draw the "scene 3" frame here.
+- Cell (3,0) "scene 4": the cell is empty or nearly empty (0 px). Draw the "scene 4" frame here.
+ ELIFECYCLE  Command failed with exit code 1.

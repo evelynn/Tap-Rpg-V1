@@ -1,0 +1,52 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w01-wolf18-48.png" "--spec" "enm_wolf"
+
+assets/_imagegen/v05/w01-wolf18-48.png
+FAIL enm_wolf · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 5.7 · 키 비율 0.912 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 16
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              17156     0    0   1.3  23.3(25)       5.7   0.0%  ok (경고 bbox)
+  (1,0)   idle 2              17379     0    0   0.6  24.3(25)       5.5   0.0%  ok
+  (2,0)   idle 3              16645     0    0  -1.1  23.3(25)       5.7   0.0%  ok
+  (3,0)   idle 4              16844     0    0  -4.1  23.2(25)       5.5   0.0%  ok (경고 center)
+  (0,1)   move 1              17091     0    0   1.6  22.8(25)       5.7   0.0%  ok (경고 bbox)
+  (1,1)   move 2              16738     0    0   0.8  21.2(25)       5.7   0.0%  ✗ scale
+  (2,1)   move 3              16783     0    0  -1.4  22.8(25)       5.7   0.0%  ok
+  (3,1)   move 4              16896     0    0  -4.1  23.3(25)       5.5   0.0%  ok (경고 center)
+  (0,2)   attack 1            15952     0    2   2.1  18.0(-)        5.8   0.0%  ok (경고 bbox,ground,center)
+  (1,2)   attack 2            15453    -3   -1  -0.9  21.5(-)        5.7   0.0%  ✗ ground
+  (2,2)   attack 3            16565     0    2  -1.4  23.8(-)        5.7   0.0%  ok (경고 ground)
+  (3,2)   attack 4            16652     0    2  -3.6  20.8(-)        5.7   0.0%  ok (경고 ground,center)
+  (0,3)   hit 1               16278     0    1   1.8  21.0(25)       5.7   0.0%  ok (경고 bbox)
+  (1,3)   hit 2               15589     0    1   1.1  21.3(25)       5.6   0.0%  ok
+  (0,4)   exit 1              16642     1    1   3.9  23.0(-)        5.4   0.0%  ok (경고 center)
+  (1,4)   exit 2              12987     1    1   2.1  21.8(-)        5.4   0.0%  ok (경고 center)
+  (2,4)   exit 3              12868    -2   -2   1.6  19.5(-)        5.7   0.0%  ✗ ground (경고 ground)
+  (3,4)   exit 4               6648    -1   -1   1.4  14.5(-)        5.4   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (right 0.2 blocks).
+- Cell (3,0) "idle 4": horizontal center 4.1 blocks left of the template center mark.
+- Cell (0,1) "move 1": crosses the template cell boundary (right 1.3 blocks).
+- Cell (3,1) "move 4": horizontal center 4.1 blocks left of the template center mark.
+- Cell (0,2) "attack 1": crosses the template cell boundary (right 2.2 blocks).
+- Cell (0,2) "attack 1": lowest pixel 2 blocks below the template ground line.
+- Cell (0,2) "attack 1": horizontal center 2.1 blocks right of the template center mark.
+- Cell (2,2) "attack 3": lowest pixel 2 blocks below the template ground line.
+- Cell (3,2) "attack 4": lowest pixel 2 blocks below the template ground line.
+- Cell (3,2) "attack 4": horizontal center 3.6 blocks left of the template center mark.
+- Cell (0,3) "hit 1": crosses the template cell boundary (right 0.3 blocks).
+- Cell (0,4) "exit 1": horizontal center 3.9 blocks right of the template center mark.
+- Cell (1,4) "exit 2": horizontal center 2.1 blocks right of the template center mark.
+- Cell (2,4) "exit 3": lowest pixel 2 blocks above the template ground line.
+- Figures are 91.2% of the spec height; normalization resamples the sheet by x1.1 (map scale_to_spec).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA04F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the enm_wolf template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (1,2) "attack 2": the lowest pixel is 3 blocks above the ground line of the other frames in this row (this frame must float exactly 3 blocks above the ground line); move the figure down 3 blocks so every frame of the row stands on the same ground line.
+- Cell (2,4) "exit 3": the lowest pixel is 2 blocks above the ground line of the other frames in this row; move the figure down 2 blocks so every frame of the row stands on the same ground line.
+- Cell (1,1) "move 2": the figure is 7% shorter than the other frames of this row (21.2 vs 22.8 blocks). Draw every frame of the row at the same character scale (±6%).
+- Row 3 "hit": the figures are 7% smaller than in the other rows. Draw the same character at one scale on the whole sheet (±6%).
+ ELIFECYCLE  Command failed with exit code 1.
+

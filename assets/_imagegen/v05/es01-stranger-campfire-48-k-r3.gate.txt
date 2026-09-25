@@ -1,0 +1,18 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/es01-stranger-campfire-48-k-r3.png" "--spec" "scene_event"
+
+assets/_imagegen/v05/es01-stranger-campfire-48-k-r3.png
+FAIL scene_event · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (template) · 시트 블록 4.2 · 배경 92.3% · 안내색 0 · 격자 밖 98304
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   scene 1             73728     -     -  64.0(-)        4.2   0.0%  ok 채움 100%/100%
+  (1,0)   scene 2             73728     -     -  64.0(-)        4.2   0.0%  ok 채움 100%/100%
+  (2,0)   scene 3             73728     -     -  64.0(-)        4.2   0.0%  ok 채움 100%/100%
+  (3,0)   scene 4             73728     -     -  64.0(-)        4.2   0.0%  ok 채움 100%/100%
+
+Regeneration feedback:
+Regenerate this sheet on the scene_event template (one art pixel = 3x3 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Only 92.3% of the area outside the figures is clean background; the background must be one flat #FF00FF magenta (or fully transparent) everywhere, with no gradient, texture, floor, shadow or stray marks.
+- Remove the drawing outside the grid: 98304 px of figures were found in the canvas margin. Everything must be inside the grid cells.
+ ELIFECYCLE  Command failed with exit code 1.
+

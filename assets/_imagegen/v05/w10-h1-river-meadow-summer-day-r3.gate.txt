@@ -1,0 +1,13 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r3.png" "--spec" "bg_far"
+
+assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r3.png
+FAIL bg_far · canvas · 이미지 1983×793 (틀 1536×1024) · S 6 (template) · 시트 블록 5.1 · 배경 63.7% · 안내색 0 · 격자 밖 356204
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              422257     -     -  -              5.1   0.0%  ok 채움 72%/0%
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- The image must be exactly 1536x1024 pixels (the template canvas); the delivery is 1983x793. Keep the template canvas size and grid position unchanged.
+ ELIFECYCLE  Command failed with exit code 1.
