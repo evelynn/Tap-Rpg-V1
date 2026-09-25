@@ -2,6 +2,7 @@
 import { journalGrade, type World } from '@tap/core'
 import { actViewOf, direct, type Stage } from './director'
 import { Driver } from './driver'
+import { ENEMY_CX, HERO_CX, SCENE } from './layout'
 import { Animator } from './motion'
 import { LineQueue } from './records'
 import type { FrameView } from './render'
@@ -10,8 +11,6 @@ import { HERO_CLIPS, STRIPS, enemyClips, spriteFamily, type EnemyMotion, type Mo
 import { icons, statusLine, statusViewOf } from './status'
 
 const SCROLL_PX_SEC = 20 // 층 나누기 전 합성 띠라 중간 층 속도 하나로 흘린다(15 §8.2)
-const HERO_CX = 39 // 캐릭터 자리 x 16~64(셀 왼쪽 16 + 셀 안 중심 23)
-const ENEMY_CX = 96 // 적 자리 x 72~120의 가운데
 export const PAUSE_LINE = 'ⓘ 일시정지 중입니다. 나이와 진행이 멈췄습니다.'
 
 export class App {
@@ -49,11 +48,11 @@ export class App {
     const hero = this.hero
     const foe = this.enemy?.anim
     return {
-      land: scene ? { kind: 'scene', file: this.sceneFiles[scene.row.scene]!, frame: scene.frame } : { kind: 'strip', file: STRIPS.bg, offset: this.offset },
       bg: { file: STRIPS.bg, offset: this.offset },
+      scene: scene ? { file: this.sceneFiles[scene.row.scene]!, frame: scene.frame } : null,
       paused,
       hero: heroShown ? {
-        sheet: hero.clip.sheet, cell: hero.cell, cx: scene?.row.hero?.x ?? HERO_CX, flip: !scene && this.stage.flip,
+        sheet: hero.clip.sheet, cell: hero.cell, cx: scene?.row.hero ? SCENE.x + scene.row.hero.x : HERO_CX, flip: !scene && this.stage.flip, // 장면 표의 x는 장면 판 기준
         flash: hero.motion === 'hit' && hero.frame === 0,
       } : null,
       enemy: foe && !scene && !(foe.motion === 'exit' && foe.done) ? {

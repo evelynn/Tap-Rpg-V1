@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "기본 창(520 × 64) 화면 — 지금은 브라우저 시제품, 뒤에 Tauri 2 껍데기가 같은 dist를 읽는다.",
+  "description": "기본 창(768 × 64) 화면 — 지금은 브라우저 시제품, 뒤에 Tauri 2 껍데기가 같은 dist를 읽는다.",
   "dependencies": {
     "@tap/content-kit": "workspace:*",
     "@tap/core": "workspace:*"

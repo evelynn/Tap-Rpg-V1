@@ -6,8 +6,10 @@ import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld } from '@tap/core'
 import { App, PAUSE_LINE } from '../src/app'
+import { HERO_CX, SCENE, TEXT, fitLines, surface } from '../src/layout'
 import { Renderer, type FrameView } from '../src/render'
 import { STRIPS } from '../src/sprites'
+import { measure11 } from './measure'
 
 // 호출만 기록하는 캔버스 문맥. 속성 쓰기는 받아 두고, 메서드는 이름과 인자를 남긴다
 function fakeContext(calls: { name: string; args: unknown[] }[]): CanvasRenderingContext2D {
@@ -50,7 +52,7 @@ describe('기본 창 연기 시험', () => {
     const app = newApp()
     app.driver.speed = 600
     const calls: { name: string; args: unknown[] }[] = []
-    const r = new Renderer(fakeContext(calls), { [STRIPS.bg]: {} as CanvasImageSource, chr_actions18_48: {} as CanvasImageSource }, 2)
+    const r = new Renderer(fakeContext(calls), { [STRIPS.bg]: {} as CanvasImageSource, chr_actions18_48: {} as CanvasImageSource }, surface(1))
     const seen = { lines: new Set<string>(), heroes: new Set<string>(), enemies: 0, scroll: false, states: new Set<string>() }
     let last: FrameView | null = null
     let prevOffset = 0
@@ -59,22 +61,27 @@ describe('기본 창 연기 시험', () => {
       r.draw(v)
       seen.lines.add(v.line)
       if (v.hero) seen.heroes.add(`${v.hero.sheet}:${v.hero.cell}`)
+      if (v.hero && !v.scene) assert.equal(v.hero.cx, HERO_CX)
       if (v.enemy) seen.enemies++
-      if (v.land.kind === 'strip' && v.land.offset !== prevOffset) seen.scroll = true
-      if (v.land.kind === 'strip') prevOffset = v.land.offset
+      if (v.bg.offset !== prevOffset) seen.scroll = true
+      prevOffset = v.bg.offset
       seen.states.add(app.world.state.current_activity.state)
       last = v
     }
     assert.ok(last)
-    assert.match(last.status, /^\S+ \d+세 · \S+/)
+    assert.match(last.status, /^\S+ \d+ · \S+/)
     assert.equal(last.icons.length, 4)
     assert.ok(seen.lines.size > 10, `한 줄 기록 ${seen.lines.size}개`)
+    for (const line of seen.lines) { // 나온 기록이 모두 글자 칸 2줄 안에 든다(11px 폭 대역)
+      const ls = fitLines(line, TEXT.w, measure11)
+      assert.ok(ls.length <= 2 && ls.every((l) => measure11(l) <= TEXT.w), line)
+    }
     assert.ok(seen.heroes.size > 5, `캐릭터 프레임 ${seen.heroes.size}종`)
     assert.ok(seen.enemies > 0, '조우 중 적이 보인다')
     assert.ok(seen.scroll, '이동 중 배경이 흐른다')
     assert.ok(seen.states.has('travel') && seen.states.has('town_idle'), [...seen.states].join(','))
-    // 그리기 호출: 상태 줄 글자와 배경·스프라이트 drawImage
-    assert.ok(calls.some((c) => c.name === 'fillText' && c.args[0] === last!.status))
+    // 그리기 호출: 캔버스에는 그림만(글자는 DOM 글자 칸), 배경·스프라이트 drawImage
+    assert.ok(!calls.some((c) => c.name === 'fillText'))
     assert.ok(calls.filter((c) => c.name === 'drawImage').length > 1000)
   })
 
@@ -100,8 +107,8 @@ describe('기본 창 연기 시험', () => {
     app.lines.push({ id: 1e9, text: '부모의 편지가 왔다', grade: 'A', eventId: 'S07' })
     const v = app.step(100000, 16) // 앞 기록의 표시 시간이 지나 편지 기록으로 바뀐다
     assert.equal(v.line, PAUSE_LINE) // 멈춤 중에는 안내 문구가 기록 자리를 대신한다
-    assert.deepEqual(v.land, { kind: 'scene', file: STRIPS.ES18, frame: 0 })
-    assert.equal(v.hero?.cx, 30)
+    assert.deepEqual(v.scene, { file: STRIPS.ES18, frame: 0 })
+    assert.equal(v.hero?.cx, SCENE.x + 30) // 장면 표 x 30(장면 판 기준) → 창 x 78
     assert.equal(v.enemy, null)
   })
 })
