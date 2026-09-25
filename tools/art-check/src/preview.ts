@@ -1,5 +1,5 @@
 // 검수용 확대본(ASSET_ORDERS 0.10절 V1·V3·V7). 게임이 읽지 않는다.
-//   <시트>.x4.png           정규화 시트 ×4(체크무늬 위, 칸 경계·지면선 표시)
+//   <시트>.x4.png           정규화 시트 ×4(체크무늬 위, 칸 경계·지면선 표시). 띠(role strip)는 체크무늬 위 ×4와 칸 경계만
 //   window.x4.png            520 × 64 기본 창 모형(03 §2.2) — 대기(+걷기) 프레임마다 한 줄
 //   window-small.x4.png      320 × 48 축소 창(03 §3) — 배경 아래 48줄, 적은 x 56~92
 //   layers.x4.png            칸마다 [기준 | 레이어 합성 | 차이] (빨강 = 기준 실루엣 밖 레이어, 파랑 = 레이어가 안 덮은 기준)
@@ -8,7 +8,7 @@
 //   <48>_vs_<32>.x1.png/.x2.png  32·48 실크기·2배 비교
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
-import { derivedOutputs, findEntry, referenceOf, type DerivedEntry, type LoadedMap, type ReferenceEntry } from './imagegen-map'
+import { derivedOutputs, findEntry, referenceOf, type DerivedEntry, type LoadedMap, type ReferenceEntry, type StripEntry } from './imagegen-map'
 import { colorDistance } from './normalize'
 import { decodePng } from './png'
 import { encodeRgbaPng } from './png-write'
@@ -35,7 +35,9 @@ function loadSheet(lm: LoadedMap, name: string): Sheet {
   const file = join(lm.outDir, `${name}.png`)
   if (!existsSync(file)) throw new Error(`${file}이 없다 — 먼저 normalize를 돌려라`)
   const png = decodePng(readFileSync(file))
-  return { name, raster: { width: png.width, height: png.height, rgba: png.rgba }, entry: referenceOf(lm.map, findEntry(lm.map, name)) }
+  const e = findEntry(lm.map, name)
+  if (e.role === 'strip') throw new Error(`${name}은 띠(strip)라 캐릭터·적·소품 시트로 쓸 수 없다(preview.field에 둔다)`)
+  return { name, raster: { width: png.width, height: png.height, rgba: png.rgba }, entry: referenceOf(lm.map, e) }
 }
 
 function cellOf(s: Sheet, col: number, row: number): Raster {
@@ -90,6 +92,17 @@ function sheetPreview(s: Sheet): Raster {
       for (let c = 0; c < cols; c++) fillRect(big, (c * cw + center_x) * k + 1, (r * ch + bottom + 1) * k + 1, 2, 3, [230, 120, 30])
     }
   }
+  return big
+}
+
+/** 띠 ×4: 체크무늬 + 칸 경계(회색) */
+function stripPreview(r: Raster, e: StripEntry): Raster {
+  const k = 4
+  const base = checker(r.width, r.height)
+  blit(base, r, 0, 0)
+  const big = upscale(base, k)
+  const cols = e.cols ?? 1
+  for (let c = 1; c < cols; c++) fillRect(big, ((c * r.width) / cols) * k, 0, 1, big.height, [110, 110, 110])
   return big
 }
 
@@ -283,7 +296,12 @@ export function renderPreviews(lm: LoadedMap): string[] {
     for (const name of e.role === 'derived' ? derivedOutputs(e) : [e.name]) {
       if (!existsSync(join(lm.outDir, `${name}.png`))) continue
       const png = decodePng(readFileSync(join(lm.outDir, `${name}.png`)))
-      const sheet: Sheet = { name, raster: { width: png.width, height: png.height, rgba: png.rgba }, entry: referenceOf(lm.map, e) }
+      const raster: Raster = { width: png.width, height: png.height, rgba: png.rgba }
+      if (e.role === 'strip') {
+        written.push(save(dir, `${name}.x4.png`, stripPreview(raster, e)))
+        continue
+      }
+      const sheet: Sheet = { name, raster, entry: referenceOf(lm.map, e) }
       written.push(save(dir, `${name}.x4.png`, sheetPreview(sheet)))
     }
   }

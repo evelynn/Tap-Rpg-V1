@@ -488,6 +488,43 @@
     ],
     "height": 30
    }
+  },
+  {
+   "name": "es18_parent_letter",
+   "source": "v05/es18-parent-letter-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es15_end_of_life",
+   "source": "v05/es15-end-of-life-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "bg_h1_summer_day",
+   "source": "v05/w10-h1-river-meadow-summer-day-r3.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
   }
  ],
  "preview": {
@@ -496,6 +533,8 @@
   "enemy": "enm_wolf_48",
   "props": [],
   "compare": [],
-  "field": []
+  "field": [
+   "bg_h1_summer_day"
+  ]
  }
 }

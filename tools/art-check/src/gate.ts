@@ -5,6 +5,12 @@
 //                중앙값, 못 재면 그림 키)로 둔다. 지면선은 같은 행, 가로 중심은 같은 열 칸들의 중앙값(내용에서 추정한 격자선)과 비교한다.
 // 그림 화소 = 배경 열쇠(알파·자홍·자홍 번짐)가 아니고 안내 색(#00FFFF)도 아닌 화소.
 // 스프라이트는 덩어리의 무게중심, 서로 붙는 장면·배경 띠는 칸 좌표로 주인을 정한다.
+// 띠(fill ≠ null: 장면·배경 층)는 정규화가 잘라 내고 다시 뽑으므로 위치를 틀이 아니라 내용에서 찾는다(strip.ts findBand·fitBand,
+//   정규화와 같은 함수). 늘리지 않고 잘라서 규격 비율에 맞춘다: 높으면 위를 자르고(바닥 유지), 넓으면 배경 층(tile)만 이음 점수가
+//   가장 작은 창으로 가로를 자른다. 맞춘 띠를 규격 열 수로 등분해 칸을 정하고, S = 띠 가로 / 논리 가로.
+//   경고 = 캔버스 크기 · 틀 띠 위치와의 차이 · 자르기(잘라 낸 행·열, 이음 점수).
+//   실패 = 띠 없음(또는 논리 크기보다 작음) · 장면처럼 가로로 못 자르는 띠가 규격보다 aspect_tol(기본 2%) 넘게 넓음(칸을 잘라야 한다)
+//          · 찾은 띠 밖 그림(띠 가장자리 ⌈S/2⌉ 화소 번짐은 뺀다) · 칸 채움·지면 띠.
 // 스프라이트가 틀 칸(또는 등간격 칸)에 맞게 앉지 않았으면 내용에서 격자를 추정한다: 큰 덩어리를 무게중심 y 간격으로
 // 행에 묶고, 행 안은 x 순서로 프레임을 매겨 규격 칸 수·순서와 대조한다(맞을 때만 쓴다).
 //
@@ -17,6 +23,7 @@
 // 단위: 논리 화소 = 이미지 화소 / S. 틀 모드 S = 틀 S, --no-canvas S = 칸 화소 / 칸 논리 크기(정규화 cell_ratio와 같은 값).
 import { cellRects, colorDistance, isBackground, type KeyOptions } from './normalize'
 import { hexRgb } from './raster'
+import { findBand, fitBand, type Band, type BandRect } from './strip'
 import {
   cellSpecs,
   computeLayout,
@@ -42,14 +49,14 @@ export interface GateOptions {
 }
 
 export interface GateFailure {
-  code: 'canvas' | 'background' | 'guide' | 'stray' | 'missing' | 'unexpected' | 'touch' | 'edge' | 'scale' | 'ground' | 'alpha' | 'fill' | 'ground_band'
+  code: 'canvas' | 'background' | 'guide' | 'stray' | 'missing' | 'unexpected' | 'touch' | 'edge' | 'scale' | 'ground' | 'alpha' | 'fill' | 'ground_band' | 'band' | 'aspect'
   cell: [number, number] | null
   message: string
 }
 
 /** 정규화가 고치는 차이. 종료 코드와 지적문에 영향 없음 */
 export interface GateWarning {
-  code: 'height' | 'ground' | 'center' | 'bbox' | 'block' | 'key_color'
+  code: 'height' | 'ground' | 'center' | 'bbox' | 'block' | 'key_color' | 'canvas' | 'band' | 'crop'
   cell: [number, number] | null
   message: string
 }
@@ -92,7 +99,16 @@ export interface GateResult {
   canvas: [number, number]
   /** 판정에 쓴 논리 화소 1개의 이미지 화소 수 */
   S: number
-  S_origin: 'template' | 'cell_ratio'
+  S_origin: 'template' | 'cell_ratio' | 'band'
+  /** 띠: 비율 맞춘 띠 [x, y, w, h](이미지 화소, 정규화가 뽑는 사각형), 그 비율과 규격 비율. 스프라이트·못 찾음은 null */
+  band: [number, number, number, number] | null
+  /** 띠: 내용에서 찾은 띠(자르기 전) · 위에서 자른 행 · 가로로 자른 [왼쪽, 오른쪽] 열 · 이음 점수 */
+  band_found: [number, number, number, number] | null
+  crop_top: number | null
+  crop_x: [number, number] | null
+  seam: number | null
+  band_aspect: number | null
+  band_aspect_expected: number | null
   /** 칸 배정: cells = 틀(또는 등간격) 칸에 무게중심, inferred = 내용에서 추정한 격자 */
   grid: 'cells' | 'inferred'
   /** 시트 전체에서 잰 화소 블록 크기 */
@@ -142,24 +158,8 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
   const H = img.height
   const failures: GateFailure[] = []
   const fail = (code: GateFailure['code'], cell: [number, number] | null, message: string): void => { failures.push({ code, cell, message }) }
-
-  // ── 칸 사각형과 S ──
-  const mode: GateResult['mode'] = opts.noCanvas ? 'no-canvas' : 'canvas'
-  const canvasOk = W === layout.canvas[0] && H === layout.canvas[1]
-  let rects: Rect[]
-  let S = layout.S
-  let S_origin: GateResult['S_origin'] = 'template'
-  if (!opts.noCanvas) {
-    if (!canvasOk) {
-      fail('canvas', null, `The image must be exactly ${layout.canvas[0]}x${layout.canvas[1]} pixels (the template canvas); the delivery is ${W}x${H}. Keep the template canvas size and grid position unchanged.`)
-    }
-    rects = cellsSpec.map((c) => ({ x: c.x, y: c.y, w: c.w, h: c.h }))
-  } else {
-    rects = cellRects(W, H, sheet.cols, sheet.rows.length).map((r) => ({ x: r.x0, y: r.y0, w: r.x1 - r.x0, h: r.y1 - r.y0 }))
-    // 정규화(cell_ratio)와 같은 논리 화소: 칸 화소 / 칸 논리 크기의 큰 값
-    S = Math.max(W / sheet.cols / cw, H / sheet.rows.length / ch)
-    S_origin = 'cell_ratio'
-  }
+  const warnings: GateWarning[] = []
+  const warn = (code: GateWarning['code'], cell: [number, number] | null, message: string): void => { warnings.push({ code, cell, message }) }
 
   // ── 화소 분류 ──
   const k = specs.file.key
@@ -192,6 +192,82 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
     fg[i] = 1
   }
 
+  // ── 칸 사각형과 S ──
+  const mode: GateResult['mode'] = opts.noCanvas ? 'no-canvas' : 'canvas'
+  const canvasOk = W === layout.canvas[0] && H === layout.canvas[1]
+  const strip = sheet.fill !== null
+  const nRows = sheet.rows.length
+  let rects: Rect[]
+  let S = layout.S
+  let S_origin: GateResult['S_origin'] = 'template'
+  let band: Band | null = null
+  let bandOk = false
+  const aspectExpected = (sheet.cols * cw) / (nRows * ch)
+  if (strip) {
+    // 띠: 내용에서 찾아 잘라서 규격 비율에 맞춘다(늘리지 않는다). 위치·캔버스·자르기는 경고
+    const raw = findBand(fg, W, H)
+    const logical = `${sheet.cols * cw}x${nRows * ch}-block`
+    const tolA = tol.aspect_tol ?? 0.02
+    if (raw === null) {
+      fail('band', null, `No painted strip was found; the image is flat ${specs.file.colors.key} background. Paint one ${logical} strip.`)
+    } else {
+      band = fitBand(raw, img, fg, { fill: sheet.fill!, aspect: aspectExpected, tile: sheet.tile })
+      if (band.excess > tolA) {
+        fail('aspect', null, `The painted strip is ${raw.w}x${raw.h} image pixels (${(raw.w / raw.h).toFixed(2)}:1), ${Math.round(band.excess * 100)}% wider than the ${logical} strip (${aspectExpected.toFixed(2)}:1); it cannot be cropped without cutting the ${sheet.cols} panels. Paint the strip at ${aspectExpected.toFixed(2)}:1, e.g. ${layout.gridW}x${layout.gridH} pixels on the template; do not squash the scene.`)
+      } else if (!band.fits) {
+        fail('band', null, `The painted layer is ${raw.w} pixels wide, so the ${aspectExpected.toFixed(2)}:1 strip would be ${band.h} pixels tall and reach above the top of the image; paint the layer at ${layout.gridW}x${layout.gridH} pixels (the template strip).`)
+      } else if (band.w < sheet.cols * cw || band.h < nRows * ch) {
+        fail('band', null, `The painted strip is only ${band.w}x${band.h} image pixels, smaller than the ${logical} strip itself; paint it at ${layout.gridW}x${layout.gridH} pixels (the template strip).`)
+      } else {
+        bandOk = true
+      }
+    }
+    if (band !== null && bandOk) {
+      S = band.w / (sheet.cols * cw)
+      S_origin = 'band'
+      const b = band
+      rects = cellsSpec.map((c) => {
+        const x0 = b.x + Math.ceil((c.col * b.w) / sheet.cols)
+        const x1 = b.x + Math.ceil(((c.col + 1) * b.w) / sheet.cols)
+        const y0 = b.y + Math.ceil((c.row * b.h) / nRows)
+        const y1 = b.y + Math.ceil(((c.row + 1) * b.h) / nRows)
+        return { x: x0, y: y0, w: x1 - x0, h: y1 - y0 }
+      })
+    } else {
+      rects = cellsSpec.map((c) => ({ x: c.x, y: c.y, w: c.w, h: c.h }))
+    }
+    if (band !== null) {
+      const r = band.raw
+      const at = `x ${r.x}-${r.x + r.w - 1}, y ${r.y}-${r.y + r.h - 1} (${r.w}x${r.h} px)`
+      const to = `normalization crops the strip and resamples it to ${sheet.cols * cw}x${nRows * ch}`
+      if (!canvasOk) {
+        warn('canvas', null, `Image is ${W}x${H}, not the ${layout.canvas[0]}x${layout.canvas[1]} template canvas; the strip was found by its content at ${at}; ${to}.`)
+      } else if (Math.max(Math.abs(r.x - layout.x0), Math.abs(r.y - layout.y0), Math.abs(r.w - layout.gridW), Math.abs(r.h - layout.gridH)) > layout.S) {
+        warn('band', null, `Strip painted at ${at}; the template strip is x ${layout.x0}-${layout.x0 + layout.gridW - 1}, y ${layout.y0}-${layout.y0 + layout.gridH - 1} (${layout.gridW}x${layout.gridH} px); ${to}.`)
+      }
+      const ratio = `${(r.w / r.h).toFixed(2)}:1`
+      if (band.cropTop > 0) {
+        warn('crop', null, `Strip ${r.w}x${r.h} (${ratio}) is taller than ${aspectExpected.toFixed(2)}:1; normalization removes the top ${band.cropTop} rows (y ${r.y}-${r.y + band.cropTop - 1}) and keeps the bottom row y ${r.y + r.h - 1}.`)
+      }
+      if (band.cropLeft + band.cropRight > 0) {
+        warn('crop', null, `Strip ${r.w}x${r.h} (${ratio}) is wider than ${aspectExpected.toFixed(2)}:1; normalization keeps x ${band.x}-${band.x + band.w - 1} (removes ${band.cropLeft} left and ${band.cropRight} right columns), the window with the smallest left-right seam difference: seam score ${band.seam} (mean colour distance of the 4 edge columns, 0 = identical).`)
+      }
+      if (band.excess > 0 && band.excess <= tolA) {
+        warn('crop', null, `Strip ${r.w}x${r.h} (${ratio}) is ${(band.excess * 100).toFixed(1)}% wider than ${aspectExpected.toFixed(2)}:1 (within ${Math.round(tolA * 100)}%); normalization resamples it with that slight horizontal squash.`)
+      }
+    }
+  } else if (!opts.noCanvas) {
+    if (!canvasOk) {
+      fail('canvas', null, `The image must be exactly ${layout.canvas[0]}x${layout.canvas[1]} pixels (the template canvas); the delivery is ${W}x${H}. Keep the template canvas size and grid position unchanged.`)
+    }
+    rects = cellsSpec.map((c) => ({ x: c.x, y: c.y, w: c.w, h: c.h }))
+  } else {
+    rects = cellRects(W, H, sheet.cols, sheet.rows.length).map((r) => ({ x: r.x0, y: r.y0, w: r.x1 - r.x0, h: r.y1 - r.y0 }))
+    // 정규화(cell_ratio)와 같은 논리 화소: 칸 화소 / 칸 논리 크기의 큰 값
+    S = Math.max(W / sheet.cols / cw, H / sheet.rows.length / ch)
+    S_origin = 'cell_ratio'
+  }
+
   // ── 덩어리 → 칸 ──
   const minSpeck = Math.max(2, Math.floor((S * S) / 2))
   const minContent = Math.max(4, Math.round(4 * S * S))
@@ -201,10 +277,17 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
   const comp: number[] = []
   let stray = 0
   let specks = 0
-  const gx0 = opts.noCanvas ? 0 : layout.x0
-  const gy0 = opts.noCanvas ? 0 : layout.y0
-  const gw = opts.noCanvas ? W : layout.gridW
-  const gh = opts.noCanvas ? H : layout.gridH
+  const useBand = strip && bandOk && band !== null
+  const gx0 = useBand ? band!.x : opts.noCanvas ? 0 : layout.x0
+  const gy0 = useBand ? band!.y : opts.noCanvas ? 0 : layout.y0
+  const gw = useBand ? band!.w : opts.noCanvas ? W : layout.gridW
+  const gh = useBand ? band!.h : opts.noCanvas ? H : layout.gridH
+  // 띠 가장자리 번짐: 띠 밖 이만큼(이미지 화소) 안의 그림은 띠 밖 그림으로 세지 않는다(정규화가 잘라 버린다).
+  // 비율 맞추느라 잘라 낸 부분(찾은 띠 안)도 띠 밖 그림이 아니다(경고 crop)
+  const fringe = strip ? Math.ceil(S / 2) : 0
+  const stripAreas: BandRect[] = useBand ? [{ x: gx0, y: gy0, w: gw, h: gh }, band!.raw] : [{ x: gx0, y: gy0, w: gw, h: gh }]
+  const inFringe = (x: number, y: number): boolean =>
+    stripAreas.some((a) => Math.max(a.x - x, x - (a.x + a.w - 1), a.y - y, y - (a.y + a.h - 1)) <= fringe)
   const nCells = cellsSpec.length
   const boxes: ([number, number, number, number] | null)[] = new Array(nCells).fill(null)
   const seen = new Uint8Array(W * H)
@@ -217,7 +300,7 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
         if (!fg[p]) { continue }
         if (x < gx0 || y < gy0 || x >= gx0 + gw || y >= gy0 + gh) {
           owner[p] = -2
-          stray++
+          if (!inFringe(x, y)) stray++
           continue
         }
         const col = Math.floor(((x - gx0) * sheet.cols) / gw)
@@ -368,10 +451,8 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
     (c.col === col && c.center && facts[i]!.bbox !== null && facts[i]!.pixels >= minContent ? [facts[i]!.medX - rects[i]!.x] : [])))
 
   // ── 판정 ──
-  const warnings: GateWarning[] = []
-  const warn = (code: GateWarning['code'], cell: [number, number] | null, message: string): void => { warnings.push({ code, cell, message }) }
   const cellsOut: GateCell[] = []
-  const skipCells = !opts.noCanvas && !canvasOk
+  const skipCells = strip ? !bandOk : !opts.noCanvas && !canvasOk
   const line = sheet.bottom !== null && sheet.ground_y !== null && sheet.bottom + 1 !== sheet.ground_y ? 'hover line' : 'ground line'
   cellsSpec.forEach((c: CellSpec, i) => {
     const f = facts[i]!
@@ -538,11 +619,13 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
     const b = facts[i]!.bbox
     if (!c.used || b === null) return
     for (let y = b[1]; y < b[3]; y++) covered.fill(1, y * W + b[0], y * W + b[2])
-    if (sheet.fill !== null) {
-      const r = rects[i]!
-      for (let y = Math.max(0, r.y); y < Math.min(H, r.y + r.h); y++) covered.fill(1, y * W + Math.max(0, r.x), y * W + Math.min(W, r.x + r.w))
-    }
   })
+  if (strip) {
+    // 띠: 맞춘 띠·찾은 띠 사각형과 가장자리 번짐
+    for (const a of stripAreas) {
+      for (let y = Math.max(0, a.y - fringe); y < Math.min(H, a.y + a.h + fringe); y++) covered.fill(1, y * W + Math.max(0, a.x - fringe), y * W + Math.min(W, a.x + a.w + fringe))
+    }
+  }
   let open = 0
   let openBg = 0
   for (let i = 0; i < W * H; i++) {
@@ -557,7 +640,9 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
   if (guidePixels > tol.max_guide_pixels) {
     fail('guide', null, `Remove the cyan ${specs.file.colors.guide} guide marks: ${guidePixels} cyan pixels were found. The guide ticks are for placement only and must not appear in the output.`)
   }
-  if (!opts.noCanvas && canvasOk && stray >= minContent) {
+  if (strip && stray >= minContent) {
+    fail('stray', null, `Remove the drawing outside the strip: ${stray} px of drawing were found outside the painted strip (x ${gx0}-${gx0 + gw - 1}, y ${gy0}-${gy0 + gh - 1}). Everything outside the one rectangular strip must be flat ${specs.file.colors.key}.`)
+  } else if (!strip && !opts.noCanvas && canvasOk && stray >= minContent) {
     fail('stray', null, `Remove the drawing outside the grid: ${stray} px of figures were found in the canvas margin. Everything must be inside the grid cells.`)
   }
   if (keyBg > 0 && keyOff / keyBg > 0.01) {
@@ -574,6 +659,13 @@ export function runGate(specs: LoadedSpecs, specName: string, img: GateImage, op
     canvas: layout.canvas,
     S: Math.round(S * 100) / 100,
     S_origin,
+    band: band === null ? null : [band.x, band.y, band.w, band.h],
+    band_found: band === null ? null : [band.raw.x, band.raw.y, band.raw.w, band.raw.h],
+    crop_top: band === null ? null : band.cropTop,
+    crop_x: band === null ? null : [band.cropLeft, band.cropRight],
+    seam: band === null ? null : band.seam,
+    band_aspect: band === null ? null : Math.round((band.w / band.h) * 1000) / 1000,
+    band_aspect_expected: strip ? Math.round(aspectExpected * 1000) / 1000 : null,
     grid: gridMode,
     block_sheet: blockSheet === null ? null : round1(blockSheet),
     height_ratio: heightRatio === null ? null : Math.round(heightRatio * 1000) / 1000,

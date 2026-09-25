@@ -56,4 +56,18 @@ describe('대응표 검증', () => {
     assert.throws(() => validateMap(set({ rows: [0], height: 60 }), MANIFEST), /height/)
     assert.throws(() => validateMap(set({ rows: [0], height: 40 }, 5), MANIFEST), /함께 쓸 수 없다/)
   })
+
+  it('띠(strip)는 size·fill·cols를 보고 palette null을 받는다', () => {
+    const strip = (e: Record<string, unknown>): ImagegenMap => {
+      const m = map()
+      m.entries.push({ name: 'bg', source: 'b.png', role: 'strip', size: [256, 64], palette: null, ...e } as ImagegenMap['entries'][number])
+      return m
+    }
+    assert.doesNotThrow(() => validateMap(strip({}), MANIFEST))
+    assert.doesNotThrow(() => validateMap(strip({ palette: 'base', cols: 4, fill: 'partial' }), MANIFEST))
+    assert.throws(() => validateMap(strip({ size: [256] }), MANIFEST), /size/)
+    assert.throws(() => validateMap(strip({ cols: 3 }), MANIFEST), /cols/)
+    assert.throws(() => validateMap(strip({ fill: 'full' }), MANIFEST), /fill/)
+    assert.throws(() => validateMap(strip({ palette: ['cloth'] }), MANIFEST), /팔레트 묶음/)
+  })
 })

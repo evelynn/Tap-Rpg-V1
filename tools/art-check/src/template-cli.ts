@@ -1,7 +1,7 @@
 // 배치 틀·납품 문 명령. cli.ts가 첫 인자 template·gate를 여기로 넘긴다.
 //   template [<시트>...] [--all] [--specs <경로>] [--out <폴더>] [--json]
 //   gate     <png> --spec <시트> [--no-canvas] [--rows idle,attack:6,...] [--specs <경로>] [--json]
-//            [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15] [--scale-tol 0.06]
+//            [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15] [--scale-tol 0.06] [--aspect-tol 0.02]
 import { readFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -16,13 +16,16 @@ export const DEFAULT_SPECS = join(PKG_ROOT, 'docs/art/templates/specs.json')
 export const TEMPLATE_USAGE = `사용법
   art-check template [<시트>...] [--all] [--specs <경로>] [--out <폴더>] [--json]
   art-check gate     <png> --spec <시트> [--no-canvas] [--rows <동작[:프레임],...>] [--specs <경로>] [--json]
-                     [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15] [--scale-tol 0.06]
+                     [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15] [--scale-tol 0.06] [--aspect-tol 0.02]
 
 template  틀 규격(기본 docs/art/templates/specs.json)의 시트마다 <이름>.grid.png · .placeholder.png · .silhouette.png와
           <이름>.json을 out_dir(기본 docs/art/templates)에 쓴다. 시트 이름을 안 적거나 --all이면 전부.
 gate      생성기 납품 PNG를 틀과 대조한다. 정규화가 고칠 수 없는 것(그림 수·칸 배치·닿음·가장자리·시트 안 축척·행 안 지면선·
           안내 색·배경·반투명)만 불합격(종료 1, 다시 생성용 영어 지적문). 정규화가 고치는 것(규격 키·틀 표시와의 위치·칸 경계·
           화소 블록 크기·배경 색 오차)은 경고로 찍고 종료 0.
+          띠(장면·배경 층)는 틀 위치가 아니라 내용에서 띠를 찾고, 늘리지 않고 잘라서 규격 비율에 맞춘다(높으면 위를, 넓은
+          배경 층은 이음이 가장 좋은 창으로 가로를). 캔버스 크기·띠 위치·자르기는 경고. 띠 없음·장면 띠가 규격보다
+          --aspect-tol(기본 0.02) 넘게 넓음(칸을 잘라야 함)·띠 밖 그림·칸 채움·지면 띠는 불합격.
           --no-canvas: 틀 없이 만든 옛 납품. 이미지를 등간격 격자로 나누고 S = 칸 화소 / 칸 논리 크기로 잰다.
           그림이 칸에 맞게 앉지 않았으면 내용(무게중심)에서 행·열을 추정해 규격과 대조한다.
           --rows: 행 구성을 바꾼다(예 idle,attack,sit_eat,sleep · walk:6,walk:6). 동작 규칙은 계열 목록에서 찾는다.`
@@ -76,6 +79,7 @@ export function parseTemplateArgs(argv: string[]): TemplateArgs {
       case '--height-tol': a.tolerances.height_tol = num(name, next()); break
       case '--block-tol': a.tolerances.block_tol = num(name, next()); break
       case '--scale-tol': a.tolerances.scale_tol = num(name, next()); break
+      case '--aspect-tol': a.tolerances.aspect_tol = num(name, next()); break
       default:
         if (raw.startsWith('-')) throw new Error(`모르는 옵션이다: ${raw}`)
         a.paths.push(raw)
@@ -122,7 +126,9 @@ export function renderGate(r: GateResult): string {
   const out: string[] = []
   out.push(`${r.pass ? 'PASS' : 'FAIL'} ${r.spec} · ${r.mode} · 이미지 ${r.image.join('×')} (틀 ${r.canvas.join('×')}) · S ${r.S} (${r.S_origin})` +
     ` · 칸 ${r.grid === 'inferred' ? '내용 추정' : '격자'} · 시트 블록 ${fmt(r.block_sheet)} · 키 비율 ${r.height_ratio === null ? '-' : r.height_ratio.toFixed(3)}` +
-    ` · 배경 ${(r.background_ratio * 100).toFixed(1)}% · 안내색 ${r.guide_pixels} · 격자 밖 ${r.stray_pixels} · 경고 ${r.warnings.length}`)
+    ` · 배경 ${(r.background_ratio * 100).toFixed(1)}% · 안내색 ${r.guide_pixels} · 격자 밖 ${r.stray_pixels} · 경고 ${r.warnings.length}` +
+    (r.band === null ? '' : ` · 띠 x${r.band[0]} y${r.band[1]} ${r.band[2]}×${r.band[3]} 비율 ${r.band_aspect}(규격 ${r.band_aspect_expected})` +
+      ` · 위 자름 ${r.crop_top} · 좌우 자름 ${r.crop_x!.join('/')}${r.seam === null ? '' : ` 이음 ${r.seam}`}`))
   out.push('  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정')
   for (const c of r.cells) {
     if (!c.used && c.pixels === 0 && c.codes.length === 0) continue

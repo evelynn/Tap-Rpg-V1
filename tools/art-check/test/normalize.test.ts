@@ -15,6 +15,7 @@ import {
 } from '../src/normalize'
 import { decodePng } from '../src/png'
 import { normalizeToSpec, referenceHeight } from '../src/pipeline'
+import { normalizeStrip } from '../src/strip'
 import type { ReferenceEntry } from '../src/imagegen-map'
 import { encodeIndexedPng, encodeRgbaPng } from '../src/png-write'
 import type { Raster } from '../src/raster'
@@ -340,5 +341,56 @@ describe('scale_to_spec(시트 축척을 규격 키에)', () => {
     const sit = r.report.cells.find((c) => c.row === 1 && c.col === 0)!
     assert.equal(sit.bbox![3] - sit.bbox![1] + 1, 32, JSON.stringify(sit.bbox)) // 16×6/3
     assert.match(r.report.notes[0]!, /scale_to_spec: 기준 행 \[idle\] 키 중앙값 40\(규격 40\)/)
+  })
+})
+
+describe('띠 정규화(normalizeStrip)', () => {
+  // 100×60 자홍 캔버스의 y 10..29에 80×20 띠(4:1): 왼쪽 절반 파랑, 오른쪽 절반 빨강, 오른쪽 끝 4열은 두 색 교대
+  function stripSource(): SourceImage {
+    const W = 100
+    const H = 60
+    const rgba = new Uint8Array(W * H * 4)
+    for (let i = 0; i < W * H; i++) rgba.set([...MAGENTA, 255], i * 4)
+    for (let y = 10; y < 30; y++) {
+      for (let x = 10; x < 90; x++) {
+        const c = x >= 86 ? (x % 2 === 0 ? [200, 40, 40] : [40, 40, 200]) : x < 50 ? [40, 40, 200] : [200, 40, 40]
+        rgba.set([...c, 255], (y * W + x) * 4)
+      }
+    }
+    return { width: W, height: H, rgba }
+  }
+
+  it('띠를 찾아 잘라 논리 크기로 면적 평균하고 palette null이면 섞인 색을 그대로 둔다', () => {
+    const r = normalizeStrip(stripSource(), { size: [20, 5], fill: 'opaque', palette: null }, KEY)
+    assert.deepEqual(r.report.band, [10, 10, 80, 20])
+    assert.deepEqual(r.report.scale, [4, 4])
+    assert.equal(r.report.opaque, 100)
+    const px = (x: number, y: number): number[] => [...r.raster.rgba.subarray((y * 20 + x) * 4, (y * 20 + x) * 4 + 4)]
+    assert.deepEqual(px(0, 0), [40, 40, 200, 255])
+    assert.deepEqual(px(15, 4), [200, 40, 40, 255])
+    assert.deepEqual(px(19, 2), [120, 40, 120, 255]) // 교대 4열의 면적 평균
+    assert.equal(r.report.palette_snapped, false)
+    assert.deepEqual(r.report.notes, [])
+  })
+
+  it('팔레트를 주면 평균 색을 가장 가까운 팔레트 색으로 스냅하고, 비율이 다르면 비틀림을 알린다', () => {
+    const snapped = normalizeStrip(stripSource(), { size: [20, 5], fill: 'opaque', palette: [OUTLINE, CLOTH] }, KEY)
+    assert.ok(snapped.report.colors!.every((c) => c === OUTLINE.hex || c === CLOTH.hex))
+    // 규격 8:1인데 띠는 4:1(높다): crop은 위 10행을 자르고 바닥을 남긴다, stretch는 가로로 늘린다
+    const crop = normalizeStrip(stripSource(), { size: [32, 4], fill: 'opaque', palette: null }, KEY)
+    assert.deepEqual([crop.report.band, crop.report.crop_top, crop.report.anisotropy], [[10, 20, 80, 10], 10, 1])
+    const stretch = normalizeStrip(stripSource(), { size: [32, 4], fill: 'opaque', palette: null, fit: 'stretch' }, KEY)
+    assert.equal(stretch.report.anisotropy, 0.5)
+    assert.ok(stretch.report.notes.some((n) => n.includes('늘어난다')))
+  })
+
+  it('넓은 띠: tile이면 이음 점수가 가장 작은 창으로 가로를 자르고, 아니면 거절한다', () => {
+    // 규격 2:1인데 띠는 4:1(넓다) → 폭 40 창. 왼쪽 절반 파랑·오른쪽 절반 빨강이라 양 끝이 같은 색인 창은 파랑 안(10..49) 또는 빨강 안
+    assert.throws(() => normalizeStrip(stripSource(), { size: [8, 4], fill: 'opaque', palette: null }, KEY), /넓다/)
+    const r = normalizeStrip(stripSource(), { size: [8, 4], fill: 'opaque', palette: null, tile: true }, KEY)
+    assert.equal(r.report.band[2], 40)
+    assert.equal(r.report.seam, 0)
+    assert.deepEqual(r.report.crop_x, [r.report.band[0] - 10, 90 - r.report.band[0] - 40])
+    assert.equal(r.report.anisotropy, 1)
   })
 })

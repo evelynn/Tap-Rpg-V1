@@ -420,8 +420,13 @@ describe('art:gate 납품 문', () => {
     fillRect(img, 64, l.y0 + 6 * 8, 64, 16, MAGENTA)
     const r = runGate(specs, 'test_near', img, { noCanvas: false })
     assert.deepEqual(r.failures.map((f) => f.code), ['ground_band'])
-    const scene = runGate(specs, 'test_scene', img, { noCanvas: false })
-    assert.ok(scene.failures.some((f) => f.code === 'fill'))
+    // 불투명 띠(비율 4:1)에 구멍: 논리 행 6~7 × 열 8~15가 비었다 → 채움 94%
+    const full = createRaster(256, 192)
+    fillRect(full, 0, 0, 256, 192, MAGENTA)
+    for (let y = 0; y < 8; y++) for (let x = 0; x < 32; x++) fillRect(full, x * 8, l.y0 + y * 8, 8, 8, (x + y) % 2 ? LIGHT : BLUE)
+    fillRect(full, 64, l.y0 + 6 * 8, 64, 16, MAGENTA)
+    const scene = runGate(specs, 'test_scene', full, { noCanvas: false })
+    assert.deepEqual(scene.failures.map((f) => f.code), ['fill'], scene.feedback)
   })
 
   it('불투명 장면 네 칸은 경계에서 붙어 있어도 각 칸으로 판정한다', () => {
@@ -450,6 +455,91 @@ describe('art:gate 납품 문', () => {
     const owner = new Int32Array(120 * 120).fill(-1)
     for (let i = 0; i < 120 * 120; i++) if (img.rgba[i * 4 + 1] !== 0) owner[i] = 0
     assert.equal(estimateBlock(img, owner, 0, 0, 0, 120, 120), 6)
+  })
+})
+
+describe('art:gate 띠는 내용에서 찾는다', () => {
+  // 장면 규격: 칸 8×8 × 4열 = 논리 32×8(비율 4:1). 틀 캔버스 256×192, S 8, 띠 y 64..127
+  function sceneSpecs(): LoadedSpecs {
+    const file = testFile()
+    file.families.strip!.cell = [8, 8]
+    const sheet = file.sheets.find((s) => s.name === 'test_scene')!
+    sheet.cols = 4
+    sheet.rows = [{ action: 'scene', frames: 4 }]
+    sheet.ground_band = true
+    return specsOf(file)
+  }
+  /** W×H 자홍 캔버스의 (x, y)에 bw×bh 불투명 띠(블록 b 체크무늬) */
+  function stripImage(W: number, H: number, x: number, y: number, bw: number, bh: number, b = 4): Raster {
+    const img = createRaster(W, H)
+    fillRect(img, 0, 0, W, H, MAGENTA)
+    for (let j = 0; j < bh; j += b) for (let i = 0; i < bw; i += b) fillRect(img, x + i, y + j, Math.min(b, bw - i), Math.min(b, bh - j), (i / b + j / b) % 2 === 0 ? LIGHT : BLUE)
+    return img
+  }
+
+  it('틀과 다른 위치·캔버스 크기의 띠는 경고만 하고 합격한다', () => {
+    const sp = sceneSpecs()
+    const moved = runGate(sp, 'test_scene', stripImage(256, 192, 16, 20, 200, 50), { noCanvas: false })
+    assert.equal(moved.pass, true, moved.feedback)
+    assert.deepEqual(moved.band, [16, 20, 200, 50])
+    assert.ok(moved.warnings.some((w) => w.code === 'band'))
+    assert.ok(moved.cells.every((c) => c.fill === 1 && c.ground_fill === 1))
+    const odd = runGate(sp, 'test_scene', stripImage(300, 150, 0, 40, 300, 75), { noCanvas: false })
+    assert.equal(odd.pass, true, odd.feedback)
+    assert.ok(odd.warnings.some((w) => w.code === 'canvas'))
+    assert.ok(!odd.failures.some((f) => f.code === 'canvas'))
+  })
+
+  it('띠 밖 그림은 stray로 실패한다(띠 가장자리 번짐은 뺀다)', () => {
+    const sp = sceneSpecs()
+    const img = stripImage(256, 192, 0, 64, 256, 64)
+    fillRect(img, 0, 64 + 64, 256, 2, BLUE) // 번짐 2줄(⌈S/2⌉ = 4 안)
+    const fringe = runGate(sp, 'test_scene', img, { noCanvas: false })
+    assert.equal(fringe.pass, true, fringe.feedback)
+    fillRect(img, 20, 10, 30, 20, DARK)
+    const r = runGate(sp, 'test_scene', img, { noCanvas: false })
+    assert.equal(r.pass, false)
+    assert.deepEqual([...new Set(r.failures.map((f) => f.code))].sort(), ['background', 'stray'])
+  })
+
+  it('높은 장면 띠는 위를 잘라 합격(경고 crop), 넓은 장면 띠는 칸을 잘라야 해서 aspect 실패', () => {
+    const sp = sceneSpecs()
+    const tall = runGate(sp, 'test_scene', stripImage(256, 192, 0, 50, 256, 85), { noCanvas: false }) // 3.01:1
+    assert.equal(tall.pass, true, tall.feedback)
+    assert.deepEqual(tall.band, [0, 71, 256, 64]) // 바닥 행 134 유지, 위 21행 자름
+    assert.equal(tall.crop_top, 21)
+    assert.ok(tall.warnings.some((w) => w.code === 'crop' && w.message.includes('top 21 rows')))
+    // 256×50 = 5.12:1 → 규격 4:1보다 28% 넓다
+    const wide = runGate(sp, 'test_scene', stripImage(256, 192, 0, 70, 256, 50), { noCanvas: false })
+    assert.deepEqual(wide.failures.map((f) => f.code), ['aspect'], wide.feedback)
+    assert.match(wide.feedback, /cannot be cropped without cutting the 4 panels/)
+    // 허용치(기본 2%) 안에서 조금 넓으면 경고만: 256×63 = 4.06:1(1.6%)
+    const slight = runGate(sp, 'test_scene', stripImage(256, 192, 0, 64, 256, 63), { noCanvas: false })
+    assert.equal(slight.pass, true, slight.feedback)
+    assert.ok(slight.warnings.some((w) => w.code === 'crop'))
+  })
+
+  it('넓은 배경 띠(tile)는 이음이 가장 좋은 창으로 가로를 잘라 합격한다', () => {
+    const sp = sceneSpecs()
+    const sheet = sp.file.sheets.find((s) => s.name === 'test_scene')!
+    sheet.tile = true
+    // 256×48 띠(4:1이면 폭 192): 가로 줄무늬 위에 x 40..231만 이음이 맞도록 x 40·x 231 열을 같은 색으로
+    const img = stripImage(256, 192, 0, 80, 256, 48)
+    fillRect(img, 0, 80, 40, 48, DARK)
+    fillRect(img, 232, 80, 24, 48, LIGHT)
+    fillRect(img, 40, 80, 4, 48, BLUE)
+    fillRect(img, 228, 80, 4, 48, BLUE)
+    const r = runGate(sp, 'test_scene', img, { noCanvas: false })
+    assert.equal(r.pass, true, r.feedback)
+    assert.deepEqual(r.band, [40, 80, 192, 48])
+    assert.deepEqual(r.crop_x, [40, 24])
+    assert.equal(r.seam, 0)
+    assert.ok(r.warnings.some((w) => w.code === 'crop' && w.message.includes('seam score 0')))
+  })
+
+  it('그림이 없으면 band로 실패한다', () => {
+    const r = runGate(sceneSpecs(), 'test_scene', stripImage(256, 192, 0, 0, 0, 0), { noCanvas: false })
+    assert.deepEqual(r.failures.map((f) => f.code), ['band'])
   })
 })
 

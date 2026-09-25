@@ -114,7 +114,7 @@
     "portrait48": { "cell": [48, 48], "cols": 6, "align": "none", "margin": 0 },
     "icon16": { "cell": [16, 16], "cols": 8, "align": "none", "margin": 0 },
     "icon12": { "cell": [12, 12], "cols": 6, "align": "none", "margin": 0 },
-    "bg": { "cell": [256, 64], "cols": 1, "align": "none", "ground_y": 56, "margin": 0, "canvas_margin": [0, 32] },
+    "bg": { "cell": [256, 64], "cols": 1, "align": "none", "ground_y": 56, "margin": 0, "canvas_margin": [0, 32], "tile": true },
     "scene": { "cell": [128, 64], "cols": 4, "align": "none", "ground_y": 56, "margin": 0, "canvas_margin": [0, 32], "fill": "opaque", "ground_band": true }
   },
   "sheets": [

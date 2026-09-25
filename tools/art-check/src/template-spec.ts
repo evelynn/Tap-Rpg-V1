@@ -57,6 +57,8 @@ export interface GateTolerances {
   min_fill: number
   /** 안내 색 화소 허용 수(이보다 많으면 실패). 기본 0 */
   max_guide_pixels: number
+  /** 띠: 가로로 못 자르는 띠(tile 아님, 장면)가 규격 비율보다 이 비율 넘게 넓으면 실패. 이하면 조금 눌러 뽑는다. 기본 0.02 */
+  aspect_tol?: number
 }
 
 export interface Family extends RowRule {
@@ -76,6 +78,8 @@ export interface Family extends RowRule {
   fill?: Fill | null
   /** 띠: ground_y 아래 행이 채워져야 한다 */
   ground_band?: boolean
+  /** 띠: 이어 붙는 배경 층이라 규격보다 넓으면 가로로 잘라도 된다(칸이 여럿인 장면은 false — 넓으면 실패) */
+  tile?: boolean
   placeholder?: PlaceholderSpec
   gate?: Partial<GateTolerances>
   actions?: Record<string, RowRule>
@@ -163,6 +167,7 @@ export interface ResolvedSheet {
   orientation: 'auto' | 'landscape' | 'portrait'
   fill: Fill | null
   groundBand: boolean
+  tile: boolean
   placeholder: PlaceholderSpec | null
   gate: GateTolerances
 }
@@ -250,6 +255,7 @@ export function resolveSheet(specs: LoadedSpecs, name: string, rowsOverride?: Sh
     orientation: f.orientation ?? 'auto',
     fill: f.fill ?? null,
     groundBand: f.ground_band ?? false,
+    tile: f.tile ?? false,
     placeholder: sheetPlaceholder,
     gate: { ...specs.file.gate, ...(fam.gate ?? {}), ...(sheet.gate ?? {}) },
   }

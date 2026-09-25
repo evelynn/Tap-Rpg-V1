@@ -1,5 +1,8 @@
 // 생성 원본 → 게임 규격 파일 대응표(docs/art/imagegen.map.json) 읽기와 앞뒤 검증.
 // 대응표는 원본마다 격자·논리 칸 크기·행별 프레임 수·정렬 규칙을 적는다. 규격 수치의 출처는 ASSET_ORDERS 0.4~0.6절이다.
+// 띠(role strip: 장면 4칸 512×64, 배경 층 256×64)는 격자 대신 논리 크기만 적는다. 정규화가 원본에서 띠를 내용으로 찾아
+// 잘라서 규격 비율에 맞추고(fit crop, 늘리지 않는다) 면적 평균으로 다시 뽑는다(strip.ts).
+// palette null = 색을 그대로 둔다(배경 품질 기준 D71: 풍부한 배경을 포스터화하지 않는다).
 import { readFileSync } from 'node:fs'
 import { dirname, resolve } from 'node:path'
 import type { Manifest } from './manifest'
@@ -100,7 +103,33 @@ export interface DerivedEntry {
   color_source?: 'layer' | 'reference'
 }
 
-export type MapEntry = ReferenceEntry | LayerEntry | DerivedEntry
+/**
+ * 띠: 원본에서 띠를 내용으로 찾아 잘라 size로 면적 평균(상자) 재표본한다. 캔버스 크기·띠 위치는 상관없다.
+ * fit crop(기본): 높으면 위를 자르고(바닥 유지), 넓으면 tile 띠만 이음 점수가 가장 작은 창으로 가로를 자른다.
+ * tile이 아닌 띠(장면)가 2% 넘게 넓으면 칸을 잘라야 하므로 거절한다. fit stretch = 옛 방식(찾은 띠 전체를 가로·세로 다른 배율로).
+ */
+export interface StripEntry {
+  name: string
+  source: string
+  role: 'strip'
+  /** 논리 크기 [가로, 세로](예: 장면 [512, 64], 배경 층 [256, 64]) */
+  size: [number, number]
+  /** 검수 확대본에 칸 경계를 그을 칸 수(장면 4). 기본 1 */
+  cols?: number
+  /** opaque(기본) = 띠 전체가 그림 · partial = 하늘 자리가 비는 층(가로와 바닥으로 띠를 잡고 높이는 size 비율) */
+  fill?: 'opaque' | 'partial'
+  /** crop(기본) = 잘라서 비율 맞춤 · stretch = 자르지 않고 늘려 뽑는다(옛 방식) */
+  fit?: 'crop' | 'stretch'
+  /** 이어 붙는 배경 층이라 넓으면 가로로 잘라도 된다. 기본 false(장면: 넓으면 거절) */
+  tile?: boolean
+  /**
+   * 스냅할 팔레트. null = 색을 그대로 둔다(면적 평균 색). 배경은 null을 쓴다(D71) — 256색을 넘으면 RGBA PNG로 쓴다.
+   * 장면처럼 팔레트 규칙을 지키는 띠는 팔레트 키·묶음 목록을 준다.
+   */
+  palette: PaletteRef | null
+}
+
+export type MapEntry = ReferenceEntry | LayerEntry | DerivedEntry | StripEntry
 
 /** 원본 PNG가 있는 항목(정규화 대상) */
 export type SourceEntry = ReferenceEntry | LayerEntry
@@ -171,6 +200,10 @@ export function validateMap(m: ImagegenMap, manifest: Pick<Manifest, 'palettes' 
     if (names.has(e.name)) fail(where, '이름이 중복이다')
     names.set(e.name, e)
     if (e.role === 'derived') continue
+    if (e.role === 'strip') {
+      validateStrip(e, manifest)
+      continue
+    }
     if (typeof e.palette === 'string') {
       if (manifest.palette_sets[e.palette] === undefined) fail(where, `매니페스트에 없는 팔레트 키다: ${e.palette}`)
     } else {
@@ -205,7 +238,7 @@ export function validateMap(m: ImagegenMap, manifest: Pick<Manifest, 'palettes' 
     }
   }
   for (const e of m.entries) {
-    if (e.role === 'reference') continue
+    if (e.role === 'reference' || e.role === 'strip') continue
     const ref = names.get(e.ref)
     if (ref === undefined) fail(`entries.${e.name}`, `없는 기준 시트를 가리킨다: ${e.ref}`)
     if (ref.role !== 'reference') fail(`entries.${e.name}`, `기준은 reference여야 한다: ${e.ref}`)
@@ -227,6 +260,22 @@ export function loadMap(path: string, manifest: Pick<Manifest, 'palettes' | 'pal
   validateMap(data, manifest)
   const root = resolve(dirname(path), data.root)
   return { map: data, root, sourceDir: resolve(root, data.source_dir), outDir: resolve(root, data.out_dir) }
+}
+
+function validateStrip(e: StripEntry, manifest: Pick<Manifest, 'palettes' | 'palette_sets'>): void {
+  const where = `entries.${e.name}`
+  if (!isPair(e.size)) fail(where, 'size는 1 이상 정수 두 개여야 한다')
+  if (e.cols !== undefined && !(Number.isInteger(e.cols) && e.cols >= 1 && e.size[0] % e.cols === 0)) fail(where, `cols ${e.cols}는 가로 ${e.size[0]}를 나누는 1 이상 정수여야 한다`)
+  if (e.fill !== undefined && e.fill !== 'opaque' && e.fill !== 'partial') fail(where, `fill은 opaque 또는 partial이다: ${String(e.fill)}`)
+  if (e.fit !== undefined && e.fit !== 'crop' && e.fit !== 'stretch') fail(where, `fit은 crop 또는 stretch다: ${String(e.fit)}`)
+  if (e.tile !== undefined && typeof e.tile !== 'boolean') fail(where, 'tile은 참·거짓이다')
+  if (e.palette === null) return
+  if (typeof e.palette === 'string') {
+    if (manifest.palette_sets[e.palette] === undefined) fail(where, `매니페스트에 없는 팔레트 키다: ${e.palette}`)
+  } else {
+    if (!Array.isArray(e.palette) || e.palette.length === 0) fail(where, '팔레트 묶음 목록이 비었다(색을 그대로 두려면 null)')
+    for (const g of e.palette) if (manifest.palettes[g] === undefined) fail(where, `매니페스트에 없는 팔레트 묶음이다: ${g}`)
+  }
 }
 
 function validateDerived(e: DerivedEntry, names: Map<string, MapEntry>, manifest: Pick<Manifest, 'palettes' | 'palette_sets'>): void {
@@ -291,7 +340,7 @@ export function findEntry(m: ImagegenMap, name: string): MapEntry {
   return e
 }
 
-export function referenceOf(m: ImagegenMap, e: MapEntry): ReferenceEntry {
+export function referenceOf(m: ImagegenMap, e: Exclude<MapEntry, StripEntry>): ReferenceEntry {
   if (e.role === 'reference') return e
   return findEntry(m, e.ref) as ReferenceEntry
 }

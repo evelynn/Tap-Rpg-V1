@@ -1,7 +1,7 @@
 // 대응표 + 매니페스트 → 정규화 실행. 기준 시트를 먼저 정규화하고 그 변환을 레이어에 물려준다.
 import { mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join, resolve } from 'node:path'
-import { findEntry, referenceOf, type DerivedEntry, type LoadedMap, type PaletteRef, type ReferenceEntry, type SourceEntry } from './imagegen-map'
+import { findEntry, referenceOf, type DerivedEntry, type LoadedMap, type PaletteRef, type ReferenceEntry, type SourceEntry, type StripEntry } from './imagegen-map'
 import type { Manifest } from './manifest'
 import {
   compareOverlap,
@@ -18,8 +18,9 @@ import {
 } from './derive'
 import { colorDistance, normalizeSheet, Snapper, type KeyOptions, type NormalizeResult, type PaletteEntry, type SheetReport, type SheetSpec, type SourceImage } from './normalize'
 import { decodePng } from './png'
-import { encodeIndexedPng } from './png-write'
+import { encodeIndexedPng, encodeRgbaPng } from './png-write'
 import { hexRgb, type Raster } from './raster'
+import { normalizeStrip, type StripReport, type StripResult } from './strip'
 
 export function paletteFor(manifest: Manifest, ref: PaletteRef): PaletteEntry[] {
   const out: PaletteEntry[] = []
@@ -159,6 +160,51 @@ export function writeResult(lm: LoadedMap, r: EntryResult): { png: string; json:
     ref: r.entry.role === 'layer' ? r.entry.ref : null,
     palette: r.entry.palette,
     rows: ref.rows,
+    ...r.report,
+  }
+  writeFileSync(json, JSON.stringify(report, null, 2) + '\n')
+  return { png, json, report }
+}
+
+export interface StripRun extends StripResult {
+  entry: StripEntry
+  sourcePath: string
+}
+
+/** 띠 항목 하나를 정규화한다(쓰지 않는다) */
+export function runStrip(lm: LoadedMap, manifest: Manifest, e: StripEntry): StripRun {
+  const sourcePath = resolve(lm.sourceDir, e.source)
+  const img = decodePng(readFileSync(sourcePath))
+  const palette = e.palette === null ? null : paletteFor(manifest, e.palette)
+  const r = normalizeStrip(img, { size: e.size, fill: e.fill ?? 'opaque', palette, fit: e.fit ?? 'crop', tile: e.tile ?? false }, keyOptions(lm))
+  return { ...r, entry: e, sourcePath }
+}
+
+export interface WrittenStripReport extends StripReport {
+  name: string
+  source: string
+  role: 'strip'
+  cols: number
+  palette: PaletteRef | null
+  /** 출력 PNG 형식: 색 255개 이하면 인덱스, 넘으면 RGBA(palette null인 풍부한 배경) */
+  png: 'indexed' | 'rgba'
+}
+
+/** 띠 정규화 결과를 out_dir/<이름>.png와 <이름>.json으로 쓴다. 불투명 색이 255개를 넘으면 RGBA PNG(알파는 0·255만) */
+export function writeStrip(lm: LoadedMap, r: StripRun): { png: string; json: string; report: WrittenStripReport } {
+  mkdirSync(lm.outDir, { recursive: true })
+  const png = join(lm.outDir, `${r.entry.name}.png`)
+  const json = join(lm.outDir, `${r.entry.name}.json`)
+  const { width, height, rgba } = r.raster
+  const indexed = r.report.color_count <= 255
+  writeFileSync(png, indexed ? encodeIndexedPng(width, height, rgba) : encodeRgbaPng(width, height, rgba))
+  const report: WrittenStripReport = {
+    name: r.entry.name,
+    source: `${lm.map.source_dir}/${r.entry.source}`,
+    role: 'strip',
+    cols: r.entry.cols ?? 1,
+    palette: r.entry.palette,
+    png: indexed ? 'indexed' : 'rgba',
     ...r.report,
   }
   writeFileSync(json, JSON.stringify(report, null, 2) + '\n')

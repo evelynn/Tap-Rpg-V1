@@ -1,0 +1,54 @@
+{
+  "name": "bg_h1_summer_day",
+  "source": "assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r3.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1983,
+    793
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "band_found": [
+    0,
+    202,
+    1983,
+    393
+  ],
+  "band": [
+    228,
+    202,
+    1572,
+    393
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    228,
+    183
+  ],
+  "seam": 149.5,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6.141,
+    6.141
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 160960,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 13951,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 228 · 오른쪽 183열을 잘랐다(이음 점수 149.5, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 160960개를 버렸다(자른 행·열 포함)"
+  ]
+}

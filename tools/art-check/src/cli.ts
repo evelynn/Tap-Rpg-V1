@@ -9,10 +9,10 @@ import { readdirSync, readFileSync, statSync } from 'node:fs'
 import { dirname, isAbsolute, join, relative, resolve } from 'node:path'
 import { fileURLToPath, pathToFileURL } from 'node:url'
 import { checkFile, imageFacts, type FileResult, type FileSource } from './checks'
-import { findEntry, loadMap, referenceOf, type DerivedEntry, type LoadedMap, type SourceEntry } from './imagegen-map'
+import { findEntry, loadMap, referenceOf, type DerivedEntry, type LoadedMap, type SourceEntry, type StripEntry } from './imagegen-map'
 import { DEFAULT_REGISTRATION, measureRegistration, type CellRegistration } from './layers'
 import { formatHex, loadManifest, resolveFiles, type Manifest } from './manifest'
-import { layerTotals, Normalizer, runDerived, skinColors, writeDerived, writeResult, type EntryResult } from './pipeline'
+import { layerTotals, Normalizer, runDerived, runStrip, skinColors, writeDerived, writeResult, writeStrip, type EntryResult } from './pipeline'
 import { renderPreviews } from './preview'
 import { renderFindings, renderSummary, renderTable, summarize } from './report'
 import { decodePng, PngError } from './png'
@@ -34,6 +34,8 @@ check     매니페스트가 정한 규격과 실제 PNG를 대조한다. 오류
           --allow-empty는 아직 안 그린 칸(M6 빈 칸)을 경고로 낮춘다. 한 시트를 카드 여러 장이 나눠 채우는 동안 쓴다.
 inspect   매니페스트에 없는 PNG의 사실만 센다(크기·알파·색 수·격자 나눗셈). 읽기 실패만 종료 코드 2.
 normalize 생성 원본을 대응표(기본 docs/art/imagegen.map.json)대로 게임 규격 시트로 바꿔 out_dir에 PNG와 보고 JSON을 쓴다.
+          띠 항목(role strip)은 원본에서 띠를 내용으로 찾아 잘라서 비율을 맞추고(fit crop, 늘리지 않는다) size로 면적 평균
+          재표본한다(palette null = 색 유지).
 preview   정규화 결과로 ×4 검수 확대본(시트·520×64 창 모형·320×48 축소 창·레이어 정합·파생 재합성·32/48 비교)을 out_dir/_preview에 쓴다.
 derive    대응표의 derived 항목마다 기준 시트 화소에서 옷·무기 같은 부류 레이어를 골라 out_dir/<파생>_<부류>.png와
           <파생>.json을 쓴다. color_source가 reference면 빼는 레이어도 모양은 그대로, 보이는 화소의 색은 기준 시트로 바꿔
@@ -303,9 +305,10 @@ function runNormalize(args: Args): number {
   const { lm, manifest } = openMap(args)
   const picked = args.names.length > 0 ? args.names.map((n) => findEntry(lm.map, n)) : lm.map.entries
   // 파생 항목은 원본이 없다 — derive가 만든다
-  const entries = picked.filter((e): e is SourceEntry => e.role !== 'derived')
+  const entries = picked.filter((e): e is SourceEntry => e.role === 'reference' || e.role === 'layer')
+  const strips = picked.filter((e): e is StripEntry => e.role === 'strip')
   const norm = new Normalizer(lm, manifest)
-  const reports = []
+  const reports: unknown[] = []
   for (const e of entries) {
     const { png, json, report } = writeResult(lm, norm.run(e))
     reports.push(report)
@@ -318,6 +321,22 @@ function runNormalize(args: Args): number {
       ` · 칸 비율 ${report.cell_ratio.join('/')} · 축척 ${report.scale}(${report.scale_origin}) · 원본 화소 블록 ${report.art_period ?? '-'}\n` +
       `    채운 칸 ${filled} · 불투명 ${t.opaque} · 칸 밖 버림 ${t.dropped_outside} · 외톨이 제거 ${t.specks_removed}` +
       ` · 색 ${t.colors.length} · 팔레트 오차 평균 ${t.palette_error_mean} 최대 ${t.palette_error_max}\n` +
+      report.notes.map((n) => `    ! ${n}\n`).join('') +
+      `    → ${rel(png)} · ${rel(json)}\n`,
+    )
+  }
+  for (const e of strips) {
+    const { png, json, report } = writeStrip(lm, runStrip(lm, manifest, e))
+    reports.push(report)
+    if (args.json) continue
+    process.stdout.write(
+      `${report.name} ← ${report.source} (띠)\n` +
+      `    원본 ${report.source_size.join('×')} · 찾은 띠 x${report.band_found[0]} y${report.band_found[1]} ${report.band_found[2]}×${report.band_found[3]}` +
+      ` · ${report.fit}${report.tile ? '(tile)' : ''} · 위 자름 ${report.crop_top} · 좌우 자름 ${report.crop_x.join('/')}${report.seam === null ? '' : ` (이음 ${report.seam})`}\n` +
+      `    뽑은 띠 x${report.band[0]} y${report.band[1]} ${report.band[2]}×${report.band[3]}` +
+      ` · 비율 ${report.aspect}(규격 ${report.aspect_expected}) · 축척 ${report.scale.join('/')} → ${report.size.join('×')}\n` +
+      `    불투명 ${report.opaque} · 투명 ${report.transparent} · 띠 밖 버림 ${report.outside_pixels} · 색 ${report.color_count}` +
+      ` (${report.palette_snapped ? '팔레트 스냅' : '색 유지'}) · ${report.png === 'indexed' ? '인덱스' : 'RGBA'} PNG\n` +
       report.notes.map((n) => `    ! ${n}\n`).join('') +
       `    → ${rel(png)} · ${rel(json)}\n`,
     )
@@ -404,7 +423,7 @@ function runLayers(args: Args): number {
   let failed = false
   const results: { layer: string; clothing: boolean; skin: string[]; cells: CellRegistration[] }[] = []
   for (const name of layerArgs) {
-    const mapped = lm.map.entries.find((e): e is SourceEntry => e.name === name && e.role !== 'derived')
+    const mapped = lm.map.entries.find((e): e is SourceEntry => e.name === name && (e.role === 'reference' || e.role === 'layer'))
     let layer: EntryResult
     if (mapped !== undefined) {
       if (referenceOf(lm.map, mapped).name !== refEntry.name) throw new Error(`${name}의 기준 시트는 ${refName}이 아니다`)
