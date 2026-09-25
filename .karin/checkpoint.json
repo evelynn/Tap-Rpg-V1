@@ -1,14 +1,14 @@
 {
   "karin_version": "1.3.0",
-  "session": 2,
-  "feature": "텝 마일스톤 1 — 코어·콘텐츠 기반 + 아트 제작 지시서",
-  "phase": "build-complete",
+  "session": 4,
+  "feature": "텝 M2 — 브라우저 시제품(768×64) + 이미지 생성 아트 v06",
+  "phase": "build",
   "complexity": "Complex",
   "level": "Dynamic",
   "plan_file": "C:/Users/hansol/.claude/plans/reflective-floating-lovelace.md",
   "handoff": ".karin/HANDOFF.md",
-  "stack": "Tauri 2 + TypeScript (pnpm 모노레포, 오프라인 설치). M1은 UI 없이 packages/core + packages/content-kit + tools/{sim,demo,art-check}",
-  "design_docs": "docs/design/00~18 (단일 출처: 01 수치·ID, 00 §2.4 규칙 소유표, 00 §3 결정 D01~), docs/dev/{CONTENT_SCHEMA,ARCHITECTURE,IMPL_DECISIONS,CONTENT_GUIDE,BALANCE_BACKLOG}",
+  "stack": "Tauri 2 + TypeScript (pnpm 모노레포, 오프라인 설치). M2는 브라우저 시제품 apps/desktop/ui(esbuild + node:http), Tauri 창은 네트워크 허용 뒤",
+  "design_docs": "docs/design/00~18 (01 수치·ID, 00 §2.4 규칙 소유표, 00 §3 결정 D01~D75, D76 예정), docs/dev/*, docs/art/{PROMPTS,V06_REQUEST}.md, docs/research/TBH_분석.md",
   "tasks": [
     {
       "id": "T1",
@@ -102,14 +102,14 @@
     },
     {
       "id": "A2",
-      "subject": "이미지 생성 아트(규격 고정 절차·v05 요청 묶음)",
+      "subject": "이미지 생성 아트(v06 연속 진행, codex 별도 터미널)",
       "status": "in_progress",
       "priority": "high"
     },
     {
       "id": "M2",
-      "subject": "Tauri 창·스프라이트 재생기(03 문서)",
-      "status": "pending",
+      "subject": "브라우저 시제품 → Tauri 창(03 문서)",
+      "status": "in_progress",
       "priority": "high"
     },
     {
@@ -117,15 +117,52 @@
       "subject": "생애의 책 구현(18 문서)",
       "status": "pending",
       "priority": "medium"
+    },
+    {
+      "id": "M2a",
+      "subject": "글자 칸 272로(풍경 496 + 글자 272, 작은 글자 2줄) — D75 개정, 사용자 결정",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "M2b",
+      "subject": "선명 정규화(블록 대표색·얼룩 제거·번짐 제거) 마무리와 assets/ready 재정규화 — tools/art-check 미커밋",
+      "status": "in_progress",
+      "priority": "high"
+    },
+    {
+      "id": "D76",
+      "subject": "Taskbar Hero 채택 사항 설계 반영",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "M2c",
+      "subject": "상세 창(03 §5) 구현",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "A3",
+      "subject": "codex 추가 요청(전리품·반짝임·주사위·세대 교대 장면·아이콘 12×12)",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "B1",
+      "subject": "name_pool 고갈 예외(succession/partner.ts:49) 재현·수정",
+      "status": "pending",
+      "priority": "medium"
     }
   ],
-  "current_task": "아트 v05 납품 대기 → 검토(art:gate·normalize·derive·preview)",
-  "next_action": "v05 납품 검토 → 합격본 보관(.gitignore ! 줄) → 배경 H1 시범 판정 후 전 장소 확대 → 밸런스 조정 루프 → M2 착수 전 네트워크 허용 확인",
+  "current_task": "M2a",
+  "next_action": "HANDOFF §0 → tools/art-check 미커밋 변경 처리 → 글자 칸 272(M2a) → D76 → 상세 창 → codex 추가 요청",
   "blockers": [
-    "npm 레지스트리 403: pnpm install --offline만 가능(I01·I02). M2의 Tauri·crates 설치에는 사용자의 네트워크 허용이 필요",
-    "샌드박스 우회(dangerouslyDisableSandbox)는 거부됨 — 우회 금지"
+    "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
+    "샌드박스 우회 금지",
+    "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "c0c5e4f",
-  "verify_state": "pnpm check 통과 — 테스트 1114(정산 시간 테스트 CPU 시간 측정으로 교체), 콘텐츠·문서 검사 0 (2026-09-24)",
-  "last_updated": "2026-09-24T23:00:00+09:00"
+  "last_commit": "cb3f59d",
+  "verify_state": "UI 테스트 33 통과, lint:docs 0 (2026-09-25). 전체 pnpm check 1165 통과(레이아웃 에이전트 측정)",
+  "last_updated": "2026-09-25T20:05:00+09:00"
 }
