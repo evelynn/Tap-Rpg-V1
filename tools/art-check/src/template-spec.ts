@@ -30,6 +30,8 @@ export interface RowRule {
   height?: number | null | (number | null)[]
   /** 가로 중심 검사. 배열이면 프레임별 */
   center?: boolean | boolean[]
+  /** 시트 안 축척 일관성 검사(키가 있는 프레임끼리 비교)에 넣을지. 기본 참. 배열이면 프레임별(착지 웅크림 등 자세로 키가 바뀌는 프레임 제외) */
+  scale?: boolean | boolean[]
   /** 지면선 검사(align ground일 때). false = 나는 동작 등 */
   ground?: boolean
   placeholder?: Partial<PlaceholderSpec>
@@ -43,8 +45,10 @@ export interface GateTolerances {
   center_tol: number
   /** 키 허용 비율 */
   height_tol: number
-  /** 화소 블록 크기 허용 비율 */
+  /** 화소 블록 크기 허용 비율(경고) */
   block_tol: number
+  /** 시트 안 축척 일관성: 키/기준키 비율이 행 중앙값(행끼리는 시트 중앙값)과 이 비율 넘게 다르면 실패 */
+  scale_tol: number
   /** 그림 bbox 밖 영역 가운데 배경이어야 하는 최소 비율 */
   min_background: number
   /** 그림 속(4방향 이웃이 모두 그림) 화소 가운데 알파 < 255 허용 비율 */
@@ -137,6 +141,7 @@ export interface ResolvedRow {
   lift: number[]
   height: (number | null)[]
   center: boolean[]
+  scale: boolean[]
   ground: boolean
   placeholder: PlaceholderSpec | null
   note?: string
@@ -220,6 +225,7 @@ export function resolveSheet(specs: LoadedSpecs, name: string, rowsOverride?: Sh
       lift: idx.map((i) => pick(rule.lift, i, 0)),
       height: idx.map((i) => pick<number | null>(heightRule, i, null)),
       center: idx.map((i) => pick(rule.center, i, true)),
+      scale: idx.map((i) => pick(rule.scale !== undefined ? rule.scale : f.scale, i, true)),
       ground: rule.ground ?? true,
       placeholder,
       ...(rule.note === undefined ? {} : { note: rule.note }),
@@ -306,6 +312,8 @@ export interface CellSpec {
   bottom: number | null
   center: boolean
   height: number | null
+  /** 축척 일관성 검사에 넣는다(키가 있을 때만 의미) */
+  scale: boolean
   lift: number
 }
 
@@ -330,6 +338,7 @@ export function cellSpecs(sheet: ResolvedSheet, layout: Layout): CellSpec[] {
         bottom: groundCheck ? sheet.bottom! - row.lift[c]! : null,
         center: used && sheet.align === 'ground' && sheet.center_x !== null && row.center[c]!,
         height: used ? row.height[c]! : null,
+        scale: used && row.scale[c]!,
         lift: used ? row.lift[c]! : 0,
       })
     }

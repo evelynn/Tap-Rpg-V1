@@ -16,7 +16,7 @@ import {
   type RecomposeCell,
   type StackSlot,
 } from './derive'
-import { colorDistance, normalizeSheet, Snapper, type KeyOptions, type NormalizeResult, type PaletteEntry, type SheetReport } from './normalize'
+import { colorDistance, normalizeSheet, Snapper, type KeyOptions, type NormalizeResult, type PaletteEntry, type SheetReport, type SheetSpec, type SourceImage } from './normalize'
 import { decodePng } from './png'
 import { encodeIndexedPng } from './png-write'
 import { hexRgb, type Raster } from './raster'
@@ -84,9 +84,56 @@ export class Normalizer {
     const img = decodePng(readFileSync(sourcePath))
     const snapper = new Snapper(paletteFor(this.manifest, entry.palette))
     const spec = { grid: ref.grid, cell: ref.cell, rows: ref.rows, align: ref.align, scale: ref.scale }
-    const r = normalizeSheet(img, spec, snapper, keyOptions(this.lm), refResult?.transform)
+    const key = keyOptions(this.lm)
+    if (refResult === undefined && ref.scale_to_spec !== undefined) {
+      return { ...normalizeToSpec(img, spec, snapper, key, ref), entry, sourcePath }
+    }
+    const r = normalizeSheet(img, spec, snapper, key, refResult?.transform)
     return { ...r, entry, sourcePath }
   }
+}
+
+function medianOf(v: number[]): number | null {
+  if (v.length === 0) return null
+  const hs = [...v].sort((a, b) => a - b)
+  const m = hs.length >> 1
+  return hs.length % 2 === 1 ? hs[m]! : (hs[m - 1]! + hs[m]!) / 2
+}
+
+/** 정규화 결과에서 기준 행 내용 칸들의 키 중앙값. source = 원본 화소(소유 bbox 높이), 아니면 논리 화소 */
+export function referenceHeight(report: SheetReport, rows: number[], source = false): number | null {
+  return medianOf(report.cells
+    .filter((c) => rows.includes(c.row) && c.expected === 'content' && (source ? c.source_box !== null : c.bbox !== null))
+    .map((c) => (source ? c.source_box![3] - c.source_box![1] : c.bbox![3] - c.bbox![1] + 1)))
+}
+
+/**
+ * scale_to_spec: 기준 행 프레임 키의 중앙값이 규격 키가 되는 시트 축척을 찾는다.
+ * 첫 추정 s0 = 기준 행 원본 키(소유 화소 bbox 높이) 중앙값 / 규격 키. 블록 다수결과 위상 때문에 키가 ±1 흔들리므로
+ * s0 둘레(±3%, 0.25% 간격)를 가까운 순서로 정규화해 보고 중앙값이 정확히 규격 키인 첫 축척을 쓴다. 없으면 가장 가까운 것.
+ */
+export function normalizeToSpec(img: SourceImage, spec: SheetSpec, snapper: Snapper, key: KeyOptions, ref: ReferenceEntry): NormalizeResult {
+  const t = ref.scale_to_spec!
+  const rows = t.rows.map((r) => (typeof r === 'number' ? r : ref.rows.findIndex((x) => x.action === r)))
+  const base = normalizeSheet(img, spec, snapper, key)
+  // 원본 소유 bbox 높이는 축척과 무관하다(칸 배정은 무게중심). 첫 추정 = 원본 키 중앙값 / 규격 키
+  const h0 = referenceHeight(base.report, rows, true)
+  if (h0 === null) throw new Error(`${ref.name}: scale_to_spec 기준 행 ${t.rows.join(', ')}에 내용 칸이 없다`)
+  const s0 = h0 / t.height
+  let best: { r: NormalizeResult; h: number; s: number } | null = null
+  const steps = [0, ...Array.from({ length: 12 }, (_, k) => [(k + 1) * 0.0025, -(k + 1) * 0.0025]).flat()]
+  for (const d of steps) {
+    const s = s0 * (1 + d)
+    const r = normalizeSheet(img, { ...spec, scale: s }, snapper, key)
+    const h = referenceHeight(r.report, rows)!
+    if (best === null || Math.abs(h - t.height) < Math.abs(best.h - t.height)) best = { r, h, s }
+    if (h === t.height) break
+  }
+  const { r, h, s } = best!
+  r.report.scale_origin = 'spec'
+  r.report.notes.unshift(`scale_to_spec: 기준 행 [${t.rows.join(', ')}] 키 중앙값 ${h}(규격 ${t.height}) · 축척 ${Math.round(s * 1000) / 1000}` +
+    ` (원본 키 중앙값 ${h0}화소, 칸 비율 축척 ${Math.round(base.transform.scale * 100) / 100} 대비 ×${Math.round((base.transform.scale / s) * 1000) / 1000}). 생성 화소를 다시 뽑는 형식 맞춤이다(D66)`)
+  return r
 }
 
 export interface WrittenReport extends SheetReport {

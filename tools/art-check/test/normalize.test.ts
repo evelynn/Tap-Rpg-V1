@@ -14,6 +14,8 @@ import {
   type SourceImage,
 } from '../src/normalize'
 import { decodePng } from '../src/png'
+import { normalizeToSpec, referenceHeight } from '../src/pipeline'
+import type { ReferenceEntry } from '../src/imagegen-map'
 import { encodeIndexedPng, encodeRgbaPng } from '../src/png-write'
 import type { Raster } from '../src/raster'
 
@@ -314,5 +316,29 @@ describe('정합 측정', () => {
     const r = measureRegistration(raster(REF), raster(sleeve), [10, 8], [1, 1], skin)[0]!
     assert.ok(r.skin_overlap! > 0.1)
     assert.equal(r.pass, false)
+  })
+})
+
+describe('scale_to_spec(시트 축척을 규격 키에)', () => {
+  it('기준 행 키 중앙값이 규격 키가 되도록 다시 뽑고, 다른 행도 같은 축척을 쓴다', () => {
+    // 원본 칸 288×288(칸 비율 6). 논리 8×20 그림을 6배로 찍으면 키 120화소 → 규격 40이면 축척 ≈ 3
+    const img = source(576, 576)
+    const tall = Array.from({ length: 20 }, (_, y) => (y === 0 || y === 19 ? 'oooooooo' : 'osssssso'))
+    const short = tall.slice(0, 16)
+    img.stamp(tall, { o: rgbOf(OUTLINE), s: rgbOf(SKIN) }, 6, 120, 100)
+    img.stamp(tall, { o: rgbOf(OUTLINE), s: rgbOf(SKIN) }, 6, 408, 100)
+    img.stamp(short, { o: rgbOf(OUTLINE), s: rgbOf(SKIN) }, 6, 120, 390)
+    const ref: ReferenceEntry = {
+      name: 'r', source: 'r.png', role: 'reference', grid: [2, 2], cell: [48, 48],
+      rows: [{ action: 'idle', frames: 2 }, { action: 'sit', frames: 1 }], palette: 'base',
+      align: { mode: 'ground', bottom: 43, center_x: 23 }, scale_to_spec: { rows: ['idle'], height: 40 },
+    }
+    const r = normalizeToSpec(img, { grid: ref.grid, cell: ref.cell, rows: ref.rows, align: ref.align }, new Snapper(PALETTE), KEY, ref)
+    assert.equal(r.report.scale_origin, 'spec')
+    assert.equal(referenceHeight(r.report, [0]), 40)
+    assert.ok(Math.abs(r.transform.scale - 3) < 0.1, String(r.transform.scale))
+    const sit = r.report.cells.find((c) => c.row === 1 && c.col === 0)!
+    assert.equal(sit.bbox![3] - sit.bbox![1] + 1, 32, JSON.stringify(sit.bbox)) // 16×6/3
+    assert.match(r.report.notes[0]!, /scale_to_spec: 기준 행 \[idle\] 키 중앙값 40\(규격 40\)/)
   })
 })

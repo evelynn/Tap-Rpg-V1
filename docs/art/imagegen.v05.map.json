@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "root": "../..",
+  "source_dir": "assets/_imagegen/v05",
+  "out_dir": "assets/game/v05",
+  "key": "#FF00FF",
+  "key_tolerance": 90,
+  "alpha_threshold": 128,
+  "key_despill": 60,
+  "entries": [
+    {
+      "name": "ref_walk12_48",
+      "source": "01-ref-a-walk12-48-r3.png",
+      "role": "reference",
+      "grid": [6, 2],
+      "cell": [48, 48],
+      "rows": [
+        { "action": "walk", "frames": 6 },
+        { "action": "walk_b", "frames": 6 }
+      ],
+      "palette": ["outline", "skin", "hair", "hair_white", "metal", "bronze", "leather", "cloth", "underlayer", "trousers"],
+      "align": { "mode": "ground", "bottom": 43, "center_x": 23 },
+      "scale_to_spec": { "rows": [0, 1], "height": 40 }
+    }
+  ],
+  "preview": {
+    "character": "ref_walk12_48",
+    "layers": [],
+    "enemy": "ref_walk12_48",
+    "props": [],
+    "compare": [],
+    "field": []
+  }
+}

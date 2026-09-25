@@ -33,6 +33,17 @@ export interface ReferenceEntry {
   align: AlignSpec
   /** 원본 화소 몇 개가 논리 화소 1개인가. 적지 않으면 max(원본 칸 폭 / 논리 칸 폭, 원본 칸 높이 / 논리 칸 높이) */
   scale?: number
+  /**
+   * 시트 축척을 규격 키에 맞춘다(scale 대신). rows(행 번호 또는 동작 이름)의 내용 칸들의 정규화 뒤 키(논리 화소,
+   * bbox 높이) 중앙값이 height가 되는 축척을 찾는다. 생성 화소를 형식에 맞게 다시 뽑는 것일 뿐 새로 그리지 않는다(D66)
+   */
+  scale_to_spec?: ScaleToSpec
+}
+
+export interface ScaleToSpec {
+  rows: (number | string)[]
+  /** 기준 키(논리 화소). 예: 선 키 40, 앉은 키 35(D74) */
+  height: number
 }
 
 export interface LayerEntry {
@@ -179,6 +190,16 @@ export function validateMap(m: ImagegenMap, manifest: Pick<Manifest, 'palettes' 
         fail(where, `모르는 정렬 방식이다: ${(e.align as { mode: string }).mode}`)
       }
       if (e.scale !== undefined && !(e.scale > 0)) fail(where, 'scale은 양수여야 한다')
+      if (e.scale_to_spec !== undefined) {
+        const t = e.scale_to_spec
+        if (e.scale !== undefined) fail(where, 'scale과 scale_to_spec은 함께 쓸 수 없다')
+        if (!Array.isArray(t.rows) || t.rows.length === 0) fail(where, 'scale_to_spec.rows가 비었다')
+        for (const r of t.rows) {
+          const ok = typeof r === 'number' ? Number.isInteger(r) && r >= 0 && r < e.rows.length : e.rows.some((x) => x.action === r)
+          if (!ok) fail(where, `scale_to_spec.rows에 없는 행이다: ${r}`)
+        }
+        if (!(t.height > 0 && t.height <= e.cell[1])) fail(where, `scale_to_spec.height는 1~${e.cell[1]}이어야 한다`)
+      }
     } else if (e.role !== 'layer') {
       fail(where, `role은 reference·layer·derived 가운데 하나다: ${(e as { role: string }).role}`)
     }

@@ -466,7 +466,7 @@ export interface SheetReport {
   /** 원본 칸 크기 / 논리 칸 크기 [가로, 세로] */
   cell_ratio: [number, number]
   scale: number
-  scale_origin: 'map' | 'cell_ratio' | 'reference'
+  scale_origin: 'map' | 'cell_ratio' | 'reference' | 'spec'
   /** 원본 그림에서 잰 화소 블록 크기 */
   art_period: number | null
   notes: string[]

@@ -26,7 +26,7 @@ function testFile(root = '.'): SpecFile {
     canvas: { landscape: [256, 192], portrait: [192, 256], margin: [8, 8] },
     colors: { key: '#FF00FF', guide: '#00FFFF', silhouette: '#808080' },
     key: { tolerance: 90, alpha_threshold: 128, despill: 60 },
-    gate: { ground_tol: 1, center_tol: 2, height_tol: 0.08, block_tol: 0.15, min_background: 0.99, max_partial_alpha: 0.01, min_fill: 0.98, max_guide_pixels: 0 },
+    gate: { ground_tol: 1, center_tol: 2, height_tol: 0.08, block_tol: 0.15, scale_tol: 0.06, min_background: 0.99, max_partial_alpha: 0.01, min_fill: 0.98, max_guide_pixels: 0 },
     families: {
       chr: {
         cell: [16, 16], cols: 3, align: 'ground', ground_y: 14, center_x: 7, height: 10, margin: 0,
@@ -83,6 +83,27 @@ function delivery(specs: LoadedSpecs, sheetName: string, placed: Placed[], size?
 }
 
 const FULL: Placed[] = [0, 1, 2].flatMap((col) => [0, 1].map((row) => ({ col, row })))
+
+// 붙어 있는 장면 칸을 메모리에서 검사한다. 에셋 파일은 만들지 않는다.
+function joinedScene() {
+  const file = testFile()
+  file.families.strip!.cell = [8, 8]
+  const sheet = file.sheets.find((s) => s.name === 'test_scene')!
+  sheet.cols = 4
+  sheet.rows = [{ action: 'scene', frames: 4 }]
+  sheet.ground_band = true
+  const specs = specsOf(file)
+  const layout = computeLayout(specs, resolveSheet(specs, sheet.name))
+  const img = createRaster(...layout.canvas)
+  fillRect(img, 0, 0, img.width, img.height, MAGENTA)
+  for (let y = 0; y < layout.gridH; y += layout.S) {
+    for (let x = 0; x < layout.gridW; x += layout.S) {
+      const color = (x / layout.S + y / layout.S) % 2 === 0 ? LIGHT : BLUE
+      fillRect(img, layout.x0 + x, layout.y0 + y, layout.S, layout.S, color)
+    }
+  }
+  return { specs, layout, img, name: sheet.name }
+}
 
 describe('배치 틀 규격', () => {
   it('S는 격자가 캔버스 − 여백에 들어가는 가장 큰 정수이고 격자는 가운데다', () => {
@@ -230,7 +251,16 @@ describe('art:gate 납품 문', () => {
     const r = gate(delivery(specs, 'test_chr', FULL.map((p) => (p.col === 2 && p.row === 0 ? { ...p, dy: -3 } : p))))
     assert.equal(r.pass, false)
     assert.deepEqual(r.failures.map((f) => [f.code, f.cell]), [['ground', [2, 0]]])
-    assert.match(r.feedback, /Cell \(2,0\) "idle 3": the lowest pixel is 3 blocks above the ground line; move the figure down 3 blocks/)
+    assert.match(r.feedback, /Cell \(2,0\) "idle 3": the lowest pixel is 3 blocks above the ground line of the other frames in this row; move the figure down 3 blocks/)
+    assert.deepEqual(r.warnings.map((w) => [w.code, w.cell]), [['ground', [2, 0]]])
+  })
+
+  it('틀 지면선에서 시트 전체가 어긋나도 행끼리 맞으면 경고만 하고 통과한다', () => {
+    const r = gate(delivery(specs, 'test_chr', FULL.map((p) => ({ ...p, dy: -2 }))))
+    assert.equal(r.pass, true, r.feedback)
+    assert.equal(r.warnings.filter((w) => w.code === 'ground').length, 6)
+    assert.ok(r.cells.filter((c) => c.used).every((c) => c.ground_delta === 0 && c.ground_template === -2), JSON.stringify(r.cells))
+    assert.match(r.feedback, /No regeneration needed/)
   })
 
   it('점프 프레임(lift)은 떠 있어야 통과하고 바닥에 붙으면 실패한다', () => {
@@ -250,9 +280,11 @@ describe('art:gate 납품 문', () => {
     // 틀에서 쓰는 칸은 6개 — (2,1)은 비었다
     const r = gate(img)
     const codes = r.failures.map((f) => `${f.code}@${f.cell?.join(',')}`)
-    assert.deepEqual(codes.sort(), ['center@0,0', 'height@1,0', 'missing@2,1'])
-    assert.match(r.feedback, /center is 3.4 blocks right of the center mark; move it 3.4 blocks left/)
-    assert.match(r.feedback, /13 blocks tall but must be 10 blocks tall/)
+    assert.deepEqual(codes.sort(), ['missing@2,1', 'scale@1,0'])
+    assert.deepEqual(r.warnings.map((w) => `${w.code}@${w.cell?.join(',')}`), ['center@0,0'])
+    assert.match(r.warnings[0]!.message, /horizontal center 3.4 blocks right of the template center mark/)
+    assert.match(r.feedback, /30% taller than the other frames of this row \(13 vs 10 blocks\)/)
+    assert.doesNotMatch(r.feedback, /center/)
   })
 
   it('빈 칸이어야 할 곳의 그림, 안내 색, 격자 밖 그림, 반투명 속을 잡는다', () => {
@@ -273,11 +305,55 @@ describe('art:gate 납품 문', () => {
     assert.match(r.feedback, /Cell \(2,0\) "idle \(empty\)": this cell must stay empty/)
   })
 
-  it('화소 블록이 S와 다르면 실패한다', () => {
+  it('화소 블록이 S와 다르면 경고만 한다(정규화가 다시 뽑는다)', () => {
     const coarse = upscale(figure(4, 5, 1), 2) // 논리 8×10이지만 그림 화소 하나가 2×2 논리 → 블록 10화소
     const r = gate(delivery(specs, 'test_chr', FULL.map((p) => ({ ...p, fig: coarse }))))
-    assert.ok(r.failures.some((f) => f.code === 'block'), r.feedback)
+    assert.equal(r.pass, true, r.feedback)
+    assert.ok(r.warnings.some((w) => w.code === 'block'), JSON.stringify(r.warnings))
     assert.equal(r.block_sheet, 10)
+  })
+
+  it('규격 키와 다른 크기는 경고와 배율, 행끼리 다른 축척은 실패', () => {
+    const tall = figure(8, 12)
+    const all = gate(delivery(specs, 'test_chr', FULL.map((p) => ({ ...p, fig: tall }))))
+    assert.equal(all.pass, true, all.feedback)
+    assert.equal(all.height_ratio, 1.2)
+    assert.equal(all.scale_factor, 0.833)
+    assert.ok(all.warnings.some((w) => w.code === 'height' && /resamples the sheet by x0.83/.test(w.message)), JSON.stringify(all.warnings))
+    const mixed = gate(delivery(specs, 'test_chr', FULL.map((p) => (p.row === 1 ? { ...p, fig: tall } : p))))
+    assert.equal(mixed.pass, false)
+    assert.deepEqual(mixed.failures.map((f) => [f.code, f.cell]), [['scale', null], ['scale', null]])
+    assert.match(mixed.feedback, /Row 1 "jump": the figures are 9% larger than in the other rows/)
+  })
+
+  it('이웃 그림과 닿거나 겹치면 실패한다', () => {
+    const l = computeLayout(specs, resolveSheet(specs, 'test_chr'))
+    // 닿음: (0,0)·(1,0) 그림(논리 x 4..11 · 20..27) 사이를 논리 11..20 막대로 잇는다
+    const touch = delivery(specs, 'test_chr', FULL)
+    fillRect(touch, l.x0 + 11 * l.S, l.y0 + 8 * l.S, 10 * l.S, l.S, DARK)
+    // 겹침: (1,0)을 비우고 그 그림을 (0,0) 그림에 논리 2열 겹쳐 그린다
+    const overlap = delivery(specs, 'test_chr', FULL.filter((p) => !(p.col === 1 && p.row === 0)))
+    blit(overlap, upscale(figure(), l.S), l.x0 + 9 * l.S, l.y0 + 4 * l.S)
+    for (const img of [touch, overlap]) {
+      const r = gate(img)
+      // 합쳐진 덩어리는 무게중심이 든 칸 하나의 것이 되고, 짝 칸은 빈다(어느 쪽인지는 무게중심에 달렸다)
+      const codes = r.failures.map((f) => `${f.code}@${f.cell?.join(',')}`).sort()
+      assert.ok(['missing@0,0|touch@1,0', 'missing@1,0|touch@0,0'].includes(codes.join('|')), `${codes.join('|')} ${r.feedback}`)
+      assert.match(r.feedback, /joined to a neighbouring frame/)
+    }
+  })
+
+  it('이미지 가장자리에 닿은 그림은 실패, 정확한 자홍이 아닌 배경은 경고', () => {
+    const img = delivery(specs, 'test_chr', FULL, undefined)
+    for (let i = 0; i < img.width * img.height; i++) {
+      if (img.rgba[i * 4] === 255 && img.rgba[i * 4 + 1] === 0) { img.rgba[i * 4] = 250; img.rgba[i * 4 + 1] = 3; img.rgba[i * 4 + 2] = 249 }
+    }
+    const soft = gate(img)
+    assert.equal(soft.pass, true, soft.feedback)
+    assert.ok(soft.warnings.some((w) => w.code === 'key_color' && /#FA03F9/.test(w.message)), JSON.stringify(soft.warnings))
+    fillRect(img, 0, 100, 12, 12, DARK)
+    const edge = gate(img)
+    assert.ok(edge.failures.some((f) => f.code === 'edge'), edge.feedback)
   })
 
   it('캔버스 크기가 다르면 칸 검사 없이 캔버스 실패', () => {
@@ -303,11 +379,35 @@ describe('art:gate 납품 문', () => {
     }
     const ok = runGate(specs, 'test_chr', mk(false), { noCanvas: true })
     assert.equal(ok.pass, true, ok.feedback)
-    assert.deepEqual([ok.mode, ok.S_origin], ['no-canvas', 'block'])
+    assert.deepEqual([ok.mode, ok.S_origin, ok.grid], ['no-canvas', 'cell_ratio', 'cells'])
     assert.ok(Math.abs(ok.S - 5) < 0.1, String(ok.S))
     const bad = runGate(specs, 'test_chr', mk(true), { noCanvas: true })
     assert.deepEqual(bad.failures.map((f) => [f.code, f.cell]), [['ground', [0, 0]]])
     assert.match(bad.feedback, /4 blocks above the ground line of the other frames in this row/)
+  })
+
+  it('--no-canvas: 그림이 등간격 칸에 앉지 않으면 내용에서 행·열을 추정해 대조한다', () => {
+    // 왼쪽에 120화소 빈 여백: 등간격 칸(120폭)으로는 무게중심이 1·2·2열에 몰린다
+    const sheet = resolveSheet(specs, 'test_chr')
+    const mk = (frames: Placed[]): GateImage => {
+      const out = createRaster(360, 160)
+      fillRect(out, 0, 0, 360, 160, MAGENTA)
+      for (const p of frames) {
+        const logical = createRaster(16, 16)
+        blit(logical, figure(), 4, 13 - sheet.rows[p.row]!.lift[p.col]! - 9)
+        blit(out, upscale(logical, 5), 120 + p.col * 80, p.row * 80)
+      }
+      return out
+    }
+    const ok = runGate(specs, 'test_chr', mk(FULL), { noCanvas: true })
+    assert.equal(ok.pass, true, ok.feedback)
+    assert.equal(ok.grid, 'inferred')
+    // 점프 lift는 칸 비율 S(7.5)로 재어 그린 블록(5)과 달라 1 안쪽으로 어긋날 수 있다
+    assert.ok(ok.cells.filter((c) => c.used).every((c) => c.pixels > 0 && Math.abs(c.ground_delta!) <= 1), JSON.stringify(ok.cells))
+    // 한 칸이 빠지면 추정이 맞지 않아 등간격 칸으로 판정하고 실패한다
+    const bad = runGate(specs, 'test_chr', mk(FULL.slice(1)), { noCanvas: true })
+    assert.equal(bad.pass, false)
+    assert.equal(bad.grid, 'cells')
   })
 
   it('띠: 지면선 아래가 비면 ground_band, 불투명 띠가 비면 fill 실패', () => {
@@ -322,6 +422,25 @@ describe('art:gate 납품 문', () => {
     assert.deepEqual(r.failures.map((f) => f.code), ['ground_band'])
     const scene = runGate(specs, 'test_scene', img, { noCanvas: false })
     assert.ok(scene.failures.some((f) => f.code === 'fill'))
+  })
+
+  it('불투명 장면 네 칸은 경계에서 붙어 있어도 각 칸으로 판정한다', () => {
+    const { specs: sp, img, name } = joinedScene()
+    const result = runGate(sp, name, img, { noCanvas: false })
+    assert.equal(result.pass, true, result.feedback)
+    assert.equal(result.cells.length, 4)
+    assert.ok(result.cells.every((c) => c.pixels > 0 && c.fill === 1))
+  })
+
+  it('장면 칸을 나누어 검사해도 빈 칸과 띠 밖으로 이어진 그림을 잡는다', () => {
+    const { specs: sp, layout, img, name } = joinedScene()
+    const panelWidth = layout.gridW / 4
+    fillRect(img, layout.x0 + panelWidth, layout.y0, panelWidth, layout.gridH, MAGENTA)
+    fillRect(img, layout.x0, layout.y0 - layout.S * 2, panelWidth, layout.S * 2, BLUE)
+    const result = runGate(sp, name, img, { noCanvas: false })
+    assert.equal(result.pass, false)
+    assert.ok(result.failures.some((f) => f.code === 'missing' && f.cell?.[0] === 1))
+    assert.ok(result.failures.some((f) => f.code === 'stray'), result.feedback)
   })
 
   it('블록 추정: 깨끗한 정수배 그림은 S를 정확히 잰다', () => {

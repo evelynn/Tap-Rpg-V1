@@ -1,7 +1,7 @@
 // 배치 틀·납품 문 명령. cli.ts가 첫 인자 template·gate를 여기로 넘긴다.
 //   template [<시트>...] [--all] [--specs <경로>] [--out <폴더>] [--json]
 //   gate     <png> --spec <시트> [--no-canvas] [--rows idle,attack:6,...] [--specs <경로>] [--json]
-//            [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15]
+//            [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15] [--scale-tol 0.06]
 import { readFileSync } from 'node:fs'
 import { join, relative, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -16,12 +16,15 @@ export const DEFAULT_SPECS = join(PKG_ROOT, 'docs/art/templates/specs.json')
 export const TEMPLATE_USAGE = `사용법
   art-check template [<시트>...] [--all] [--specs <경로>] [--out <폴더>] [--json]
   art-check gate     <png> --spec <시트> [--no-canvas] [--rows <동작[:프레임],...>] [--specs <경로>] [--json]
-                     [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15]
+                     [--ground-tol 1] [--center-tol 2] [--height-tol 0.08] [--block-tol 0.15] [--scale-tol 0.06]
 
 template  틀 규격(기본 docs/art/templates/specs.json)의 시트마다 <이름>.grid.png · .placeholder.png · .silhouette.png와
           <이름>.json을 out_dir(기본 docs/art/templates)에 쓴다. 시트 이름을 안 적거나 --all이면 전부.
-gate      생성기 납품 PNG를 틀과 대조한다. 불합격이면 칸별 표와 다시 생성용 영어 지적문을 찍고 종료 코드 1.
-          --no-canvas: 틀 없이 만든 옛 납품. 이미지를 등간격 격자로 나누고 S를 그림 키에서 추정해, 지면선·중심은 칸끼리 비교한다.
+gate      생성기 납품 PNG를 틀과 대조한다. 정규화가 고칠 수 없는 것(그림 수·칸 배치·닿음·가장자리·시트 안 축척·행 안 지면선·
+          안내 색·배경·반투명)만 불합격(종료 1, 다시 생성용 영어 지적문). 정규화가 고치는 것(규격 키·틀 표시와의 위치·칸 경계·
+          화소 블록 크기·배경 색 오차)은 경고로 찍고 종료 0.
+          --no-canvas: 틀 없이 만든 옛 납품. 이미지를 등간격 격자로 나누고 S = 칸 화소 / 칸 논리 크기로 잰다.
+          그림이 칸에 맞게 앉지 않았으면 내용(무게중심)에서 행·열을 추정해 규격과 대조한다.
           --rows: 행 구성을 바꾼다(예 idle,attack,sit_eat,sleep · walk:6,walk:6). 동작 규칙은 계열 목록에서 찾는다.`
 
 export interface TemplateArgs {
@@ -72,6 +75,7 @@ export function parseTemplateArgs(argv: string[]): TemplateArgs {
       case '--center-tol': a.tolerances.center_tol = num(name, next()); break
       case '--height-tol': a.tolerances.height_tol = num(name, next()); break
       case '--block-tol': a.tolerances.block_tol = num(name, next()); break
+      case '--scale-tol': a.tolerances.scale_tol = num(name, next()); break
       default:
         if (raw.startsWith('-')) throw new Error(`모르는 옵션이다: ${raw}`)
         a.paths.push(raw)
@@ -117,15 +121,29 @@ const fmt = (v: number | null, digits = 1): string => (v === null ? '-' : v.toFi
 export function renderGate(r: GateResult): string {
   const out: string[] = []
   out.push(`${r.pass ? 'PASS' : 'FAIL'} ${r.spec} · ${r.mode} · 이미지 ${r.image.join('×')} (틀 ${r.canvas.join('×')}) · S ${r.S} (${r.S_origin})` +
-    ` · 시트 블록 ${fmt(r.block_sheet)} · 배경 ${(r.background_ratio * 100).toFixed(1)}% · 안내색 ${r.guide_pixels} · 격자 밖 ${r.stray_pixels}`)
-  out.push('  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정')
+    ` · 칸 ${r.grid === 'inferred' ? '내용 추정' : '격자'} · 시트 블록 ${fmt(r.block_sheet)} · 키 비율 ${r.height_ratio === null ? '-' : r.height_ratio.toFixed(3)}` +
+    ` · 배경 ${(r.background_ratio * 100).toFixed(1)}% · 안내색 ${r.guide_pixels} · 격자 밖 ${r.stray_pixels} · 경고 ${r.warnings.length}`)
+  out.push('  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정')
   for (const c of r.cells) {
     if (!c.used && c.pixels === 0 && c.codes.length === 0) continue
     const cell = `(${c.col},${c.row})`.padEnd(7)
     const label = (c.label ?? '(빈 칸)').padEnd(16)
     const h = c.height === null ? '-' : `${fmt(c.height)}(${c.height_expected ?? '-'})`
     const fill = c.fill === null ? '' : ` 채움 ${(c.fill * 100).toFixed(0)}%${c.ground_fill === null ? '' : `/${(c.ground_fill * 100).toFixed(0)}%`}`
-    out.push(`  ${cell} ${label} ${String(c.pixels).padStart(8)} ${fmt(c.ground_delta, 0).padStart(5)} ${fmt(c.center_delta).padStart(5)}  ${h.padEnd(12)} ${fmt(c.block).padStart(5)} ${(c.partial_alpha * 100).toFixed(1).padStart(5)}%  ${c.codes.length === 0 ? 'ok' : '✗ ' + c.codes.join(',')}${fill}`)
+    const verdict = (c.codes.length === 0 ? 'ok' : '✗ ' + c.codes.join(',')) + (c.warns.length === 0 ? '' : ` (경고 ${c.warns.join(',')})`)
+    out.push(`  ${cell} ${label} ${String(c.pixels).padStart(8)} ${fmt(c.ground_delta, 0).padStart(5)} ${fmt(c.ground_template, 0).padStart(4)} ${fmt(c.center_delta).padStart(5)}  ${h.padEnd(12)} ${fmt(c.block).padStart(5)} ${(c.partial_alpha * 100).toFixed(1).padStart(5)}%  ${verdict}${fill}`)
+  }
+  if (r.warnings.length > 0) {
+    out.push('')
+    out.push('Warnings (normalization fixes these; not sent to the generator):')
+    // 같은 종류는 4줄까지 찍고 나머지는 개수만(전문은 --json)
+    const shown = new Map<string, number>()
+    for (const w of r.warnings) {
+      const n = (shown.get(w.code) ?? 0) + 1
+      shown.set(w.code, n)
+      if (n <= 4) out.push(`- ${w.message}`)
+    }
+    for (const [code, n] of shown) if (n > 4) out.push(`- ...and ${n - 4} more ${code} warnings of the same kind.`)
   }
   out.push('')
   out.push('Regeneration feedback:')

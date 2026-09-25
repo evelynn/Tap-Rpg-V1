@@ -42,4 +42,18 @@ describe('대응표 검증', () => {
     if (ref.role === 'reference') ref.rows = []
     assert.throws(() => validateMap(m4, MANIFEST), /rows 길이/)
   })
+
+  it('scale_to_spec는 있는 행·칸 안 키만 받고 scale과 함께 쓰지 않는다', () => {
+    const set = (v: unknown, scale?: number): ImagegenMap => {
+      const m = map()
+      const ref = m.entries[0]!
+      if (ref.role === 'reference') Object.assign(ref, { scale_to_spec: v }, scale === undefined ? {} : { scale })
+      return m
+    }
+    assert.doesNotThrow(() => validateMap(set({ rows: [0, 'idle'], height: 40 }), MANIFEST))
+    assert.throws(() => validateMap(set({ rows: [1], height: 40 }), MANIFEST), /없는 행/)
+    assert.throws(() => validateMap(set({ rows: ['walk'], height: 40 }), MANIFEST), /없는 행/)
+    assert.throws(() => validateMap(set({ rows: [0], height: 60 }), MANIFEST), /height/)
+    assert.throws(() => validateMap(set({ rows: [0], height: 40 }, 5), MANIFEST), /함께 쓸 수 없다/)
+  })
 })

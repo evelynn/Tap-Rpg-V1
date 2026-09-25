@@ -15,6 +15,7 @@
     "center_tol": 2,
     "height_tol": 0.08,
     "block_tol": 0.15,
+    "scale_tol": 0.06,
     "min_background": 0.99,
     "max_partial_alpha": 0.01,
     "min_fill": 0.98,
@@ -33,7 +34,7 @@
         "sit_eat": { "frames": 4, "height": 35, "placeholder": { "frame": [0, 2] }, "note": "앉은 키 35 = 합격 v03 r4 실측(D74, 옛 문서 값 25)" },
         "sleep": { "frames": 4, "height": null, "center": false, "placeholder": { "frame": [0, 3] }, "note": "누운 자세: 몸 최하단이 지면선(0.4절), 중심·키 검사 없음" },
         "interact": { "frames": 4 },
-        "cheer": { "frames": 4, "lift": [0, 2, 4, 0], "height": [null, 40, 40, 40], "note": "2·3프레임만 +2·+4 뜬다(15 §12.3 검수 2). 1프레임 웅크림은 키를 재지 않는다" },
+        "cheer": { "frames": 4, "lift": [0, 2, 4, 0], "height": [null, 40, 40, 40], "scale": [true, true, true, false], "note": "2·3프레임만 +2·+4 뜬다(15 §12.3 검수 2). 1프레임 웅크림은 키를 재지 않는다. 4프레임 착지 웅크림은 자세로 키가 줄어 시트 안 축척 비교에서 뺀다(v05 c02 검수 합격, 키 −8%)" },
         "collapse": { "frames": 5, "height": [40, null, null, null, null], "center": [true, true, true, false, false], "note": "4·5프레임 엎드림: 몸 최하단이 지면선" },
         "head_poses": { "frames": 3, "labels": ["basic", "bowed", "lying"], "height": [40, null, null], "center": [true, true, false], "placeholder": { "frames": [[0, 0], [0, 2], [0, 3]] } }
       }
@@ -77,8 +78,8 @@
       }
     },
     "bat": {
-      "cell": [32, 32], "cols": 4, "align": "ground", "ground_y": 28, "bottom": 16, "center_x": 15, "height": 14, "margin": 2,
-      "note": "부양 12: 몸 최하단 y 16(0.5절). 그림자는 그리지 않는다",
+      "cell": [32, 32], "cols": 4, "align": "ground", "ground_y": 28, "bottom": 16, "center_x": 15, "height": 14, "scale": false, "margin": 2,
+      "note": "부양 12: 몸 최하단 y 16(0.5절). 그림자는 그리지 않는다. 날갯짓으로 bbox 키가 프레임마다 ±20% 바뀌어 gate 시트 안 축척 비교(scale)는 하지 않는다(규격 키 경고·배율만)",
       "actions": {
         "idle": { "frames": 4 }, "move": { "frames": 4 },
         "attack": { "frames": 4, "height": null },
