@@ -1,0 +1,27 @@
+pnpm art:gate assets/_imagegen/v06/l7-expression12-48-r3.png --spec chr_face
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/l7-expression12-48-r3.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/l7-expression12-48-r3.png
+PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 5.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 1
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic         22310     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,0)   round_smile         22307     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,0)   round_frown         22318     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,0)   round_closed        22305     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,0)   round_surprised     22302     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,1)   narrow_basic        22307     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,1)   narrow_smile        22326     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,1)   narrow_frown        22321     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,1)   narrow_closed       22292     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,1)   narrow_surprised    22326     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,2)   wrinkle_veteran     22282     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,2)   wrinkle_elder       22279     -    -     -  40.0(-)        5.9   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_face template. No regeneration needed.

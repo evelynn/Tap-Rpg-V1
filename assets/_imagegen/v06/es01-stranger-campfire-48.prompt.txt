@@ -1,0 +1,12 @@
+CRITICAL TECHNICAL OUTPUT: output exactly one opaque PNG, 1536 x 1024 image pixels. Every area outside the required artwork is a SOLID BRIGHT MAGENTA COLOUR FIELD, red=255 green=0 blue=255 (RGB 255,0,255; hex #FF00FF). This magenta is actual visible image colour, not a transparency instruction. Alpha must be 255 everywhere, including all background pixels. Never replace this magenta with a dark background, transparent background, checkers, black, brown, halo, vignette, shadow or colour gradient. Preserve flat magenta right up to the hard pixel-art edges.
+REFERENCE PRIORITY: the supplied image is the authoritative source for exact canvas, cell placement, pose, silhouette and retained pixel colours. Edit only the explicitly requested part. Do not redraw or restyle the whole image; retained regions and colours must match the source.
+
+Use case: precise edit of the provided key strip (four panels on the scene template). Keep the exact canvas, the strip position, panel 1 and the flat #FF00FF outside the strip exactly. Make panels 2, 3 and 4 exact copies of panel 1, pixel for pixel with the exact colours, then apply ONLY the changes listed under FRAMES (panel 1 = frame 1, left to right). Do not redraw, move, restyle, recolour, relight, brighten or saturate anything else. The empty hero slot stays empty in all four panels.
+
+FRAMES: flames change shape every frame; frames 2 and 4 the traveler's hands rub together one block closer, frames 1 and 3 hands apart; one star blinks off in frame 3.
+
+Do NOT draw: the player character, any young adventurer who could be mistaken for it, any person in the empty hero slot, any person or creature not listed, text, letters, numbers, runes, writing on signs, paper or banners, labels, frame numbers, arrows, musical notes, zZ letters, speech bubbles, UI elements, panel borders, grid lines, dividing lines, watermark, blood, wounds, corpses, weapons being swung, magic effects not listed, motion trails, vignette, spotlight, glow halo, lens flare, gradient sky. Output only the finished image.
+
+Preserve all retained scene colours exactly from the input reference, including sky, ground and light. Newly edited edge or animation pixels must use the corresponding existing colours sampled visually from that reference. Do not introduce a new palette.
+
+FINAL OUTPUT CHECK: fully opaque, flat background RGB(255,0,255), no glow or background shading; exact requested canvas and placement. Deliver only the finished PNG.

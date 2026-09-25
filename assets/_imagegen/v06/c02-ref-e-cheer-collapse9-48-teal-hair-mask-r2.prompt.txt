@@ -1,0 +1,11 @@
+TASK: exact HAIR-ONLY extraction from the supplied original sprite sheet. Output one opaque PNG 2172 x 724 pixels, same coordinates and same retained colours as the input. All erased parts and all background must be flat RGB(255,0,255), alpha 255.
+
+The previous hair-only mask incorrectly retained peach ear/skin pixels and dark eye lines in the final two lying frames. Remove ALL visible skin, ears, face marks and detached facial pixels; keep hair only.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the hair. Remove face, skin, body, clothing, weapon and all other parts.
+
+COLOURS: retain only the original hair browns and the contour immediately belonging to hair. Convert ALL ear/skin tones and eye or mouth pixels to RGB(255,0,255). For the lying heads at the bottom right, the ear hole must be completely magenta; the empty facial area must be completely magenta, including both eyes.
+
+No head, face-shaped fill, body, clothing or props. Show the sparse retained pixels in their existing places on a flat bright magenta field. Do not crop, scale or rearrange anything.

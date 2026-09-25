@@ -1,0 +1,36 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 48x48 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+SUBJECT AND IDENTITY: one and the same youthful androgynous human adventurer in every cell, chibi proportions about 2.2 heads tall (the head is close to half of the body height). Facing RIGHT in a slight three-quarter side view, never front-facing. Short chestnut hair (HR01) with two flat browns, medium warm skin, round dark eyes, tiny mouth. Cream quilted short tunic with elbow-length sleeves, thin brown waist cord, two or three small square repair patches, muted teal canvas work trousers, brown boots. Keep every hair lock, facial feature, garment detail, body proportion and limb thickness identical across all cells. Expressive and charming, not a stiff stick figure.
+FAR-SIDE LIMBS: the arm and leg farther from the viewer are always one shade darker than the near-side limbs, so left and right steps are distinguishable.
+PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord and boots #8E5E38; trousers #27978D #00766D.
+
+TEMPLATE (input image 1 = docs/art/templates/chr_face.placeholder.png, the layout template of sheet chr_face): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 6 x 6 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template chr_face (docs/art/templates/chr_face.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 5 columns x 3 rows of cells, each 48 x 48 art px = 288 x 288 px. Grid top-left x 48, y 80; grid 1440 x 864 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 288, y = 80 + (row-1) x 288. Nothing outside the grid.
+- Cells used: 12. Empty cells (stay flat #FF00FF): (3,3), (4,3), (5,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+- The placeholder figure marks the base-body position (height 40 art px = 240 px).
+
+LAYOUT: exactly 12 sprites in exactly 5 equal columns and 3 equal rows of identical square cells, evenly spaced, reading order left to right then next row. Row 3 holds two sprites; its last three cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell. Every figure's lowest point (feet, or hips when seated, or body when lying) sits on the SAME local ground line in its cell, exactly where the NUMBERS block puts it; no ground line is drawn. The body's horizontal center is on the centre column the NUMBERS block gives, in every cell, unless the pose itself moves it.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel (preferred over transparency: transparent outputs came back with halos and dark fringes). Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+Input image 2 role: this is the exact character; copy its head, hair, face proportions, eye size, clothing and pixel density exactly (trousers teal as stated above). Do not copy its layout.
+TWELVE CELLS of the same frame: the relaxed idle stance of input image 2 (row 1, frame 1), facing right, identical in every cell. ONLY the eyes, eyebrows and mouth change (in row 3 also two small wrinkle marks). Hair, head outline, skin, body, clothing and pose are pixel-identical in all twelve cells.
+ROW 1, the round eyes of input image 2, five expressions: 1 neutral. 2 smile: the mouth curves up, the eyes stay round. 3 grimace: a focused frown, eyebrows angled down toward the nose, mouth a short flat line. 4 EYES CLOSED, NEUTRAL: each eye is one straight flat horizontal line, one block tall and as wide as the open eye; eyebrows and mouth exactly as in cell 1, a calm sleeping face. Never curved happy arcs, never a smile. 5 surprise: eyes one block taller, eyebrows raised, a small round open mouth.
+ROW 2, NARROW eyes, the same five expressions in the same order: each open eye is a short horizontal slit two blocks wide and one block tall, in the same place and spacing as the round eyes. Smile: the slits curve slightly upward. Surprise: the slits open to two blocks tall. Closed: the same straight flat line as row 1 cell 4.
+ROW 3, round eyes, neutral face, age marks in #A0664A: 1 MATURE: one short wrinkle line one block long at the outer corner of the near eye. 2 ELDER: two wrinkle lines at the outer eye corner and one short line under the eye. Cells 3, 4 and 5 of row 3 stay empty.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.

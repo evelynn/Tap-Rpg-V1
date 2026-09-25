@@ -1,0 +1,25 @@
+pnpm art:gate assets/_imagegen/v06/c02-ref-e-cheer-collapse9-48-teal-body.png --spec chr_actions_b --no-canvas --rows "cheer,collapse"
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c02-ref-e-cheer-collapse9-48-teal-body.png" "--spec" "chr_actions_b" "--no-canvas" "--rows" "cheer,collapse"
+
+assets/_imagegen/v06/c02-ref-e-cheer-collapse9-48-teal-body.png
+PASS chr_actions_b · no-canvas · 이미지 2172×724 (틀 1536×1024) · S 7.54 (cell_ratio) · 칸 격자 · 시트 블록 8.1 · 키 비율 0.930 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   cheer 1             31276     0    -  -1.0  31.3(-)        8.1   0.0%  ok
+  (1,0)   cheer 2             34191     1    -  -0.9  37.0(40)       8.2   0.0%  ok
+  (2,0)   cheer 3             36352     0    -  -1.3  37.4(40)       9.5   0.0%  ok (경고 block)
+  (3,0)   cheer 4             31392     0    -   0.0  31.8(40)       8.5   0.0%  ok
+  (0,1)   collapse 1          40237     0    -   1.0  37.4(40)       8.2   0.0%  ok
+  (1,1)   collapse 2          32218     0    -   0.9  32.4(-)        8.0   0.0%  ok
+  (2,1)   collapse 3          35627     0    -   1.3  29.3(-)        8.1   0.0%  ok
+  (3,1)   collapse 4          30709     0    -     -  17.2(-)        8.1   0.0%  ok
+  (4,1)   collapse 5          31494     0    -     -  17.1(-)        8.1   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Drawn pixel blocks are 9.5-9.5 image px in 1 cells, not 7.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F606F8), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_actions_b template. No regeneration needed.
