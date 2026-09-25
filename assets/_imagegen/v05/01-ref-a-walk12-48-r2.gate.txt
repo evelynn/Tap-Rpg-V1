@@ -1,0 +1,54 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/01-ref-a-walk12-48-r2.png" "--spec" "chr_elder" "--rows" "walk:6,walk:6"
+
+assets/_imagegen/v05/01-ref-a-walk12-48-r2.png
+FAIL chr_elder · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5 (template) · 시트 블록 4.3 · 배경 100.0% · 안내색 0 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   walk 1              23219   -11  -7.6  48.8(40)       4.3   0.0%  ✗ bbox,ground,center,height
+  (1,0)   walk 2              22735   -11  -4.6  48.8(40)       4.3   0.0%  ✗ bbox,ground,center,height
+  (2,0)   walk 3              21818   -11  -1.4  48.8(40)       4.2   0.0%  ✗ bbox,ground,height,block
+  (3,0)   walk 4              20593   -11  -1.2  48.8(40)       4.3   0.0%  ✗ bbox,ground,height
+  (4,0)   walk 5              22324   -11   0.4  48.8(40)       4.2   0.0%  ✗ bbox,ground,height,block
+  (5,0)   walk 6              21827   -11   2.4  48.8(40)       4.3   0.0%  ✗ bbox,ground,center,height
+  (0,1)   walk 1              22757    17  -7.4  48.8(40)       4.2   0.0%  ✗ bbox,ground,center,height,block
+  (1,1)   walk 2              22797    17  -4.6  48.8(40)       4.3   0.0%  ✗ bbox,ground,center,height
+  (2,1)   walk 3              21734    17  -1.6  48.8(40)       4.3   0.0%  ✗ bbox,ground,height
+  (3,1)   walk 4              20585    17  -1.2  48.8(40)       4.2   0.0%  ✗ bbox,ground,height,block
+  (4,1)   walk 5              22898    17   0.4  48.8(40)       4.3   0.0%  ✗ bbox,ground,height
+  (5,1)   walk 6              21434    17   2.6  48.8(40)       4.3   0.0%  ✗ bbox,ground,center,height
+
+Regeneration feedback:
+Regenerate this sheet on the chr_elder template (one art pixel = 5x5 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "walk 1": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (0,0) "walk 1": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (0,0) "walk 1": the figure's horizontal center is 7.6 blocks left of the center mark; move it 7.6 blocks right.
+- Cell (0,0) "walk 1": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (1,0) "walk 2": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (1,0) "walk 2": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (1,0) "walk 2": the figure's horizontal center is 4.6 blocks left of the center mark; move it 4.6 blocks right.
+- Cell (1,0) "walk 2": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (2,0) "walk 3": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (2,0) "walk 3": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (2,0) "walk 3": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (2,0) "walk 3": the art pixels are about 4.2 image pixels wide, but every art pixel must be a 5x5 block. Redraw on the 5-pixel grid; do not rescale or blur.
+- Cell (3,0) "walk 4": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (3,0) "walk 4": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (3,0) "walk 4": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (4,0) "walk 5": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (4,0) "walk 5": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (4,0) "walk 5": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (4,0) "walk 5": the art pixels are about 4.2 image pixels wide, but every art pixel must be a 5x5 block. Redraw on the 5-pixel grid; do not rescale or blur.
+- Cell (5,0) "walk 6": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (5,0) "walk 6": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (5,0) "walk 6": the figure's horizontal center is 2.4 blocks right of the center mark; move it 2.4 blocks left.
+- Cell (5,0) "walk 6": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (0,1) "walk 1": the drawing crosses the cell boundary on the bottom by 12.8 blocks. Keep every pixel inside its own cell.
+- Cell (0,1) "walk 1": the lowest pixel is 17 blocks below the ground line; move the figure up 17 blocks so the lowest pixel sits directly on the ground line.
+- Cell (0,1) "walk 1": the figure's horizontal center is 7.4 blocks left of the center mark; move it 7.4 blocks right.
+- Cell (0,1) "walk 1": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (0,1) "walk 1": the art pixels are about 4.2 image pixels wide, but every art pixel must be a 5x5 block. Redraw on the 5-pixel grid; do not rescale or blur.
+- Cell (1,1) "walk 2": the drawing crosses the cell boundary on the bottom by 12.8 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "walk 2": the lowest pixel is 17 blocks below the ground line; move the figure up 17 blocks so the lowest pixel sits directly on the ground line.
+- ...and 16 more problems of the same kinds.
+ ELIFECYCLE  Command failed with exit code 1.

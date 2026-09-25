@@ -1,0 +1,42 @@
+[
+  {
+    "request": "v05-01",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-273fcd46-f130-4079-b5de-73763b3a75f6.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/02-ref-b-actions18-48-teal.png"
+  },
+  {
+    "request": "v05-02",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-82e1a7fd-63e7-4cdb-97a6-df03ca60a6ed.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/04-ref-c-leather-actions18-48-teal.png"
+  },
+  {
+    "request": "v05-02-r2",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-70bb15c8-1848-4f6d-a7b9-39668d8656f9.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/04-ref-c-leather-actions18-48-teal-r2.png"
+  },
+  {
+    "request": "v05-03",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-999cdf0b-5473-4f1c-a0d2-0866030efa3e.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/c01-ref-d-hit-discover-interact11-48-teal.png"
+  },
+  {
+    "request": "v05-04",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-a99f0ba6-13e8-48c8-ae3b-e233094174a5.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/c02-ref-e-cheer-collapse9-48-teal.png"
+  },
+  {
+    "request": "v05-05",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-3be509ad-3a77-4639-8202-7e9b993bc5f1.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/01-ref-a-walk12-48.png"
+  },
+  {
+    "request": "v05-05-r2",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-9be48f58-d165-4525-b6dc-dc8fbd044712.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/01-ref-a-walk12-48-r2.png"
+  },
+  {
+    "request": "v05-05-r3",
+    "original": "C:\\Users\\hansol\\.codex\\generated_images\\01a0cdee-a295-7ff0-9875-ee99196ef0f1\\exec-1b442984-90b8-44fe-a392-d69430d3d388.png",
+    "copy": "E:/AI_work/Tap_rpg/assets/_imagegen/v05/01-ref-a-walk12-48-r3.png"
+  }
+]

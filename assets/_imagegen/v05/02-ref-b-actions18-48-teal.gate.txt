@@ -1,0 +1,46 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/02-ref-b-actions18-48-teal.png" "--spec" "chr_actions_a" "--no-canvas" "--rows" "idle,attack,sit_eat,sleep"
+
+assets/_imagegen/v05/02-ref-b-actions18-48-teal.png
+FAIL chr_actions_a · no-canvas · 이미지 1536×1024 (틀 1536×1024) · S 4.14 (block) · 시트 블록 4.1 · 배경 100.0% · 안내색 0 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              17587     0  -0.7  50.8(40)       4.1   0.0%  ✗ height
+  (1,0)   idle 2              17536     0   0.0  50.8(40)       4.2   0.0%  ✗ height
+  (2,0)   idle 3              17566     0   0.0  50.8(40)       4.1   0.0%  ✗ height
+  (3,0)   idle 4              17595     0   0.0  50.8(40)       4.2   0.0%  ✗ height
+  (0,1)   attack 1            19340     0   0.2  49.6(-)        4.1   0.0%  ✗ bbox
+  (1,1)   attack 2            20530     0  -2.9  63.6(-)        4.0   0.0%  ✗ bbox,center
+  (2,1)   attack 3            21212     0  -4.1  56.1(-)        3.9   0.0%  ✗ bbox,center
+  (3,1)   attack 4            21790     0  -1.2  48.6(-)        4.2   0.0%  ✗ bbox
+  (4,1)   attack 5            20708     0   0.0  53.0(-)        4.1   0.0%  ✗ bbox
+  (5,1)   attack 6            19226     0   0.0  49.6(-)        4.1   0.0%  ✗ bbox
+  (0,2)   sit_eat 1           18548     0   0.0  44.7(35)       4.1   0.0%  ✗ height
+  (1,2)   sit_eat 2           18313     0   0.7  44.7(35)       4.1   0.0%  ✗ height
+  (2,2)   sit_eat 3           18493     0   0.7  44.7(35)       4.1   0.0%  ✗ height
+  (3,2)   sit_eat 4           18297     0   0.7  44.7(35)       4.1   0.0%  ✗ height
+  (0,3)   sleep 1             18249     0     -  30.2(-)        4.2   0.0%  ok
+  (1,3)   sleep 2             18257     0     -  30.2(-)        4.3   0.0%  ok
+  (2,3)   sleep 3             18228     0     -  30.2(-)        4.2   0.0%  ok
+  (3,3)   sleep 4             18245     0     -  30.2(-)        4.1   0.0%  ok
+
+Regeneration feedback:
+Regenerate this sheet on the chr_actions_a template (one art pixel = 5x5 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "idle 1": the figure is 50.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (1,0) "idle 2": the figure is 50.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (2,0) "idle 3": the figure is 50.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (3,0) "idle 4": the figure is 50.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (0,1) "attack 1": the drawing crosses the cell boundary on the bottom by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "attack 2": the drawing crosses the cell boundary on the top by 0.5 blocks, bottom by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "attack 2": the figure's horizontal center is 2.9 blocks left of the center of the other frames in this column; move it 2.9 blocks right.
+- Cell (2,1) "attack 3": the drawing crosses the cell boundary on the bottom by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (2,1) "attack 3": the figure's horizontal center is 4.1 blocks left of the center of the other frames in this column; move it 4.1 blocks right.
+- Cell (3,1) "attack 4": the drawing crosses the cell boundary on the right by 7 blocks, bottom by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (4,1) "attack 5": the drawing crosses the cell boundary on the bottom by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (5,1) "attack 6": the drawing crosses the cell boundary on the bottom by 1.2 blocks. Keep every pixel inside its own cell.
+- Cell (0,2) "sit_eat 1": the figure is 44.7 blocks tall but must be 35 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (1,2) "sit_eat 2": the figure is 44.7 blocks tall but must be 35 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (2,2) "sit_eat 3": the figure is 44.7 blocks tall but must be 35 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+- Cell (3,2) "sit_eat 4": the figure is 44.7 blocks tall but must be 35 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 4.1x4.1 block.
+(Measured without the template canvas: the ground line is compared between frames of the same row and the center between frames of the same column, not against the template marks.)
+ ELIFECYCLE  Command failed with exit code 1.

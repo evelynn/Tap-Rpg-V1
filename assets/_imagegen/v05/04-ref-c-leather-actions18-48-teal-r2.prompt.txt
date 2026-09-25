@@ -1,0 +1,9 @@
+Use case: precise recolour edit of the provided sprite sheet. Keep the exact canvas size, every pixel position, every shape and the flat #FF00FF background exactly; do not crop, resize, redraw or move anything. Recolour ONLY the trousers in every cell: their lit blocks to #27978D and their shaded blocks to #00766D. The tunic hem, waist cord, boots, skin and everything else keep their exact colours.
+
+Also recolour ONLY the undershirt visible at the shoulders under the leather vest: its lit blocks to #7EA6B8 and its shaded blocks to #546E7A. The leather vest, straps and belt keep their exact colours.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+OUTPUT CANVAS: exactly 1536 x 1024 pixels, identical to the input image. Fully opaque RGB output, #FF00FF outside the figures. This is a recolour only, not a redraw.
+
+PREVIOUS ATTEMPT FAILED THE EDIT CHECK. Use the original input image again. Keep the exact original 1536 x 1024 canvas, each original shape, position and all colours outside the two requested recolours. The previous result incorrectly introduced transparency across every figure and the entire background. Deliver a completely opaque image: alpha must be 255 everywhere, including the flat solid #FF00FF background. Treat magenta as painted solid background that must remain visible, not a chroma key to remove. No transparent or translucent pixels, no alpha masking, no feathering, no haze or colour halos. Background must be one exact flat #FF00FF RGB value. Only the trousers and exposed shoulder undershirt change colour; leather, hair, skin, boots and swords retain their original pixels and colours. Do not resize figures or reposition any frames.

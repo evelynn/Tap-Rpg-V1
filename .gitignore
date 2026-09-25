@@ -30,3 +30,8 @@ assets/_imagegen/**/*.png
 !assets/_imagegen/v04/c03-body-ref-d-48.png
 !assets/_imagegen/v04/c03-body-ref-e-48.png
 !assets/_imagegen/v04/n01-npc-ref-48.png
+!assets/_imagegen/v05/01-ref-a-walk12-48-r3.png
+!assets/_imagegen/v05/02-ref-b-actions18-48-teal.png
+!assets/_imagegen/v05/04-ref-c-leather-actions18-48-teal-r2.png
+!assets/_imagegen/v05/c01-ref-d-hit-discover-interact11-48-teal.png
+!assets/_imagegen/v05/c02-ref-e-cheer-collapse9-48-teal.png

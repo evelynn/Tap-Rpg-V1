@@ -1,0 +1,296 @@
+{
+  "reference": "ref_d_hit_discover_interact11_48",
+  "options": {
+    "minContainment": 0.95,
+    "maxShift": 1,
+    "maxSkin": 0.03,
+    "search": 3
+  },
+  "layers": [
+    {
+      "layer": "assets/_imagegen/v05/c01-ref-d-hit-discover-interact11-48-teal.png",
+      "clothing": false,
+      "skin": [],
+      "cells": [
+        {
+          "col": 0,
+          "row": 0,
+          "layer_pixels": 857,
+          "containment": 0.947,
+          "color_match": 0.418,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.418,
+          "skin_overlap": null,
+          "pass": false,
+          "reasons": [
+            "포함률 0.947 < 0.95"
+          ]
+        },
+        {
+          "col": 1,
+          "row": 0,
+          "layer_pixels": 833,
+          "containment": 0.932,
+          "color_match": 0.437,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.437,
+          "skin_overlap": null,
+          "pass": false,
+          "reasons": [
+            "포함률 0.932 < 0.95"
+          ]
+        },
+        {
+          "col": 2,
+          "row": 0,
+          "layer_pixels": 834,
+          "containment": 0.953,
+          "color_match": 0.432,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.432,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 1,
+          "layer_pixels": 747,
+          "containment": 0.948,
+          "color_match": 0.391,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.391,
+          "skin_overlap": null,
+          "pass": false,
+          "reasons": [
+            "포함률 0.948 < 0.95"
+          ]
+        },
+        {
+          "col": 1,
+          "row": 1,
+          "layer_pixels": 754,
+          "containment": 0.935,
+          "color_match": 0.394,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.394,
+          "skin_overlap": null,
+          "pass": false,
+          "reasons": [
+            "포함률 0.935 < 0.95"
+          ]
+        },
+        {
+          "col": 2,
+          "row": 1,
+          "layer_pixels": 765,
+          "containment": 0.958,
+          "color_match": 0.395,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.395,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 1,
+          "layer_pixels": 751,
+          "containment": 0.964,
+          "color_match": 0.368,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.368,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 1,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 1,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 2,
+          "layer_pixels": 841,
+          "containment": 0.964,
+          "color_match": 0.38,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.38,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 2,
+          "layer_pixels": 789,
+          "containment": 0.973,
+          "color_match": 0.384,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.384,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 2,
+          "layer_pixels": 769,
+          "containment": 0.954,
+          "color_match": 0.38,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.38,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 2,
+          "layer_pixels": 832,
+          "containment": 0.96,
+          "color_match": 0.373,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.373,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        }
+      ]
+    }
+  ]
+}

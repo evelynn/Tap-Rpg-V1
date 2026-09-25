@@ -1,0 +1,378 @@
+{
+  "reference": "ref_actions18_48",
+  "options": {
+    "minContainment": 0.95,
+    "maxShift": 1,
+    "maxSkin": 0.03,
+    "search": 3
+  },
+  "layers": [
+    {
+      "layer": "assets/_imagegen/v05/02-ref-b-actions18-48-teal.png",
+      "clothing": false,
+      "skin": [],
+      "cells": [
+        {
+          "col": 0,
+          "row": 0,
+          "layer_pixels": 618,
+          "containment": 0.998,
+          "color_match": 0.595,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.595,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 0,
+          "layer_pixels": 622,
+          "containment": 1,
+          "color_match": 0.58,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.58,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 0,
+          "layer_pixels": 637,
+          "containment": 0.995,
+          "color_match": 0.579,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.579,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 0,
+          "layer_pixels": 642,
+          "containment": 0.997,
+          "color_match": 0.578,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.578,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 1,
+          "layer_pixels": 695,
+          "containment": 0.997,
+          "color_match": 0.637,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.637,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 1,
+          "layer_pixels": 708,
+          "containment": 1,
+          "color_match": 0.62,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.62,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 1,
+          "layer_pixels": 765,
+          "containment": 0.999,
+          "color_match": 0.609,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.609,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 1,
+          "layer_pixels": 759,
+          "containment": 0.999,
+          "color_match": 0.617,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.617,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 1,
+          "layer_pixels": 747,
+          "containment": 0.995,
+          "color_match": 0.576,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.576,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 1,
+          "layer_pixels": 688,
+          "containment": 1,
+          "color_match": 0.581,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.581,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 2,
+          "layer_pixels": 664,
+          "containment": 0.998,
+          "color_match": 0.619,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.619,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 2,
+          "layer_pixels": 647,
+          "containment": 0.998,
+          "color_match": 0.595,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.595,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 2,
+          "layer_pixels": 659,
+          "containment": 0.997,
+          "color_match": 0.577,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.577,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 2,
+          "layer_pixels": 652,
+          "containment": 0.995,
+          "color_match": 0.583,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.583,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 3,
+          "layer_pixels": 650,
+          "containment": 0.995,
+          "color_match": 0.551,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.551,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 3,
+          "layer_pixels": 650,
+          "containment": 0.998,
+          "color_match": 0.523,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.523,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 3,
+          "layer_pixels": 648,
+          "containment": 0.997,
+          "color_match": 0.542,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.542,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 3,
+          "layer_pixels": 653,
+          "containment": 1,
+          "color_match": 0.542,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.542,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 3,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 3,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        }
+      ]
+    }
+  ]
+}

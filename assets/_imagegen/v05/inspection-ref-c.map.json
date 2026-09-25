@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "root": "../../..",
+  "source_dir": "assets/_imagegen/v03",
+  "out_dir": "assets/_imagegen/v05/unused-normalized-output",
+  "key": "#FF00FF",
+  "key_tolerance": 90,
+  "alpha_threshold": 128,
+  "key_despill": 60,
+  "entries": [
+    {
+      "name": "ref_c_recolour_qa",
+      "source": "04-ref-c-leather-actions18-48-r2.png",
+      "role": "reference",
+      "grid": [
+        6,
+        4
+      ],
+      "cell": [
+        48,
+        48
+      ],
+      "rows": [
+        {
+          "action": "idle",
+          "frames": 4
+        },
+        {
+          "action": "attack",
+          "frames": 6
+        },
+        {
+          "action": "sit_eat",
+          "frames": 4
+        },
+        {
+          "action": "sleep",
+          "frames": 4
+        }
+      ],
+      "palette": [
+        "outline",
+        "skin",
+        "hair",
+        "hair_white",
+        "metal",
+        "bronze",
+        "leather",
+        "cloth",
+        "underlayer",
+        "trousers"
+      ],
+      "align": {
+        "mode": "ground",
+        "bottom": 43,
+        "center_x": 23
+      }
+    }
+  ],
+  "preview": {
+    "character": "ref_c_recolour_qa",
+    "enemy": "ref_c_recolour_qa",
+    "layers": [],
+    "props": [],
+    "compare": [],
+    "field": []
+  }
+}

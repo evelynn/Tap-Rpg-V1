@@ -1,0 +1,11 @@
+input: (1536, 1024) output: (1536, 1024)
+output top colours: [((249, 3, 250, 255), 290772), ((249, 3, 249, 255), 75282), ((248, 3, 250, 255), 70103), ((249, 2, 250, 255), 69808), ((248, 3, 249, 255), 68983), ((250, 3, 250, 255), 60287), ((248, 2, 249, 255), 57675), ((249, 4, 250, 255), 55304)]
+changed pixels: 1562546 fraction: 0.9934399922688802
+changed background: 16
+alpha: {np.uint8(255): 1572864}
+
+background input/output 1224592 1226677
+foreground silhouette XOR 3637
+unchanged/exact 10318 large colour changes >32 47102
+outside recolour, large changes in top 140px of idle hair/face: 2023
+exact key colour pixels input/output 19 11

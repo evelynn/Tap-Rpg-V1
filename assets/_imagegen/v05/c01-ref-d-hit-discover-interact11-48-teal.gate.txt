@@ -1,0 +1,31 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/c01-ref-d-hit-discover-interact11-48-teal.png" "--spec" "chr_actions_a" "--no-canvas" "--rows" "hit,discover,interact"
+
+assets/_imagegen/v05/c01-ref-d-hit-discover-interact11-48-teal.png
+FAIL chr_actions_a · no-canvas · 이미지 1774×887 (틀 1536×1024) · S 6.66 (block) · 시트 블록 6.7 · 배경 100.0% · 안내색 0 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   hit 1               32233     0   0.2  36.8(40)       7.1   0.0%  ✗ height
+  (1,0)   hit 2               30795     0  -1.2  35.3(40)       7.0   0.0%  ✗ height
+  (2,0)   hit 3               31389     0   0.0  36.8(40)       7.2   0.0%  ✗ height
+  (0,1)   discover 1          27781     0  -0.3  38.6(40)       6.6   0.0%  ok
+  (1,1)   discover 2          27989     0   2.9  37.1(40)       6.7   0.0%  ✗ center
+  (2,1)   discover 3          28499     0   1.5  37.4(40)       7.1   0.0%  ok
+  (3,1)   discover 4          28341     0  -0.3  36.9(40)       6.3   0.0%  ok
+  (0,2)   interact 1          30893     0   0.0  36.8(40)       6.3   0.0%  ✗ height
+  (1,2)   interact 2          29838     0   0.0  36.6(40)       6.4   0.0%  ✗ height
+  (2,2)   interact 3          28216     0  -1.4  36.5(40)       6.7   0.0%  ✗ height
+  (3,2)   interact 4          30710     0   0.3  36.6(40)       6.3   0.0%  ✗ height
+
+Regeneration feedback:
+Regenerate this sheet on the chr_actions_a template (one art pixel = 5x5 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "hit 1": the figure is 36.8 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+- Cell (1,0) "hit 2": the figure is 35.3 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+- Cell (2,0) "hit 3": the figure is 36.8 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+- Cell (1,1) "discover 2": the figure's horizontal center is 2.9 blocks right of the center of the other frames in this column; move it 2.9 blocks left.
+- Cell (0,2) "interact 1": the figure is 36.8 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+- Cell (1,2) "interact 2": the figure is 36.6 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+- Cell (2,2) "interact 3": the figure is 36.5 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+- Cell (3,2) "interact 4": the figure is 36.6 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 6.7x6.7 block.
+(Measured without the template canvas: the ground line is compared between frames of the same row and the center between frames of the same column, not against the template marks.)
+ ELIFECYCLE  Command failed with exit code 1.

@@ -1,0 +1,366 @@
+[
+  {
+    "file": "01-ref-a-walk12-48-r2.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "sha256": "4cacde8720f6918b37bfb0c033f9b80f122d09653231335ee1994704a5fbe17f",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 10,
+    "top_rgba": [
+      [
+        [
+          250,
+          3,
+          250,
+          255
+        ],
+        250774
+      ],
+      [
+        [
+          250,
+          4,
+          250,
+          255
+        ],
+        116698
+      ],
+      [
+        [
+          250,
+          3,
+          251,
+          255
+        ],
+        108093
+      ]
+    ]
+  },
+  {
+    "file": "01-ref-a-walk12-48-r3.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "sha256": "a8340fcd73f7b7860c3cd7b446a726162c1b20d0ea88066ce871d9993014d8ec",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 10,
+    "top_rgba": [
+      [
+        [
+          250,
+          3,
+          250,
+          255
+        ],
+        211443
+      ],
+      [
+        [
+          251,
+          3,
+          250,
+          255
+        ],
+        211327
+      ],
+      [
+        [
+          251,
+          4,
+          250,
+          255
+        ],
+        105825
+      ]
+    ]
+  },
+  {
+    "file": "01-ref-a-walk12-48.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "sha256": "17c77e7a6a458a11226ea8d7145ce49620827f398b2583bcb718e88d0946c774",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 11,
+    "top_rgba": [
+      [
+        [
+          251,
+          3,
+          250,
+          255
+        ],
+        239611
+      ],
+      [
+        [
+          251,
+          3,
+          251,
+          255
+        ],
+        149997
+      ],
+      [
+        [
+          251,
+          4,
+          251,
+          255
+        ],
+        67602
+      ]
+    ]
+  },
+  {
+    "file": "02-ref-b-actions18-48-teal.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "sha256": "1d2a3f938fa107c690e7376fdf91760222b908e74b5af6e690abd39b047baf2f",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 11,
+    "top_rgba": [
+      [
+        [
+          249,
+          3,
+          250,
+          255
+        ],
+        290772
+      ],
+      [
+        [
+          249,
+          3,
+          249,
+          255
+        ],
+        75282
+      ],
+      [
+        [
+          248,
+          3,
+          250,
+          255
+        ],
+        70103
+      ]
+    ],
+    "input": "assets\\_imagegen\\v05\\..\\v03\\02-ref-b-actions18-48-r4.png",
+    "same_canvas": true,
+    "RGB_changed_pixels": 1562546,
+    "RGB_delta_over32_in_common_foreground": 42873,
+    "foreground_silhouette_xor": 3637,
+    "RGB_delta_over32_idle_head_region_y0_140_x0_1024": 1741
+  },
+  {
+    "file": "04-ref-c-leather-actions18-48-teal-r2.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGB",
+    "sha256": "30f3170a1319d7672825876c6dcae13bd631df2e41cda62a136f033907d7160f",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 23,
+    "top_rgba": [
+      [
+        [
+          250,
+          3,
+          250,
+          255
+        ],
+        220733
+      ],
+      [
+        [
+          249,
+          2,
+          249,
+          255
+        ],
+        117426
+      ],
+      [
+        [
+          250,
+          2,
+          250,
+          255
+        ],
+        103425
+      ]
+    ],
+    "input": "assets\\_imagegen\\v05\\..\\v03\\04-ref-c-leather-actions18-48-r2.png",
+    "same_canvas": true,
+    "RGB_changed_pixels": 1355743,
+    "RGB_delta_over32_in_common_foreground": 61843,
+    "foreground_silhouette_xor": 3121,
+    "RGB_delta_over32_idle_head_region_y0_140_x0_1024": 1408
+  },
+  {
+    "file": "04-ref-c-leather-actions18-48-teal.png",
+    "size": [
+      1536,
+      1024
+    ],
+    "mode": "RGBA",
+    "sha256": "412cf7f0bac574a92f342dbcf8fee3f5a01536a7f48305914cb0ca1e3991c398",
+    "alpha_min": 0,
+    "alpha_max": 255,
+    "nonopaque_pixels": 1572858,
+    "exact_FF00FF_pixels": 0,
+    "top_rgba": [
+      [
+        [
+          249,
+          10,
+          250,
+          1
+        ],
+        1212
+      ],
+      [
+        [
+          248,
+          8,
+          249,
+          1
+        ],
+        1153
+      ],
+      [
+        [
+          248,
+          7,
+          249,
+          1
+        ],
+        1153
+      ]
+    ],
+    "input": "assets\\_imagegen\\v05\\..\\v03\\04-ref-c-leather-actions18-48-r2.png",
+    "same_canvas": true,
+    "RGB_changed_pixels": 1572558,
+    "RGB_delta_over32_in_common_foreground": 67361,
+    "foreground_silhouette_xor": 5497,
+    "RGB_delta_over32_idle_head_region_y0_140_x0_1024": 2175
+  },
+  {
+    "file": "c01-ref-d-hit-discover-interact11-48-teal.png",
+    "size": [
+      1774,
+      887
+    ],
+    "mode": "RGB",
+    "sha256": "2f533b1ace697f1911a5dbc852282b360a32875052be37540e1089742055db45",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 90,
+    "top_rgba": [
+      [
+        [
+          252,
+          3,
+          250,
+          255
+        ],
+        181287
+      ],
+      [
+        [
+          251,
+          3,
+          250,
+          255
+        ],
+        167294
+      ],
+      [
+        [
+          252,
+          4,
+          250,
+          255
+        ],
+        80065
+      ]
+    ],
+    "input": "assets\\_imagegen\\v05\\..\\v04\\c01-ref-d-hit-discover-interact11-48.png",
+    "same_canvas": true,
+    "RGB_changed_pixels": 1573254,
+    "RGB_delta_over32_in_common_foreground": 35282,
+    "foreground_silhouette_xor": 21524
+  },
+  {
+    "file": "c02-ref-e-cheer-collapse9-48-teal.png",
+    "size": [
+      2172,
+      724
+    ],
+    "mode": "RGB",
+    "sha256": "a0338d4c8c74e52462504fe83dc0be776c19005851cfa0d4e1b1ce45bc906387",
+    "alpha_min": 255,
+    "alpha_max": 255,
+    "nonopaque_pixels": 0,
+    "exact_FF00FF_pixels": 61,
+    "top_rgba": [
+      [
+        [
+          250,
+          3,
+          249,
+          255
+        ],
+        197693
+      ],
+      [
+        [
+          250,
+          4,
+          249,
+          255
+        ],
+        116246
+      ],
+      [
+        [
+          249,
+          3,
+          249,
+          255
+        ],
+        93239
+      ]
+    ],
+    "input": "assets\\_imagegen\\v05\\..\\v04\\c02-ref-e-cheer-collapse9-48-r2.png",
+    "same_canvas": true,
+    "RGB_changed_pixels": 1571870,
+    "RGB_delta_over32_in_common_foreground": 89331,
+    "foreground_silhouette_xor": 20555
+  }
+]

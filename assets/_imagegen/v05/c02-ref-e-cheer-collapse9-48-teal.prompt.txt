@@ -1,0 +1,6 @@
+Use case: precise recolour edit of the provided sprite sheet. Keep the exact canvas size, every pixel position and every shape exactly; do not crop, resize, redraw or move anything. The transparent background becomes one flat, fully opaque #FF00FF everywhere; pixels that were mostly transparent become background, and every other pixel becomes fully opaque with its own colour.
+Recolour ONLY the trousers in every cell: their lit blocks to #27978D and their shaded blocks to #00766D. The tunic hem, waist cord, boots, skin and everything else keep their exact colours.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+OUTPUT CANVAS: exactly 2172 x 724 pixels, identical to the input image. Fully opaque RGB output, #FF00FF outside the figures. This is a recolour only, not a redraw.

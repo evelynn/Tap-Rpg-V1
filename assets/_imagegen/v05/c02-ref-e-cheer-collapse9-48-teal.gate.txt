@@ -1,0 +1,29 @@
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v05/c02-ref-e-cheer-collapse9-48-teal.png" "--spec" "chr_actions_b" "--no-canvas" "--rows" "cheer,collapse"
+
+assets/_imagegen/v05/c02-ref-e-cheer-collapse9-48-teal.png
+FAIL chr_actions_b · no-canvas · 이미지 2172×724 (틀 1536×1024) · S 8.86 (block) · 시트 블록 8.9 · 배경 100.0% · 안내색 0 · 격자 밖 0
+  칸      동작              화소     바닥Δ 중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   cheer 1             36907     0  -0.4  28.4(-)        9.3   0.0%  ok
+  (1,0)   cheer 2             38089     1  -0.8  33.3(40)      11.7   0.0%  ✗ height,block
+  (2,0)   cheer 3             39209     0  -1.4  32.8(40)      11.8   0.0%  ✗ height,block
+  (3,0)   cheer 4             38094     0   0.0  30.1(40)      10.0   0.0%  ✗ height
+  (0,1)   collapse 1          46178     0   0.4  34.1(40)       8.9   0.0%  ✗ height
+  (1,1)   collapse 2          38392     0   0.8  29.0(-)        8.3   0.0%  ok
+  (2,1)   collapse 3          42001     0   1.4  26.5(-)        8.4   0.0%  ok
+  (3,1)   collapse 4          33869     0     -  14.9(-)        8.4   0.0%  ✗ bbox
+  (4,1)   collapse 5          34005     0     -  14.9(-)        8.3   0.0%  ✗ bbox
+
+Regeneration feedback:
+Regenerate this sheet on the chr_actions_b template (one art pixel = 5x5 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (1,0) "cheer 2": the figure is 33.3 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 8.9x8.9 block.
+- Cell (1,0) "cheer 2": the art pixels are about 11.7 image pixels wide, but every art pixel must be a 8.9x8.9 block. Redraw on the 8.9-pixel grid; do not rescale or blur.
+- Cell (2,0) "cheer 3": the figure is 32.8 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 8.9x8.9 block.
+- Cell (2,0) "cheer 3": the art pixels are about 11.8 image pixels wide, but every art pixel must be a 8.9x8.9 block. Redraw on the 8.9-pixel grid; do not rescale or blur.
+- Cell (3,0) "cheer 4": the figure is 30.1 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 8.9x8.9 block.
+- Cell (0,1) "collapse 1": the figure is 34.1 blocks tall but must be 40 blocks tall (±8%); draw it larger to match the reference figure, keeping one art pixel = one 8.9x8.9 block.
+- Cell (3,1) "collapse 4": the drawing crosses the cell boundary on the right by 0.2 blocks. Keep every pixel inside its own cell.
+- Cell (4,1) "collapse 5": the drawing crosses the cell boundary on the right by 0.9 blocks. Keep every pixel inside its own cell.
+(Measured without the template canvas: the ground line is compared between frames of the same row and the center between frames of the same column, not against the template marks.)
+ ELIFECYCLE  Command failed with exit code 1.

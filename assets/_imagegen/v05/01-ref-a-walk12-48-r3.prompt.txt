@@ -1,0 +1,84 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 48x48 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+SUBJECT AND IDENTITY: one and the same youthful androgynous human adventurer in every cell, chibi proportions about 2.2 heads tall (the head is close to half of the body height). Facing RIGHT in a slight three-quarter side view, never front-facing. Short chestnut hair (HR01) with two flat browns, medium warm skin, round dark eyes, tiny mouth. Cream quilted short tunic with elbow-length sleeves, thin brown waist cord, two or three small square repair patches, muted teal canvas work trousers, brown boots. Keep every hair lock, facial feature, garment detail, body proportion and limb thickness identical across all cells. Expressive and charming, not a stiff stick figure.
+FAR-SIDE LIMBS: the arm and leg farther from the viewer are always one shade darker than the near-side limbs, so left and right steps are distinguishable.
+PALETTE ONLY: outline #2B2233; skin #E3B48E #C88E68 #A0664A; hair #7A4E30 #553420; cloth #F0E6CC #C8C2B8; cord and boots #8E5E38; trousers #27978D #00766D.
+
+TEMPLATE (input image 1 = docs/art/templates/chr_elder.grid.png, the layout template of sheet chr_walk12 (temporary identical chr_elder grid)): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 5 x 5 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template chr_walk12 (computed by art:template for rows walk,walk; same geometry as chr_elder). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 5. One art pixel = one 5 x 5 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 2 rows of cells, each 48 x 48 art px = 240 x 240 px. Grid top-left x 48, y 272; grid 1440 x 480 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 272 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 12, no empty cell.
+- Row 1 walk (6 frames): lowest figure pixels on image rows y 487-491 (ground line y 492); height 40 art px = 200 px.
+- Row 2 walk (6 frames): lowest figure pixels on image rows y 727-731 (ground line y 732); height 40 art px = 200 px.
+- Horizontal centre (the figure's middle column): column 1 x 163-167, column 2 x 403-407, column 3 x 643-647, column 4 x 883-887, column 5 x 1123-1127, column 6 x 1363-1367.
+- INTERIM: chr_walk12 is not in specs.json yet. Attach docs/art/templates/chr_elder.grid.png (the same grid, byte for byte) and gate with --spec chr_elder --rows walk:6,walk:6.
+
+LAYOUT: exactly 12 sprites in exactly 6 equal columns and 2 equal rows of identical square cells, evenly spaced, reading order left to right then next row. All twelve cells are used; there are no empty cells.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell. Every figure's lowest point (feet, or hips when seated, or body when lying) sits on the SAME local ground line in its cell, exactly where the NUMBERS block puts it; no ground line is drawn. The body's horizontal center is on the centre column the NUMBERS block gives, in every cell, unless the pose itself moves it.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel (preferred over transparency: transparent outputs came back with halos and dark fringes). Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+Input image 2 role: this is the exact character to draw. Copy its head shape, hair silhouette, eye size, face proportions, clothing and pixel density exactly; its trousers are drawn teal #27978D #00766D as stated above, not grey. Do not copy its poses or its layout. No strap, no pouch, no bag, nothing on the back.
+
+ANIMATION, one 660 ms walk cycle, twelve DISTINCT poses at 55 ms each, the whole body walking in place, a relaxed easy stroll.
+ARMS: both hands are OPEN and relaxed, hanging at hip height; the arms swing gently forward and back from the shoulder, opposite to the legs, the forward hand reaching at most the front of the belly. Never raise a hand to the chest, never make a fist, never hold the arms bent in front of the body: this is not a boxing or running pose.
+1 right foot forward contact, left foot behind, LEFT arm forward.
+2 weight settles onto the right knee, upper body one block lower; the planted right foot does not move.
+3 left foot lifts and swings under the body, both arms passing beside the hips.
+4 narrow passing pose, feet close beneath the hips, upper body one block higher.
+5 left leg extends forward, right arm comes forward.
+6 left heel just above the ground before contact, trailing leg pushes off.
+7 LEFT foot forward contact, right foot behind, RIGHT arm forward: pose 1 with left and right swapped; the darker far-side leg is now in front and the darker far-side arm is now behind.
+8 weight settles onto the left knee, upper body one block lower.
+9 right foot lifts and swings under the body.
+10 narrow passing pose, upper body one block higher.
+11 right leg extends forward, left arm comes forward.
+12 right heel just before contact, approaching pose 1 but NOT a copy of it.
+Poses 1 and 7 have the widest stance, 4 and 10 the narrowest. ROW 2 IS ROW 1 WITH LEFT AND RIGHT SWAPPED: in every row-2 cell the leg that is in front in the row-1 cell above it is behind, and the arm that is forward is back. Seen side by side, cell (1,1) and cell (1,2) must clearly differ by which leg and which arm lead. No weapon, helmet, cape, bag or props.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the chr_elder template (one art pixel = 5x5 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "walk 1": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (0,0) "walk 1": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (0,0) "walk 1": the figure's horizontal center is 7.6 blocks left of the center mark; move it 7.6 blocks right.
+- Cell (0,0) "walk 1": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (1,0) "walk 2": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (1,0) "walk 2": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (1,0) "walk 2": the figure's horizontal center is 4.6 blocks left of the center mark; move it 4.6 blocks right.
+- Cell (1,0) "walk 2": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (2,0) "walk 3": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (2,0) "walk 3": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (2,0) "walk 3": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (2,0) "walk 3": the art pixels are about 4.2 image pixels wide, but every art pixel must be a 5x5 block. Redraw on the 5-pixel grid; do not rescale or blur.
+- Cell (3,0) "walk 4": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (3,0) "walk 4": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (3,0) "walk 4": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (4,0) "walk 5": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (4,0) "walk 5": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (4,0) "walk 5": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (4,0) "walk 5": the art pixels are about 4.2 image pixels wide, but every art pixel must be a 5x5 block. Redraw on the 5-pixel grid; do not rescale or blur.
+- Cell (5,0) "walk 6": the drawing crosses the cell boundary on the top by 16.6 blocks. Keep every pixel inside its own cell.
+- Cell (5,0) "walk 6": the lowest pixel is 11 blocks above the ground line; move the figure down 11 blocks so the lowest pixel sits directly on the ground line.
+- Cell (5,0) "walk 6": the figure's horizontal center is 2.4 blocks right of the center mark; move it 2.4 blocks left.
+- Cell (5,0) "walk 6": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (0,1) "walk 1": the drawing crosses the cell boundary on the bottom by 12.8 blocks. Keep every pixel inside its own cell.
+- Cell (0,1) "walk 1": the lowest pixel is 17 blocks below the ground line; move the figure up 17 blocks so the lowest pixel sits directly on the ground line.
+- Cell (0,1) "walk 1": the figure's horizontal center is 7.4 blocks left of the center mark; move it 7.4 blocks right.
+- Cell (0,1) "walk 1": the figure is 48.8 blocks tall but must be 40 blocks tall (±8%); draw it smaller to match the reference figure, keeping one art pixel = one 5x5 block.
+- Cell (0,1) "walk 1": the art pixels are about 4.2 image pixels wide, but every art pixel must be a 5x5 block. Redraw on the 5-pixel grid; do not rescale or blur.
+- Cell (1,1) "walk 2": the drawing crosses the cell boundary on the bottom by 12.8 blocks. Keep every pixel inside its own cell.
+- Cell (1,1) "walk 2": the lowest pixel is 17 blocks below the ground line; move the figure up 17 blocks so the lowest pixel sits directly on the ground line.
+- ...and 16 more problems of the same kinds.

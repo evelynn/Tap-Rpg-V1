@@ -1,0 +1,745 @@
+{
+  "reference": "ref_c_recolour_qa",
+  "options": {
+    "minContainment": 0.95,
+    "maxShift": 1,
+    "maxSkin": 0.03,
+    "search": 3
+  },
+  "layers": [
+    {
+      "layer": "assets/_imagegen/v05/04-ref-c-leather-actions18-48-teal.png",
+      "clothing": false,
+      "skin": [],
+      "cells": [
+        {
+          "col": 0,
+          "row": 0,
+          "layer_pixels": 618,
+          "containment": 0.995,
+          "color_match": 0.561,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.561,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 0,
+          "layer_pixels": 613,
+          "containment": 1,
+          "color_match": 0.581,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.581,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 0,
+          "layer_pixels": 626,
+          "containment": 0.997,
+          "color_match": 0.567,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.567,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 0,
+          "layer_pixels": 627,
+          "containment": 0.997,
+          "color_match": 0.595,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.595,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 1,
+          "layer_pixels": 684,
+          "containment": 0.988,
+          "color_match": 0.646,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.646,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 1,
+          "layer_pixels": 707,
+          "containment": 0.989,
+          "color_match": 0.586,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.586,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 1,
+          "layer_pixels": 752,
+          "containment": 0.991,
+          "color_match": 0.58,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.58,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 1,
+          "layer_pixels": 752,
+          "containment": 0.992,
+          "color_match": 0.563,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.563,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 1,
+          "layer_pixels": 748,
+          "containment": 0.993,
+          "color_match": 0.54,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.54,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 1,
+          "layer_pixels": 684,
+          "containment": 0.99,
+          "color_match": 0.633,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.633,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 2,
+          "layer_pixels": 664,
+          "containment": 0.985,
+          "color_match": 0.628,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.628,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 2,
+          "layer_pixels": 653,
+          "containment": 0.986,
+          "color_match": 0.605,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.605,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 2,
+          "layer_pixels": 667,
+          "containment": 0.99,
+          "color_match": 0.589,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.589,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 2,
+          "layer_pixels": 654,
+          "containment": 0.994,
+          "color_match": 0.63,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.63,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 3,
+          "layer_pixels": 678,
+          "containment": 0.985,
+          "color_match": 0.521,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.521,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 3,
+          "layer_pixels": 659,
+          "containment": 0.997,
+          "color_match": 0.602,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.602,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 3,
+          "layer_pixels": 674,
+          "containment": 0.99,
+          "color_match": 0.58,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.58,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 3,
+          "layer_pixels": 662,
+          "containment": 0.997,
+          "color_match": 0.607,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.607,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 3,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 3,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        }
+      ]
+    },
+    {
+      "layer": "assets/_imagegen/v05/04-ref-c-leather-actions18-48-teal-r2.png",
+      "clothing": false,
+      "skin": [],
+      "cells": [
+        {
+          "col": 0,
+          "row": 0,
+          "layer_pixels": 616,
+          "containment": 0.995,
+          "color_match": 0.567,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.567,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 0,
+          "layer_pixels": 613,
+          "containment": 0.998,
+          "color_match": 0.546,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.546,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 0,
+          "layer_pixels": 625,
+          "containment": 1,
+          "color_match": 0.557,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.557,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 0,
+          "layer_pixels": 621,
+          "containment": 1,
+          "color_match": 0.596,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.596,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 0,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 1,
+          "layer_pixels": 677,
+          "containment": 0.997,
+          "color_match": 0.594,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.594,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 1,
+          "layer_pixels": 699,
+          "containment": 0.999,
+          "color_match": 0.604,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.604,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 1,
+          "layer_pixels": 739,
+          "containment": 1,
+          "color_match": 0.552,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.552,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 1,
+          "layer_pixels": 748,
+          "containment": 0.996,
+          "color_match": 0.549,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.549,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 1,
+          "layer_pixels": 747,
+          "containment": 0.996,
+          "color_match": 0.566,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.566,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 1,
+          "layer_pixels": 674,
+          "containment": 0.994,
+          "color_match": 0.622,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.622,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 2,
+          "layer_pixels": 662,
+          "containment": 0.986,
+          "color_match": 0.616,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.616,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 2,
+          "layer_pixels": 647,
+          "containment": 0.991,
+          "color_match": 0.544,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.544,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 2,
+          "layer_pixels": 662,
+          "containment": 0.997,
+          "color_match": 0.601,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.601,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 2,
+          "layer_pixels": 651,
+          "containment": 0.998,
+          "color_match": 0.627,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.627,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 2,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 0,
+          "row": 3,
+          "layer_pixels": 644,
+          "containment": 0.994,
+          "color_match": 0.578,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.578,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 1,
+          "row": 3,
+          "layer_pixels": 657,
+          "containment": 1,
+          "color_match": 0.554,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.554,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 2,
+          "row": 3,
+          "layer_pixels": 640,
+          "containment": 0.998,
+          "color_match": 0.628,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.628,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 3,
+          "row": 3,
+          "layer_pixels": 658,
+          "containment": 1,
+          "color_match": 0.609,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 0.609,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 4,
+          "row": 3,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        },
+        {
+          "col": 5,
+          "row": 3,
+          "layer_pixels": 0,
+          "containment": 1,
+          "color_match": 1,
+          "best_shift": [
+            0,
+            0
+          ],
+          "best_color_match": 1,
+          "skin_overlap": null,
+          "pass": true,
+          "reasons": []
+        }
+      ]
+    }
+  ]
+}
