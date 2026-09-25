@@ -525,6 +525,18 @@
    "fill": "opaque",
    "palette": null,
    "tile": true
+  },
+  {
+   "name": "es01_stranger_campfire",
+   "source": "v06/es01-stranger-campfire-48-r3.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
   }
  ],
  "preview": {

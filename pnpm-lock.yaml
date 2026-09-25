@@ -21,6 +21,19 @@ importers:
         specifier: 5.9.2
         version: 5.9.2
 
+  apps/desktop/ui:
+    dependencies:
+      '@tap/content-kit':
+        specifier: workspace:*
+        version: link:../../../packages/content-kit
+      '@tap/core':
+        specifier: workspace:*
+        version: link:../../../packages/core
+    devDependencies:
+      esbuild:
+        specifier: 0.25.9
+        version: 0.25.9
+
   packages/content-kit:
     dependencies:
       '@tap/core':
@@ -35,6 +48,8 @@ importers:
       zod:
         specifier: 4.1.12
         version: 4.1.12
+
+  tools/art-check: {}
 
   tools/demo:
     dependencies:

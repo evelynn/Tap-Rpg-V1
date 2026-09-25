@@ -1,0 +1,54 @@
+{
+  "name": "es01_stranger_campfire",
+  "source": "assets/_imagegen/v06/es01-stranger-campfire-48-r3.png",
+  "role": "strip",
+  "cols": 4,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    512,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": false,
+  "band_found": [
+    0,
+    384,
+    1536,
+    256
+  ],
+  "band": [
+    0,
+    448,
+    1536,
+    192
+  ],
+  "crop_top": 64,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 8,
+  "aspect_expected": 8,
+  "scale": [
+    3,
+    3
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 98304,
+  "opaque": 32768,
+  "transparent": 0,
+  "color_count": 13086,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 64행을 잘라 비율 8에 맞췄다(바닥 행 639 유지)",
+    "뽑은 띠 밖 그림 화소 98304개를 버렸다(자른 행·열 포함)"
+  ]
+}

@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <title>텝 기본 창</title>
+  <style>
+    body { margin: 16px; background: #d9d4cc; color: #2b2233; font: 13px "Malgun Gothic", sans-serif; }
+    @media (prefers-color-scheme: dark) { body { background: #15121a; color: #f4efe6; } }
+    #win { display: block; image-rendering: pixelated; box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
+    #controls { margin-top: 12px; display: flex; gap: 6px; }
+    #info { margin-top: 8px; }
+  </style>
+</head>
+<body>
+  <canvas id="win" width="1040" height="128" aria-label="텝 기본 창"></canvas>
+  <div id="controls"></div>
+  <div id="info">불러오는 중…</div>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
