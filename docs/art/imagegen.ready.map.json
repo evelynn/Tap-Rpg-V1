@@ -1,0 +1,501 @@
+{
+ "version": 1,
+ "root": "../..",
+ "source_dir": "assets/_imagegen",
+ "out_dir": "assets/ready",
+ "key": "#FF00FF",
+ "key_tolerance": 90,
+ "alpha_threshold": 128,
+ "key_despill": 60,
+ "entries": [
+  {
+   "name": "chr_actions18_48",
+   "source": "v05/02-ref-b-actions18-48-teal.png",
+   "role": "reference",
+   "grid": [
+    6,
+    4
+   ],
+   "cell": [
+    48,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 6
+    },
+    {
+     "action": "sit_eat",
+     "frames": 4
+    },
+    {
+     "action": "sleep",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 23
+   },
+   "scale_to_spec": {
+    "rows": [
+     0
+    ],
+    "height": 40
+   }
+  },
+  {
+   "name": "chr_leather_actions18_48",
+   "source": "v05/04-ref-c-leather-actions18-48-teal-r2.png",
+   "role": "reference",
+   "grid": [
+    6,
+    4
+   ],
+   "cell": [
+    48,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 6
+    },
+    {
+     "action": "sit_eat",
+     "frames": 4
+    },
+    {
+     "action": "sleep",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 23
+   },
+   "scale_to_spec": {
+    "rows": [
+     0
+    ],
+    "height": 40
+   }
+  },
+  {
+   "name": "chr_actions11_48",
+   "source": "v05/c01-ref-d-hit-discover-interact11-48-teal.png",
+   "role": "reference",
+   "grid": [
+    6,
+    3
+   ],
+   "cell": [
+    48,
+    48
+   ],
+   "rows": [
+    {
+     "action": "hit",
+     "frames": 3
+    },
+    {
+     "action": "discover",
+     "frames": 4
+    },
+    {
+     "action": "interact",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 23
+   },
+   "scale_to_spec": {
+    "rows": [
+     1
+    ],
+    "height": 40
+   }
+  },
+  {
+   "name": "chr_actions9_48",
+   "source": "v05/c02-ref-e-cheer-collapse9-48-teal.png",
+   "role": "reference",
+   "grid": [
+    6,
+    2
+   ],
+   "cell": [
+    48,
+    48
+   ],
+   "rows": [
+    {
+     "action": "cheer",
+     "frames": 4
+    },
+    {
+     "action": "collapse",
+     "frames": 5
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 23
+   }
+  },
+  {
+   "name": "chr_walk12_48",
+   "source": "v05/01-ref-a-walk12-48-r3.png",
+   "role": "reference",
+   "grid": [
+    6,
+    2
+   ],
+   "cell": [
+    48,
+    48
+   ],
+   "rows": [
+    {
+     "action": "walk",
+     "frames": 6
+    },
+    {
+     "action": "walk_b",
+     "frames": 6
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 23
+   },
+   "scale_to_spec": {
+    "rows": [
+     0,
+     1
+    ],
+    "height": 40
+   }
+  },
+  {
+   "name": "enm_rat_48",
+   "source": "v03/08-rat18-48-r3.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    24
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 19,
+    "center_x": 15
+   },
+   "scale_to_spec": {
+    "rows": [
+     0
+    ],
+    "height": 14
+   }
+  },
+  {
+   "name": "enm_wolf_48",
+   "source": "v05/w01-wolf18-48-r3.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    48,
+    32
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 27,
+    "center_x": 23
+   },
+   "scale_to_spec": {
+    "rows": [
+     0
+    ],
+    "height": 25
+   }
+  },
+  {
+   "name": "enm_bat_48",
+   "source": "v05/w02-bat18-48-r3.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    32
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 15,
+    "center_x": 15
+   },
+   "scale_to_spec": {
+    "rows": [
+     0
+    ],
+    "height": 14
+   }
+  },
+  {
+   "name": "enm_kobold_48",
+   "source": "v05/w03-kobold-composite18-48-r2.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 15
+   },
+   "scale_to_spec": {
+    "rows": [
+     0
+    ],
+    "height": 30
+   }
+  }
+ ],
+ "preview": {
+  "character": "chr_actions18_48",
+  "layers": [],
+  "enemy": "enm_wolf_48",
+  "props": [],
+  "compare": [],
+  "field": []
+ }
+}

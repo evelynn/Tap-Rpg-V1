@@ -1,0 +1,1186 @@
+{
+  "name": "enm_wolf_48",
+  "source": "assets/_imagegen/v05/w01-wolf18-48-r3.png",
+  "role": "reference",
+  "ref": null,
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+  ],
+  "rows": [
+    {
+      "action": "idle",
+      "frames": 4
+    },
+    {
+      "action": "move",
+      "frames": 4
+    },
+    {
+      "action": "attack",
+      "frames": 4
+    },
+    {
+      "action": "hit",
+      "frames": 2
+    },
+    {
+      "action": "exit",
+      "frames": 4
+    }
+  ],
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    4,
+    5
+  ],
+  "cell": [
+    48,
+    32
+  ],
+  "cell_ratio": [
+    8,
+    6.4
+  ],
+  "scale": 5.44,
+  "scale_origin": "spec",
+  "art_period": 5.8,
+  "notes": [
+    "scale_to_spec: 기준 행 [0] 키 중앙값 25(규격 25) · 축척 5.441 (원본 키 중앙값 135화소, 칸 비율 축척 8 대비 ×1.47). 생성 화소를 다시 뽑는 형식 맞춤이다(D66)",
+    "원본 칸이 정사각 비율이 아니다(가로 8 · 세로 6.4). 축척은 한 값이어야 해 지정값 5.44을 쓴다",
+    "칸 (0,1): 정렬 뒤 칸 밖으로 나간 논리 화소 4개를 버렸다",
+    "칸 (1,1): 정렬 뒤 칸 밖으로 나간 논리 화소 5개를 버렸다",
+    "칸 (2,1): 정렬 뒤 칸 밖으로 나간 논리 화소 4개를 버렸다",
+    "칸 (3,1): 정렬 뒤 칸 밖으로 나간 논리 화소 5개를 버렸다"
+  ],
+  "totals": {
+    "opaque": 9503,
+    "dropped_outside": 18,
+    "specks_removed": 0,
+    "colors": [
+      "#2B2233",
+      "#2F2420",
+      "#4A3A32",
+      "#4C4A52",
+      "#553420",
+      "#5E3C24",
+      "#6C6A70",
+      "#6E442C",
+      "#6E5A48",
+      "#6E6862",
+      "#6E7A5A",
+      "#743426",
+      "#7A4E24",
+      "#7A4E30",
+      "#7D7B80",
+      "#8E5E38",
+      "#93603F",
+      "#9A8A78",
+      "#9A948C",
+      "#9AA85A",
+      "#A4523A",
+      "#B07A3A",
+      "#B4B2B0",
+      "#B97F5A",
+      "#C08A58",
+      "#C8783A",
+      "#C88E68",
+      "#C8C2B8",
+      "#D8B868",
+      "#E8B89A",
+      "#F0E6CC",
+      "#F6D9C2"
+    ],
+    "palette_error_mean": 41.15,
+    "palette_error_max": 106.16
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        227,
+        61,
+        455,
+        196
+      ],
+      "anchor": [
+        231.5,
+        61.5
+      ],
+      "shift": [
+        6,
+        3
+      ],
+      "opaque": 550,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        3,
+        46,
+        27
+      ],
+      "bbox_center_x": 25.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E30",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.81,
+        "max": 97.3
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        514,
+        61,
+        740,
+        196
+      ],
+      "anchor": [
+        514,
+        61.5
+      ],
+      "shift": [
+        5,
+        3
+      ],
+      "opaque": 555,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        3,
+        46,
+        27
+      ],
+      "bbox_center_x": 25.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A8A78",
+        "#9A948C",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8783A",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.82,
+        "max": 96.47
+      },
+      "block_purity": 0.73
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        802,
+        61,
+        1028,
+        196
+      ],
+      "anchor": [
+        805.5,
+        61.5
+      ],
+      "shift": [
+        6,
+        3
+      ],
+      "opaque": 556,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        3,
+        46,
+        27
+      ],
+      "bbox_center_x": 25.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B4B2B0",
+        "#C08A58",
+        "#C88E68",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.67,
+        "max": 97.87
+      },
+      "block_purity": 0.73
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1089,
+        59,
+        1322,
+        196
+      ],
+      "anchor": [
+        1093.5,
+        62.25
+      ],
+      "shift": [
+        6,
+        3
+      ],
+      "opaque": 563,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        2,
+        47,
+        27
+      ],
+      "bbox_center_x": 26,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A8A78",
+        "#9A948C",
+        "#B4B2B0",
+        "#C08A58",
+        "#C88E68",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.33,
+        "max": 95.62
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        216,
+        256,
+        457,
+        387
+      ],
+      "anchor": [
+        217.25,
+        256.25
+      ],
+      "shift": [
+        5,
+        4
+      ],
+      "opaque": 569,
+      "dropped_outside": 4,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        4,
+        47,
+        27
+      ],
+      "bbox_center_x": 25.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.35,
+        "max": 100.23
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        512,
+        262,
+        752,
+        387
+      ],
+      "anchor": [
+        514,
+        262.5
+      ],
+      "shift": [
+        5,
+        5
+      ],
+      "opaque": 543,
+      "dropped_outside": 5,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        5,
+        47,
+        27
+      ],
+      "bbox_center_x": 25.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#C08A58",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.9,
+        "max": 96.91
+      },
+      "block_purity": 0.71
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        799,
+        257,
+        1038,
+        387
+      ],
+      "anchor": [
+        799,
+        261.5
+      ],
+      "shift": [
+        5,
+        5
+      ],
+      "opaque": 548,
+      "dropped_outside": 4,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        4,
+        47,
+        27
+      ],
+      "bbox_center_x": 26,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.13,
+        "max": 98.38
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1089,
+        253,
+        1328,
+        387
+      ],
+      "anchor": [
+        1093.25,
+        256
+      ],
+      "shift": [
+        6,
+        4
+      ],
+      "opaque": 565,
+      "dropped_outside": 5,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        3,
+        47,
+        27
+      ],
+      "bbox_center_x": 26,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7A4E30",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.93,
+        "max": 94.46
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        217,
+        471,
+        455,
+        577
+      ],
+      "anchor": [
+        220.25,
+        473.25
+      ],
+      "shift": [
+        4,
+        9
+      ],
+      "opaque": 531,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        3,
+        8,
+        47,
+        27
+      ],
+      "bbox_center_x": 25,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.74,
+        "max": 100.89
+      },
+      "block_purity": 0.72
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        512,
+        436,
+        741,
+        560
+      ],
+      "anchor": [
+        514.75,
+        441.25
+      ],
+      "shift": [
+        5,
+        6
+      ],
+      "opaque": 513,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        5,
+        46,
+        27
+      ],
+      "bbox_center_x": 25,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A8A78",
+        "#9A948C",
+        "#9AA85A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C88E68",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.14,
+        "max": 99.07
+      },
+      "block_purity": 0.71
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        792,
+        463,
+        1034,
+        583
+      ],
+      "anchor": [
+        794.25,
+        467.75
+      ],
+      "shift": [
+        4,
+        6
+      ],
+      "opaque": 542,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        3,
+        5,
+        47,
+        27
+      ],
+      "bbox_center_x": 25,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#743426",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#A4523A",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.13,
+        "max": 95.57
+      },
+      "block_purity": 0.73
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1086,
+        465,
+        1316,
+        583
+      ],
+      "anchor": [
+        1088.25,
+        468
+      ],
+      "shift": [
+        4,
+        6
+      ],
+      "opaque": 562,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        3,
+        5,
+        45,
+        27
+      ],
+      "bbox_center_x": 24,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4C4A52",
+        "#553420",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 42.19,
+        "max": 94.72
+      },
+      "block_purity": 0.71
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "hit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        221,
+        641,
+        450,
+        775
+      ],
+      "anchor": [
+        222.5,
+        643.75
+      ],
+      "shift": [
+        5,
+        3
+      ],
+      "opaque": 586,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        2,
+        46,
+        27
+      ],
+      "bbox_center_x": 25,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B4B2B0",
+        "#B97F5A",
+        "#C08A58",
+        "#C8783A",
+        "#C8C2B8",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.17,
+        "max": 97.7
+      },
+      "block_purity": 0.72
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "hit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        517,
+        640,
+        726,
+        775
+      ],
+      "anchor": [
+        519.25,
+        644
+      ],
+      "shift": [
+        6,
+        4
+      ],
+      "opaque": 559,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        3,
+        43,
+        27
+      ],
+      "bbox_center_x": 24,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 39.78,
+        "max": 98.21
+      },
+      "block_purity": 0.72
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "hit",
+      "expected": "empty",
+      "status": "empty",
+      "source_box": null,
+      "anchor": null,
+      "shift": null,
+      "opaque": 0,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": null,
+      "bbox_center_x": null,
+      "colors": [],
+      "palette_error": {
+        "mean": 0,
+        "max": 0
+      },
+      "block_purity": 0
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "action": "hit",
+      "expected": "empty",
+      "status": "empty",
+      "source_box": null,
+      "anchor": null,
+      "shift": null,
+      "opaque": 0,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": null,
+      "bbox_center_x": null,
+      "colors": [],
+      "palette_error": {
+        "mean": 0,
+        "max": 0
+      },
+      "block_purity": 0
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        227,
+        835,
+        426,
+        958
+      ],
+      "anchor": [
+        227.75,
+        835
+      ],
+      "shift": [
+        5,
+        5
+      ],
+      "opaque": 511,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        5,
+        41,
+        27
+      ],
+      "bbox_center_x": 22.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.63,
+        "max": 106.16
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        533,
+        844,
+        721,
+        958
+      ],
+      "anchor": [
+        533.75,
+        845.75
+      ],
+      "shift": [
+        7,
+        7
+      ],
+      "opaque": 456,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        6,
+        41,
+        27
+      ],
+      "bbox_center_x": 23.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C8783A",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 40.74,
+        "max": 95.68
+      },
+      "block_purity": 0.7
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        807,
+        832,
+        1030,
+        951
+      ],
+      "anchor": [
+        810.75,
+        834.75
+      ],
+      "shift": [
+        1,
+        6
+      ],
+      "opaque": 501,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        0,
+        5,
+        41,
+        27
+      ],
+      "bbox_center_x": 20.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7A4E24",
+        "#7D7B80",
+        "#93603F",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#B97F5A",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 41.23,
+        "max": 100.26
+      },
+      "block_purity": 0.69
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1132,
+        849,
+        1287,
+        946
+      ],
+      "anchor": [
+        1136.75,
+        851.25
+      ],
+      "shift": [
+        8,
+        10
+      ],
+      "opaque": 293,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        7,
+        9,
+        35,
+        27
+      ],
+      "bbox_center_x": 21,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#553420",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#7D7B80",
+        "#9A8A78",
+        "#9A948C",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C8C2B8",
+        "#D8B868",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 44.67,
+        "max": 97.36
+      },
+      "block_purity": 0.67
+    }
+  ]
+}
