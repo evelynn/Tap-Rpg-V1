@@ -26,6 +26,11 @@ describe('한 생애 완주(18 → 68세)', () => {
       assert.equal(world.state.family.retirees.length, 1)
       assert.ok(pendingSuccession(world) !== null)
       assert.equal(world.clockRunning, false)
+      // 연대기 주요 기록(12 §7.1)은 18 §4.1 점수로 고른 4~6개이고, 맺는 줄([가문]·[은퇴]·[사망])은 들지 않는다
+      const major = rec.major_entry_ids.map((id) => world.state.journal.find((e) => e.id === id)!)
+      assert.ok(major.length >= 4 && major.length <= 6, `#${i} 주요 기록 ${major.length}개`)
+      assert.ok(major.every((e) => e && !['house', 'retire', 'death'].includes(e.tag)), `#${i} ${major.map((e) => e?.tag).join(',')}`)
+      assert.ok(major.some((e) => e.age < 60), `#${i} 생애 끝 기록만 골랐다`)
     }
   })
 

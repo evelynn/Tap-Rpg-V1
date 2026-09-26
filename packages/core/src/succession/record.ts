@@ -2,7 +2,7 @@
 // 별칭·업적의 조건은 콘텐츠(epithet·achievement)가 단일 출처이고, 여기서는 평가하고 남기기만 한다.
 import { makeConditionTest } from '../events/conditions'
 import { emptyScope, type EventScope, type EventWorld } from '../events/scope'
-import { markLastChapter } from '../journal/index'
+import { chronicleMajor, markLastChapter } from '../journal/index'
 import { characterOf, type RuleContext } from '../rules/context'
 import { registerTextSlot, type END_KINDS } from '../schema/index'
 import type { Character } from '../state/character'
@@ -97,16 +97,18 @@ const COUNTER_KEYS = {
   coins_earned: 'coins_earned',
 } as const
 
-// 12 §7.1 연대기 항목. 주요 기록은 [중요]·[인연]·[발견]·[가족] 보존 기록에서 clamp 개수만큼 고른다
-// (18 §4.1 선별 점수는 생애의 책 몫이라 여기서는 보존 등급으로 근사한다)
+// 12 §7.1 연대기 항목. 주요 기록 4~6개는 18 §4.1 선별 점수로 고른다(chronicleMajor). 예전에는 보존 기록의
+// 마지막 n개로 근사해 생애 끝의 은퇴·가문 업적 줄만 남았다
 export function buildLifeRecord(ctx: RuleContext, input: LifeRecordInput): LifeRecord {
   const { content, state } = ctx
   const ch = characterOf(ctx)
-  const [lo, hi] = content.balance.inheritance.chronicle_major.clamp
-  const major = state.journal
-    .filter((e) => e.char_uid === ch.uid && (e.importance === 'major' || e.importance === 'family'))
-    .map((e) => e.id)
-  const count = Math.min(major.length, Math.max(lo, Math.min(hi, major.length)))
+  const cm = content.balance.inheritance.chronicle_major
+  const major = chronicleMajor(state.journal, ch.uid, {
+    relicUids: [...input.relicsPassed, ...input.receivedRelicUids],
+    eventCategory: (id) => (content.has('event', id) ? content.get('event', id).category : undefined),
+    clamp: cm.clamp,
+    scoreGte: cm.score_gte,
+  }).map((e) => e.id)
   return {
     gen: ch.generation,
     char_uid: ch.uid,
@@ -132,7 +134,7 @@ export function buildLifeRecord(ctx: RuleContext, input: LifeRecordInput): LifeR
     life_flags: { ...ch.flags },
     unfinished: input.unfinished,
     relics_passed: input.relicsPassed,
-    major_entry_ids: major.slice(-count),
+    major_entry_ids: major,
     attitude_log: ch.attitude_log.map((a) => ({ ...a })),
     birth_season: ch.birth_season,
     retire_age: ch.retire_age,
