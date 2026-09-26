@@ -1,7 +1,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import type { World } from '../../src/index'
-import { designateRelic, endLife, startHeir, type SuccessionPlan } from '../../src/succession/index'
+import { designateRelic, endLife, relicReturn, startHeir, type SuccessionPlan } from '../../src/succession/index'
 import { give, lifeWorld, setAge, withFamily } from './fixture'
 
 function retiringMora(seed?: string): World {
@@ -54,6 +54,37 @@ describe('계승 5단계(12 §1)', () => {
     // 출발 계절 = 부모 생애 종료 계절의 다음 계절
     assert.equal(heir.birth_season, 'summer')
     void plan
+  })
+})
+
+describe('출발 풍경과 유품 귀환(12 §1.3·§5.6, D76)', () => {
+  it('출발하면 마지막 기록이 [계승] 마을 어귀 한 줄이다', () => {
+    const w = retiringMora()
+    succeed(w)
+    const last = w.state.journal.at(-1)!
+    assert.equal(last.tag, 'succession')
+    assert.match(last.line, new RegExp(`^${w.state.character!.name}[은는] 마을 어귀를 나섰다\.$`))
+  })
+
+  it('물려받아 착용한 유품은 생애에 한 번만 돌아오고, 무기가 먼저다', () => {
+    const w = retiringMora()
+    succeed(w)
+    const inv = w.state.inventory
+    const weapon = inv.equipped.weapon!
+    assert.equal(w.state.item_instances[weapon]!.inherited_from_gen, 1) // 등록 1위 W07이 자동 장착됐다
+    const first = relicReturn(w, 'D1')!
+    assert.equal(first.sub, 'relic_return')
+    assert.equal(first.refs?.item_uid, weapon)
+    assert.match(first.line, new RegExp(`^${w.state.character!.parent_call}의 .+ 돌아왔다$`))
+    assert.match(first.detail!, new RegExp(`다시 ${w.content.get('region', 'D1').name}에 섰다\.$`))
+    const second = relicReturn(w, 'D1')
+    assert.notEqual(second?.refs?.item_uid, weapon, '같은 유품은 한 생애에 한 번')
+    // 물려받지 않은 장비만 차고 있으면 없다
+    for (const slot of ['weapon', 'armor', 'accessory', 'relic'] as const) {
+      const u = inv.equipped[slot]
+      if (u && w.state.item_instances[u]!.inherited_from_gen !== undefined) inv.equipped[slot] = null
+    }
+    assert.equal(relicReturn(w, 'D1'), null)
   })
 })
 

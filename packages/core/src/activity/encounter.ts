@@ -6,6 +6,7 @@ import {
 } from '../combat/index'
 import { earnCoins } from '../economy/earn'
 import { addJournal } from '../journal/index'
+import { relicReturn } from '../succession/relics'
 import { considerPickup, stowLoot } from '../items/bag'
 import { guaranteedDrop, materializeItem, rollEncounterDrop, type DropSpec } from '../items/roll'
 import { thirstOnWin } from '../life/index'
@@ -182,6 +183,11 @@ export function applyEncounterStep(world: World, spec: EncounterSpec, out: Encou
     applyDefeat(world, out.defeat)
     ch.counters[COUNTERS.sortieDefeats] = (ch.counters[COUNTERS.sortieDefeats] ?? 0) + 1
     if (out.defeat.rescuer) addJournal(world, { tag: 'injury', line: out.defeat.rescuer.line, refs: { location_id: spec.place } })
+    // 최후 판정 성공(치명 패배에서 판정을 굴려 살아남음)이면 유품 귀환(12 §5.6)
+    if (spec.lethal && out.defeat.check && out.defeat.outcome !== 'died') {
+      const back = relicReturn(world, spec.place)
+      if (back) addJournal(world, back)
+    }
   }
 }
 

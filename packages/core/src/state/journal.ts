@@ -9,7 +9,7 @@ export type CheckResult = (typeof CHECK_RESULTS)[number]
 // 18 §4.1·§7.1 선별용 하위 종류
 export const JOURNAL_SUBS = [
   'rank', 'spec', 'age', 'level5', 'family_first', 'rare_gain', 'relic_mark', 'trait_gain', 'trait_react',
-  'serious', 'gate_first', 'final_check', 'birth',
+  'serious', 'gate_first', 'final_check', 'birth', 'relic_return',
 ] as const
 
 // 판정 기록(05 §6.6): parts는 주사위를 뺀 항(능력치·숙련·보정 이름별)

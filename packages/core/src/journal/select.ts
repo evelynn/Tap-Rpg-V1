@@ -28,7 +28,7 @@ function baseScore(e: ChronicleEntry, category: string | undefined): number {
     case 'trait':
       return e.sub === 'trait_gain' ? 5 : e.sub === 'trait_react' ? 2 : 1
     case 'gear':
-      return e.sub === 'rare_gain' ? 5 : e.sub === 'relic_mark' ? 4 : 1
+      return e.sub === 'rare_gain' ? 5 : e.sub === 'relic_mark' || e.sub === 'relic_return' ? 4 : 1
     case 'injury':
       return e.sub === 'serious' ? 4 : 1
     case 'dungeon':

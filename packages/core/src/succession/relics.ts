@@ -6,6 +6,7 @@ import type { ItemInstance } from '../state/inventory'
 import type { JournalDraft } from '../state/journal'
 import { itemName } from '../items/bag'
 import { isDormant } from '../items/stats'
+import { RELIC_RETURN, RELIC_RETURN_DETAIL, textLine } from '../life/text'
 import { renderTemplate } from '../text/index'
 import { ageAt } from '../time/index'
 
@@ -125,6 +126,35 @@ export function dormantOpened(ctx: RuleContext, beforeLevel: number, afterLevel:
     out.push({ tag: 'gear', line: renderTemplate('{item:이/가} 손에 맞기 시작했다', { item: itemName(ctx, inst) }), refs: { item_uid: inst.uid } })
   }
   return out
+}
+
+// 유품이 돌아오는 순간(12 §5.6, D76): 물려받아 착용 중인 유품 가운데 이 생애에 아직 돌아오지 않은 것 하나.
+// 여럿이면 SLOTS 순서가 아니라 5.3절 동점 순서(무기 > 유물 > 장신구 > 방어구). 한 번 남긴 유품은 카운터로 막는다
+const RETURN_ORDER = ['weapon', 'relic', 'accessory', 'armor'] as const
+const RETURN_COUNTER = 'relic_return.'
+
+export function relicReturn(ctx: RuleContext, place: string): JournalDraft | null {
+  const ch = characterOf(ctx)
+  const inv = ctx.state.inventory
+  for (const slot of RETURN_ORDER) {
+    const uid = inv.equipped[slot]
+    const inst = uid ? ctx.state.item_instances[uid] : undefined
+    if (!inst || inst.inherited_from_gen === undefined || ch.counters[RETURN_COUNTER + inst.uid]) continue
+    ch.counters[RETURN_COUNTER + inst.uid] = 1
+    // 부모에게서 받았으면 부르는 말, 더 윗세대면 그 인물 이름(이전 이력 가운데 마지막)
+    const from = [...inst.history].reverse().find((h) => h.kind === 'inherited')
+    const call = inst.inherited_from_gen === ch.generation - 1 && ch.parent_call ? ch.parent_call : from?.char_name ?? ch.parent_call ?? ''
+    const values = { parent_call: call, item: itemName(ctx, inst), place: ctx.content.get('region', place).name }
+    return {
+      tag: 'gear',
+      importance: 'major',
+      sub: 'relic_return',
+      line: textLine(ctx.content, RELIC_RETURN, values, '{parent_call}의 {item:이/가} 돌아왔다'),
+      detail: textLine(ctx.content, RELIC_RETURN_DETAIL, values, '{parent_call}의 {item:이/가} 다시 {place}에 섰다.'),
+      refs: { item_uid: inst.uid, location_id: place },
+    }
+  }
+  return null
 }
 
 // 65세·치명 허용 안내에 쓰는 현재 나이(09 §2.2)

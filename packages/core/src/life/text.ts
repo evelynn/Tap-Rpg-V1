@@ -9,8 +9,12 @@ import { renderTemplate, type TemplateValues } from '../text/index'
 export const AGE_DETAIL = 'journal.growth.age_detail'
 export const CHILDHOOD_DETAIL = 'journal.family.childhood_detail'
 export const NEW_NAME_DETAIL = 'journal.house.new_name_detail'
+// 12 §1.3 출발 풍경 한 줄, 12 §5.6 유품 귀환(D76)
+export const DEPART_LINE = 'journal.succession.depart'
+export const RELIC_RETURN = 'journal.gear.relic_return'
+export const RELIC_RETURN_DETAIL = 'journal.gear.relic_return_detail'
 
-for (const id of [AGE_DETAIL, CHILDHOOD_DETAIL, NEW_NAME_DETAIL]) registerTextSlot(id, '생애·계승(T10)')
+for (const id of [AGE_DETAIL, CHILDHOOD_DETAIL, NEW_NAME_DETAIL, DEPART_LINE, RELIC_RETURN, RELIC_RETURN_DETAIL]) registerTextSlot(id, '생애·계승(T10)')
 
 // 문형 하나를 렌더한다. variant는 번들 순서로 고른다(난수를 쓰지 않는다)
 export function textLine(content: Content, id: string, values: TemplateValues, fallback: string, variant = 0): string {

@@ -3,6 +3,7 @@ import { effectiveLevel, gateCleared, gateRiskOk } from '../ai/index'
 import { retreatHpRatio } from '../combat/index'
 import { earnCoins } from '../economy/earn'
 import { addJournal, addToBundle, bundleRow } from '../journal/index'
+import { relicReturn } from '../succession/relics'
 import { materializeItem, rollDrop } from '../items/roll'
 import { checkBonus, checkDc, evaluateCheck, recordCheckUse, regionDc, rollCheck, successChance, type CheckRoll } from '../rules/check'
 import { characterOf, type RuleContext } from '../rules/context'
@@ -530,9 +531,11 @@ export const gateResolver: ActionResolver = {
     applyEncounterStep(world, payload.spec, payload.enc)
     addFatigue(world, world.content.balance.actions.gate.fatigue)
     tickSortieBody(world, action.duration_sec / 60)
-    // 관문 첫 격파 보상(07 §5.6)
-    if (!payload.cleared && payload.enc.combat.outcome === 'win' && r.kind === 'dungeon_floor' && r.gate.first_clear) {
-      runSavedEffects(world, r.gate.first_clear, emptyScope(s.location_id))
+    // 관문 첫 격파 보상(07 §5.6)과 유품 귀환(12 §5.6). 관문 기록은 apply 전에 남아 유품 기록이 그 뒤에 온다
+    if (!payload.cleared && payload.enc.combat.outcome === 'win') {
+      if (r.kind === 'dungeon_floor' && r.gate.first_clear) runSavedEffects(world, r.gate.first_clear, emptyScope(s.location_id))
+      const back = relicReturn(world, s.location_id)
+      if (back) addJournal(world, back)
     }
     beginReturn(world)
   },
