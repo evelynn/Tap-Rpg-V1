@@ -54,44 +54,48 @@
     8,
     9.6
   ],
-  "scale": 10.59,
+  "scale": 10.43,
   "scale_origin": "spec",
-  "art_period": 6.4,
+  "art_period": 6.44,
   "notes": [
-    "scale_to_spec: 기준 행 [0] 키 중앙값 14.5(규격 14) · 축척 10.585 (원본 키 중앙값 146화소, 칸 비율 축척 9.6 대비 ×0.907). 생성 화소를 다시 뽑는 형식 맞춤이다(D66)",
-    "원본 칸이 정사각 비율이 아니다(가로 8 · 세로 9.6). 축척은 한 값이어야 해 지정값 10.59을 쓴다",
-    "원본 그림의 화소 블록은 약 6.4인데 축척은 10.59이다 — 원본 화소 1.65개가 논리 화소 1개로 합쳐져 가는 선·세부가 빠질 수 있다",
-    "칸 (3,3)은 빈 칸이어야 하는데 논리 화소 50개가 있다(출력에서는 버렸다)",
+    "scale_to_spec: 기준 행 [0] 키 중앙값 14(규격 14) · 축척 10.429 (원본 키 중앙값 146화소, 칸 비율 축척 9.6 대비 ×0.921). 생성 화소를 다시 뽑는 형식 맞춤이다(D66)",
+    "원본 칸이 정사각 비율이 아니다(가로 8 · 세로 9.6). 축척은 한 값이어야 해 지정값 10.43을 쓴다",
+    "원본 그림의 화소 블록은 약 6.44인데 축척은 10.43이다 — 원본 화소 1.62개가 논리 화소 1개로 합쳐져 가는 선·세부가 빠질 수 있다",
+    "칸 (3,3)은 빈 칸이어야 하는데 논리 화소 52개가 있다(출력에서는 버렸다)",
     "칸 (3,4)은 내용이 있어야 하는데 비었다"
   ],
   "totals": {
-    "opaque": 2304,
+    "opaque": 2306,
     "dropped_outside": 0,
     "specks_removed": 0,
+    "colors_merged": 151,
+    "islands_folded": 0,
     "colors": [
       "#2B2233",
       "#2F2420",
       "#3A3050",
+      "#4A3A32",
       "#4A3F55",
-      "#4C4A52",
+      "#553420",
       "#6E5A48",
       "#6E6862",
-      "#743426",
       "#7A5A6E",
       "#7D7B80",
       "#93603F",
+      "#9A8A78",
       "#A0664A",
+      "#B04A42",
       "#B97F5A",
       "#C08A58",
       "#C8783A",
       "#C88E68",
       "#C98E72",
       "#D8B868",
-      "#E8E6E0",
-      "#F6D9C2"
+      "#E0B06A",
+      "#E8E6E0"
     ],
-    "palette_error_mean": 38.49,
-    "palette_error_max": 133.63
+    "palette_error_mean": 38.31,
+    "palette_error_max": 146.17
   },
   "cells": [
     {
@@ -107,43 +111,47 @@
         294
       ],
       "anchor": [
-        62.25,
+        64,
         141.25
       ],
       "shift": [
         9,
         1
       ],
-      "opaque": 142,
+      "opaque": 148,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
         9,
         0,
-        24,
+        23,
         15
       ],
-      "bbox_center_x": 16.5,
+      "bbox_center_x": 16,
       "colors": [
         "#2B2233",
         "#2F2420",
         "#3A3050",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
+        "#6E6862",
         "#7A5A6E",
+        "#7D7B80",
+        "#93603F",
+        "#9A8A78",
+        "#A0664A",
         "#B97F5A",
-        "#C08A58",
         "#C88E68",
-        "#C98E72",
         "#D8B868",
         "#E8E6E0"
       ],
       "palette_error": {
-        "mean": 38.27,
-        "max": 126.76
+        "mean": 37.87,
+        "max": 134.89
       },
-      "block_purity": 0.57
+      "block_purity": 0.71,
+      "colors_merged": 9,
+      "islands_folded": 0
     },
     {
       "col": 1,
@@ -158,43 +166,46 @@
         294
       ],
       "anchor": [
-        313,
-        160
+        305.5,
+        161
       ],
       "shift": [
-        9,
+        8,
         3
       ],
-      "opaque": 139,
+      "opaque": 141,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
         8,
-        2,
-        26,
+        3,
+        25,
         15
       ],
-      "bbox_center_x": 17,
+      "bbox_center_x": 16.5,
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
+        "#4A3A32",
         "#4A3F55",
         "#6E5A48",
+        "#6E6862",
         "#7A5A6E",
         "#7D7B80",
         "#93603F",
         "#A0664A",
-        "#C8783A",
+        "#C08A58",
         "#C88E68",
-        "#C98E72",
-        "#E8E6E0",
-        "#F6D9C2"
+        "#D8B868"
       ],
       "palette_error": {
-        "mean": 38.33,
-        "max": 126.97
+        "mean": 38.83,
+        "max": 134.89
       },
-      "block_purity": 0.58
+      "block_purity": 0.76,
+      "colors_merged": 7,
+      "islands_folded": 0
     },
     {
       "col": 2,
@@ -209,42 +220,43 @@
         302
       ],
       "anchor": [
-        568.5,
-        185.5
+        570,
+        177.25
       ],
       "shift": [
-        9,
-        5
+        8,
+        4
       ],
-      "opaque": 124,
+      "opaque": 121,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        8,
+        7,
         4,
-        24,
+        22,
         15
       ],
-      "bbox_center_x": 16,
+      "bbox_center_x": 14.5,
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
+        "#6E6862",
         "#7A5A6E",
-        "#93603F",
         "#A0664A",
-        "#B97F5A",
+        "#C08A58",
         "#C88E68",
-        "#C98E72",
-        "#E8E6E0"
+        "#D8B868"
       ],
       "palette_error": {
-        "mean": 39.87,
-        "max": 71.75
+        "mean": 39.71,
+        "max": 116.53
       },
-      "block_purity": 0.55
+      "block_purity": 0.7,
+      "colors_merged": 9,
+      "islands_folded": 0
     },
     {
       "col": 3,
@@ -259,41 +271,44 @@
         298
       ],
       "anchor": [
-        805,
-        142.5
+        807.25,
+        150.5
       ],
       "shift": [
         9,
-        1
+        2
       ],
-      "opaque": 140,
+      "opaque": 143,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        8,
+        9,
         1,
-        24,
+        23,
         15
       ],
       "bbox_center_x": 16,
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
         "#7A5A6E",
+        "#7D7B80",
         "#A0664A",
         "#B97F5A",
         "#C88E68",
-        "#C98E72",
-        "#D8B868"
+        "#E0B06A",
+        "#E8E6E0"
       ],
       "palette_error": {
-        "mean": 38.45,
-        "max": 115.5
+        "mean": 38.36,
+        "max": 87.89
       },
-      "block_purity": 0.57
+      "block_purity": 0.77,
+      "colors_merged": 9,
+      "islands_folded": 0
     },
     {
       "col": 0,
@@ -308,19 +323,19 @@
         563
       ],
       "anchor": [
-        63,
-        410.75
+        65.25,
+        412
       ],
       "shift": [
         9,
-        1
+        2
       ],
-      "opaque": 150,
+      "opaque": 151,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
         9,
-        0,
+        1,
         24,
         15
       ],
@@ -328,23 +343,27 @@
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
+        "#4A3A32",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
+        "#6E6862",
         "#7A5A6E",
+        "#7D7B80",
+        "#93603F",
         "#A0664A",
         "#B97F5A",
-        "#C08A58",
         "#C88E68",
-        "#C98E72",
         "#D8B868",
         "#E8E6E0"
       ],
       "palette_error": {
-        "mean": 38.06,
-        "max": 131.01
+        "mean": 37.45,
+        "max": 134.89
       },
-      "block_purity": 0.56
+      "block_purity": 0.75,
+      "colors_merged": 9,
+      "islands_folded": 0
     },
     {
       "col": 1,
@@ -359,41 +378,45 @@
         557
       ],
       "anchor": [
-        314,
-        428.5
+        309.5,
+        425.75
       ],
       "shift": [
         9,
         3
       ],
-      "opaque": 130,
+      "opaque": 133,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        8,
+        9,
         2,
         26,
         15
       ],
-      "bbox_center_x": 17,
+      "bbox_center_x": 17.5,
       "colors": [
         "#2B2233",
         "#2F2420",
         "#3A3050",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
         "#7A5A6E",
+        "#93603F",
+        "#9A8A78",
         "#A0664A",
+        "#B97F5A",
+        "#C8783A",
         "#C88E68",
-        "#C98E72",
-        "#D8B868"
+        "#E8E6E0"
       ],
       "palette_error": {
-        "mean": 38.7,
-        "max": 120.49
+        "mean": 37.17,
+        "max": 69.78
       },
-      "block_purity": 0.59
+      "block_purity": 0.76,
+      "colors_merged": 6,
+      "islands_folded": 0
     },
     {
       "col": 2,
@@ -408,364 +431,14 @@
         568
       ],
       "anchor": [
-        555,
-        435.75
+        559.25,
+        437
       ],
       "shift": [
         8,
         3
       ],
-      "opaque": 134,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        7,
-        2,
-        24,
-        15
-      ],
-      "bbox_center_x": 15.5,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#4A3F55",
-        "#6E5A48",
-        "#7A5A6E",
-        "#A0664A",
-        "#C88E68",
-        "#C98E72",
-        "#D8B868",
-        "#E8E6E0"
-      ],
-      "palette_error": {
-        "mean": 38.32,
-        "max": 120.85
-      },
-      "block_purity": 0.57
-    },
-    {
-      "col": 3,
-      "row": 1,
-      "action": "move",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        798,
-        412,
-        974,
-        564
-      ],
-      "anchor": [
-        805.25,
-        419.5
-      ],
-      "shift": [
-        9,
-        2
-      ],
-      "opaque": 151,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        8,
-        1,
-        24,
-        15
-      ],
-      "bbox_center_x": 16,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#4A3F55",
-        "#4C4A52",
-        "#6E5A48",
-        "#7A5A6E",
-        "#A0664A",
-        "#B97F5A",
-        "#C8783A",
-        "#C88E68",
-        "#C98E72",
-        "#D8B868",
-        "#E8E6E0"
-      ],
-      "palette_error": {
-        "mean": 38.64,
-        "max": 133.63
-      },
-      "block_purity": 0.57
-    },
-    {
-      "col": 0,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        62,
-        664,
-        261,
-        808
-      ],
-      "anchor": [
-        64.25,
-        666.25
-      ],
-      "shift": [
-        7,
-        2
-      ],
-      "opaque": 156,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        6,
-        1,
-        25,
-        15
-      ],
-      "bbox_center_x": 15.5,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#4A3F55",
-        "#4C4A52",
-        "#6E5A48",
-        "#6E6862",
-        "#7A5A6E",
-        "#A0664A",
-        "#C88E68",
-        "#C98E72",
-        "#D8B868",
-        "#E8E6E0"
-      ],
-      "palette_error": {
-        "mean": 38.72,
-        "max": 123.65
-      },
-      "block_purity": 0.54
-    },
-    {
-      "col": 1,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        306,
-        693,
-        482,
-        812
-      ],
-      "anchor": [
-        306.75,
-        699
-      ],
-      "shift": [
-        8,
-        5
-      ],
-      "opaque": 135,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        7,
-        4,
-        24,
-        15
-      ],
-      "bbox_center_x": 15.5,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#4A3F55",
-        "#4C4A52",
-        "#6E5A48",
-        "#7A5A6E",
-        "#7D7B80",
-        "#93603F",
-        "#A0664A",
-        "#C88E68",
-        "#C98E72",
-        "#D8B868"
-      ],
-      "palette_error": {
-        "mean": 38.38,
-        "max": 124.52
-      },
-      "block_purity": 0.56
-    },
-    {
-      "col": 2,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        540,
-        676,
-        750,
-        810
-      ],
-      "anchor": [
-        542,
-        682.5
-      ],
-      "shift": [
-        8,
-        4
-      ],
-      "opaque": 137,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        7,
-        3,
-        27,
-        15
-      ],
-      "bbox_center_x": 17,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#3A3050",
-        "#4A3F55",
-        "#4C4A52",
-        "#6E5A48",
-        "#743426",
-        "#7A5A6E",
-        "#A0664A",
-        "#C88E68",
-        "#C98E72",
-        "#D8B868",
-        "#E8E6E0"
-      ],
-      "palette_error": {
-        "mean": 38.21,
-        "max": 123.79
-      },
-      "block_purity": 0.57
-    },
-    {
-      "col": 3,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        803,
-        653,
-        971,
-        810
-      ],
-      "anchor": [
-        808.5,
-        661.25
-      ],
-      "shift": [
-        9,
-        1
-      ],
-      "opaque": 145,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        8,
-        0,
-        23,
-        15
-      ],
-      "bbox_center_x": 15.5,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#4A3F55",
-        "#4C4A52",
-        "#6E5A48",
-        "#7A5A6E",
-        "#7D7B80",
-        "#B97F5A",
-        "#C88E68",
-        "#C98E72",
-        "#D8B868",
-        "#E8E6E0"
-      ],
-      "palette_error": {
-        "mean": 39.72,
-        "max": 122.06
-      },
-      "block_purity": 0.57
-    },
-    {
-      "col": 0,
-      "row": 3,
-      "action": "hit",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        70,
-        909,
-        242,
-        1070
-      ],
-      "anchor": [
-        70.25,
-        912.5
-      ],
-      "shift": [
-        8,
-        1
-      ],
-      "opaque": 148,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        8,
-        0,
-        24,
-        15
-      ],
-      "bbox_center_x": 16,
-      "colors": [
-        "#2B2233",
-        "#2F2420",
-        "#3A3050",
-        "#4A3F55",
-        "#4C4A52",
-        "#6E5A48",
-        "#7A5A6E",
-        "#7D7B80",
-        "#A0664A",
-        "#C08A58",
-        "#C88E68",
-        "#C98E72"
-      ],
-      "palette_error": {
-        "mean": 37.04,
-        "max": 72.17
-      },
-      "block_purity": 0.56
-    },
-    {
-      "col": 1,
-      "row": 3,
-      "action": "hit",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        320,
-        930,
-        490,
-        1066
-      ],
-      "anchor": [
-        325.5,
-        937
-      ],
-      "shift": [
-        8,
-        3
-      ],
-      "opaque": 136,
+      "opaque": 129,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
@@ -780,22 +453,391 @@
         "#2F2420",
         "#3A3050",
         "#4A3F55",
-        "#4C4A52",
+        "#6E5A48",
+        "#7A5A6E",
+        "#7D7B80",
+        "#A0664A",
+        "#C08A58",
+        "#C88E68",
+        "#E8E6E0"
+      ],
+      "palette_error": {
+        "mean": 37.76,
+        "max": 79.47
+      },
+      "block_purity": 0.74,
+      "colors_merged": 11,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        798,
+        412,
+        974,
+        564
+      ],
+      "anchor": [
+        805,
+        421.25
+      ],
+      "shift": [
+        9,
+        2
+      ],
+      "opaque": 154,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        8,
+        1,
+        24,
+        15
+      ],
+      "bbox_center_x": 16,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3A32",
+        "#4A3F55",
+        "#6E5A48",
+        "#7A5A6E",
+        "#7D7B80",
+        "#A0664A",
+        "#B97F5A",
+        "#C88E68",
+        "#D8B868",
+        "#E8E6E0"
+      ],
+      "palette_error": {
+        "mean": 38.46,
+        "max": 146.17
+      },
+      "block_purity": 0.7,
+      "colors_merged": 12,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        62,
+        664,
+        261,
+        808
+      ],
+      "anchor": [
+        63,
+        666.75
+      ],
+      "shift": [
+        7,
+        2
+      ],
+      "opaque": 150,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        7,
+        2,
+        25,
+        15
+      ],
+      "bbox_center_x": 16,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3F55",
+        "#6E5A48",
+        "#6E6862",
+        "#7A5A6E",
+        "#7D7B80",
+        "#A0664A",
+        "#C88E68",
+        "#D8B868",
+        "#E8E6E0"
+      ],
+      "palette_error": {
+        "mean": 38.59,
+        "max": 130.09
+      },
+      "block_purity": 0.72,
+      "colors_merged": 9,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        306,
+        693,
+        482,
+        812
+      ],
+      "anchor": [
+        309.25,
+        700.25
+      ],
+      "shift": [
+        8,
+        5
+      ],
+      "opaque": 132,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        8,
+        4,
+        24,
+        15
+      ],
+      "bbox_center_x": 16,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3F55",
         "#6E5A48",
         "#7A5A6E",
         "#7D7B80",
         "#93603F",
         "#A0664A",
+        "#B97F5A",
+        "#C8783A",
         "#C88E68",
-        "#C98E72",
+        "#D8B868"
+      ],
+      "palette_error": {
+        "mean": 38.35,
+        "max": 134.89
+      },
+      "block_purity": 0.74,
+      "colors_merged": 7,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        540,
+        676,
+        750,
+        810
+      ],
+      "anchor": [
+        543.5,
+        684
+      ],
+      "shift": [
+        8,
+        4
+      ],
+      "opaque": 139,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        8,
+        3,
+        27,
+        15
+      ],
+      "bbox_center_x": 17.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3A32",
+        "#4A3F55",
+        "#553420",
+        "#6E5A48",
+        "#6E6862",
+        "#7A5A6E",
+        "#93603F",
+        "#A0664A",
+        "#B04A42",
+        "#C88E68",
         "#D8B868",
         "#E8E6E0"
       ],
       "palette_error": {
-        "mean": 38.32,
-        "max": 105.59
+        "mean": 39.46,
+        "max": 134.89
       },
-      "block_purity": 0.55
+      "block_purity": 0.74,
+      "colors_merged": 9,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        803,
+        653,
+        971,
+        810
+      ],
+      "anchor": [
+        809.75,
+        662.75
+      ],
+      "shift": [
+        9,
+        2
+      ],
+      "opaque": 145,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        8,
+        1,
+        23,
+        15
+      ],
+      "bbox_center_x": 15.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3A32",
+        "#4A3F55",
+        "#6E5A48",
+        "#7A5A6E",
+        "#7D7B80",
+        "#A0664A",
+        "#B97F5A",
+        "#C88E68",
+        "#D8B868",
+        "#E8E6E0"
+      ],
+      "palette_error": {
+        "mean": 39.27,
+        "max": 116.53
+      },
+      "block_purity": 0.74,
+      "colors_merged": 8,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "hit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        70,
+        909,
+        242,
+        1070
+      ],
+      "anchor": [
+        71.75,
+        909.25
+      ],
+      "shift": [
+        8,
+        1
+      ],
+      "opaque": 153,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        8,
+        1,
+        23,
+        15
+      ],
+      "bbox_center_x": 15.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3F55",
+        "#6E5A48",
+        "#6E6862",
+        "#7A5A6E",
+        "#7D7B80",
+        "#A0664A",
+        "#B97F5A",
+        "#C88E68",
+        "#E8E6E0"
+      ],
+      "palette_error": {
+        "mean": 38.46,
+        "max": 87.3
+      },
+      "block_purity": 0.75,
+      "colors_merged": 13,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "hit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        320,
+        930,
+        490,
+        1066
+      ],
+      "anchor": [
+        327.5,
+        937
+      ],
+      "shift": [
+        8,
+        4
+      ],
+      "opaque": 133,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        7,
+        3,
+        23,
+        15
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#3A3050",
+        "#4A3F55",
+        "#6E5A48",
+        "#7A5A6E",
+        "#7D7B80",
+        "#93603F",
+        "#A0664A",
+        "#C08A58",
+        "#C98E72",
+        "#E8E6E0"
+      ],
+      "palette_error": {
+        "mean": 37.75,
+        "max": 77.63
+      },
+      "block_purity": 0.73,
+      "colors_merged": 8,
+      "islands_folded": 0
     },
     {
       "col": 2,
@@ -816,7 +858,9 @@
         "mean": 0,
         "max": 0
       },
-      "block_purity": 0
+      "block_purity": 0,
+      "colors_merged": 0,
+      "islands_folded": 0
     },
     {
       "col": 3,
@@ -831,8 +875,8 @@
         1262
       ],
       "anchor": [
-        851.25,
-        1182.25
+        851.75,
+        1182.75
       ],
       "shift": null,
       "opaque": 0,
@@ -845,7 +889,9 @@
         "mean": 0,
         "max": 0
       },
-      "block_purity": 0
+      "block_purity": 0,
+      "colors_merged": 3,
+      "islands_folded": 0
     },
     {
       "col": 0,
@@ -860,14 +906,14 @@
         1332
       ],
       "anchor": [
-        67.5,
-        1183.75
+        68.25,
+        1188.5
       ],
       "shift": [
         6,
         2
       ],
-      "opaque": 134,
+      "opaque": 133,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
@@ -880,21 +926,25 @@
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
+        "#4A3A32",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
         "#7A5A6E",
+        "#7D7B80",
+        "#A0664A",
         "#B97F5A",
         "#C88E68",
-        "#C98E72",
         "#D8B868",
         "#E8E6E0"
       ],
       "palette_error": {
         "mean": 37.29,
-        "max": 133.48
+        "max": 130.09
       },
-      "block_purity": 0.6
+      "block_purity": 0.72,
+      "colors_merged": 10,
+      "islands_folded": 0
     },
     {
       "col": 1,
@@ -909,41 +959,43 @@
         1307
       ],
       "anchor": [
-        314.75,
+        316,
         1177.75
       ],
       "shift": [
         6,
-        3
+        4
       ],
-      "opaque": 124,
+      "opaque": 123,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        5,
-        2,
-        22,
+        6,
+        3,
+        21,
         15
       ],
       "bbox_center_x": 13.5,
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
+        "#6E6862",
         "#7A5A6E",
+        "#9A8A78",
         "#B97F5A",
-        "#C08A58",
         "#C88E68",
-        "#C98E72",
         "#D8B868"
       ],
       "palette_error": {
-        "mean": 38.09,
-        "max": 124.91
+        "mean": 37.31,
+        "max": 130.09
       },
-      "block_purity": 0.59
+      "block_purity": 0.76,
+      "colors_merged": 7,
+      "islands_folded": 0
     },
     {
       "col": 2,
@@ -958,41 +1010,42 @@
         1313
       ],
       "anchor": [
-        578.5,
-        1215.5
+        580.25,
+        1206.25
       ],
       "shift": [
         9,
         6
       ],
-      "opaque": 79,
+      "opaque": 78,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
         8,
-        5,
-        21,
+        6,
+        20,
         15
       ],
-      "bbox_center_x": 14.5,
+      "bbox_center_x": 14,
       "colors": [
         "#2B2233",
         "#2F2420",
+        "#3A3050",
         "#4A3F55",
-        "#4C4A52",
         "#6E5A48",
         "#7A5A6E",
         "#A0664A",
         "#C88E68",
-        "#C98E72",
         "#D8B868",
         "#E8E6E0"
       ],
       "palette_error": {
-        "mean": 41.05,
-        "max": 126.48
+        "mean": 39.75,
+        "max": 134.89
       },
-      "block_purity": 0.5
+      "block_purity": 0.64,
+      "colors_merged": 5,
+      "islands_folded": 0
     },
     {
       "col": 3,
@@ -1013,7 +1066,9 @@
         "mean": 0,
         "max": 0
       },
-      "block_purity": 0
+      "block_purity": 0,
+      "colors_merged": 0,
+      "islands_folded": 0
     }
   ]
 }

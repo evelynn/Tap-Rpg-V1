@@ -6,7 +6,6 @@ import {
   assignCells,
   isBackground,
   labelCell,
-  measurePeriod,
   normalizeSheet,
   Snapper,
   type KeyOptions,
@@ -217,8 +216,8 @@ describe('정규화', () => {
     const art = ['ocsocsocso', 'sococsocso', 'cscoocsocs', 'ocsocsocso', 'sococsocso', 'cscoocsocs', 'ocsocsocso', 'sococsocso']
     const src = source(90, 60)
     src.stamp(art, COLORS, 6, 7, 5)
-    const own = assignCells(src, KEY, 1, 1)
-    const p = measurePeriod([labelCell(src, own, 0, new Snapper(PALETTE))])
+    const r = normalizeSheet(src, { grid: [1, 1], cell: [12, 12], rows: [{ action: 'a', frames: 1 }], align: GROUND, scale: 6 }, new Snapper(PALETTE), KEY)
+    const p = r.report.art_period
     assert.ok(p !== null && Math.abs(p - 6) < 0.2, `잰 값 ${p}`)
   })
 })
@@ -360,8 +359,8 @@ describe('띠 정규화(normalizeStrip)', () => {
     return { width: W, height: H, rgba }
   }
 
-  it('띠를 찾아 잘라 논리 크기로 면적 평균하고 palette null이면 섞인 색을 그대로 둔다', () => {
-    const r = normalizeStrip(stripSource(), { size: [20, 5], fill: 'opaque', palette: null }, KEY)
+  it('sample box: 띠를 찾아 잘라 논리 크기로 면적 평균하고 palette null이면 섞인 색을 그대로 둔다', () => {
+    const r = normalizeStrip(stripSource(), { size: [20, 5], fill: 'opaque', palette: null, sample: 'box' }, KEY)
     assert.deepEqual(r.report.band, [10, 10, 80, 20])
     assert.deepEqual(r.report.scale, [4, 4])
     assert.equal(r.report.opaque, 100)
@@ -392,5 +391,47 @@ describe('띠 정규화(normalizeStrip)', () => {
     assert.equal(r.report.seam, 0)
     assert.deepEqual(r.report.crop_x, [r.report.band[0] - 10, 90 - r.report.band[0] - 40])
     assert.equal(r.report.anisotropy, 1)
+  })
+
+  it('sample mode: 블록 경계에 섞인 화소와 잡음이 있어도 블록 크기를 재고 블록 색만 뽑는다', () => {
+    // 16×4 논리 그림을 5배로(블록 경계 열·행은 두 블록 색의 평균, 면 안 ±6 잡음) 100×60 자홍 캔버스 (10, 10)에 찍는다
+    const PAL: [number, number, number][] = [[40, 40, 200], [200, 40, 40], [40, 160, 60], [230, 210, 120]]
+    const art = (ax: number, ay: number): [number, number, number] => PAL[(ax * 7 + ay * 3 + ((ax * ay) % 3)) % 4]!
+    const W = 100
+    const H = 60
+    const rgba = new Uint8Array(W * H * 4)
+    for (let i = 0; i < W * H; i++) rgba.set([...MAGENTA, 255], i * 4)
+    let seed = 11
+    const rnd = (): number => {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff
+      return Math.round(((seed / 0x7fffffff) * 2 - 1) * 6)
+    }
+    for (let y = 0; y < 20; y++) {
+      for (let x = 0; x < 80; x++) {
+        const ax = Math.floor(x / 5)
+        const ay = Math.floor(y / 5)
+        let c = art(ax, ay)
+        if (x % 5 === 0 && ax > 0) c = c.map((v, k) => Math.round((v + art(ax - 1, ay)[k]!) / 2)) as [number, number, number]
+        else if (y % 5 === 0 && ay > 0) c = c.map((v, k) => Math.round((v + art(ax, ay - 1)[k]!) / 2)) as [number, number, number]
+        else {
+          const n = rnd()
+          c = c.map((v) => Math.max(0, Math.min(255, v + n))) as [number, number, number]
+        }
+        rgba.set([...c, 255], ((y + 10) * W + x + 10) * 4)
+      }
+    }
+    const r = normalizeStrip({ width: W, height: H, rgba }, { size: [16, 4], fill: 'opaque', palette: null }, KEY)
+    assert.equal(r.report.sample, 'mode')
+    const g = r.report.source_grid!
+    assert.ok(g.estimate !== null && Math.abs(g.estimate - 5) < 0.2, `블록 크기 ${g.estimate}`)
+    // 묶음 대표색은 가장 흔한 원본 색이라 잡음 폭(±6) 안이다. 섞인 색(두 블록 평균)은 나오지 않는다
+    for (let ay = 0; ay < 4; ay++) {
+      for (let ax = 0; ax < 16; ax++) {
+        const o = (ay * 16 + ax) * 4
+        const want = art(ax, ay)
+        const got = [r.raster.rgba[o]!, r.raster.rgba[o + 1]!, r.raster.rgba[o + 2]!]
+        assert.ok(got.every((v, k) => Math.abs(v - want[k]!) <= 6), `(${ax}, ${ay}) ${got} ≠ ${want}`)
+      }
+    }
   })
 })

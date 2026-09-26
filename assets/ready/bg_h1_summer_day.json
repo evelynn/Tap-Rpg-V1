@@ -16,6 +16,41 @@
   "fill": "opaque",
   "fit": "crop",
   "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 5.43,
+    "prominence": 0.076,
+    "period": [
+      5.43,
+      5.43
+    ],
+    "phase": [
+      2,
+      1
+    ],
+    "blocks": [
+      291,
+      74
+    ],
+    "edge_fit": [
+      0.3,
+      0.37
+    ],
+    "blocks_per_pixel": [
+      1.13,
+      1.13
+    ],
+    "skipped": [
+      35,
+      8
+    ],
+    "doubled": [
+      2,
+      0
+    ],
+    "clusters": 2269,
+    "islands_folded": 44
+  },
   "band_found": [
     0,
     202,
@@ -44,11 +79,12 @@
   "outside_pixels": 160960,
   "opaque": 16384,
   "transparent": 0,
-  "color_count": 13951,
+  "color_count": 970,
   "colors": null,
   "palette_snapped": false,
   "notes": [
     "가로로 왼쪽 228 · 오른쪽 183열을 잘랐다(이음 점수 149.5, 창 양 끝 4열의 평균 색 거리)",
-    "뽑은 띠 밖 그림 화소 160960개를 버렸다(자른 행·열 포함)"
+    "뽑은 띠 밖 그림 화소 160960개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 5.43화소인데 논리 화소는 6.14×6.14화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 43줄은 건너뛰고 2줄은 두 번 쓴다(가로 35/2 · 세로 8/0)"
   ]
 }

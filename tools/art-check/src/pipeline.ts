@@ -176,7 +176,7 @@ export function runStrip(lm: LoadedMap, manifest: Manifest, e: StripEntry): Stri
   const sourcePath = resolve(lm.sourceDir, e.source)
   const img = decodePng(readFileSync(sourcePath))
   const palette = e.palette === null ? null : paletteFor(manifest, e.palette)
-  const r = normalizeStrip(img, { size: e.size, fill: e.fill ?? 'opaque', palette, fit: e.fit ?? 'crop', tile: e.tile ?? false }, keyOptions(lm))
+  const r = normalizeStrip(img, { size: e.size, fill: e.fill ?? 'opaque', palette, fit: e.fit ?? 'crop', tile: e.tile ?? false, sample: e.sample ?? 'mode' }, keyOptions(lm))
   return { ...r, entry: e, sourcePath }
 }
 

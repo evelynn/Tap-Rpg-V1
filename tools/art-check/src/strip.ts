@@ -10,6 +10,7 @@
 //            palette null이면 색을 그대로 둔다(풍부한 배경을 포스터화하지 않는다 — D71 품질 기준).
 //            fit stretch(옛 방식)는 자르지 않고 찾은 띠 전체를 가로·세로 다른 배율로 뽑는다.
 import { colorDistance, isBackground, Snapper, type KeyOptions, type PaletteEntry, type SourceImage } from './normalize'
+import { blockMode, blockSize, cellOf, clusterColors, CRISP, edgeProfiles, fitCuts, foldIslands, gradientAcf, gradients, labelImage, summarizeCuts, type GridSummary } from './blocks'
 import { createRaster, type Raster } from './raster'
 
 export type StripFill = 'opaque' | 'partial'
@@ -177,7 +178,11 @@ export interface StripSpec {
   tile?: boolean
   /** crop: 가로로 못 자르는 띠가 이 비율까지 넓으면 조금 눌러 뽑고, 넘으면 거절한다. 기본 0.02 */
   aspectTol?: number
+  /** mode(기본) = 원본 블록 격자의 블록 가운데 최빈색(또렷하다) · box = 면적 평균(옛 방식, 가장자리가 흐리다) */
+  sample?: StripSample
 }
+
+export type StripSample = 'mode' | 'box'
 
 export interface StripReport {
   source_size: [number, number]
@@ -185,6 +190,9 @@ export interface StripReport {
   fill: StripFill
   fit: 'crop' | 'stretch'
   tile: boolean
+  sample: StripSample
+  /** mode: 찾은 원본 블록 격자(box면 null) */
+  source_grid: SourceGridReport | null
   /** 내용에서 찾은 띠 [x, y, w, h](자르기 전) */
   band_found: [number, number, number, number]
   /** 뽑은 띠 [x, y, w, h](이미지 화소) */
@@ -277,8 +285,59 @@ export function normalizeStrip(img: SourceImage, spec: StripSpec, key: KeyOption
   }
   if (outside > 0) notes.push(`뽑은 띠 밖 그림 화소 ${outside}개를 버렸다(자른 행·열 포함)`)
 
-  const out = createRaster(OW, OH)
   const snapper = spec.palette === null ? null : new Snapper(spec.palette)
+  const sample = spec.sample ?? 'mode'
+  const sampled = sample === 'box'
+    ? sampleBox(img, fg, band, [OW, OH], snapper)
+    : sampleMode(img, fg, band, [OW, OH], snapper, notes)
+  const { raster: out, colors, opaque } = sampled
+  const transparent = OW * OH - opaque
+  if (spec.fill === 'opaque' && transparent > 0) notes.push(`불투명 띠인데 투명 칸 ${transparent}개(그림 화소가 절반 미만)`)
+  return {
+    raster: out,
+    report: {
+      source_size: [W, H],
+      size: [OW, OH],
+      fill: spec.fill,
+      fit,
+      tile,
+      sample,
+      source_grid: sampled.grid ?? null,
+      band_found: [raw.x, raw.y, raw.w, raw.h],
+      band: [band.x, band.y, band.w, band.h],
+      crop_top: cropTop,
+      crop_x: cropX,
+      seam,
+      aspect: round3(band.w / band.h),
+      aspect_expected: round3(aspectExpected),
+      scale: [round3(sx), round3(sy)],
+      anisotropy: round3(anisotropy),
+      outside_pixels: outside,
+      opaque,
+      transparent,
+      color_count: colors.size,
+      colors: colors.size <= 256 ? [...colors].sort((a, c) => a - c).map(hex) : null,
+      palette_snapped: snapper !== null,
+      notes,
+    },
+  }
+}
+
+interface Sampled {
+  raster: Raster
+  colors: Set<number>
+  opaque: number
+  grid?: SourceGridReport
+}
+
+/** 면적 평균(상자, 옛 방식). 출력 칸 (ox, oy)는 원본 [x + ox·sx, x + (ox+1)·sx) × [y + oy·sy, …)를 겹친 면적으로 가중해 덮는다 */
+function sampleBox(img: SourceImage, fg: Uint8Array, band: BandRect, size: [number, number], snapper: Snapper | null): Sampled {
+  const [OW, OH] = size
+  const W = img.width
+  const H = img.height
+  const sx = band.w / OW
+  const sy = band.h / OH
+  const out = createRaster(OW, OH)
   const colors = new Set<number>()
   let opaque = 0
   for (let oy = 0; oy < OH; oy++) {
@@ -323,32 +382,121 @@ export function normalizeStrip(img: SourceImage, spec: StripSpec, key: KeyOption
       opaque++
     }
   }
-  const transparent = OW * OH - opaque
-  if (spec.fill === 'opaque' && transparent > 0) notes.push(`불투명 띠인데 투명 칸 ${transparent}개(그림 화소가 절반 미만)`)
-  return {
-    raster: out,
-    report: {
-      source_size: [W, H],
-      size: [OW, OH],
-      fill: spec.fill,
-      fit,
-      tile,
-      band_found: [raw.x, raw.y, raw.w, raw.h],
-      band: [band.x, band.y, band.w, band.h],
-      crop_top: cropTop,
-      crop_x: cropX,
-      seam,
-      aspect: round3(band.w / band.h),
-      aspect_expected: round3(aspectExpected),
-      scale: [round3(sx), round3(sy)],
-      anisotropy: round3(anisotropy),
-      outside_pixels: outside,
-      opaque,
-      transparent,
-      color_count: colors.size,
-      colors: colors.size <= 256 ? [...colors].sort((a, c) => a - c).map(hex) : null,
-      palette_snapped: snapper !== null,
-      notes,
-    },
+  return { raster: out, colors, opaque }
+}
+
+export interface SourceGridReport extends GridSummary {
+  /** 경계 세기 자기상관으로 잰 원본 블록 크기. null = 봉우리가 없어 논리 격자(축척 간격)로 뽑았다 */
+  estimate: number | null
+  /** 첫 봉우리 두드러짐(격자 뚜렷함) */
+  prominence: number
+  /** 논리 화소 1개 = 원본 블록 몇 개 [가로, 세로](축척 / 블록 간격). 1이 아니면 블록이 두 번 쓰이거나 건너뛴다 */
+  blocks_per_pixel: [number, number]
+  /** 한 번도 안 뽑힌 블록 · 두 번 이상 뽑힌 블록 [가로, 세로](첫·끝 잘린 블록 제외) */
+  skipped: [number, number]
+  doubled: [number, number]
+  /** 색 묶음 수(허용 거리 clusterTol) · 외톨이 접기로 바꾼 논리 화소 */
+  clusters: number
+  islands_folded: number
+}
+
+const round2 = (n: number): number => Math.round(n * 100) / 100
+
+/**
+ * 또렷한 표본(mode). 띠 안 그림 화소 색을 묶고(clusterColors), 경계 세기 자기상관으로 원본 블록 크기를,
+ * 축별 동적 계획으로 격자선을 찾는다. 논리 화소는 가운데 점이 든 원본 블록의 가운데 영역 최빈색이다.
+ * 마지막에 둘레와 가까운 색의 1화소 외톨이를 둘레 색으로 접는다.
+ */
+function sampleMode(img: SourceImage, fg: Uint8Array, band: BandRect, size: [number, number], snapper: Snapper | null, notes: string[]): Sampled {
+  const [OW, OH] = size
+  const W = img.width
+  const sx = band.w / OW
+  const sy = band.h / OH
+  const include = (p: number): boolean => fg[p] === 1
+  const pixels: number[] = []
+  for (let y = Math.max(0, band.y); y < Math.min(img.height, band.y + band.h); y++) {
+    for (let x = Math.max(0, band.x); x < Math.min(W, band.x + band.w); x++) if (fg[y * W + x]) pixels.push(y * W + x)
   }
+  const cl = clusterColors(img, pixels, CRISP.clusterTol)
+  const li = labelImage(img, cl, band.x, band.y, band.w, band.h, include)
+  const [gx, gy] = gradients(img, band.x, band.y, band.w, band.h, include, CRISP.clusterTol)
+  const est = blockSize(gradientAcf(gx, gy, band.w, band.h, CRISP.maxLag))
+  const [ex, ey] = edgeProfiles(gx, gy, band.w, band.h)
+  let cutsX: number[]
+  let cutsY: number[]
+  if (est !== null) {
+    cutsX = fitCuts(ex, band.w, est.period, { lambda: CRISP.lambda })
+    cutsY = fitCuts(ey, band.h, est.period, { lambda: CRISP.lambda })
+  } else {
+    cutsX = Array.from({ length: OW + 1 }, (_, i) => i * sx)
+    cutsY = Array.from({ length: OH + 1 }, (_, i) => i * sy)
+    notes.push('원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다')
+  }
+  const summary = summarizeCuts(cutsX, cutsY, ex, ey)
+  // 블록 → 색 번호(묶음 번호, -1 투명). 논리 화소 가운데 점이 든 블록
+  const colX = Array.from({ length: OW }, (_, ox) => cellOf(cutsX, (ox + 0.5) * sx))
+  const rowY = Array.from({ length: OH }, (_, oy) => cellOf(cutsY, (oy + 0.5) * sy))
+  const cache = new Map<number, number>()
+  const nbx = cutsX.length - 1
+  const idx = new Int32Array(OW * OH).fill(-1)
+  for (let oy = 0; oy < OH; oy++) {
+    const by = rowY[oy]!
+    for (let ox = 0; ox < OW; ox++) {
+      const bx = colX[ox]!
+      if (bx < 0 || by < 0) continue
+      const key = by * nbx + bx
+      let v = cache.get(key)
+      if (v === undefined) {
+        v = blockMode(li, cutsX[bx]!, cutsX[bx + 1]!, cutsY[by]!, cutsY[by + 1]!, CRISP.inner).label
+        cache.set(key, v)
+      }
+      idx[oy * OW + ox] = v
+    }
+  }
+  const rgbOf = (v: number): [number, number, number] => {
+    const c = cl.colors[v]!
+    if (snapper === null) return c
+    const p = snapper.colors[snapper.nearest(...c)]!
+    return [p.r, p.g, p.b]
+  }
+  const folded = foldIslands(idx, OW, OH, rgbOf, CRISP.islandTol)
+  const out = createRaster(OW, OH)
+  const colors = new Set<number>()
+  let opaque = 0
+  for (let i = 0; i < OW * OH; i++) {
+    const v = idx[i]!
+    if (v < 0) continue
+    const rgb = rgbOf(v)
+    out.rgba.set([rgb[0], rgb[1], rgb[2], 255], i * 4)
+    colors.add((rgb[0] << 16) | (rgb[1] << 8) | rgb[2])
+    opaque++
+  }
+  const usage = (cells: number[], n: number): [number, number] => {
+    const used = new Int32Array(n)
+    for (const c of cells) if (c >= 0) used[c]! += 1
+    let skipped = 0
+    let doubled = 0
+    for (let i = 1; i < n - 1; i++) {
+      if (used[i] === 0) skipped++
+      else if (used[i]! >= 2) doubled++
+    }
+    return [skipped, doubled]
+  }
+  const [skX, dbX] = usage(colX, nbx)
+  const [skY, dbY] = usage(rowY, cutsY.length - 1)
+  const grid: SourceGridReport = {
+    estimate: est?.period ?? null,
+    prominence: est?.prominence ?? 0,
+    ...summary,
+    blocks_per_pixel: [round2(sx / summary.period[0]), round2(sy / summary.period[1])],
+    skipped: [skX, skY],
+    doubled: [dbX, dbY],
+    clusters: cl.colors.length,
+    islands_folded: folded,
+  }
+  if (est !== null && (Math.abs(grid.blocks_per_pixel[0] - 1) > 0.1 || Math.abs(grid.blocks_per_pixel[1] - 1) > 0.1)) {
+    notes.push(`원본 블록 약 ${est.period}화소인데 논리 화소는 ${round2(sx)}×${round2(sy)}화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아` +
+      ` 블록 ${skX + skY}줄은 건너뛰고 ${dbX + dbY}줄은 두 번 쓴다(가로 ${skX}/${dbX} · 세로 ${skY}/${dbY})`)
+  }
+  return { raster: out, colors, opaque, grid }
 }

@@ -16,6 +16,41 @@
   "fill": "opaque",
   "fit": "crop",
   "tile": false,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 3.05,
+    "prominence": 0.075,
+    "period": [
+      3.04,
+      3.03
+    ],
+    "phase": [
+      4,
+      2
+    ],
+    "blocks": [
+      504,
+      64
+    ],
+    "edge_fit": [
+      0.68,
+      0.65
+    ],
+    "blocks_per_pixel": [
+      0.99,
+      0.99
+    ],
+    "skipped": [
+      15,
+      4
+    ],
+    "doubled": [
+      23,
+      4
+    ],
+    "clusters": 1050,
+    "islands_folded": 26
+  },
   "band_found": [
     0,
     384,
@@ -44,7 +79,7 @@
   "outside_pixels": 96837,
   "opaque": 32768,
   "transparent": 0,
-  "color_count": 13397,
+  "color_count": 431,
   "colors": null,
   "palette_snapped": false,
   "notes": [

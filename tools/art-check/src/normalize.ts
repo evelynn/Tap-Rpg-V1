@@ -10,6 +10,24 @@
 // 규격 수치(칸 크기·지면선·중심)는 대응표(docs/art/imagegen.map.json)가 가진다. 이 파일에는 알고리즘만 있다.
 import { formatHex } from './manifest'
 import type { AlignSpec, RowSpec } from './imagegen-map'
+import {
+  blockMode,
+  blockSize,
+  cellOf,
+  clusterColors,
+  CRISP,
+  edgeProfiles as gradientProfiles,
+  extendCuts,
+  fitCuts,
+  foldIslands,
+  gradientAcf,
+  gradients,
+  labelImage,
+  mergeNearColors,
+  type BlockSizeEstimate,
+  type ColorClusters,
+  type LabelImage,
+} from './blocks'
 import { createRaster, type Raster } from './raster'
 
 export interface PaletteEntry {
@@ -213,43 +231,6 @@ function edgeProfiles(m: LabelMap): [Float64Array, Float64Array] {
   return [cols, rows]
 }
 
-/**
- * 원본 그림의 화소 블록 크기(원본 화소 몇 개가 그림의 한 칸인가)를 잰다.
- * 색 경계 위치의 주기성: 칸마다 경계 분포의 푸리에 크기 |Σ E(x)·e^{2πix/p}| / ΣE 를 p = 2.5~24에서 재고 가장 큰 p.
- * 경계가 200개 미만이면 null. 생성 그림은 격자가 고르지 않아 ±10% 정도의 추정이다.
- */
-export function measurePeriod(maps: LabelMap[]): number | null {
-  const profiles = maps.filter((m) => m.w > 0).flatMap((m) => edgeProfiles(m))
-  const total = profiles.reduce((s, e) => s + e.reduce((a, b) => a + b, 0), 0)
-  if (total < 200) return null
-  const ps: number[] = []
-  const scores: number[] = []
-  for (let p = 2.5; p <= 24.0001; p += 0.05) {
-    let num = 0
-    for (const e of profiles) {
-      let re = 0
-      let im = 0
-      for (let x = 0; x < e.length; x++) {
-        const n = e[x]!
-        if (n === 0) continue
-        re += n * Math.cos((2 * Math.PI * x) / p)
-        im += n * Math.sin((2 * Math.PI * x) / p)
-      }
-      num += Math.hypot(re, im)
-    }
-    ps.push(p)
-    scores.push(num / total)
-  }
-  // p/2, p/3 같은 배음도 같은 크기로 솟으므로, 최고점의 90% 이상인 극대점 가운데 가장 큰 p를 고른다
-  const max = Math.max(...scores)
-  let best = ps[scores.indexOf(max)]!
-  for (let i = 1; i < ps.length - 1; i++) {
-    const s = scores[i]!
-    if (s >= 0.9 * max && s >= scores[i - 1]! && s >= scores[i + 1]! && ps[i]! > best) best = ps[i]!
-  }
-  return Math.round(best * 100) / 100
-}
-
 /** 칸 안의 색 경계가 블록 경계에 가장 많이 걸리는 위상 [ox, oy](rect 왼쪽 위 기준, 0 ≤ o < scale, 0.25 단위) */
 export function estimatePhase(m: LabelMap, scale: number): [number, number] {
   const pick = (edges: Float64Array): number => {
@@ -286,14 +267,24 @@ export interface BlockGrid {
   ny: number
   /** 팔레트 번호, -1 = 투명 */
   idx: Int16Array
-  /** 이긴 색이 블록 화소에서 차지한 비율 */
+  /** 이긴 색 묶음이 블록 가운데 영역 화소에서 차지한 비율 */
   purity: Float32Array
-  /** 이긴 색 원본 화소 평균과 팔레트 색의 거리 */
+  /** 이긴 색 묶음 대표색과 팔레트 색의 거리 */
   error: Float32Array
 }
 
-/** 블록 다수결: 불투명 화소가 블록의 절반 이상이면 불투명, 색은 불투명 화소 가운데 최다 팔레트 번호(같으면 앞 번호) */
-export function downsample(img: SourceImage, m: LabelMap, scale: number, anchor: [number, number], snapper: Snapper): BlockGrid {
+/** 칸 하나의 원본 블록: 색 묶음 번호 격자(칸 소유 화소만)와 원본 블록 격자선(원본 좌표, null = 논리 격자 칸으로 뽑는다) */
+export interface CellBlocks {
+  li: LabelImage
+  cuts: [number[], number[]] | null
+}
+
+/**
+ * 격자점 표본: 격자점 (i, j)의 가운데 점(ax + (i + ½)·s, ay + (j + ½)·s)이 든 원본 블록의 가운데 영역 최빈 묶음(blockMode)을
+ * 고르고, 그 대표색 하나를 팔레트로 스냅한다. 원본 화소마다 스냅해 다수결하면 두 팔레트 색 사이 색의 면이 점무늬가 된다.
+ * 원본 블록 격자가 없으면 격자점 칸 자체를 블록으로 본다. 블록 가운데 영역에서 배경이 절반을 넘으면 투명.
+ */
+export function sampleCell(m: LabelMap, blocks: CellBlocks, clusters: ColorClusters, scale: number, anchor: [number, number], snapper: Snapper): BlockGrid {
   const { rect } = m
   const [ax, ay] = anchor
   const lat = (v: number, a: number): number => Math.floor((v + 0.5 - a) / scale)
@@ -301,56 +292,48 @@ export function downsample(img: SourceImage, m: LabelMap, scale: number, anchor:
   const j0 = lat(rect.y0, ay)
   const nx = m.w === 0 ? 0 : lat(rect.x1 - 1, ax) - i0 + 1
   const ny = m.h === 0 ? 0 : lat(rect.y1 - 1, ay) - j0 + 1
-  const L = snapper.colors.length
-  const slots = L + 1
-  const counts = new Int32Array(nx * ny * slots)
-  const blockOf = (x: number, y: number): number => (lat(y, ay) - j0) * nx + (lat(x, ax) - i0)
-  for (let y = 0; y < m.h; y++) {
-    for (let x = 0; x < m.w; x++) {
-      const lab = m.labels[y * m.w + x]!
-      counts[blockOf(rect.x0 + x, rect.y0 + y) * slots + (lab < 0 ? L : lab)]! += 1
-    }
-  }
   const idx = new Int16Array(nx * ny).fill(-1)
   const purity = new Float32Array(nx * ny)
-  for (let b = 0; b < nx * ny; b++) {
-    let total = 0
-    let best = -1
-    let bestN = 0
-    for (let s = 0; s < L; s++) {
-      const n = counts[b * slots + s]!
-      total += n
-      if (n > bestN) {
-        bestN = n
-        best = s
-      }
-    }
-    const bg = counts[b * slots + L]!
-    total += bg
-    if (total === 0 || (total - bg) * 2 < total) continue
-    idx[b] = best
-    purity[b] = bestN / total
-  }
-  const sum = new Float64Array(nx * ny * 4)
-  for (let y = 0; y < m.h; y++) {
-    for (let x = 0; x < m.w; x++) {
-      const lab = m.labels[y * m.w + x]!
-      const b = blockOf(rect.x0 + x, rect.y0 + y)
-      if (lab < 0 || lab !== idx[b]) continue
-      const o = ((rect.y0 + y) * img.width + rect.x0 + x) * 4
-      sum[b * 4]! += img.rgba[o]!
-      sum[b * 4 + 1]! += img.rgba[o + 1]!
-      sum[b * 4 + 2]! += img.rgba[o + 2]!
-      sum[b * 4 + 3]! += 1
-    }
-  }
   const error = new Float32Array(nx * ny)
-  for (let b = 0; b < nx * ny; b++) {
-    const i = idx[b]!
-    if (i < 0) continue
-    const n = sum[b * 4 + 3]!
-    const c = snapper.colors[i]!
-    error[b] = colorDistance(sum[b * 4]! / n, sum[b * 4 + 1]! / n, sum[b * 4 + 2]! / n, c.r, c.g, c.b)
+  const { li, cuts } = blocks
+  const memo = new Map<string, { label: number; purity: number }>()
+  for (let j = 0; j < ny; j++) {
+    const cy = ay + (j0 + j + 0.5) * scale
+    for (let i = 0; i < nx; i++) {
+      const cx = ax + (i0 + i + 0.5) * scale
+      let x0: number
+      let x1: number
+      let y0: number
+      let y1: number
+      if (cuts === null) {
+        x0 = cx - scale / 2
+        x1 = cx + scale / 2
+        y0 = cy - scale / 2
+        y1 = cy + scale / 2
+      } else {
+        const bx = cellOf(cuts[0], cx)
+        const by = cellOf(cuts[1], cy)
+        if (bx < 0 || by < 0) continue
+        x0 = cuts[0][bx]!
+        x1 = cuts[0][bx + 1]!
+        y0 = cuts[1][by]!
+        y1 = cuts[1][by + 1]!
+      }
+      const k = `${x0},${y0}`
+      let r = memo.get(k)
+      if (r === undefined) {
+        r = blockMode(li, x0 - li.x0, x1 - li.x0, y0 - li.y0, y1 - li.y0, CRISP.inner)
+        memo.set(k, r)
+      }
+      if (r.label < 0) continue
+      const b = j * nx + i
+      const rgb = clusters.colors[r.label]!
+      const p = snapper.nearest(...rgb)
+      const c = snapper.colors[p]!
+      idx[b] = p
+      purity[b] = r.purity
+      error[b] = colorDistance(rgb[0], rgb[1], rgb[2], c.r, c.g, c.b)
+    }
   }
   return { i0, j0, nx, ny, idx, purity, error }
 }
@@ -426,11 +409,15 @@ export interface CellTransform {
   /** 블록 격자 기준점(원본 좌표). null = 기준 시트에서 빈 칸(레이어도 이 칸을 쓰지 않는다) */
   anchor: [number, number] | null
   shift: [number, number] | null
+  /** 원본 블록 격자선 [가로, 세로](원본 좌표). null = 블록 크기를 못 재 격자점 칸으로 뽑았다(레이어도 같다) */
+  cuts: [number[], number[]] | null
 }
 
 export interface SheetTransform {
   sourceSize: [number, number]
   scale: number
+  /** 원본 블록 크기(경계 세기 자기상관). null = 못 쟀다 */
+  blockSize: number | null
   cells: CellTransform[]
 }
 
@@ -457,6 +444,10 @@ export interface CellReport {
   palette_error: { mean: number; max: number }
   /** 불투명 블록에서 이긴 색이 차지한 평균 비율 */
   block_purity: number
+  /** 칸 안 거의 같은 색(가중 거리 < mergeTol)을 흔한 색으로 합친 논리 화소 */
+  colors_merged: number
+  /** 둘레와 가까운 색(가중 거리 < islandTol)의 1화소 외톨이를 둘레 색으로 접은 논리 화소 */
+  islands_folded: number
 }
 
 export interface SheetReport {
@@ -467,13 +458,15 @@ export interface SheetReport {
   cell_ratio: [number, number]
   scale: number
   scale_origin: 'map' | 'cell_ratio' | 'reference' | 'spec'
-  /** 원본 그림에서 잰 화소 블록 크기 */
+  /** 원본 그림에서 잰 화소 블록 크기(경계 세기 자기상관, 레이어는 기준 시트 값) */
   art_period: number | null
   notes: string[]
   totals: {
     opaque: number
     dropped_outside: number
     specks_removed: number
+    colors_merged: number
+    islands_folded: number
     colors: string[]
     palette_error_mean: number
     palette_error_max: number
@@ -498,6 +491,69 @@ export interface NormalizeResult {
 
 const round2 = (n: number): number => Math.round(n * 100) / 100
 
+/** 축척과 무관한 시트 분석. scale_to_spec이 축척만 바꿔 여러 번 정규화하므로 원본·격자·열쇠·팔레트가 같으면 다시 쓴다 */
+interface SheetAnalysis {
+  snapper: Snapper
+  own: Ownership
+  maps: LabelMap[]
+  clusters: ColorClusters
+  /** 칸마다 소유 화소의 색 묶음 번호 격자(칸 bbox) */
+  cells: LabelImage[]
+  /** 기준 시트일 때만: 원본 블록 크기와 칸별 격자선(원본 좌표) */
+  block: BlockSizeEstimate | null
+  cuts: ([number[], number[]] | null)[]
+}
+
+const analyses = new WeakMap<SourceImage, Map<string, SheetAnalysis>>()
+
+/**
+ * 칸 배정·팔레트 번호(기준점 위상용)·색 묶기(clusterColors, 시트 전체)를 하고, 기준 시트면 원본 블록 크기
+ * (칸마다 경계 세기 자기상관을 더해 blockSize)와 칸별 격자선(fitCuts, 칸 bbox를 1화소 넓혀 윤곽 경계도 넣는다)을 찾는다.
+ */
+function analyzeSheet(img: SourceImage, key: KeyOptions, cols: number, rows: number, snapper: Snapper, withBlocks: boolean): SheetAnalysis {
+  const k = `${cols}x${rows}|${JSON.stringify(key)}|${withBlocks}`
+  let byKey = analyses.get(img)
+  const hit = byKey?.get(k)
+  if (hit !== undefined && hit.snapper === snapper) return hit
+  const own = assignCells(img, key, cols, rows)
+  const maps = own.boxes.map((_, n) => labelCell(img, own, n, snapper))
+  const pixels: number[] = []
+  for (let p = 0; p < own.owner.length; p++) if (own.owner[p]! >= 0) pixels.push(p)
+  const clusters = clusterColors(img, pixels, CRISP.clusterTol)
+  const cells = maps.map((m, n) => labelImage(img, clusters, m.rect.x0, m.rect.y0, m.w, m.h, (p) => own.owner[p] === n))
+  let block: BlockSizeEstimate | null = null
+  const cuts: ([number[], number[]] | null)[] = maps.map(() => null)
+  if (withBlocks) {
+    const grads = maps.map((m, n) => {
+      if (m.w === 0) return null
+      const x0 = m.rect.x0 - 1
+      const y0 = m.rect.y0 - 1
+      const w = m.w + 2
+      const h = m.h + 2
+      return { x0, y0, w, h, g: gradients(img, x0, y0, w, h, (p) => own.owner[p] === n, CRISP.clusterTol) }
+    })
+    const acf = new Float64Array(CRISP.maxLag + 1)
+    for (const g of grads) if (g !== null) gradientAcf(g.g[0], g.g[1], g.w, g.h, CRISP.maxLag, acf)
+    block = blockSize(acf)
+    if (block !== null) {
+      grads.forEach((g, n) => {
+        if (g === null) return
+        const [ex, ey] = gradientProfiles(g.g[0], g.g[1], g.w, g.h)
+        const cx = fitCuts(ex, g.w, block!.period, { lambda: CRISP.lambda }).map((c) => c + g.x0)
+        const cy = fitCuts(ey, g.h, block!.period, { lambda: CRISP.lambda }).map((c) => c + g.y0)
+        cuts[n] = [cx, cy]
+      })
+    }
+  }
+  const a: SheetAnalysis = { snapper, own, maps, clusters, cells, block, cuts }
+  if (byKey === undefined) {
+    byKey = new Map()
+    analyses.set(img, byKey)
+  }
+  byKey.set(k, a)
+  return a
+}
+
 /**
  * 시트 하나를 정규화한다.
  * reference가 없으면 기준 시트로 보고 축척·기준점·이동을 계산한다.
@@ -515,12 +571,12 @@ export function normalizeSheet(
   if (reference !== undefined && (reference.sourceSize[0] !== img.width || reference.sourceSize[1] !== img.height)) {
     throw new Error(`레이어 원본 크기 ${img.width}×${img.height}가 기준 시트 원본 ${reference.sourceSize[0]}×${reference.sourceSize[1]}와 다르다`)
   }
-  const own = assignCells(img, key, cols, rows)
-  const maps = own.boxes.map((_, n) => labelCell(img, own, n, snapper))
+  const an = analyzeSheet(img, key, cols, rows, snapper, reference === undefined)
+  const { own, maps } = an
   const ratio: [number, number] = [img.width / cols / cw, img.height / rows / ch]
   const notes: string[] = []
-  // 레이어는 축척을 물려받으므로 재지 않는다(민머리·면이 넓은 레이어에서는 추정도 흔들린다)
-  const period = reference === undefined ? measurePeriod(maps) : null
+  // 레이어는 블록 크기·격자선을 물려받는다(민머리·면이 넓은 레이어에서는 추정도 흔들린다)
+  const period = reference === undefined ? an.block?.period ?? null : reference.blockSize
 
   let scale: number
   let origin: SheetReport['scale_origin']
@@ -564,8 +620,23 @@ export function normalizeSheet(
       const [ox, oy] = estimatePhase(m, scale)
       anchor = [m.rect.x0 + ox, m.rect.y0 + oy]
     }
+    // 레이어는 기준 칸의 원본 블록 격자선을 쓴다(레이어 그림이 기준 칸 사각형을 넘으면 같은 간격으로 늘린다)
+    let cuts: [number[], number[]] | null
+    if (reference === undefined) cuts = an.cuts[n] ?? null
+    else {
+      const rc = reference.cells[n]!.cuts
+      cuts = rc === null || reference.blockSize === null || m.w === 0
+        ? null
+        : [extendCuts(rc[0], m.rect.x0, m.rect.x1, reference.blockSize), extendCuts(rc[1], m.rect.y0, m.rect.y1, reference.blockSize)]
+    }
     // 레이어인데 기준 칸이 비었으면 격자를 칸 원점에 둬서 화소 수만 센다
-    const grid = downsample(img, m, scale, anchor ?? [m.rect.x0, m.rect.y0], snapper)
+    const grid = sampleCell(m, { li: an.cells[n]!, cuts }, an.clusters, scale, anchor ?? [m.rect.x0, m.rect.y0], snapper)
+    const paletteRgb = (i: number): [number, number, number] => {
+      const c = snapper.colors[i]!
+      return [c.r, c.g, c.b]
+    }
+    const merged = mergeNearColors(grid.idx, paletteRgb, CRISP.mergeTol)
+    const folded = foldIslands(grid.idx, grid.nx, grid.ny, paletteRgb, CRISP.islandTol)
     const specks = removeSpecks(grid, 1)
     let shift: [number, number] | null
     if (reference !== undefined) shift = reference.cells[n]!.shift
@@ -632,7 +703,7 @@ export function normalizeSheet(
     }
     if (shift !== null && dropped > 0) notes.push(`칸 (${col},${row}): 정렬 뒤 칸 밖으로 나간 논리 화소 ${dropped}개를 버렸다`)
 
-    cells.push({ col, row, anchor, shift })
+    cells.push({ col, row, anchor, shift, cuts: reference === undefined ? cuts : reference.cells[n]!.cuts })
     reports.push({
       col,
       row,
@@ -650,6 +721,8 @@ export function normalizeSheet(
       colors: [...colors].sort((a, b) => a - b).map(formatHex),
       palette_error: { mean: placed > 0 ? round2(cellErr / placed) : 0, max: round2(cellErrMax) },
       block_purity: placed > 0 ? round2(puritySum / placed) : 0,
+      colors_merged: merged,
+      islands_folded: folded,
     })
   }
 
@@ -666,11 +739,13 @@ export function normalizeSheet(
       opaque: reports.reduce((s, r) => s + r.opaque, 0),
       dropped_outside: reports.reduce((s, r) => s + r.dropped_outside, 0),
       specks_removed: reports.reduce((s, r) => s + r.specks_removed, 0),
+      colors_merged: reports.reduce((s, r) => s + r.colors_merged, 0),
+      islands_folded: reports.reduce((s, r) => s + r.islands_folded, 0),
       colors: [...allColors].sort((a, b) => a - b).map(formatHex),
       palette_error_mean: errN > 0 ? round2(errSum / errN) : 0,
       palette_error_max: round2(errMax),
     },
     cells: reports,
   }
-  return { raster: out, transform: { sourceSize: [img.width, img.height], scale, cells }, report }
+  return { raster: out, transform: { sourceSize: [img.width, img.height], scale, blockSize: period, cells }, report }
 }
