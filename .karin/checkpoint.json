@@ -8,7 +8,7 @@
   "plan_file": "C:/Users/hansol/.claude/plans/reflective-floating-lovelace.md",
   "handoff": ".karin/HANDOFF.md",
   "stack": "Tauri 2 + TypeScript (pnpm 모노레포, 오프라인 설치). M2는 브라우저 시제품 apps/desktop/ui(esbuild + node:http), Tauri 창은 네트워크 허용 뒤",
-  "design_docs": "docs/design/00~18 (01 수치·ID, 00 §2.4 규칙 소유표, 00 §3 결정 D01~D75, D76 예정), docs/dev/*, docs/art/{PROMPTS,V06_REQUEST}.md, docs/research/TBH_분석.md",
+  "design_docs": "docs/design/00~18 (01 수치·ID, 00 §2.4 규칙 소유표, 00 §3 결정 D01~D76), docs/dev/*, docs/art/{PROMPTS,V06_REQUEST}.md, docs/research/TBH_분석.md",
   "tasks": [
     {
       "id": "T1",
@@ -133,36 +133,36 @@
     {
       "id": "D76",
       "subject": "Taskbar Hero 채택 사항 설계 반영",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium"
     },
     {
       "id": "M2c",
-      "subject": "상세 창(03 §5) 구현",
-      "status": "pending",
+      "subject": "상세 창(03 §5) — 첫 조각 완료(일지·인물·방침·가문 연대기), 다음: 태도 빠른 메뉴·목적지·가계도·도감·유품 탭·출정 중 장착 예약·저주 확인·최근 요약",
+      "status": "in_progress",
       "priority": "medium"
     },
     {
       "id": "A3",
-      "subject": "codex 추가 요청(전리품·반짝임·주사위·세대 교대 장면·아이콘 12×12)",
+      "subject": "codex 추가 요청(떨어진 꾸러미·판정 주사위·계승 출발 장면 ES21·반짝임·UI 아이콘 12×12 규격 정리) — 그래픽은 codex v06 완료 뒤",
       "status": "pending",
       "priority": "medium"
     },
     {
       "id": "B1",
       "subject": "name_pool 고갈 예외(succession/partner.ts:49) 재현·수정",
-      "status": "pending",
+      "status": "completed",
       "priority": "medium"
     }
   ],
-  "current_task": "D76",
-  "next_action": "HANDOFF §0 → D76(TBH 채택 사항 설계 반영) → 상세 창 → codex 추가 요청(UI 아이콘 12×12 규격 정리 포함)",
+  "current_task": "M2c",
+  "next_action": "그래픽은 codex 완료까지 보류(사용자 지시 2026-09-27). 다음: M2c 둘째 조각 또는 M3 생애의 책(18) → M1 독립 재검증",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
     "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "e3738c2",
-  "verify_state": "pnpm check 1166 통과, lint:docs 0, 배율 1 스크린숏 2줄·겹침 없음 확인 (2026-09-27)",
-  "last_updated": "2026-09-27T00:00:00+09:00"
+  "last_commit": "5e17c8a",
+  "verify_state": "pnpm check 1184 통과, lint:docs 0, 60생애×가문 60 시뮬레이션 예외 0, 상세 창 스크린숏 확인 (2026-09-27)",
+  "last_updated": "2026-09-27T04:00:00+09:00"
 }
