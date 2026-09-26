@@ -2,7 +2,7 @@
 import { Content, ageAt, createGameWorld, type World } from '@tap/core'
 import { App } from './app'
 import { SPEEDS } from './driver'
-import { surface } from './layout'
+import { drawDue, surface } from './layout'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
 import { SHEETS, STRIPS } from './sprites'
@@ -87,11 +87,23 @@ async function start(): Promise<void> {
   controls.append(pause)
   pause.onclick = () => app.driver.setPaused(!app.driver.paused)
 
+  // 진행은 매 프레임, 그리기는 초당 최대 30번(drawDue). 숨어 있으면 브라우저가 프레임을 멈추므로
+  // 1초마다 진행만 한다(그리기 0, 03 §10·D76)
   let last = performance.now()
-  const frame = (now: number): void => {
-    const dt = Math.min(250, Math.max(0, now - last)) // 백그라운드 탭에서 돌아왔을 때 한꺼번에 흘리지 않는다
+  let lastDraw = -Infinity
+  const advance = (now: number, cap: number) => {
+    const dt = Math.min(cap, Math.max(0, now - last))
     last = now
-    const view = app.step(now, dt, dark.matches)
+    return app.step(now, dt, dark.matches)
+  }
+  setInterval(() => { if (document.hidden) advance(performance.now(), 1000) }, 1000)
+  const frame = (now: number): void => {
+    const view = advance(now, 250) // 숨김에서 돌아왔을 때 한꺼번에 흘리지 않는다
+    if (!drawDue(now, lastDraw)) {
+      requestAnimationFrame(frame)
+      return
+    }
+    lastDraw = now
     renderer.draw(view)
     panel.update(view)
     const ch = app.world.state.character

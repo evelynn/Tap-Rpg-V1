@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, artScale, surface } from '../src/layout'
+import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, artScale, drawDue, surface } from '../src/layout'
 import { SCENES } from '../src/scenes'
 import { measure11 } from './measure'
 
@@ -34,6 +34,34 @@ describe('기본 창 768 × 64 배치(D75)', () => {
     assert.equal(TEXT.row1.y + TEXT.lineH, 30)
     assert.ok(TEXT.row1.y + TEXT.lineH < TEXT.row2.y)
     assert.equal(TEXT.row1.y, WIN.h - (TEXT.row2.y + TEXT.lineH), '위아래 여백이 같다')
+  })
+})
+
+describe('그리기 상한(01 §16, D76)', () => {
+  it('60Hz 프레임(16.67ms 간격, ±0.3 떨림)이면 1초에 30번 그린다', () => {
+    let last = -Infinity
+    let draws = 0
+    for (let i = 0; i < 60; i++) {
+      const now = i * (1000 / 60) + (i % 2 ? 0.3 : -0.3)
+      if (drawDue(now, last)) {
+        draws++
+        last = now
+      }
+    }
+    assert.equal(draws, 30)
+  })
+
+  it('144Hz에서도 초당 30번을 넘지 않는다', () => {
+    let last = -Infinity
+    let draws = 0
+    for (let i = 0; i < 144; i++) {
+      const now = i * (1000 / 144)
+      if (drawDue(now, last)) {
+        draws++
+        last = now
+      }
+    }
+    assert.ok(draws <= 30 && draws >= 28, `${draws}번`)
   })
 })
 

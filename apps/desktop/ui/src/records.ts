@@ -1,4 +1,4 @@
-// 한 줄 기록 교체(03 §2.5, 14 §2): 최소 4초, A 등급([중요]·[사망]·[은퇴]·[계승])은 8초.
+// 한 줄 기록 교체(03 §2.5, 14 §2): 최소 4초, A 등급([중요]·[사망]·[은퇴]·[계승])과 희귀 이상 획득(long, D76)은 8초.
 // 대기열 최대 5개. A는 맨 앞에 끼어들고 B는 C·D보다 앞선다. 넘치면 등급이 낮고 오래된 기록부터 뺀다(일지에는 모두 남는다).
 // 새 기록이 없으면 마지막 기록을 계속 보인다
 
@@ -9,6 +9,7 @@ export interface LineItem {
   text: string
   grade: Grade
   eventId?: string
+  long?: boolean // 등급과 별개로 8초 보인다(희귀 이상 장비 획득, 03 §2.5)
 }
 
 export interface LineRules {
@@ -27,7 +28,7 @@ export class LineQueue {
   constructor(private readonly rules: LineRules) {}
 
   holdMs(item: LineItem): number {
-    return (item.grade === 'A' ? this.rules.importantSec : this.rules.minSec) * 1000
+    return (item.grade === 'A' || item.long ? this.rules.importantSec : this.rules.minSec) * 1000
   }
 
   push(item: LineItem): void {

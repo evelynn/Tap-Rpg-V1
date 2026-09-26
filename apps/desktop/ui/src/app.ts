@@ -35,7 +35,11 @@ export class App {
   step(now: number, dt: number, dark = false): FrameView {
     const { world, driver, lines } = this
     for (const e of driver.tick(dt)) {
-      lines.push({ id: e.id, text: e.line, grade: journalGrade(e), ...(e.refs?.event_id ? { eventId: e.refs.event_id } : {}) })
+      lines.push({
+        id: e.id, text: e.line, grade: journalGrade(e),
+        ...(e.refs?.event_id ? { eventId: e.refs.event_id } : {}),
+        ...(e.tag === 'gear' && e.sub === 'rare_gain' ? { long: true } : {}), // 드롭 순간(D76)
+      })
     }
     if (lines.update(now)) this.scenes.onLine(lines.current?.eventId, now)
 

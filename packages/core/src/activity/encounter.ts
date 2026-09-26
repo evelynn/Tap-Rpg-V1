@@ -7,7 +7,7 @@ import {
 import { earnCoins } from '../economy/earn'
 import { addJournal } from '../journal/index'
 import { relicReturn } from '../succession/relics'
-import { considerPickup, stowLoot } from '../items/bag'
+import { considerPickup, markRareGain, stowLoot } from '../items/bag'
 import { guaranteedDrop, materializeItem, rollEncounterDrop, type DropSpec } from '../items/roll'
 import { thirstOnWin } from '../life/index'
 import { characterOf, type RuleContext } from '../rules/context'
@@ -204,7 +204,7 @@ export function pickupLoot(world: World, uid: string, place: string): void {
     if (!inv.bag.includes(uid) && !inv.pending_box.includes(uid)) journal = []
   }
   if (sold) ch.counters[COUNTERS.fieldSold] = (ch.counters[COUNTERS.fieldSold] ?? 0) + sold
-  for (const d of journal) addJournal(world, d)
+  for (const d of markRareGain(world, uid, journal)) addJournal(world, d)
 }
 
 // 판단 지점 앞 숨 고르기(07 §2). 관문 앞에서는 하지 않는다

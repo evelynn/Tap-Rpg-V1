@@ -2,7 +2,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import type { Rng } from '../../src/index'
-import { dropCandidates, dropGradeWeights, grantItem, guaranteedDrop, materializeItem, putPending, rollDrop, rollEncounterDrop, stowLoot } from '../../src/items/index'
+import { dropCandidates, dropGradeWeights, grantItem, guaranteedDrop, markRareGain, materializeItem, putPending, rollDrop, rollEncounterDrop, stowLoot } from '../../src/items/index'
 import { baseContent, baseWorld, give } from './base-fixture'
 
 // 예정된 값만 돌려주는 난수(weightedPick은 nextU32 하나를 쓴다)
@@ -160,5 +160,35 @@ describe('08 §9.3~§9.4 현장 정리와 수령 대기함', () => {
     assert.equal(ch.coins, 1238) // A05 희귀 4,950 × 25%
     assert.equal(w.state.inventory.pending_box.length, 10)
     assert.ok(!w.state.inventory.pending_box.includes(first))
+  })
+})
+
+describe('희귀 이상 획득 기록(14 §2, 18 §4.1 rare_gain, D76)', () => {
+  it('가방에만 들어간 희귀 장비는 [장비] 획득 한 줄(주요, rare_gain)을 더한다', () => {
+    const w = baseWorld()
+    const uid = give(w, 'W08', 'rare')
+    w.state.inventory.bag.push(uid)
+    const out = markRareGain(w, uid, [])
+    assert.equal(out.length, 1)
+    assert.deepEqual([out[0]!.tag, out[0]!.importance, out[0]!.sub, out[0]!.refs?.item_uid], ['gear', 'major', 'rare_gain', uid])
+    assert.match(out[0]!.line, /손에 넣었다$/)
+  })
+
+  it('바로 찬 기록이 있으면 그 기록을 올리고 새 줄을 더하지 않는다', () => {
+    const w = baseWorld()
+    const uid = give(w, 'W08', 'legendary')
+    w.state.inventory.equipped.weapon = uid
+    const out = markRareGain(w, uid, [{ tag: 'gear', line: '주운 검을 바로 찼다.', refs: { item_uid: uid } }])
+    assert.equal(out.length, 1)
+    assert.deepEqual([out[0]!.importance, out[0]!.sub], ['major', 'rare_gain'])
+  })
+
+  it('일반·좋은 등급, 가방에 남지 않은(현장에서 판) 희귀는 그대로다', () => {
+    const w = baseWorld()
+    const good = give(w, 'W08', 'good')
+    w.state.inventory.bag.push(good)
+    assert.deepEqual(markRareGain(w, good, []), [])
+    const sold = give(w, 'W08', 'rare')
+    assert.deepEqual(markRareGain(w, sold, []), [])
   })
 })

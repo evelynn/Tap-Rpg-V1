@@ -17,6 +17,7 @@ const LINE_SUGGEST = '{item:이/가} 더 나아 보인다.' // 08 §8.2
 const LINE_FIELD_SOLD = '가방이 차서 {count}개를 현장에서 팔았다.' // 08 §9.3
 const LINE_REPLACED = '대신 {item:을/를} 받았다.' // 08 §9.5
 const LINE_REPLACED_DETAIL = '같은 물건은 이미 집에 있었다.'
+const LINE_GAIN = '{item:을/를} 손에 넣었다' // 14 §5.1 희귀 이상 획득
 
 export const itemName = (ctx: RuleContext, inst: Pick<ItemInstance, 'def_id' | 'prefix'>) => {
   const name = ctx.content.get('item', inst.def_id).name
@@ -203,6 +204,21 @@ export function considerPickup(ctx: RuleContext, uid: string, opts: EvalOptions 
   return { equipped: true, fieldSold: r.fieldSold, journal: [{ tag: 'gear', line: renderTemplate(LINE_PICKUP_EQUIP, { item: name }), refs: { item_uid: uid } }] }
 }
 
+
+// 희귀 이상·고유 장비 획득(14 §2 주요, 18 §4.1 rare_gain, 03 §2.5 8초·D76). 줍기 기록이 이미 그 장비를 말하면
+// (바로 찼다) 그 기록을 주요 rare_gain으로 올리고, 가방에만 들어갔으면 획득 한 줄을 더한다. 그 밖은 그대로 돌려준다
+export function markRareGain(ctx: RuleContext, uid: string, journal: JournalDraft[]): JournalDraft[] {
+  const inst = ctx.state.item_instances[uid]
+  if (!inst) return journal
+  const rare = inst.grade === 'rare' || inst.grade === 'legendary' || ctx.content.get('item', inst.def_id).unique
+  if (!rare) return journal
+  const said = journal.find((d) => d.refs?.item_uid === uid)
+  if (said) return journal.map((d) => (d === said ? { ...d, importance: 'major' as const, sub: 'rare_gain' as const } : d))
+  const inv = ctx.state.inventory
+  const kept = inv.bag.includes(uid) || inv.pending_box.includes(uid) || Object.values(inv.equipped).includes(uid)
+  if (!kept) return journal
+  return [...journal, { tag: 'gear', importance: 'major', sub: 'rare_gain', line: renderTemplate(LINE_GAIN, { item: itemName(ctx, inst) }), refs: { item_uid: uid } }]
+}
 
 // 지정 장비 지급(사건 add_item·관문 보상 등): 등급이 없으면 변동 장비는 table로 굴린다. 고유 장비는 가문에 있으면 대체(08 §9.5).
 // reroll 대체(J05 류)는 부르는 쪽 굴림에 맡기고 null. 넣을 곳: 가방(차면 현장 정리) 또는 수령 대기함

@@ -23,6 +23,14 @@ export const TEXT = {
 }
 export const FONT_FAMILY = 'system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif'
 
+// 그리기 상한(01 §16, 03 §10, D76): 보일 때 초당 최대 30번. 화면 주사율이 60이면 두 번에 한 번 그린다.
+// 1ms 여유는 주사 간격 떨림(16.6 ± 0.x) 때문에 두 간격(33.3)이 30번 경계에 걸려 한 번 더 건너뛰지 않게 한다
+export const DRAW_MIN_MS = 1000 / 30 - 1
+
+export function drawDue(now: number, lastDraw: number): boolean {
+  return now - lastDraw >= DRAW_MIN_MS
+}
+
 // 그림 정수 배율 k: 표시 배율 × 개발용 확대를 아래로 내린 정수. 1 미만은 1
 export function artScale(dpr: number, userScale = 1): number {
   return Math.max(1, Math.floor(dpr * userScale + 1e-9))

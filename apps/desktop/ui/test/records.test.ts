@@ -26,6 +26,15 @@ describe('한 줄 기록 교체(03 §2.5)', () => {
     assert.equal(q.update(8000), true)
   })
 
+  it('희귀 이상 획득(long)은 등급과 별개로 8초 보인다(D76)', () => {
+    const q = new LineQueue(RULES)
+    q.push({ ...item(1, 'B'), long: true })
+    q.update(0)
+    q.push(item(2))
+    assert.equal(q.update(7999), false)
+    assert.equal(q.update(8000), true)
+  })
+
   it('새 기록이 없으면 마지막 기록을 계속 보인다', () => {
     const q = new LineQueue(RULES)
     q.push(item(1))
