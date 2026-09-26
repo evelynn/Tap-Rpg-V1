@@ -2,7 +2,7 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   candidateStats, createChildCandidate, createFallbackCandidates, defaultHeir, endLife, heirCandidates, makePartner,
-  parentCall, readPartner, startHeir, suggestNames,
+  parentCall, readPartner, startHeir, suggestNames, usedNames, writePartner,
 } from '../../src/succession/index'
 import { lifeWorld, setAge, withFamily } from './fixture'
 
@@ -118,5 +118,37 @@ describe('자녀 후보는 다시 뽑히지 않는다(12 §10)', () => {
     assert.ok(cand.traits.length >= 1)
     assert.ok(cand.episodes.length >= 1)
     assert.ok(cand.appearance.hair.length > 0)
+  })
+})
+
+describe('이름 다시 쓰기(02 §9.1 5대 안 중복 금지, 12 §3.6, B1)', () => {
+  // 30대째 가문: 연대기 29명이 풀 56개 가운데 29개를, 동반자 29명이 또 다른 이름을 모두 썼다(이전 구현은 여기서 멈췄다)
+  function oldFamily() {
+    const w = lifeWorld()
+    const pool = w.content.list('name_pool').flatMap((p) => p.given_names)
+    const base = w.state.family.chronicle[0] ?? null
+    const G = 30
+    w.state.family.generation = G
+    w.state.character!.generation = G
+    w.state.character!.name = pool[55]!
+    w.state.family.chronicle = Array.from({ length: G - 1 }, (_, i) => ({ ...(base ?? {}), gen: i + 1, name: pool[i]! }) as (typeof w.state.family.chronicle)[number])
+    for (let g = 1; g <= G; g++) writePartner(w.state.family, { gen: g, name: pool[(29 + g - 1) % 55]!, job: '', traits: [], hair_color: '' })
+    return { w, pool, G }
+  }
+
+  it('최근 4대 연대기·지금 인물·최근 두 세대 동반자 이름만 뺀다', () => {
+    const { w, pool, G } = oldFamily()
+    const used = usedNames(w.state)
+    assert.ok(used.has(pool[55]!), '지금 인물')
+    for (let g = G - 4; g <= G - 1; g++) assert.ok(used.has(pool[g - 1]!), `연대기 ${g}대`)
+    assert.ok(!used.has(pool[G - 6]!), '5대 밖(25대) 이름은 다시 쓸 수 있다')
+    assert.ok(used.has(pool[(29 + G - 1) % 55]!) && used.has(pool[(29 + G - 2) % 55]!), '최근 두 세대 동반자')
+    assert.ok(!used.has(pool[(29 + G - 3) % 55]!), '세 세대 전 동반자는 다시 쓸 수 있다')
+  })
+
+  it('풀을 다 써 본 30대째 가문에서도 이름 추천 3개가 나온다', () => {
+    const { w } = oldFamily()
+    const names = suggestNames(w, w.rng.life)
+    assert.equal(new Set(names).size, 3)
   })
 })

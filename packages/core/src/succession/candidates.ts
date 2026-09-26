@@ -242,7 +242,7 @@ export function makePartner(ctx: RuleContext, rng: Rng): Partner {
   return p
 }
 
-// 12 §3.6 이름 추천 3개(가문 연대기에 있는 이름과 최근 두 세대 동반자 이름 제외)
+// 12 §3.6 이름 추천 3개(5대 안의 가문 인물 이름과 최근 두 세대 동반자 이름 제외, 02 §9.1)
 export function suggestNames(ctx: RuleContext, rng: Rng, count = 3): string[] {
   const used = usedNames(ctx.state)
   const out: string[] = []

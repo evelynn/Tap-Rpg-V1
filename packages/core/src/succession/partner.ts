@@ -34,13 +34,19 @@ export function readPartner(family: Family, gen: number): Partner | null {
   }
 }
 
-// 가문 안에서 이미 쓴 이름(인물·후보·동반자)
+// 무작위 이름은 같은 가문에서 5대 안에 다시 뽑지 않는다(02 §9.1, 이름 규칙 소유). 동반자 이름은 최근 두 세대만 뺀다(12 §3.6).
+// 연대기 전체를 영구히 빼면 풀 56개가 한 세대에 두 개씩 줄어 약 26대에 바닥난다(B1)
+const NAME_REUSE_GENS = 5
+const PARTNER_NAME_GENS = 2
+
+// 지금 다시 뽑으면 안 되는 이름: 후보, 새 인물 바로 앞 5대(지금 인물 + 연대기 최근 4대), 최근 두 세대 동반자
 export function usedNames(state: SaveBody): Set<string> {
   const used = new Set<string>()
+  const gen = state.family.generation
   if (state.character) used.add(state.character.name)
-  for (const r of state.family.chronicle) used.add(r.name)
+  for (const r of state.family.chronicle) if (r.gen > gen - NAME_REUSE_GENS) used.add(r.name)
   for (const c of Object.values(state.family.candidates)) used.add(c.name)
-  for (const b of state.family.bonds) if (b.npc_id === PARTNER_BOND) used.add(b.key)
+  for (const b of state.family.bonds) if (b.npc_id === PARTNER_BOND && b.gen > gen - PARTNER_NAME_GENS) used.add(b.key)
   return used
 }
 
