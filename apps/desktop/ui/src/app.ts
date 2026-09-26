@@ -21,6 +21,7 @@ export class App {
   private enemy: { anim: Animator<EnemyMotion>; key: number } | null = null
   private offset = 0
   private stage: Stage
+  private notes = 0
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
   constructor(readonly world: World, private readonly sceneFiles: Record<string, string>) {
@@ -29,6 +30,11 @@ export class App {
     this.lines = new LineQueue({ minSec: ui.line_min_sec, importantSec: ui.important_line_sec, queueMax: ui.line_queue_max })
     this.scenes = new SceneTracker(new Set(Object.keys(sceneFiles)))
     this.stage = direct(actViewOf(world), 0)
+  }
+
+  // 안내(03 §11.2): 한 줄 기록 자리에 8초, 일지에는 남기지 않는다. id는 기록 id와 겹치지 않게 아주 큰 수에서 센다
+  note(text: string): void {
+    this.lines.push({ id: Number.MAX_SAFE_INTEGER - this.notes++, text, grade: 'A' })
   }
 
   // now: 실시간 밀리초, dt: 지난 프레임부터 흐른 실시간

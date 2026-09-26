@@ -82,6 +82,12 @@ export function designateRelic(ctx: RuleContext, uid: string, priority: 1 | 2): 
   return true
 }
 
+// 유품 등록 해제(03 §5.3.1)
+export function undesignateRelic(ctx: RuleContext, uid: string): void {
+  const inv = ctx.state.inventory
+  inv.relic_designations = inv.relic_designations.filter((r) => r.uid !== uid)
+}
+
 export interface RelicTransfer {
   uids: string[]
   journal: JournalDraft[]

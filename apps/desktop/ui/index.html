@@ -29,6 +29,42 @@
     #col .mark.succession { background: #a8894a; color: #fff; }
     #col .attitude { border: 1px solid currentColor; line-height: calc(12px * var(--u) - 2px); font-weight: normal; }
     #col .record { left: calc(5px * var(--u)); right: calc(5px * var(--u)); top: calc(34px * var(--u)); }
+    #win canvas, #col .status, #col .icons, #col .record { cursor: pointer; }
+    /* 상세 창 480 × 560(03 §5). 시제품에서는 개발용 단추 아래에 둔다. 본문 13, 최소 12, 소제목 15 굵게, 안쪽 여백 16 */
+    #detail { margin-top: 12px; width: 480px; height: 560px; display: flex; flex-direction: column; z-index: 10;
+      background: #f4efe6; color: #2b2233; font: 13px/1.5 system-ui, "Malgun Gothic", sans-serif; box-shadow: 0 4px 16px rgba(0, 0, 0, .35); outline: none; }
+    #detail[hidden] { display: none; }
+    #detail { word-break: keep-all; overflow-wrap: anywhere; }
+    @media (prefers-color-scheme: dark) { #detail { background: #2a2530; color: #f4efe6; } }
+    #detail button { font: inherit; font-size: 12px; padding: 1px 8px; border: 1px solid #8a8a8a; background: transparent; color: inherit; border-radius: 3px; cursor: pointer; }
+    #detail button.on { background: #5a7fa8; border-color: #5a7fa8; color: #fff; }
+    #detail button:disabled { opacity: .45; cursor: default; }
+    #detail .d-head { height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-weight: bold; }
+    #detail .d-tabs { height: 32px; display: flex; }
+    #detail .d-tabs button { flex: 1; border-radius: 0; border-width: 0 0 2px; font-size: 13px; }
+    #detail .d-tabs button.on { background: transparent; color: inherit; border-color: #5a7fa8; font-weight: bold; }
+    #detail .d-body { flex: 1; overflow-y: auto; padding: 8px 16px; }
+    #detail .d-foot { height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 12px; opacity: .8; }
+    #detail .d-chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 8px; }
+    #detail .d-group { margin-top: 8px; font-weight: bold; font-size: 12px; opacity: .75; }
+    #detail .d-row { padding: 2px 0; }
+    #detail .d-row.more { cursor: pointer; }
+    #detail .d-caret { float: right; opacity: .6; }
+    #detail .d-sub { padding: 0 0 2px 16px; font-size: 12px; opacity: .85; }
+    #detail .d-tag, #detail .d-strong { font-weight: bold; }
+    #detail .d-strong { font-size: 15px; }
+    #detail .d-dim { opacity: .65; font-size: 12px; }
+    #detail .d-sec { padding: 8px 0; border-bottom: 1px solid rgba(128, 128, 128, .3); }
+    #detail .d-cols { display: flex; gap: 32px; }
+    #detail .d-badge { font-size: 12px; border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; }
+    #detail .d-badge.neg { border-style: dashed; }
+    #detail .d-grade { font-weight: bold; }
+    #detail .d-acts { display: flex; gap: 6px; padding: 2px 0 6px 16px; }
+    #detail .d-line { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
+    #detail .d-label { width: 110px; flex: none; white-space: pre; }
+    #detail .d-seg { display: flex; gap: 2px; flex-wrap: wrap; }
+    #detail .d-confirm { margin: 4px 0 4px 16px; padding: 8px; border: 1px solid #d9534f; }
+    #detail progress { width: 120px; vertical-align: middle; }
     #controls { margin-top: 12px; display: flex; gap: 6px; }
     #info { margin-top: 8px; }
   </style>
@@ -40,6 +76,7 @@
   </div>
   <div id="controls"></div>
   <div id="info">불러오는 중…</div>
+  <div id="detail" role="dialog" aria-label="상세 창"></div>
   <script type="module" src="main.js"></script>
 </body>
 </html>

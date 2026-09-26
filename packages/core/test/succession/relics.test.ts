@@ -114,3 +114,28 @@ describe('자녀의 어린 시절 기록(12 §2.2)', () => {
     assert.equal(w.state.character!.counters.childhood_notes, max)
   })
 })
+
+describe('유품 해제·태도 바꾸기(03 §5.3.1·§5.4)', () => {
+  it('해제하면 등록에서 빠진다', async () => {
+    const { undesignateRelic } = await import('../../src/succession/index')
+    const w = lifeWorld()
+    const a = give(w, 'W07', 'rare', 'bag')
+    designateRelic(w, a, 1)
+    undesignateRelic(w, a)
+    assert.deepEqual(w.state.inventory.relic_designations, [])
+  })
+
+  it('태도를 바꾸면 방침과 태도 이력이 바뀌고, 같은 순간 두 번은 마지막 값만 남는다', async () => {
+    const { setAttitude } = await import('../../src/ai/index')
+    const w = lifeWorld()
+    const ch = w.state.character!
+    const before = ch.attitude_log.length
+    ch.eff_min = 42
+    setAttitude(w, 'stable')
+    setAttitude(w, 'challenging')
+    assert.equal(w.state.policies.attitude, 'challenging')
+    assert.equal(ch.attitude_log.length, before + 1)
+    assert.deepEqual(ch.attitude_log.at(-1), { eff_min: 42, attitude: 'challenging' })
+    assert.throws(() => setAttitude(w, 'nope'))
+  })
+})

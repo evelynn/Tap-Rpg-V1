@@ -1,6 +1,7 @@
 // 브라우저 진입점: 번들 읽기 → 세계 만들기 → 실시간 구동·그리기. Tauri 2 껍데기도 이 dist를 그대로 싣는다(파일 시스템을 쓰지 않는다).
 import { Content, ageAt, createGameWorld, type World } from '@tap/core'
 import { App } from './app'
+import { DetailWindow } from './detail/view'
 import { SPEEDS } from './driver'
 import { drawDue, surface } from './layout'
 import { Panel } from './panel'
@@ -86,6 +87,18 @@ async function start(): Promise<void> {
   const pause = document.createElement('button')
   controls.append(pause)
   pause.onclick = () => app.driver.setPaused(!app.driver.paused)
+
+  // 상세 창(03 §5): 풍경·한 줄 기록 → 일지, 이름·상태 줄·아이콘 → 인물, 태도 표식 → 방침(빠른 메뉴는 다음 조각, 03 §2.6)
+  const detail = new DetailWindow(document.getElementById('detail')!, app.world, (t) => app.note(t), () => app.driver.setPaused(!app.driver.paused))
+  canvas.onclick = () => detail.show('일지')
+  const col = document.getElementById('col')!
+  col.addEventListener('click', (e) => {
+    const t = e.target as HTMLElement
+    if (t.closest('.attitude')) detail.show('방침')
+    else if (t.closest('.status, .icons')) detail.show('인물')
+    else if (t.closest('.record')) detail.show('일지')
+  })
+  setInterval(() => detail.render(), 1000) // 열려 있을 때만 다시 그린다
 
   // 진행은 매 프레임, 그리기는 초당 최대 30번(drawDue). 숨어 있으면 브라우저가 프레임을 멈추므로
   // 1초마다 진행만 한다(그리기 0, 03 §10·D76)
