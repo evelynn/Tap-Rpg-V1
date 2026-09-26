@@ -1,6 +1,6 @@
 {
   "karin_version": "1.3.0",
-  "session": 4,
+  "session": 5,
   "feature": "텝 M2 — 브라우저 시제품(768×64) + 이미지 생성 아트 v06",
   "phase": "build",
   "complexity": "Complex",
@@ -120,14 +120,14 @@
     },
     {
       "id": "M2a",
-      "subject": "글자 칸 272로(풍경 496 + 글자 272, 작은 글자 2줄) — D75 개정, 사용자 결정",
-      "status": "pending",
+      "subject": "글자 칸 272로(풍경 496 + 글자 272, 작은 글자 2줄) — D75 개정",
+      "status": "completed",
       "priority": "high"
     },
     {
       "id": "M2b",
-      "subject": "선명 정규화(블록 대표색·얼룩 제거·번짐 제거) 마무리와 assets/ready 재정규화 — tools/art-check 미커밋",
-      "status": "in_progress",
+      "subject": "선명 정규화(블록 대표색·외톨이 접기·가까운 색 합치기)와 assets/ready 재정규화",
+      "status": "completed",
       "priority": "high"
     },
     {
@@ -155,14 +155,14 @@
       "priority": "medium"
     }
   ],
-  "current_task": "M2a",
-  "next_action": "HANDOFF §0 → tools/art-check 미커밋 변경 처리 → 글자 칸 272(M2a) → D76 → 상세 창 → codex 추가 요청",
+  "current_task": "D76",
+  "next_action": "HANDOFF §0 → D76(TBH 채택 사항 설계 반영) → 상세 창 → codex 추가 요청(UI 아이콘 12×12 규격 정리 포함)",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
     "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "cb3f59d",
-  "verify_state": "UI 테스트 33 통과, lint:docs 0 (2026-09-25). 전체 pnpm check 1165 통과(레이아웃 에이전트 측정)",
-  "last_updated": "2026-09-25T20:05:00+09:00"
+  "last_commit": "e3738c2",
+  "verify_state": "pnpm check 1166 통과, lint:docs 0, 배율 1 스크린숏 2줄·겹침 없음 확인 (2026-09-27)",
+  "last_updated": "2026-09-27T00:00:00+09:00"
 }
