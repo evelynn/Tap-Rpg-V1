@@ -55,7 +55,7 @@ export function conditionWord(v: StatusView): string | null {
   return null
 }
 
-// `{이름} {나이} · {행동 상태}` + 조건어 최대 1개(행동 상태와 같은 글자면 붙이지 않는다). 글자 칸 182px 한 줄에 맞게 `세`를 뺀다(D75)
+// `{이름} {나이} · {행동 상태}` + 조건어 최대 1개(행동 상태와 같은 글자면 붙이지 않는다). 1줄 글자 자리 175px에 맞게 `세`를 뺀다(D75)
 export function statusLine(v: StatusView): string {
   const state = STATE_LABEL[v.state] ?? v.state
   const cond = conditionWord(v)

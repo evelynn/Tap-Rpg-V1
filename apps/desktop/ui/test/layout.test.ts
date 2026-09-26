@@ -1,15 +1,15 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, artScale, fitLines, surface } from '../src/layout'
+import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, artScale, surface } from '../src/layout'
 import { SCENES } from '../src/scenes'
 import { measure11 } from './measure'
 
 describe('기본 창 768 × 64 배치(D75)', () => {
-  it('풍경 576 + 글자 칸 192, 주인공 x 72, 적 x 168, 장면 판 x 48~175', () => {
+  it('풍경 496 + 글자 칸 272, 주인공 x 72, 적 x 168, 장면 판 x 48~175', () => {
     assert.deepEqual(WIN, { w: 768, h: 64 })
     assert.equal(LAND.x + LAND.w, COL.x)
     assert.equal(COL.x + COL.w, WIN.w)
-    assert.equal(COL.w, 192)
+    assert.equal(COL.w, 272)
     assert.equal(HERO_CX, 72)
     assert.equal(ENEMY_CX, 168)
     assert.equal(SCENE.x + SCENE.w, 176)
@@ -25,12 +25,15 @@ describe('기본 창 768 × 64 배치(D75)', () => {
     }
   })
 
-  it('글자 칸 세 줄(상태·아이콘·기록 2줄)이 높이 64 안에 든다', () => {
-    assert.equal(TEXT.x + TEXT.w + 4, WIN.w)
-    assert.ok(TEXT.status.y + TEXT.lineH <= TEXT.icons.y)
-    assert.ok(TEXT.icons.y + TEXT.icons.size <= TEXT.record.y)
-    assert.ok(TEXT.record.y + TEXT.record.lines * TEXT.lineH <= WIN.h)
-    assert.ok(4 * TEXT.icons.size + 3 * TEXT.icons.gap + 2 * (TEXT.icons.gap + 12) <= TEXT.w, '아이콘 4칸 + 표식 2개')
+  it('글자 칸 작은 글자 2줄: 안쪽 x 501 폭 262, 1줄 이름·상태 175 + 아이콘·표식 84, 2줄 기록, 세로 가운데', () => {
+    assert.deepEqual([TEXT.x, TEXT.w], [501, 262])
+    assert.equal(TEXT.x + TEXT.w + 5, WIN.w)
+    const { size, gap, markGap, w } = TEXT.icons
+    assert.equal(4 * size + 3 * gap + markGap + size + 2 + size, w, '아이콘 4칸 + 중요 표식 + 태도 표식')
+    assert.ok(TEXT.statusW + 3 + w <= TEXT.w)
+    assert.equal(TEXT.row1.y + TEXT.lineH, 30)
+    assert.ok(TEXT.row1.y + TEXT.lineH < TEXT.row2.y)
+    assert.equal(TEXT.row1.y, WIN.h - (TEXT.row2.y + TEXT.lineH), '위아래 여백이 같다')
   })
 })
 
@@ -57,39 +60,23 @@ describe('픽셀 그림 정수 배율(03 §14)', () => {
   })
 })
 
-describe('글자 칸 글자 맞춤(11px, 폭 182)', () => {
-  const W = TEXT.w
-
-  it('28자 기록은 한 줄(182)에 들어가지 않는다 — 11px 한글 한 자가 11px이라 약 257px', () => {
-    assert.ok(measure11('가나다라마바가 모닥불 옆에서 낯선 이와 밤을 샜다.') > W)
-  })
-
-  it('가장 긴 기록·28자 극단값·안내 문구가 모두 2줄 안에, 줄마다 182 안에 든다(자르지 않는다)', () => {
-    const texts = [
-      '가나다라마바가 수첩 지도에 새 길을 그려 넣었다.', // 시뮬레이션에서 나온 가장 긴 기록(27자, 이름 6자)
-      '가나다라마바가 모닥불 옆에서 낯선 이와 밤을 샜다.', // 28자
-      '가'.repeat(28), // 띄어쓰기 없는 28자
-      '가나다라마바가나다라마 바가나다라마바가나다라마바', // 긴 어절 둘(어절 접기 3줄 → 글자 접기)
+describe('글자 칸 글자 폭(11px 대역)', () => {
+  it('띄어쓰기가 있는 28자 기록과 안내 문구는 2줄 한 줄(262)에 든다', () => {
+    for (const t of [
+      '가나다라마바가 수첩 지도에 새 길을 그려 넣었다.', // 시뮬레이션에서 나온 가장 넓은 기록(27자, 이름 6자, 246)
+      '가나다라마바가 모닥불 옆에서 낯선 이와 밤을 샜다.', // 28자, 띄어쓰기 6(약 257)
       'ⓘ 일시정지 중입니다. 나이와 진행이 멈췄습니다.',
       'ⓘ 다음 행동부터 안정적으로 움직입니다',
-    ]
-    for (const t of texts) {
-      const lines = fitLines(t, W, measure11)
-      assert.ok(lines.length <= 2, `${t} → ${lines.length}줄`)
-      for (const l of lines) assert.ok(measure11(l) <= W, `${l} ${measure11(l)}px`)
-      assert.equal(lines.join('').replace(/ /g, ''), t.replace(/ /g, ''), '글자를 버리지 않는다')
-    }
+    ]) assert.ok(measure11(t) <= TEXT.w, `${t} ${measure11(t)}px`)
   })
 
-  it('짧은 기록은 한 줄 그대로, 어절 단위로 먼저 접는다', () => {
-    assert.deepEqual(fitLines('들쥐를 쫓아냈다.', W, measure11), ['들쥐를 쫓아냈다.'])
-    const two = fitLines('가나다라마바가 수첩 지도에 새 길을 그려 넣었다.', W, measure11)
-    assert.deepEqual(two, ['가나다라마바가 수첩 지도에 새 길을', '그려 넣었다.'])
+  it('글자 수 한도(28자)만으로는 폭이 보장되지 않는다 — 한글만 28자는 308이라 폭은 픽셀로 검사한다(03 §2.5)', () => {
+    assert.ok(measure11('가'.repeat(28)) > TEXT.w)
   })
 
-  it('가장 긴 이름·상태 줄(이름 6자 + 두 자리 나이 + 상태 + 조건어, 굵게)이 한 줄에 든다', () => {
-    for (const s of ['가나다라마바 45 · 던전 · 체력 위험', '가나다라마바 100 · 선택 대기', '가나다라마바 99 · 계승 · 체력 낮음']) {
-      assert.ok(measure11(s) <= W, `${s} ${measure11(s)}px`)
+  it('가장 긴 이름·상태 줄(이름 6자 + 나이 + 상태 + 조건어, 굵게)이 1줄 글자 자리 175에 든다', () => {
+    for (const s of ['가나다라마바 45 · 던전 · 체력 위험', '가나다라마바 100 · 선택 대기', '가나다라마바 99 · 계승 · 체력 낮음', '가나다라마바 99 · 치료 · 선택 대기']) {
+      assert.ok(measure11(s) <= TEXT.statusW, `${s} ${measure11(s)}px`)
     }
   })
 })

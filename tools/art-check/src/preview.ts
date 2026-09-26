@@ -1,6 +1,6 @@
 // 검수용 확대본(ASSET_ORDERS 0.10절 V1·V3·V7). 게임이 읽지 않는다.
 //   <시트>.x4.png           정규화 시트 ×4(체크무늬 위, 칸 경계·지면선 표시). 띠(role strip)는 체크무늬 위 ×4와 칸 경계만
-//   window.x4.png            520 × 64 기본 창 모형(03 §2.2) — 대기(+걷기) 프레임마다 한 줄
+//   window.x4.png            768 × 64 기본 창 모형(03 §2.2) — 대기(+걷기) 프레임마다 한 줄
 //   window-small.x4.png      320 × 48 축소 창(03 §3) — 배경 아래 48줄, 적은 x 56~92
 //   layers.x4.png            칸마다 [기준 | 레이어 합성 | 차이] (빨강 = 기준 실루엣 밖 레이어, 파랑 = 레이어가 안 덮은 기준)
 //   derived-<파생>.x4.png     칸마다 [기준 | 재합성 | 파생 부류만 | 차이] (derive를 먼저 돌린 파생 항목만)
@@ -22,8 +22,9 @@ const CHECK_A = hexRgb('#D6D6D6')
 const CHECK_B = hexRgb('#C4C4C4')
 
 /** 창 배치 수치(03 §2.2·§3, 15 §1.1). 창 모형만 쓴다 */
-const WINDOW = { w: 520, h: 64, ground: 56, charX: 16, enemyX: 72, enemyW: 48, sceneW: 128, panelX: 136, panelEnd: 512 }
-const SMALL = { w: 320, h: 48, cropTop: 16, enemyX: 56, enemyW: 36, sceneW: 96, panelX: 104, panelEnd: 312 }
+// 기본 창: 주인공 가로 중심 72·적 168(셀 48의 왼쪽 48·144), 글자 칸 496~767(왼쪽 5 경사, D75)
+const WINDOW = { w: 768, h: 64, ground: 56, charX: 48, enemyX: 144, enemyW: 48, plateX: 496, panelX: 501, panelEnd: 768 }
+const SMALL = { w: 320, h: 48, cropTop: 16, charX: 16, enemyX: 56, enemyW: 36, sceneW: 96, panelX: 104, panelEnd: 312 }
 
 interface Sheet {
   name: string
@@ -124,9 +125,9 @@ function background(lm: LoadedMap, w: number, h: number, ground: number): Raster
   return bg
 }
 
-/** 글자 판(88%)과 그 앞 8픽셀 구분 띠(0 → 88% 경사) */
-function panel(r: Raster, sceneW: number, x0: number, x1: number): void {
-  for (let x = sceneW; x < x0; x++) fillRect(r, x, 0, 1, r.height, PANEL, Math.round((224 * (x - sceneW + 1)) / (x0 - sceneW + 1)))
+/** 글자 판(88%)과 그 앞 구분 띠(start → x0, 0 → 88% 경사) */
+function panel(r: Raster, start: number, x0: number, x1: number): void {
+  for (let x = start; x < x0; x++) fillRect(r, x, 0, 1, r.height, PANEL, Math.round((224 * (x - start + 1)) / (x0 - start + 1)))
   fillRect(r, x0, 0, x1 - x0, r.height, PANEL, 224)
 }
 
@@ -138,10 +139,10 @@ interface MockParts {
   props: Sheet[]
 }
 
-/** (b) 520 × 64 기본 창 한 장(실크기) */
+/** (b) 768 × 64 기본 창 한 장(실크기) */
 function windowMock(lm: LoadedMap, p: MockParts): Raster {
   const win = background(lm, WINDOW.w, WINDOW.h, WINDOW.ground)
-  panel(win, WINDOW.sceneW, WINDOW.panelX, WINDOW.panelEnd)
+  panel(win, WINDOW.plateX, WINDOW.panelX, WINDOW.panelEnd)
   blit(win, cellOf(p.character, ...p.frame), WINDOW.charX, WINDOW.ground - groundOf(p.character))
   const [ew] = p.enemy.entry.cell
   blit(win, cellOf(p.enemy, ...p.enemyFrame), WINDOW.enemyX + Math.floor((WINDOW.enemyW - ew) / 2), WINDOW.ground - groundOf(p.enemy))
@@ -164,7 +165,7 @@ function smallMock(lm: LoadedMap, p: MockParts): Raster {
   const win = crop(full, 0, SMALL.cropTop, SMALL.w, SMALL.h)
   panel(win, SMALL.sceneW, SMALL.panelX, SMALL.panelEnd)
   const ground = WINDOW.ground - SMALL.cropTop
-  blit(win, cellOf(p.character, ...p.frame), WINDOW.charX, ground - groundOf(p.character))
+  blit(win, cellOf(p.character, ...p.frame), SMALL.charX, ground - groundOf(p.character))
   const [ew] = p.enemy.entry.cell
   blit(win, cellOf(p.enemy, ...p.enemyFrame), SMALL.enemyX + Math.floor((SMALL.enemyW - ew) / 2), ground - groundOf(p.enemy))
   return win

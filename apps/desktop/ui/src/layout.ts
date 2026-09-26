@@ -2,23 +2,24 @@
 // 기준은 Windows 표시 배율 100%(devicePixelRatio 1): 논리 1픽셀 = 화면 1픽셀, 그림은 배율 없이 1:1로 그린다.
 
 export const WIN = { w: 768, h: 64 }
-export const LAND = { x: 0, w: 576 } // 풍경(배경·캐릭터·적·장면)
-export const COL = { x: 576, w: 192 } // 글자 칸(88% 판 위 DOM 글자)
+export const LAND = { x: 0, w: 496 } // 풍경(배경·캐릭터·적·장면)
+export const COL = { x: 496, w: 272 } // 글자 칸(88% 판 위 DOM 글자)
 export const GROUND_Y = 56
-export const STRIP_W = 256 // 배경 띠 한 장 폭. 풍경 576을 가로로 이어 채운다
+export const STRIP_W = 256 // 배경 띠 한 장 폭. 풍경 496을 가로로 이어 채운다
 export const HERO_CX = 72 // 주인공 가로 중심
 export const ENEMY_CX = 168 // 적 가로 중심(왼쪽을 봄)
 export const SCENE = { x: 48, w: 128 } // 이벤트 장면·패널 자리. 장면 표의 x는 이 판 기준(24 → 창 72)
 
-// 글자 칸 안쪽: 왼쪽 6은 풍경에서 판으로 넘어가는 그라데이션, 오른쪽 4는 여백
+// 글자 칸 안쪽: 왼쪽 5는 풍경에서 판으로 넘어가는 그라데이션, 오른쪽 5는 여백. 작은 글자 2줄을 세로 가운데(위아래 17)에 둔다
 export const TEXT = {
-  x: COL.x + 6,
-  w: COL.w - 10, // 182
+  x: COL.x + 5, // 501
+  w: COL.w - 10, // 262
   font: 11, // 글자 크기(px, 100%)
   lineH: 13,
-  status: { y: 2 }, // 1줄: 이름·나이·상태·조건어(굵게)
-  icons: { y: 17, size: 12, gap: 3 }, // 상태 아이콘 4칸 + 표식
-  record: { y: 32, lines: 2 }, // 한 줄 기록: 칸 폭을 넘으면 2줄로 접는다(자르지 않는다)
+  row1: { y: 17 }, // 1줄: 이름·나이·상태·조건어(굵게, 왼쪽) + 아이콘·표식(오른쪽 끝)
+  row2: { y: 34 }, // 2줄: 한 줄 기록 한 줄(접지 않는다)
+  icons: { size: 12, gap: 2, markGap: 4, w: 84 }, // 아이콘 4칸(간격 2) + 4 + 중요 표식 + 2 + 태도 표식
+  statusW: 175, // 1줄 글자 자리 = 262 − 아이콘·표식 84 − 사이 3
 }
 export const FONT_FAMILY = 'system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif'
 
@@ -42,30 +43,4 @@ export function surface(dpr: number, userScale = 1): Surface {
   const devW = Math.round(WIN.w * userScale * dpr)
   const devH = Math.round(WIN.h * userScale * dpr)
   return { k, devW, devH, cssW: devW / dpr, cssH: devH / dpr, artY: devH - WIN.h * k, logicalW: Math.ceil(devW / k) }
-}
-
-// 한 줄 기록을 폭 안에 맞춘다. 어절(띄어쓰기) 단위로 접고, maxLines를 넘으면 글자 단위로 다시 접는다.
-// 11px 한글 한 자 = 11px(Chromium 실측)이라 28자(약 257px)는 182px 한 줄에 들어가지 않는다. 글자 단위 2줄은
-// 줄마다 16자 이상 담아 28자를 늘 담는다
-export function fitLines(text: string, maxW: number, measure: (s: string) => number, maxLines = 2): string[] {
-  if (measure(text) <= maxW) return [text]
-  const byWord = wrap(text.split(' '), ' ', maxW, measure)
-  if (byWord.length <= maxLines) return byWord
-  return wrap([...text], '', maxW, measure).map((l) => l.trim())
-}
-
-function wrap(parts: string[], sep: string, maxW: number, measure: (s: string) => number): string[] {
-  const out: string[] = []
-  let cur = ''
-  for (const p of parts) {
-    const next = cur ? cur + sep + p : p
-    if (!cur || measure(next) <= maxW) cur = next
-    else {
-      out.push(cur)
-      cur = p
-    }
-  }
-  if (cur) out.push(cur)
-  // 한 어절이 폭보다 길면 그 줄만 글자 단위로 다시 접는다
-  return out.flatMap((l) => (sep && measure(l) > maxW ? wrap([...l], '', maxW, measure) : [l]))
 }

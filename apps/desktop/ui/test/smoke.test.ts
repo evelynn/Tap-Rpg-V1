@@ -4,9 +4,9 @@ import { before, describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
-import { Content, createGameWorld } from '@tap/core'
+import { Content, createGameWorld, submitPendingAuto, succeed } from '@tap/core'
 import { App, PAUSE_LINE } from '../src/app'
-import { HERO_CX, SCENE, TEXT, fitLines, surface } from '../src/layout'
+import { HERO_CX, SCENE, TEXT, surface } from '../src/layout'
 import { Renderer, type FrameView } from '../src/render'
 import { STRIPS } from '../src/sprites'
 import { measure11 } from './measure'
@@ -30,15 +30,18 @@ function fakeContext(calls: { name: string; args: unknown[] }[]): CanvasRenderin
 let content: Content
 const SCENE_FILES = { ES15: STRIPS.ES15, ES18: STRIPS.ES18 }
 
-function newApp(): App {
+function newWorld(name = '모라', seed = '0123456789abcdef') {
   const bg = content.list('background').find((b) => b.unlock === null)!
-  const world = createGameWorld(content, {
+  return createGameWorld(content, {
     familyName: '모래',
-    familySeed: '0123456789abcdef',
+    familySeed: seed,
     foundedUtc: 0,
-    character: { name: '모라', background: bg.id, appearance: { body: 'body_base', hair: 'HR03', hair_color: 'hair_chestnut', skin_tone: 'skin_02', decor: [], age_stage_override: null } },
+    character: { name, background: bg.id, appearance: { body: 'body_base', hair: 'HR03', hair_color: 'hair_chestnut', skin_tone: 'skin_02', decor: [], age_stage_override: null } },
   })
-  return new App(world, SCENE_FILES)
+}
+
+function newApp(): App {
+  return new App(newWorld(), SCENE_FILES)
 }
 
 before(() => {
@@ -72,10 +75,7 @@ describe('기본 창 연기 시험', () => {
     assert.match(last.status, /^\S+ \d+ · \S+/)
     assert.equal(last.icons.length, 4)
     assert.ok(seen.lines.size > 10, `한 줄 기록 ${seen.lines.size}개`)
-    for (const line of seen.lines) { // 나온 기록이 모두 글자 칸 2줄 안에 든다(11px 폭 대역)
-      const ls = fitLines(line, TEXT.w, measure11)
-      assert.ok(ls.length <= 2 && ls.every((l) => measure11(l) <= TEXT.w), line)
-    }
+    for (const line of seen.lines) assert.ok(measure11(line) <= TEXT.w, `${line} ${measure11(line)}px`) // 나온 기록이 모두 2줄 한 줄(262)에 든다
     assert.ok(seen.heroes.size > 5, `캐릭터 프레임 ${seen.heroes.size}종`)
     assert.ok(seen.enemies > 0, '조우 중 적이 보인다')
     assert.ok(seen.scroll, '이동 중 배경이 흐른다')
@@ -110,5 +110,36 @@ describe('기본 창 연기 시험', () => {
     assert.deepEqual(v.scene, { file: STRIPS.ES18, frame: 0 })
     assert.equal(v.hero?.cx, SCENE.x + 30) // 장면 표 x 30(장면 판 기준) → 창 x 78
     assert.equal(v.enemy, null)
+  })
+})
+
+describe('한 줄 기록 폭(03 §2.5)', () => {
+  // 기록은 접지 않고 한 줄(262)로만 보이므로, 28자 한도 안이어도 띄어쓰기가 적어 넓은 기록을 여기서 잡는다.
+  // 가장 긴 이름(6자)으로 세 태도 × 두 생애를 끝까지 돌려 나온 기록을 모두 잰다
+  it('가장 긴 이름으로 세 태도 × 두 생애를 돌려 나온 기록이 모두 폭 262 안에 든다', () => {
+    const wide: string[] = []
+    let count = 0
+    for (const attitude of ['stable', 'adventurous', 'challenging']) {
+      const world = newWorld('가나다라마바', '0000000000007000')
+      world.state.policies.attitude = attitude
+      let lastId = 0
+      let lives = 0
+      for (let i = 0; i < 20000 && lives < 2; i++) {
+        for (const e of world.state.journal) {
+          if (e.id <= lastId) continue
+          lastId = e.id
+          count++
+          if (measure11(e.line) > TEXT.w) wide.push(`${e.line} ${measure11(e.line).toFixed(1)}px`)
+        }
+        if (world.state.pending_choice) submitPendingAuto(world)
+        else if (world.state.current_activity.state === 'awaiting_succession') {
+          lives++
+          if (lives < 2) succeed(world)
+        } else world.advance(600)
+      }
+      assert.equal(lives, 2, `${attitude}: 두 생애를 끝내지 못했다`)
+    }
+    assert.ok(count > 1000, `기록 ${count}개`)
+    assert.deepEqual(wide, [], `폭 ${TEXT.w} 초과 ${wide.length}건`)
   })
 })
