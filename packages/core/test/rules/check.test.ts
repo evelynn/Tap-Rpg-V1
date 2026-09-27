@@ -60,7 +60,7 @@ describe('판정 보정과 기록(05 §6.2~§6.6)', () => {
     setTraits(w, ['TI03'])
     setStats(w, { dex: 3 })
     const r = rollCheck(w, scriptedRng([], [12]), { kinds: ['terrain'], dc: 14 })
-    assert.deepEqual(r.record, { dice: 12, parts: [{ label: '민첩', value: 3 }, { label: '길눈', value: 1 }], total: 16, dc: 14, result: 'success' })
+    assert.deepEqual(r.record, { dice: 12, parts: [{ label: '민첩', value: 3 }, { label: '길눈', value: 1 }], total: 16, dc: 14, result: 'success', kind: 'terrain' })
   })
 
   it('기타 보정 상한: J05 탐색 +3 · 길잡이 +2 · J03 +1 = +5(상한)', () => {

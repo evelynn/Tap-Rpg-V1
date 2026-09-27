@@ -227,7 +227,7 @@ export function rollCheck(ctx: RuleContext, rng: Rng, spec: CheckSpec): CheckRol
   const dice = spec.dice ?? rng.d20()
   const total = dice + bonus.bonus
   const result = evaluateCheck(ctx, dice, total, dc, partialAllowed(ctx, bonus.kind, spec.partialAllowed))
-  return { kind: bonus.kind, dice, result, bonus, record: { dice, parts: bonus.parts, total, dc, result } }
+  return { kind: bonus.kind, dice, result, bonus, record: { dice, parts: bonus.parts, total, dc, result, kind: bonus.kind } }
 }
 
 // 판정 1회의 성장 누적(05 §4.1 사용 점수, §5.1 숙련 횟수). 사건 선택지 판정은 event.

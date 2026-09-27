@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
+import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
 
 let content: Content
 
@@ -61,6 +61,11 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     const e = { tag: 'hunt' } as Parameters<typeof inFilter>[0]
     assert.equal(inFilter(e, '중요'), false)
     assert.equal(inFilter({ ...e, tag: 'discovery' }, '중요'), true)
+    // [판정]은 종류로 전투·탐험을 가른다(05 §7)
+    const chk = (kind: string) => ({ ...e, tag: 'check', check: { dice: 10, parts: [], total: 10, dc: 10, result: 'success', kind } }) as typeof e
+    assert.deepEqual([inFilter(chk('flee'), '전투'), inFilter(chk('flee'), '탐험')], [true, false])
+    assert.deepEqual([inFilter(chk('trap_detect'), '전투'), inFilter(chk('trap_detect'), '탐험')], [false, true])
+    for (const k of COMBAT_CHECKS) assert.ok(content.balance.check_kinds[k], `판정 종류 ${k}가 기반 팩에 있다`)
   })
 
   it('인물: 머리 세 줄, 능력치 6·숙련 5, 장비 4칸, 가방 n/20', () => {

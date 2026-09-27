@@ -19,6 +19,7 @@ export const checkRecordSchema = s({
   total: intV,
   dc: intV,
   result: z.enum(CHECK_RESULTS),
+  kind: defId.optional(), // 판정 종류(balance.check_kinds 키). 일지 전투·탐험 필터가 쓴다(03 §5.2). 없는 옛 기록도 읽는다
 })
 export type CheckRecord = z.infer<typeof checkRecordSchema>
 

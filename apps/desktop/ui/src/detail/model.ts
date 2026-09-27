@@ -28,14 +28,18 @@ const SLOT_ORDER = ['weapon', 'armor', 'accessory', 'relic'] as const
 export const FILTERS = ['전체', '중요', '전투', '탐험', '생활', '성장', '가족'] as const
 export type Filter = (typeof FILTERS)[number]
 
-// 필터 칩 → 태그(03 §5.2 표). [판정]은 전투(최후 판정)와 탐험(그 밖의 판정)으로 가른다. 판정 기록에 판정 종류가
-// 남지 않아, 치명 패배의 최후 판정만 전투로 보고 나머지(사건·탐색 판정)는 탐험으로 둔다(근사, 다음 조각에서 종류를 남긴다)
+// 전투 판정(05 §7): 명중·사건 명중·매복 대응·도주·부상·최후 판정. 그 밖의 판정은 탐색 판정으로 본다
+export const COMBAT_CHECKS = new Set(['attack', 'attack_event', 'ambush', 'flee', 'injury', 'final'])
+// 판정 종류가 없는 옛 기록은 최후 판정(sub)만 전투로 본다
+const combatCheck = (e: JournalEntry): boolean => (e.check?.kind ? COMBAT_CHECKS.has(e.check.kind) : e.sub === 'final_check')
+
+// 필터 칩 → 태그(03 §5.2 표). [판정]은 전투 판정과 탐색 판정으로 가른다
 export function inFilter(e: JournalEntry, f: Filter): boolean {
   switch (f) {
     case '전체': return true
     case '중요': return ['important', 'death', 'retire', 'succession', 'discovery'].includes(e.tag)
-    case '전투': return ['hunt', 'dungeon', 'injury'].includes(e.tag) || (e.tag === 'check' && e.sub === 'final_check')
-    case '탐험': return ['adventure', 'travel', 'discovery'].includes(e.tag) || (e.tag === 'check' && e.sub !== 'final_check')
+    case '전투': return ['hunt', 'dungeon', 'injury'].includes(e.tag) || (e.tag === 'check' && combatCheck(e))
+    case '탐험': return ['adventure', 'travel', 'discovery'].includes(e.tag) || (e.tag === 'check' && !combatCheck(e))
     case '생활': return ['rest', 'town', 'gear', 'bond'].includes(e.tag)
     case '성장': return ['growth', 'trait'].includes(e.tag)
     case '가족': return ['family', 'house', 'succession', 'retire'].includes(e.tag)
