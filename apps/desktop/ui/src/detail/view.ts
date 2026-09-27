@@ -357,7 +357,7 @@ export class DetailWindow {
       this.render()
     }
     const sel = h('select', {},
-      ...[{ id: 'auto', text: '자동' }, ...m.places.map((o) => ({ id: o.id, text: `${o.name} · ${o.grade}` }))].map((o) => {
+      ...[{ id: 'auto', text: '자동' }, ...m.places.map((o) => ({ id: o.id, text: o.grade ? `${o.name} · ${o.grade}` : o.name }))].map((o) => {
         const opt = h('option', { value: o.id }, o.text) as HTMLOptionElement
         opt.selected = (this.destAsk ?? m.current) === o.id
         return opt

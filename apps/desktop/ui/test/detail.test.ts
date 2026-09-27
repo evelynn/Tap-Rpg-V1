@@ -122,6 +122,26 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     assert.ok(destinationModel(w).places.every((o) => o.ask === o.reckless))
   })
 
+  it('계승 대기 중이면 끝난 인물을 가계도·연대기에 두 번 그리지 않는다(독립 검증 7)', () => {
+    const w = newWorld()
+    for (let i = 0; i < 20000 && w.state.current_activity.state !== 'awaiting_succession'; i++) {
+      if (w.state.pending_choice) submitPendingAuto(w)
+      else w.advance(600)
+    }
+    assert.equal(w.state.current_activity.state, 'awaiting_succession')
+    assert.deepEqual(treeModel(w).map((n) => [n.gen, n.current]), [[1, false]])
+    assert.equal(familyModel(w).rows.length, 1)
+  })
+
+  it('목적지: 지금 갈 수 없는 고정 장소도 그대로 보인다(자동으로 거짓 표시하지 않는다)', () => {
+    const w = newWorld()
+    const locked = w.content.list('region').find((r) => r.kind !== 'town' && !destinationModel(w).places.some((p) => p.id === r.id))!
+    w.state.policies.destination = locked.id
+    const m = destinationModel(w)
+    assert.equal(m.current, locked.id)
+    assert.match(m.places.find((p) => p.id === locked.id)!.name, /지금 갈 수 없음/)
+  })
+
   it('가문: 2대째면 현재 인물 줄 + 끝난 생애 줄, 끝난 생애는 주요 기록을 나이순으로 펼친다', () => {
     const w = secondGen()
     const f = familyModel(w)

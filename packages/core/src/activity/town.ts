@@ -30,12 +30,21 @@ const setStep = (world: World, n: number): void => void (characterOf(world).coun
 const secOf = (v: number | [number, number], rng: { int(a: number, b: number): number }): number =>
   typeof v === 'number' ? v : rng.int(v[0], v[1])
 
+// 인물이 마을에 있는가(장착·유품 변경이 즉시 되는 곳, 03 §5.3.1·12 §5.1). 일시정지·선택 대기는 그 직전 상태로 본다
+const TOWN_STATES: readonly string[] = ['town_idle', 'town_prep', 'treatment']
+export function isInTown(world: Pick<World, 'state'>): boolean {
+  const ca = world.state.current_activity
+  let s: string | null = ca.state === 'paused' ? ca.paused_from : ca.state
+  if (s === 'awaiting_choice') s = (world.state.pending_choice?.context.resume_state as string | undefined) ?? null
+  return s !== null && TOWN_STATES.includes(s)
+}
+
 // 교체 제안 수락(08 §8.2, 03 §5.3.1). 마을이면 즉시(가방 장비 장착, 상점 장비 구매), 출정 중이면
 // 가방 장비는 도착 때 장착 예약, 상점 장비는 다음 정비에서 산다
 export function acceptEquipSuggestion(world: World, slot: Slot): void {
   const sg = world.state.inventory.equip_suggestions.find((x) => x.slot === slot)
   if (!sg) return
-  const inTown = ['town_idle', 'town_prep'].includes(world.state.current_activity.state)
+  const inTown = isInTown(world)
   if ('uid' in sg.source) {
     if (inTown) acceptSuggestion(world, slot)
     else orderEquip(world, sg.source.uid, 'equip')

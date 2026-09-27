@@ -157,8 +157,12 @@ describe('08 §8 마을 정비', () => {
     assert.ok(sg, '상점 제안')
     sg.accepted = true
     const src = sg.source as { shop_def_id: string }
-    townPrep(w, firstRng(), shop)
+    const coins = w.state.character!.coins
+    const r = townPrep(w, firstRng(), shop)
     const uid = w.state.inventory.equipped[sg.slot]!
+    // 산 값이 정비 지출·내역에 들고 교체 기록이 남는다(독립 검증 5)
+    assert.equal(r.spent, coins - w.state.character!.coins)
+    assert.ok(r.journal.some((d) => d.refs?.item_uid === uid))
     assert.equal(w.state.item_instances[uid]!.def_id, src.shop_def_id)
     assert.equal(w.state.item_instances[uid]!.locked, true)
     assert.ok(!w.state.inventory.equip_suggestions.some((x) => x.accepted))

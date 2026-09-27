@@ -14,6 +14,7 @@ import { chargesLeft, useCharge } from '../recovery/rest'
 import { retreatHpRatio } from './combat'
 import { COMBAT_CHECKS, type RoundRecord } from './types'
 import { SLOTS } from '../schema/index'
+import { dropItemRefs } from '../items/bag'
 
 // 치명 활동의 사망 기록 문맥(07 §8.3). 출정·위험 계산은 활동 쪽이 넘긴다
 export interface LethalContext {
@@ -238,10 +239,10 @@ export function applyDefeat(ctx: RuleContext, r: DefeatResult): { injury: Injury
     for (const [id, n] of Object.entries(r.losses.materials)) loot.materials[id] = Math.max(0, (loot.materials[id] ?? 0) - n)
     loot.item_uids = loot.item_uids.filter((u) => !r.losses.items.includes(u))
   }
-  const inv = state.inventory
-  inv.bag = inv.bag.filter((u) => !r.losses.items.includes(u))
-  inv.pending_box = inv.pending_box.filter((u) => !r.losses.items.includes(u))
-  for (const u of r.losses.items) delete state.item_instances[u]
+  for (const u of r.losses.items) {
+    dropItemRefs(state.inventory, u)
+    delete state.item_instances[u]
+  }
   ch.hp = r.arrive_hp
   return { injury, rankUps }
 }

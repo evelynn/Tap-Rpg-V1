@@ -1,7 +1,7 @@
 // 가방·수령 대기함·현장 정리(08 §9.1·§9.3·§9.4), 수동 장착·잠금(08 §8.1), 교체 제안(08 §8.2), 출정 중 획득 장비 판단(08 §8).
 import type { JournalDraft } from '../state/journal'
 import { GRADES } from '../schema/index'
-import type { ItemInstance } from '../state/inventory'
+import type { Inventory as ItemInventory, ItemInstance } from '../state/inventory'
 import { characterOf, type RuleContext } from '../rules/context'
 import { renderTemplate } from '../text/index'
 import { earnCoins } from '../economy/earn'
@@ -41,13 +41,20 @@ export function isProtected(ctx: RuleContext, uid: string): boolean {
     || ctx.content.get('item', inst.def_id).unique || inst.inherited_from_gen !== undefined
 }
 
-// 인스턴스를 가방·대기함에서 빼고 동전을 준다. 일반·좋은은 기록을 지우고, 희귀 이상·고유는 기록을 남긴다(08 §13.3)
-export function removeSold(ctx: RuleContext, uid: string): void {
-  const inv = ctx.state.inventory
+// 장비가 가문 손을 떠날 때(판매·패배 손실·사건 제거·저장 보정) 인벤토리의 모든 참조를 지운다:
+// 착용·가방·대기함·교체 제안·장착 예약·유품 지정. 인스턴스 기록을 지울지는 부르는 쪽이 정한다
+export function dropItemRefs(inv: ItemInventory, uid: string): void {
+  for (const slot of Object.keys(inv.equipped) as Slot[]) if (inv.equipped[slot] === uid) inv.equipped[slot] = null
   inv.bag = inv.bag.filter((u) => u !== uid)
   inv.pending_box = inv.pending_box.filter((u) => u !== uid)
   inv.equip_suggestions = inv.equip_suggestions.filter((sg) => !('uid' in sg.source && sg.source.uid === uid))
   if (inv.equip_orders) inv.equip_orders = inv.equip_orders.filter((o) => o.uid !== uid)
+  inv.relic_designations = inv.relic_designations.filter((r) => r.uid !== uid)
+}
+
+// 인스턴스를 가방·대기함에서 빼고 동전을 준다. 일반·좋은은 기록을 지우고, 희귀 이상·고유는 기록을 남긴다(08 §13.3)
+export function removeSold(ctx: RuleContext, uid: string): void {
+  dropItemRefs(ctx.state.inventory, uid)
   const inst = instOf(ctx, uid)
   if ((inst.grade === 'common' || inst.grade === 'good') && !ctx.content.get('item', inst.def_id).unique) delete ctx.state.item_instances[uid]
 }
@@ -144,7 +151,8 @@ export function orderEquip(ctx: RuleContext, uid: string, op: 'equip' | 'unequip
   if (op === 'equip' && ctx.content.get('item', instOf(ctx, uid).def_id).cursed && !confirmCursed) throw new Error('저주 장비는 사용자 확인 뒤에만 장착한다')
   const inv = ctx.state.inventory
   const slot = slotOf(ctx, uid)
-  inv.equip_orders = [...(inv.equip_orders ?? []).filter((o) => slotOf(ctx, o.uid) !== slot), { uid, op }]
+  const live = (inv.equip_orders ?? []).filter((o) => ctx.state.item_instances[o.uid])
+  inv.equip_orders = [...live.filter((o) => slotOf(ctx, o.uid) !== slot), { uid, op }]
 }
 
 export function cancelEquipOrder(ctx: RuleContext, uid: string): void {
@@ -157,8 +165,11 @@ export function applyEquipOrders(ctx: RuleContext): void {
   const inv = ctx.state.inventory
   for (const o of inv.equip_orders ?? []) {
     if (!ctx.state.item_instances[o.uid]) continue
-    if (o.op === 'equip' && (inv.bag.includes(o.uid) || inv.pending_box.includes(o.uid))) equipManual(ctx, o.uid, true)
-    else if (o.op === 'unequip' && isEquipped(ctx, o.uid) && inv.bag.length < ctx.content.balance.stats.bag_slots) unequip(ctx, slotOf(ctx, o.uid))
+    const bagFull = inv.bag.length >= ctx.content.balance.stats.bag_slots
+    if (o.op === 'equip' && (inv.bag.includes(o.uid) || (inv.pending_box.includes(o.uid) && !(bagFull && inv.equipped[slotOf(ctx, o.uid)])))) {
+      equipManual(ctx, o.uid, true)
+    }
+    else if (o.op === 'unequip' && isEquipped(ctx, o.uid) && !bagFull) unequip(ctx, slotOf(ctx, o.uid))
   }
   inv.equip_orders = []
 }
@@ -185,6 +196,7 @@ type Suggestion = RuleContext['state']['inventory']['equip_suggestions'][number]
 export function suggest(ctx: RuleContext, sg: Suggestion, name: string): JournalDraft | null {
   const inv = ctx.state.inventory
   const old = inv.equip_suggestions.find((x) => x.slot === sg.slot)
+  if (old?.accepted) return null // 사용자가 수락한 제안은 새 판단이 바꾸지 않는다(I81)
   inv.equip_suggestions = [...inv.equip_suggestions.filter((x) => x.slot !== sg.slot), sg]
   if (old && JSON.stringify(old.source) === JSON.stringify(sg.source)) return null
   return { tag: 'gear', line: renderTemplate(LINE_SUGGEST, { item: name }) }

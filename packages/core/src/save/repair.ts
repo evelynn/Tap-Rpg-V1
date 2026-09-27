@@ -7,6 +7,7 @@ import { statCap } from '../rules/derived'
 import { constantConditionTest } from '../rules/context'
 import { xpToNext } from '../rules/growth'
 import { familyHeldItems } from '../items/roll'
+import { dropItemRefs } from '../items/bag'
 
 // 시계 이상 기록 보관 수(16 §7.1 B12)
 const CLOCK_ANOMALY_KEEP = 20
@@ -163,16 +164,19 @@ export function repairSave(content: Content, state: SaveBody): SaveDiagnostic[] 
     for (const uid of uids.slice(1)) {
       log('B9', `고유 장비 ${defId} 중복: ${uid} 삭제(08 §9.5 대체 장비 굴림은 난수를 써 로드에서 하지 않는다)`)
       delete state.item_instances[uid]
-      inv.bag = inv.bag.filter((u) => u !== uid)
-      inv.pending_box = inv.pending_box.filter((u) => u !== uid)
-      inv.relic_designations = inv.relic_designations.filter((d) => d.uid !== uid)
-      for (const slot of SLOTS) if (inv.equipped[slot] === uid) inv.equipped[slot] = null
+      dropItemRefs(inv, uid)
     }
   }
 
-  // B14 교체 제안은 슬롯당 1건·슬롯 수 이하, 소모품은 carry_group 한도 이하
+  // B14 교체 제안은 슬롯당 1건·슬롯 수 이하(없는 장비를 가리키면 삭제), 장착 예약도 있는 장비만, 소모품은 carry_group 한도 이하
+  const orders = inv.equip_orders?.filter((o) => state.item_instances[o.uid])
+  if (inv.equip_orders && orders!.length !== inv.equip_orders.length) {
+    log('B14', `장착 예약 ${inv.equip_orders.length}건 → ${orders!.length}건`)
+    inv.equip_orders = orders
+  }
   const bySlot = new Set<string>()
   const sugg = inv.equip_suggestions.filter((sg) => {
+    if ('uid' in sg.source && !state.item_instances[sg.source.uid]) return false
     if (bySlot.has(sg.slot)) return false
     bySlot.add(sg.slot)
     return true

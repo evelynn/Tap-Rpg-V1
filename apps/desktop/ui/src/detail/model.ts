@@ -1,7 +1,7 @@
 // 상세 창(03 §5) 뷰 모델: 세계에서 탭별로 보일 값을 만든다. DOM이 없어 헤드리스 테스트로 검사한다.
 // 첫 조각: 일지·인물·방침·가문 연대기. 서가·책 보기(M3)·가계도·도감·목적지 고르기는 다음 조각이다.
 import {
-  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, activityOf, ageAt, effectiveStat, isUnlocked, itemName, lifeStageOf, maxHp,
+  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, activityOf, ageAt, effectiveStat, isInTown, isUnlocked, itemName, lifeStageOf, maxHp,
   placeRiskCap, rankAllowed, renderTemplate, riskDiff, riskGrade, riskRank, xpToNext,
   type JournalEntry, type World,
 } from '@tap/core'
@@ -154,7 +154,7 @@ export function characterModel(world: World): CharacterModel | null {
     injuries: ch.injuries.map((i) => `${i.grade === 'serious' ? '중상' : '경상'} (${STAT_LABELS[i.stat]} −1) · ${Math.ceil(i.remaining_min)}분 뒤 회복`),
     equipment,
     bag: { used: inv.bag.length, max: b.stats.bag_slots, items: inv.bag.map((u) => itemRow(world, u, false)), consumables },
-    inTown: ['town_idle', 'town_prep'].includes(world.state.current_activity.state),
+    inTown: isInTown(world),
   }
 }
 
@@ -221,7 +221,11 @@ export function destinationModel(world: World): { current: string; places: Place
     const cap = placeRiskCap(world, activityOf(r.kind)) // 모험적의 모험 예외를 반영한 상한(04 §10.1)
     places.push({ id: r.id, name: r.name, grade: RISK_LABEL[grade] ?? grade, cap: RISK_LABEL[cap] ?? cap, reckless, ask: reckless || riskRank(grade) > riskRank(cap) })
   }
-  return { current: world.state.policies.destination, places }
+  const cur = world.state.policies.destination
+  if (cur !== 'auto' && !places.some((p) => p.id === cur) && world.content.has('region', cur)) {
+    places.push({ id: cur, name: `${world.content.get('region', cur).name} (지금 갈 수 없음)`, grade: '', cap: '', ask: false, reckless: false })
+  }
+  return { current: cur, places }
 }
 
 // ── 가문 탭 연대기(03 §5.5) ──
@@ -241,11 +245,13 @@ export interface TreeNode { gen: number; name: string; role: string; dashed: boo
 export function treeModel(world: World): TreeNode[] {
   const { family: fam, character: ch } = world.state
   const past = [...fam.chronicle].sort((a, b) => a.gen - b.gen)
+  // 계승 대기 중이면 끝난 인물은 이미 연대기에 있다(현재 인물 줄을 두 번 그리지 않는다)
+  const living = !!ch && !fam.chronicle.some((r) => r.char_uid === ch.uid)
   const nodes: TreeNode[] = past.map((r) => ({
     gen: r.gen, name: r.name, role: ROLE_LABEL[r.family_role] ?? r.family_role,
-    dashed: r.family_role === 'collateral' || r.family_role === 'adopted', current: false, row: (ch ? 1 : 0) + (past.length - 1 - past.indexOf(r)),
+    dashed: r.family_role === 'collateral' || r.family_role === 'adopted', current: false, row: (living ? 1 : 0) + (past.length - 1 - past.indexOf(r)),
   }))
-  if (ch) {
+  if (ch && !fam.chronicle.some((r) => r.char_uid === ch.uid)) {
     const role = ch.family_role
     nodes.push({ gen: ch.generation, name: ch.name, role: ROLE_LABEL[role] ?? role, dashed: role === 'collateral' || role === 'adopted', current: true, row: 0 })
   }
@@ -327,7 +333,7 @@ export function familyModel(world: World): { title: string; rows: ChronicleRow[]
   const ch = state.character
   const byId = new Map(state.journal.map((e) => [e.id, e]))
   const rows: ChronicleRow[] = []
-  if (ch) {
+  if (ch && !fam.chronicle.some((r) => r.char_uid === ch.uid)) {
     const age = ageAt(ch.eff_min, content.balance.time)
     rows.push({ head: `${ch.generation}대 ${ch.name}  ${content.balance.time.start_age}세~ · 현재 · ${ch.specialization === 'none' ? '초보' : SPEC_LABELS[ch.specialization]} Lv${ch.level} (${age}세)`, lines: [] })
   }

@@ -23,6 +23,7 @@ import {
   putPending, improvement, rollDrop, rollEffects, rollGrade, stowLoot, suggest, worthSwapping, type Grade,
 } from '../items/index'
 import { appraisal, basePrice, earnCoins, reserveRatio, shopPriceFactor } from '../economy/index'
+import { dropItemRefs } from '../items/bag'
 
 // 아직 구현이 없는 포트 호출. 출정 진행(T8)·계승(T10)이 가져간다
 export interface DeferredPortCall {
@@ -152,12 +153,7 @@ const ownedUids = (rule: RuleContext): string[] => {
 }
 
 function dropInstance(rule: RuleContext, uid: string): void {
-  const inv = rule.state.inventory
-  for (const [slot, u] of Object.entries(inv.equipped)) if (u === uid) inv.equipped[slot as 'weapon'] = null
-  inv.bag = inv.bag.filter((u) => u !== uid)
-  inv.pending_box = inv.pending_box.filter((u) => u !== uid)
-  inv.equip_suggestions = inv.equip_suggestions.filter((sg) => !('uid' in sg.source && sg.source.uid === uid))
-  inv.relic_designations = inv.relic_designations.filter((r) => r.uid !== uid)
+  dropItemRefs(rule.state.inventory, uid)
   delete rule.state.item_instances[uid]
 }
 

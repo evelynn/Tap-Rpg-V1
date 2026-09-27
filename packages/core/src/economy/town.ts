@@ -241,16 +241,20 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
   const boughtCount = Object.values(bought).reduce((a, n) => a + n, 0)
   if (boughtCount) breakdown.push(renderTemplate(LINE_SUPPLIES, { count: boughtCount, coins: suppliesCoins }))
 
-  // 출정 중 수락한 상점 제안부터 산다(08 §8.2). 예산을 다시 확인하고, 모자라면 제안을 지우고 기록한다
-  const accepted = state.inventory.equip_suggestions.filter((x) => x.accepted && !('uid' in x.source)).map((x) => x.slot)
-  for (const slot of accepted) journal.push(...acceptShopSuggestion(ctx, shop, slot).journal)
+  // 출정 중 수락한 상점 제안부터 산다(08 §8.2, 3단계 예산 계산 전). 산 슬롯은 교체 루프에서 뺀다
+  const acceptedBuys: { slot: Slot; price: number }[] = []
+  for (const sg of state.inventory.equip_suggestions.filter((x) => x.accepted && !('uid' in x.source))) {
+    const r = acceptShopSuggestion(ctx, shop, sg.slot)
+    journal.push(...r.journal)
+    if (r.bought) acceptedBuys.push({ slot: sg.slot, price: r.price })
+  }
 
   // 3. 장비 예산
   let budget = ch.coins * (1 - reserveRatio(ctx))
 
   // 4. 교체 루프: 최대 max_swaps회, 슬롯당 1회
   const swaps: SwapRecord[] = []
-  const changed = new Set<Slot>([...lockedSlots(ctx), ...accepted])
+  const changed = new Set<Slot>([...lockedSlots(ctx), ...acceptedBuys.map((a) => a.slot)])
   let suggestions = 0
   for (let i = 0; i < content.balance.equip_eval.max_swaps; i++) {
     const c = best(swapCandidates(ctx, shop, budget, changed, opts))
@@ -271,7 +275,7 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
     journal.push({ tag: 'gear', line: renderTemplate(REASON_LINES[c.imp.reason].short, { item: name }), refs: { item_uid: uid } })
   }
 
-  const gear = swaps.filter((w) => w.price > 0)
+  const gear = [...acceptedBuys, ...swaps].filter((w) => w.price > 0)
   const gearCoins = gear.reduce((a, w) => a + w.price, 0)
   if (gear.length) breakdown.push(renderTemplate(LINE_GEAR, { count: gear.length, coins: gearCoins }))
 
@@ -284,25 +288,30 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
   return { materials, sold, serious, lightTreated, bought, swaps, suggestions, maintenance, spent, breakdown, bankrupt: isBankrupt(ctx), journal }
 }
 
-// 상점 제안 수락(마을, 08 §8.2): 예산을 다시 확인해 사고 장착·잠금. 모자라면 제안을 지우고 기록
-export function acceptShopSuggestion(ctx: RuleContext, shop: ShopState, slot: Slot): { bought: string | null; journal: JournalDraft[] } {
+// 상점 제안 수락(마을, 08 §8.2): 예산을 다시 확인해 사고 장착·잠금. 모자라면 제안을 지우고 기록한다.
+// 진열에서 사라졌으면(재고 갱신) 제안만 지운다(08 §8.2 '제안 장비가 사라질 때')
+export function acceptShopSuggestion(ctx: RuleContext, shop: ShopState, slot: Slot): { bought: string | null; price: number; journal: JournalDraft[] } {
   const inv = ctx.state.inventory
   const sg = inv.equip_suggestions.find((x) => x.slot === slot)
-  if (!sg || 'uid' in sg.source) return { bought: null, journal: [] }
+  if (!sg || 'uid' in sg.source) return { bought: null, price: 0, journal: [] }
   const src = sg.source
   inv.equip_suggestions = inv.equip_suggestions.filter((x) => x !== sg)
   const offer = visibleOffers(ctx, shop).find((o) => o.def_id === src.shop_def_id && o.grade === src.grade)
-  const price = offer ? itemBuyPrice(ctx, offer.def_id, offer.grade) : Infinity
-  if (!offer || price > characterOf(ctx).coins * (1 - reserveRatio(ctx))) {
+  if (!offer) return { bought: null, price: 0, journal: [] }
+  const price = itemBuyPrice(ctx, offer.def_id, offer.grade)
+  if (price > characterOf(ctx).coins * (1 - reserveRatio(ctx))) {
     const line = renderTemplate(LINE_NO_MONEY, { item: ctx.content.get('item', src.shop_def_id).name })
-    return { bought: null, journal: [{ tag: 'gear', line }] }
+    return { bought: null, price: 0, journal: [{ tag: 'gear', line }] }
   }
   const uid = buyOffer(ctx, shop, offer, price)
   equipItem(ctx, uid)
   const inst = ctx.state.item_instances[uid]!
   inst.locked = true
   inst.lock_source = 'manual_equip'
-  return { bought: uid, journal: [] }
+  // 교체 기록은 자동 교체와 같은 짧은 형(08 §7.5)
+  const reason = REASON_LINES[sg.reason as keyof typeof REASON_LINES]
+  const journal: JournalDraft[] = reason ? [{ tag: 'gear', line: renderTemplate(reason.short, { item: itemName(ctx, inst) }), refs: { item_uid: uid } }] : []
+  return { bought: uid, price, journal }
 }
 
 // 예상 지출(08 §12): 다음 출정 준비(구매 목표를 채우는 비용) + 여관 1회. 04의 적자 활동 판단용
