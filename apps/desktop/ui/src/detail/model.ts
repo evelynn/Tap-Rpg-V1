@@ -87,6 +87,7 @@ export interface ItemRow {
   locked: boolean
   relic: 1 | 2 | null // ★ 순위
   equipped: boolean
+  order: 'equip' | 'unequip' | null // 출정 중 예약(03 §5.3.1)
 }
 
 export interface CharacterModel {
@@ -100,7 +101,7 @@ export interface CharacterModel {
   injuries: string[]
   equipment: (ItemRow | { slot: string; empty: true })[]
   bag: { used: number; max: number; items: ItemRow[]; consumables: string }
-  inTown: boolean // 장착·해제·유품 변경은 마을에서만(12 §5.1, 03 §5.3.1 예약은 다음 조각)
+  inTown: boolean // 장착·해제는 마을이면 즉시, 출정 중이면 예약(03 §5.3.1). 유품 변경은 마을에서만(12 §5.1)
 }
 
 const num = (n: number): string => n.toLocaleString('ko-KR')
@@ -112,6 +113,7 @@ function itemRow(world: World, uid: string, equipped: boolean): ItemRow {
   return {
     uid, slot: SLOT_LABEL[def.slot] ?? def.slot, name: itemName(world, inst), grade: GRADE[inst.grade] ?? GRADE.common!,
     cursed: def.cursed, locked: inst.locked, relic: relic as 1 | 2 | null, equipped,
+    order: world.state.inventory.equip_orders?.find((o) => o.uid === uid)?.op ?? null,
   }
 }
 

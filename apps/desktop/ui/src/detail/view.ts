@@ -1,7 +1,7 @@
 // 상세 창(03 §5, 480 × 560) DOM. 탭 4개(일지·인물·방침·가문), Esc 닫기, Ctrl+1~4 탭 전환.
 // 세계를 바꾸는 조작은 코어 함수만 부른다(잠금·유품·장착·태도·방침 값). 글자는 모두 textContent로 넣는다.
 import {
-  designateRelic, equipManual, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
+  cancelEquipOrder, designateRelic, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
   FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, type Filter, type ItemRow,
@@ -46,6 +46,7 @@ export class DetailWindow {
   private filter: Filter = '전체'
   private readonly open = new Set<string>() // 펼친 줄(일지 id, 연대기 줄, 장비 uid, 가방)
   private lethalAsk = false
+  private cursedAsk: string | null = null // 확인 칸을 펼친 저주 장비 uid
   private destAsk: string | null = null // 확인 칸을 펼친 목적지
   private readonly body: HTMLElement
   private readonly tabBar: HTMLElement
@@ -181,21 +182,51 @@ export class DetailWindow {
       h('span', {}, it.name), it.cursed ? ' (저주)' : '', ' ',
       h('span', { class: 'd-grade', style: `color:${it.grade.color}` }, it.grade.label),
       it.locked ? ' 🔒' : '', it.relic ? ` ★${it.relic}` : ' ☆',
+      it.order ? h('span', { class: 'd-dim' }, it.order === 'equip' ? ' · 다음 마을 도착 때 장착' : ' · 다음 마을 도착 때 해제') : null,
       h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸'))
     row.onclick = () => this.toggle(key)
     wrap.append(row)
     if (this.open.has(key)) {
       const w = this.world
-      const town = inTown ? undefined : '마을에서만 할 수 있습니다(출정 중 예약은 다음 조각)'
+      const town = inTown ? undefined : '마을에서만 할 수 있습니다'
+      const bagFull = w.state.inventory.bag.length >= w.content.balance.stats.bag_slots
+      // 장착·해제: 마을이면 즉시, 출정 중이면 다음 마을 도착 때로 예약(03 §5.3.1)
+      const equip = (confirmed = false): void => {
+        if (it.cursed && !confirmed) {
+          this.cursedAsk = it.uid
+          return this.render()
+        }
+        this.cursedAsk = null
+        if (inTown) equipManual(w, it.uid, it.cursed)
+        else orderEquip(w, it.uid, 'equip', it.cursed)
+        this.render()
+      }
+      const off = (): void => {
+        if (inTown) unequip(w, w.content.get('item', w.state.item_instances[it.uid]!.def_id).slot)
+        else orderEquip(w, it.uid, 'unequip')
+        this.render()
+      }
       const acts = h('div', { class: 'd-acts' },
-        it.equipped
-          ? button('해제', () => { unequip(w, w.content.get('item', w.state.item_instances[it.uid]!.def_id).slot); this.render() }, { disabled: !inTown || w.state.inventory.bag.length >= w.content.balance.stats.bag_slots, ...(town ? { title: town } : {}) })
-          : button('장착', () => { equipManual(w, it.uid); this.render() }, { disabled: !inTown || it.cursed, title: it.cursed ? '저주 장비 확인 칸은 다음 조각입니다' : town ?? '' }),
+        it.order
+          ? button('예약 취소', () => { cancelEquipOrder(w, it.uid); this.render() })
+          : it.equipped
+            ? button(inTown ? '해제' : '해제 예약', off, { disabled: bagFull, ...(bagFull ? { title: '가방이 가득합니다' } : {}) })
+            : button(inTown ? '장착' : '장착 예약', () => equip()),
         button(it.locked ? '잠금 해제' : '잠금', () => { setLock(w, it.uid, !it.locked); this.render() }),
         it.relic
           ? button('유품 해제', () => { undesignateRelic(w, it.uid); this.render() }, { disabled: !inTown, ...(town ? { title: town } : {}) })
-          : button('유품 지정', () => this.markRelic(it.uid), { disabled: !inTown || it.cursed, ...(town ? { title: town } : {}) }))
+          : button('유품 지정', () => this.markRelic(it.uid), { disabled: !inTown || it.cursed, ...(town ? { title: town } : {}) }),
+        it.equipped && bagFull && !it.order ? h('span', { class: 'd-dim' }, '가방이 가득합니다') : null)
       wrap.append(acts)
+      // 저주 장비 장착 확인 칸(03 §5.3.1, 팝업 아님)
+      if (this.cursedAsk === it.uid) {
+        const def = w.content.get('item', w.state.item_instances[it.uid]!.def_id)
+        wrap.append(h('div', { class: 'd-confirm' },
+          h('div', { class: 'd-strong' }, '⚠ 저주가 걸린 장비입니다.'),
+          h('div', {}, `${it.name}: ${def.description}`),
+          h('div', {}, '벗을 수는 있지만 착용 중에는 저주가 따릅니다.'),
+          h('div', { class: 'd-acts' }, button('취소', () => { this.cursedAsk = null; this.render() }), button(inTown ? '장착합니다' : '다음 마을에서 장착합니다', () => equip(true)))))
+      }
     }
     return wrap
   }

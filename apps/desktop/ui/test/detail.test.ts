@@ -76,6 +76,10 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     const worn = m.equipment.filter((e) => !('empty' in e))
     assert.ok(worn.length >= 2, '시작 장비')
     for (const it of worn) if (!('empty' in it)) assert.ok(['일반', '좋은', '희귀', '전설'].includes(it.grade.label))
+    // 출정 중 예약은 줄에 표시한다(03 §5.3.1)
+    const weapon = w.state.inventory.equipped.weapon!
+    w.state.inventory.equip_orders = [{ uid: weapon, op: 'unequip' }]
+    assert.equal((characterModel(w)!.equipment[0] as { order: string | null }).order, 'unequip')
   })
 
   it('방침: 태도 3칸 중 하나만 켜지고 가중치·퇴각 줄을 보인다', () => {

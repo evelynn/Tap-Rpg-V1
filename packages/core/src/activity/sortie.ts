@@ -2,6 +2,7 @@
 import { chainMissions, type SortieChoice } from '../ai/index'
 import { earnCoins, expectedSpend, sellPrice } from '../economy/index'
 import { rewardUnits } from '../events/index'
+import { applyEquipOrders } from '../items/index'
 import { addJournal } from '../journal/index'
 import { thirstOnSortieStart } from '../life/index'
 import { characterOf } from '../rules/context'
@@ -257,6 +258,7 @@ export function arriveTown(world: World): void {
   // 출정 동안만 살아 있는 일시 수정자는 여기서 끝난다
   s.temp_mods = []
   s.trip_flags = {}
+  applyEquipOrders(world) // 출정 중 예약한 장착·해제(03 §5.3.1)
   state.current_activity.state = 'town_idle'
   ch.counters[COUNTERS.townStep] = 1
 }

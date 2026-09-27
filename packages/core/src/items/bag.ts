@@ -47,6 +47,7 @@ export function removeSold(ctx: RuleContext, uid: string): void {
   inv.bag = inv.bag.filter((u) => u !== uid)
   inv.pending_box = inv.pending_box.filter((u) => u !== uid)
   inv.equip_suggestions = inv.equip_suggestions.filter((sg) => !('uid' in sg.source && sg.source.uid === uid))
+  if (inv.equip_orders) inv.equip_orders = inv.equip_orders.filter((o) => o.uid !== uid)
   const inst = instOf(ctx, uid)
   if ((inst.grade === 'common' || inst.grade === 'good') && !ctx.content.get('item', inst.def_id).unique) delete ctx.state.item_instances[uid]
 }
@@ -134,6 +135,32 @@ export function unequip(ctx: RuleContext, slot: Slot): void {
   if (!uid) return
   inv.equipped[slot] = null
   inv.bag.push(uid)
+}
+
+const slotOf = (ctx: RuleContext, uid: string): Slot => ctx.content.get('item', instOf(ctx, uid).def_id).slot
+
+// 출정 중 장착·해제 예약(03 §5.3.1). 같은 슬롯의 이전 예약을 바꾼다. 저주 장비는 확인한 뒤에만 예약한다
+export function orderEquip(ctx: RuleContext, uid: string, op: 'equip' | 'unequip', confirmCursed = false): void {
+  if (op === 'equip' && ctx.content.get('item', instOf(ctx, uid).def_id).cursed && !confirmCursed) throw new Error('저주 장비는 사용자 확인 뒤에만 장착한다')
+  const inv = ctx.state.inventory
+  const slot = slotOf(ctx, uid)
+  inv.equip_orders = [...(inv.equip_orders ?? []).filter((o) => slotOf(ctx, o.uid) !== slot), { uid, op }]
+}
+
+export function cancelEquipOrder(ctx: RuleContext, uid: string): void {
+  const inv = ctx.state.inventory
+  if (inv.equip_orders) inv.equip_orders = inv.equip_orders.filter((o) => o.uid !== uid)
+}
+
+// 마을 도착 때 예약을 적용한다. 그사이 입었거나 가방에 없거나, 해제할 가방 칸이 없으면 버린다
+export function applyEquipOrders(ctx: RuleContext): void {
+  const inv = ctx.state.inventory
+  for (const o of inv.equip_orders ?? []) {
+    if (!ctx.state.item_instances[o.uid]) continue
+    if (o.op === 'equip' && (inv.bag.includes(o.uid) || inv.pending_box.includes(o.uid))) equipManual(ctx, o.uid, true)
+    else if (o.op === 'unequip' && isEquipped(ctx, o.uid) && inv.bag.length < ctx.content.balance.stats.bag_slots) unequip(ctx, slotOf(ctx, o.uid))
+  }
+  inv.equip_orders = []
 }
 
 export function setLock(ctx: RuleContext, uid: string, locked: boolean): void {

@@ -20,6 +20,8 @@ export const inventorySchema = s({
     created_eff_min: effMinV,
   })),
   dismissed_suggestions: z.array(s({ def_id: defId, grade, season_key: z.string() })),
+  // 출정 중 장착·해제 예약(03 §5.3.1). 슬롯당 1건, 다음 마을 도착 때 적용. optional이라 옛 저장도 읽는다
+  equip_orders: z.array(s({ uid, op: z.enum(['equip', 'unequip']) })).optional(),
 })
 export type Inventory = z.infer<typeof inventorySchema>
 
