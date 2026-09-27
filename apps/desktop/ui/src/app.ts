@@ -72,7 +72,7 @@ export class App {
       icons: sv ? icons(sv) : [],
       line: paused ? PAUSE_LINE : lines.current?.text ?? '',
       mark: world.state.pending_choice ? 'choice' : world.state.current_activity.state === 'awaiting_succession' ? 'succession' : null,
-      attitude: world.content.get('attitude', world.state.policies.attitude).name.slice(0, 1),
+      attitude: world.content.get('attitude', world.state.policies.attitude).name,
       dark,
     }
   }

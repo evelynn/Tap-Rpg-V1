@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { FILTERS, characterModel, checkFormula, familyModel, inFilter, journalModel, policyModel } from '../src/detail/model'
+import { FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel } from '../src/detail/model'
 
 let content: Content
 
@@ -84,6 +84,21 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     assert.equal(p.attitudes.length, 3)
     assert.equal(p.attitudes.filter((a) => a.on).length, 1)
     assert.match(p.attitudeLine, /^사냥 \d+ · 모험 \d+ · 던전 \d+ \/ 체력 \d+%에 퇴각$/)
+    assert.equal(attitudeNote('안정적'), 'ⓘ 다음 행동부터 안정적으로 움직입니다') // 03 §2.6 원문
+  })
+
+  it('목적지: 마을 빼고 해금 장소만, 상한을 넘거나 무모한 곳만 확인을 묻는다', () => {
+    const w = newWorld()
+    const m = destinationModel(w)
+    assert.equal(m.current, 'auto')
+    assert.ok(m.places.length > 0)
+    assert.ok(m.places.every((o) => w.content.get('region', o.id).kind !== 'town'))
+    assert.ok(m.places.every((o) => ['매우 낮음', '낮음', '보통', '높음', '무모'].includes(o.grade)))
+    assert.ok(m.places.every((o) => !o.reckless || o.ask), '무모는 늘 확인')
+    assert.ok(m.places.some((o) => !o.ask), '새내기에게도 확인 없이 고를 곳이 있다')
+    // 상한을 '높음'으로 올리면 높음 장소는 더 묻지 않는다
+    w.state.policies.risk_cap = 'high'
+    assert.ok(destinationModel(w).places.every((o) => o.ask === o.reckless))
   })
 
   it('가문: 2대째면 현재 인물 줄 + 끝난 생애 줄, 끝난 생애는 주요 기록을 나이순으로 펼친다', () => {

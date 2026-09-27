@@ -1,9 +1,11 @@
 // 브라우저 진입점: 번들 읽기 → 세계 만들기 → 실시간 구동·그리기. Tauri 2 껍데기도 이 dist를 그대로 싣는다(파일 시스템을 쓰지 않는다).
-import { Content, ageAt, createGameWorld, type World } from '@tap/core'
+import { Content, ageAt, createGameWorld, setAttitude, type World } from '@tap/core'
 import { App } from './app'
+import { attitudeNote } from './detail/model'
 import { DetailWindow } from './detail/view'
 import { SPEEDS } from './driver'
 import { drawDue, surface } from './layout'
+import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
 import { SHEETS, STRIPS } from './sprites'
@@ -88,13 +90,32 @@ async function start(): Promise<void> {
   controls.append(pause)
   pause.onclick = () => app.driver.setPaused(!app.driver.paused)
 
-  // 상세 창(03 §5): 풍경·한 줄 기록 → 일지, 이름·상태 줄·아이콘 → 인물, 태도 표식 → 방침(빠른 메뉴는 다음 조각, 03 §2.6)
+  // 상세 창(03 §5): 풍경·한 줄 기록 → 일지, 이름·상태 줄·아이콘 → 인물, 태도 표식 → 태도 빠른 메뉴(03 §2.6)
   const detail = new DetailWindow(document.getElementById('detail')!, app.world, (t) => app.note(t), () => app.driver.setPaused(!app.driver.paused))
+  const menu = new QuickMenu(document.getElementById('menu')!)
   canvas.onclick = () => detail.show('일지')
   const col = document.getElementById('col')!
   col.addEventListener('click', (e) => {
     const t = e.target as HTMLElement
-    if (t.closest('.attitude')) detail.show('방침')
+    const mark = t.closest<HTMLElement>('.attitude')
+    if (mark) {
+      e.stopPropagation() // 문서 클릭이 막 연 메뉴를 닫지 않게
+      const w = app.world
+      const cur = w.state.policies.attitude
+      menu.open(mark, [
+        ...[...w.content.list('attitude')].sort((a, b) => a.order - b.order).map((a) => ({
+          label: a.name, checked: a.id === cur,
+          run: () => {
+            if (a.id === cur) return
+            setAttitude(w, a.id)
+            app.note(attitudeNote(a.name))
+            detail.render()
+          },
+        })),
+        'sep',
+        { label: '방침 더 보기…', run: () => detail.show('방침') },
+      ])
+    }
     else if (t.closest('.status, .icons')) detail.show('인물')
     else if (t.closest('.record')) detail.show('일지')
   })

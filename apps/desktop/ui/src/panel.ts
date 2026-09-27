@@ -66,6 +66,6 @@ export class Panel {
     const mark = v.mark
       ? `<span class="mark ${v.mark}" title="${v.mark === 'choice' ? '중요한 선택 1건이 기다리고 있습니다' : '계승을 기다리고 있습니다'}">${v.mark === 'choice' ? '1' : '✿'}</span>`
       : '<span class="mark none" aria-hidden="true"></span>'
-    return `${cells.join('')}${mark}<span class="attitude" title="현재 태도">${v.attitude}</span>`
+    return `${cells.join('')}${mark}<span class="attitude" title="현재 태도: ${v.attitude}">${v.attitude.slice(0, 1)}</span>`
   }
 }

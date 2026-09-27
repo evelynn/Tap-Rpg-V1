@@ -1,7 +1,8 @@
 // 상세 창(03 §5) 뷰 모델: 세계에서 탭별로 보일 값을 만든다. DOM이 없어 헤드리스 테스트로 검사한다.
 // 첫 조각: 일지·인물·방침·가문 연대기. 서가·책 보기(M3)·가계도·도감·목적지 고르기는 다음 조각이다.
 import {
-  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, ageAt, effectiveStat, itemName, lifeStageOf, maxHp, xpToNext,
+  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, activityOf, ageAt, effectiveStat, isUnlocked, itemName, lifeStageOf, maxHp,
+  placeRiskCap, rankAllowed, renderTemplate, riskDiff, riskGrade, riskRank, xpToNext,
   type JournalEntry, type World,
 } from '@tap/core'
 
@@ -153,6 +154,9 @@ export function characterModel(world: World): CharacterModel | null {
 
 // ── 방침 탭(03 §5.4) ──
 
+// 태도를 바꾸면 한 줄 기록 자리에 4초 보이는 안내(03 §2.6)
+export const attitudeNote = (name: string): string => renderTemplate('ⓘ 다음 행동부터 {a:으로/로} 움직입니다', { a: name })
+
 export interface PolicyModel {
   attitudes: { id: string; name: string; on: boolean }[]
   attitudeLine: string // 사냥 30 · 모험 45 · 던전 25 / 체력 40%에 퇴각
@@ -167,6 +171,24 @@ export function policyModel(world: World): PolicyModel {
     attitudes: list.map((x) => ({ id: x.id, name: x.name, on: x.id === cur })),
     attitudeLine: `사냥 ${w.hunt} · 모험 ${w.adventure} · 던전 ${w.dungeon} / 체력 ${Math.round(a.retreat_hp * 100)}%에 퇴각`,
   }
+}
+
+// 목적지 드롭다운(03 §5.4): 자동 + 해금 장소, 장소마다 지금 위험 등급(낮 기준, 01 §7.2).
+// 상한을 넘거나 무모한 곳은 고를 때 한 번 확인한다
+export const RISK_LABEL: Record<string, string> = { very_low: '매우 낮음', low: '낮음', normal: '보통', high: '높음', reckless: '무모' }
+
+export interface PlaceOption { id: string; name: string; grade: string; cap: string; ask: boolean; reckless: boolean }
+
+export function destinationModel(world: World): { current: string; places: PlaceOption[] } {
+  const places: PlaceOption[] = []
+  for (const r of world.content.list('region')) {
+    if (r.kind === 'town' || !isUnlocked(world, r) || !rankAllowed(world, r)) continue
+    const grade = riskGrade(world.content, riskDiff(world, r.id, false))
+    const reckless = grade === 'reckless'
+    const cap = placeRiskCap(world, activityOf(r.kind)) // 모험적의 모험 예외를 반영한 상한(04 §10.1)
+    places.push({ id: r.id, name: r.name, grade: RISK_LABEL[grade] ?? grade, cap: RISK_LABEL[cap] ?? cap, reckless, ask: reckless || riskRank(grade) > riskRank(cap) })
+  }
+  return { current: world.state.policies.destination, places }
 }
 
 // ── 가문 탭 연대기(03 §5.5) ──

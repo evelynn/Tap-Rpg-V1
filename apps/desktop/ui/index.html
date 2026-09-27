@@ -31,6 +31,12 @@
     #col .record { left: calc(5px * var(--u)); right: calc(5px * var(--u)); top: calc(34px * var(--u)); }
     #win canvas, #col .status, #col .icons, #col .record { cursor: pointer; }
     /* 상세 창 480 × 560(03 §5). 시제품에서는 개발용 단추 아래에 둔다. 본문 13, 최소 12, 소제목 15 굵게, 안쪽 여백 16 */
+    #menu { position: absolute; z-index: 20; min-width: 132px; padding: 4px 0; background: #fbf8f2; color: #2b2233; border: 1px solid #8a8a8a; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); font: 12px system-ui, sans-serif; }
+    #menu[hidden] { display: none; }
+    #menu button { display: block; width: 100%; text-align: left; padding: 3px 10px; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
+    #menu button:hover, #menu button:focus { background: #5a7fa8; color: #fff; outline: none; }
+    #menu hr { margin: 4px 0; border: 0; border-top: 1px solid rgba(128, 128, 128, .4); }
+    @media (prefers-color-scheme: dark) { #menu { background: #2a2530; color: #f4efe6; } }
     #detail { margin-top: 12px; width: 480px; height: 560px; display: flex; flex-direction: column; z-index: 10;
       background: #f4efe6; color: #2b2233; font: 13px/1.5 system-ui, "Malgun Gothic", sans-serif; box-shadow: 0 4px 16px rgba(0, 0, 0, .35); outline: none; }
     #detail[hidden] { display: none; }
@@ -76,6 +82,7 @@
   </div>
   <div id="controls"></div>
   <div id="info">불러오는 중…</div>
+  <div id="menu"></div>
   <div id="detail" role="dialog" aria-label="상세 창"></div>
   <script type="module" src="main.js"></script>
 </body>

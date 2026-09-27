@@ -4,7 +4,7 @@ import {
   designateRelic, equipManual, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
-  FILTERS, characterModel, familyModel, journalModel, policyModel, type Filter, type ItemRow,
+  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, type Filter, type ItemRow,
 } from './model'
 
 export const TABS = ['일지', '인물', '방침', '가문'] as const
@@ -38,6 +38,7 @@ const HELP: Partial<Record<keyof Policies, string>> = {
   auto_succession: '켜면 생애가 끝났을 때 기본 후보로 바로 다음 세대를 시작합니다. 끝난 생애의 기록은 언제든 다시 볼 수 있습니다.',
   offline_progress: '프로그램을 닫아 둔 동안에도 최대 8시간까지 같은 규칙으로 살아갑니다.',
   stage_boundary_stop: '오프라인 동안 30세, 50세, 65세 문턱을 넘으면 그 자리에서 멈춥니다.',
+  destination: '특정 장소를 고르면 태도와 상관없이 그곳을 우선합니다. 위험 허용 상한을 넘거나 무모한 곳은 한 번 확인한 뒤 고를 수 있습니다. 목숨을 걸어야 하는 관문은 치명 위험 허용이 켜져 있어야 도전합니다.',
 }
 
 export class DetailWindow {
@@ -45,6 +46,7 @@ export class DetailWindow {
   private filter: Filter = '전체'
   private readonly open = new Set<string>() // 펼친 줄(일지 id, 연대기 줄, 장비 uid, 가방)
   private lethalAsk = false
+  private destAsk: string | null = null // 확인 칸을 펼친 목적지
   private readonly body: HTMLElement
   private readonly tabBar: HTMLElement
   private readonly title: HTMLElement
@@ -230,7 +232,7 @@ export class DetailWindow {
         h('span', { class: 'd-seg' }, ...m.attitudes.map((a) => button(a.name, () => {
           if (a.on) return
           setAttitude(w, a.id)
-          this.onNote(`ⓘ 다음 행동부터 ${a.name}으로 움직입니다`)
+          this.onNote(attitudeNote(a.name))
           this.render()
         }, { on: a.on })))),
       h('div', { class: 'd-dim' }, m.attitudeLine))
@@ -281,7 +283,7 @@ export class DetailWindow {
         seg('운명 사건', 'fate_handling', [['hold', '보류하고 기다림'], ['decline_and_continue', '거절하고 계속']]),
         h('div', { class: 'd-line' }, h('span', { class: 'd-label' }, '자동 전문화'), spec),
         toggle('장비 자동 교체', 'auto_equip'),
-        h('div', { class: 'd-line' }, h('span', { class: 'd-label' }, '목적지'), h('span', { class: 'd-dim' }, `${p.destination === 'auto' ? '자동' : w.content.get('region', p.destination).name} (고르기는 다음 조각)`))),
+        this.destination()),
       h('div', { class: 'd-sec' },
         toggle('가정 형성', 'family_formation'),
         toggle('자동 계승', 'auto_succession'),
@@ -289,6 +291,44 @@ export class DetailWindow {
         toggle('  생애 단계 경계 정지', 'stage_boundary_stop', !p.offline_progress)),
       h('div', { class: 'd-dim' }, '모든 변경은 다음 행동부터 적용됩니다.'),
     ].filter((n): n is HTMLElement => n !== null)
+  }
+
+  // 목적지: 상한을 넘거나 무모한 곳은 줄 아래 확인 칸을 펼친 뒤 정한다(03 §5.4, 01 §7.1). 확인은 고를 때 한 번만
+  private destination(): HTMLElement {
+    const w = this.world
+    const p = w.state.policies
+    const m = destinationModel(w)
+    const fix = (id: string, ack: boolean): void => {
+      this.destAsk = null
+      p.destination = id
+      p.destination_warning_ack = ack
+      this.onNote(`ⓘ 다음 행동부터 ${id === 'auto' ? '태도대로 장소를 고릅니다' : renderTemplate('{place:으로/로} 향합니다', { place: w.content.get('region', id).name })}`)
+      this.render()
+    }
+    const sel = h('select', {},
+      ...[{ id: 'auto', text: '자동' }, ...m.places.map((o) => ({ id: o.id, text: `${o.name} · ${o.grade}` }))].map((o) => {
+        const opt = h('option', { value: o.id }, o.text) as HTMLOptionElement
+        opt.selected = (this.destAsk ?? m.current) === o.id
+        return opt
+      })) as HTMLSelectElement
+    sel.onchange = () => {
+      const o = m.places.find((x) => x.id === sel.value)
+      if (o?.ask) {
+        this.destAsk = o.id
+        this.render()
+      } else fix(sel.value, false)
+    }
+    const wrap = h('div', {}, h('div', { class: 'd-line', title: HELP.destination! }, h('span', { class: 'd-label' }, '목적지'), sel))
+    const o = m.places.find((x) => x.id === this.destAsk)
+    if (o) {
+      const name = w.state.character?.name ?? '인물'
+      wrap.append(h('div', { class: 'd-confirm' },
+        h('div', { class: 'd-strong' }, renderTemplate('⚠ {place:은/는} 지금 {name}에게 {grade} 위험입니다.', { place: o.name, name, grade: o.grade })),
+        h('div', {}, o.reckless ? '태도와 상관없이 스스로는 가지 않을 만큼 위험합니다.' : `방침의 위험 허용 상한(${o.cap})을 넘습니다.`),
+        h('div', {}, '자주 다치고 쓰러질 수 있습니다. 쓰러져도 목숨을 잃지는 않습니다.'),
+        h('div', { class: 'd-acts' }, button('취소', () => { this.destAsk = null; this.render() }), button('이곳으로 정합니다', () => fix(o.id, true)))))
+    }
+    return wrap
   }
 
   // ── 가문(연대기) ──

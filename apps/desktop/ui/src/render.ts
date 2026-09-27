@@ -22,7 +22,7 @@ export interface FrameView {
   icons: Icon[]
   line: string
   mark: 'choice' | 'succession' | null
-  attitude: string // 태도 표식 글자(자리 표시)
+  attitude: string // 태도 이름. 표식은 첫 글자(자리 표시)
   dark: boolean
 }
 
