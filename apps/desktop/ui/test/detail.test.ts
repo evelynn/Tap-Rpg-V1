@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel } from '../src/detail/model'
+import { FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, suggestionsModel } from '../src/detail/model'
 
 let content: Content
 
@@ -80,6 +80,18 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     const weapon = w.state.inventory.equipped.weapon!
     w.state.inventory.equip_orders = [{ uid: weapon, op: 'unequip' }]
     assert.equal((characterModel(w)!.equipment[0] as { order: string | null }).order, 'unequip')
+  })
+
+  it('교체 제안: 자동 교체가 꺼져 있을 때만, 슬롯 · 장비(출처) · 개선률 · 요인 한 줄', () => {
+    const w = newWorld()
+    w.state.inventory.equip_suggestions = [{ slot: 'weapon', source: { shop_def_id: 'W02', grade: 'common', price: 1200 }, improvement: 0.123, reason: 'weapon_hit', created_eff_min: 0 }]
+    assert.equal(suggestionsModel(w), null) // 기본은 자동 교체 켬
+    w.state.policies.auto_equip = false
+    const [row] = suggestionsModel(w)!
+    assert.equal(row!.line, `무기 · ${w.content.get('item', 'W02').name}(상점 1,200) · +12.3% · 무기 명중`)
+    assert.equal(row!.pending, null)
+    w.state.inventory.equip_suggestions[0]!.accepted = true
+    assert.equal(suggestionsModel(w)![0]!.pending, '다음 정비 때 삽니다')
   })
 
   it('방침: 태도 3칸 중 하나만 켜지고 가중치·퇴각 줄을 보인다', () => {

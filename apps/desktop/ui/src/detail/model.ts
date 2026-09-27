@@ -154,6 +154,33 @@ export function characterModel(world: World): CharacterModel | null {
   }
 }
 
+// 교체 제안(03 §5.3.1, 08 §8.2): 자동 교체가 꺼져 있을 때만 보인다. 이유는 08 §7.5 '가장 큰 요인'
+const REASON_LABEL: Record<string, string> = {
+  weapon_damage: '무기 피해', weapon_hit: '무기 명중', family: '계열 대상', armor_ac: '방어', armor_hp: '체력',
+  search: '탐색 효과', travel: '이동 효과', fear: '공포 효과', start: '시작 장비 교체', escape: '탈출 효과',
+}
+
+export interface SuggestionRow { slot: string; slotId: string; line: string; pending: string | null }
+
+export function suggestionsModel(world: World): SuggestionRow[] | null {
+  const inv = world.state.inventory
+  if (world.state.policies.auto_equip || !inv.equip_suggestions.length) return null
+  return SLOT_ORDER.flatMap((slot) => {
+    const sg = inv.equip_suggestions.find((x) => x.slot === slot)
+    if (!sg) return []
+    const src = sg.source
+    const [name, where] = 'uid' in src
+      ? [itemName(world, world.state.item_instances[src.uid]!), '가방']
+      : [world.content.get('item', src.shop_def_id).name, `상점 ${num(src.price)}`]
+    const ordered = 'uid' in src && inv.equip_orders?.some((o) => o.uid === src.uid && o.op === 'equip')
+    return [{
+      slot: SLOT_LABEL[slot]!, slotId: slot,
+      line: `${SLOT_LABEL[slot]} · ${name}(${where}) · +${(sg.improvement * 100).toFixed(1)}% · ${REASON_LABEL[sg.reason] ?? sg.reason}`,
+      pending: ordered ? '다음 마을 도착 때 장착' : sg.accepted ? '다음 정비 때 삽니다' : null,
+    }]
+  })
+}
+
 // ── 방침 탭(03 §5.4) ──
 
 // 태도를 바꾸면 한 줄 기록 자리에 4초 보이는 안내(03 §2.6)

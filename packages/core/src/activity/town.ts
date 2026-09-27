@@ -1,6 +1,6 @@
 // 귀환 후 마을 루틴(04 §8)과 이동·야영·휴식·치료 행동.
 import { dungeonTargets } from '../ai/index'
-import { endGuildAidIfDue, isBankrupt, startGuildAid, townPrep, treatmentCost } from '../economy/index'
+import { acceptShopSuggestion, endGuildAidIfDue, isBankrupt, startGuildAid, townPrep, treatmentCost } from '../economy/index'
 import { fireScheduledEvents, runJudgment, runTownReturnEffects } from '../events/index'
 import { addJournal, closeBundle } from '../journal/index'
 import { characterOf } from '../rules/context'
@@ -9,7 +9,7 @@ import { addFatigue } from '../rules/fatigue'
 import { innFee } from '../rules/cost'
 import { maxHp } from '../rules/derived'
 import { camp, tickInjuries, townRest } from '../recovery/index'
-import { fieldSoldLine } from '../items/bag'
+import { acceptSuggestion, fieldSoldLine, orderEquip, type Slot } from '../items/index'
 import { modValue } from '../rules/modifiers'
 import type { JournalDraft } from '../state/journal'
 import type { ActionResolver, ResolvedDraft, World } from '../sim/world'
@@ -29,6 +29,20 @@ const setStep = (world: World, n: number): void => void (characterOf(world).coun
 
 const secOf = (v: number | [number, number], rng: { int(a: number, b: number): number }): number =>
   typeof v === 'number' ? v : rng.int(v[0], v[1])
+
+// 교체 제안 수락(08 §8.2, 03 §5.3.1). 마을이면 즉시(가방 장비 장착, 상점 장비 구매), 출정 중이면
+// 가방 장비는 도착 때 장착 예약, 상점 장비는 다음 정비에서 산다
+export function acceptEquipSuggestion(world: World, slot: Slot): void {
+  const sg = world.state.inventory.equip_suggestions.find((x) => x.slot === slot)
+  if (!sg) return
+  const inTown = ['town_idle', 'town_prep'].includes(world.state.current_activity.state)
+  if ('uid' in sg.source) {
+    if (inTown) acceptSuggestion(world, slot)
+    else orderEquip(world, sg.source.uid, 'equip')
+  } else if (inTown) {
+    for (const d of acceptShopSuggestion(world, runtimeOf(world).shop, slot).journal) addJournal(world, d)
+  } else sg.accepted = true
+}
 
 export const needsSeriousTreatment = (world: World): boolean => characterOf(world).injuries.some((i) => i.grade === 'serious')
 

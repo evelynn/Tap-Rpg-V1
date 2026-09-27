@@ -241,12 +241,16 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
   const boughtCount = Object.values(bought).reduce((a, n) => a + n, 0)
   if (boughtCount) breakdown.push(renderTemplate(LINE_SUPPLIES, { count: boughtCount, coins: suppliesCoins }))
 
+  // 출정 중 수락한 상점 제안부터 산다(08 §8.2). 예산을 다시 확인하고, 모자라면 제안을 지우고 기록한다
+  const accepted = state.inventory.equip_suggestions.filter((x) => x.accepted && !('uid' in x.source)).map((x) => x.slot)
+  for (const slot of accepted) journal.push(...acceptShopSuggestion(ctx, shop, slot).journal)
+
   // 3. 장비 예산
   let budget = ch.coins * (1 - reserveRatio(ctx))
 
   // 4. 교체 루프: 최대 max_swaps회, 슬롯당 1회
   const swaps: SwapRecord[] = []
-  const changed = new Set<Slot>(lockedSlots(ctx))
+  const changed = new Set<Slot>([...lockedSlots(ctx), ...accepted])
   let suggestions = 0
   for (let i = 0; i < content.balance.equip_eval.max_swaps; i++) {
     const c = best(swapCandidates(ctx, shop, budget, changed, opts))

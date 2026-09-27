@@ -18,6 +18,7 @@ export const inventorySchema = s({
     improvement: z.number(),
     reason: z.string(),
     created_eff_min: effMinV,
+    accepted: z.literal(true).optional(), // 출정 중 수락한 상점 제안: 다음 마을 정비 4단계에서 산다(08 §8.2)
   })),
   dismissed_suggestions: z.array(s({ def_id: defId, grade, season_key: z.string() })),
   // 출정 중 장착·해제 예약(03 §5.3.1). 슬롯당 1건, 다음 마을 도착 때 적용. optional이라 옛 저장도 읽는다

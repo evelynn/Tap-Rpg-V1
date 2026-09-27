@@ -148,6 +148,22 @@ describe('08 §8 마을 정비', () => {
     assert.ok(w.state.character!.coins > before - 100) // 소모품 값만 썼다
   })
 
+  it('출정 중 수락한 상점 제안은 다음 정비에서 먼저 사서 장착·잠근다(08 §8.2)', () => {
+    const w = setup(600)
+    w.state.policies.auto_equip = false
+    const shop = emptyShopState()
+    townPrep(w, firstRng(), shop)
+    const sg = w.state.inventory.equip_suggestions.find((x) => !('uid' in x.source))!
+    assert.ok(sg, '상점 제안')
+    sg.accepted = true
+    const src = sg.source as { shop_def_id: string }
+    townPrep(w, firstRng(), shop)
+    const uid = w.state.inventory.equipped[sg.slot]!
+    assert.equal(w.state.item_instances[uid]!.def_id, src.shop_def_id)
+    assert.equal(w.state.item_instances[uid]!.locked, true)
+    assert.ok(!w.state.inventory.equip_suggestions.some((x) => x.accepted))
+  })
+
   it('중상은 소지금이 있으면 치료소, 없으면 무료 치료. 경상 치료 기준은 태도를 따른다', () => {
     const w = setup(1000)
     const ch = w.state.character!

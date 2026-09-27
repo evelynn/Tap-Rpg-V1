@@ -1,10 +1,10 @@
 // 상세 창(03 §5, 480 × 560) DOM. 탭 4개(일지·인물·방침·가문), Esc 닫기, Ctrl+1~4 탭 전환.
 // 세계를 바꾸는 조작은 코어 함수만 부른다(잠금·유품·장착·태도·방침 값). 글자는 모두 textContent로 넣는다.
 import {
-  cancelEquipOrder, designateRelic, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
+  acceptEquipSuggestion, cancelEquipOrder, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
-  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, type Filter, type ItemRow,
+  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, suggestionsModel, type Filter, type ItemRow,
 } from './model'
 
 export const TABS = ['일지', '인물', '방침', '가문'] as const
@@ -164,6 +164,23 @@ export class DetailWindow {
     const inj = m.injuries.length ? h('div', { class: 'd-sec' }, `부상: ${m.injuries.join(', ')}`) : null
     const gear = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '장비'),
       ...m.equipment.map((e) => ('empty' in e ? h('div', { class: 'd-row' }, `${e.slot}  (비어 있음)`) : this.itemRow(e, m.inTown))))
+    const sugs = suggestionsModel(this.world)
+    if (sugs) {
+      const sk = 'sugs'
+      const sr = h('div', { class: 'd-row more' }, `교체 제안 ${sugs.length}건 ${this.open.has(sk) ? '▾' : '›'}`)
+      sr.onclick = () => this.toggle(sk)
+      gear.append(sr)
+      if (this.open.has(sk)) {
+        const seasonKey = seasonKeyOf(this.world)
+        for (const s of sugs) {
+          gear.append(h('div', { class: 'd-sub' }, s.line))
+          gear.append(h('div', { class: 'd-acts' }, ...(s.pending
+            ? [h('span', { class: 'd-dim' }, s.pending)]
+            : [button('수락', () => { acceptEquipSuggestion(this.world, s.slotId as Slot); this.render() }),
+              button('무시', () => { dismissSuggestion(this.world, s.slotId as Slot, seasonKey); this.render() })])))
+        }
+      }
+    }
     const bagKey = 'bag'
     const bag = h('div', { class: 'd-sec' })
     const bagRow = h('div', { class: 'd-row more' }, `가방 ${m.bag.used}/${m.bag.max}${m.bag.consumables ? ` · ${m.bag.consumables}` : ''}`, h('span', { class: 'd-caret' }, this.open.has(bagKey) ? '▾' : '▸'))
