@@ -252,6 +252,38 @@ export function treeModel(world: World): TreeNode[] {
   return nodes
 }
 
+// ── 가문 탭 도감(03 §5.5, 12 §7.2): 장비·적·장소는 겪은 것만 이름을 보인다. 장비 격자 그림과 '본 적 있음'(상점 진열)
+// 단계는 아직 없다(그림은 아트 뒤, 본 적 기록은 저장 칸이 없다) ──
+
+export interface CodexSection { title: string; found: number; total: number; rows: string[] }
+
+export function codexModel(world: World): { sections: CodexSection[]; unlocks: string[] } {
+  const { content, state } = world
+  const cx = state.family.codex
+  const grades = (gs: string[]): string => gs.map((g) => GRADE[g]?.label ?? g).join('·')
+  const items = [...content.list('item')]
+  const enemies = [...content.list('enemy')]
+  const places = [...content.list('region')]
+  const events = content.list('event').filter((e) => e.category !== 'system')
+  const section = <T extends { id: string; name: string }>(title: string, list: T[], got: Record<string, unknown>, detail: (d: T) => string): CodexSection => ({
+    title, found: list.filter((d) => got[d.id]).length, total: list.length,
+    rows: list.map((d) => (got[d.id] ? `${d.name}${detail(d)}` : '???')),
+  })
+  const u = state.family.unlocks
+  return {
+    sections: [
+      section('장비', items, cx.items, (d) => ` · ${grades(cx.items[d.id]!.grades_seen)} · ${cx.items[d.id]!.first_gen}대`),
+      section('적', enemies, cx.enemies, (d) => ` · 처치 ${num(cx.enemies[d.id]!.defeats)}`),
+      section('장소', places, cx.locations, (d) => ` · ${cx.locations[d.id]!.first_gen}대`),
+      { title: '사건', found: events.filter((e) => cx.events[e.id]).length, total: events.length, rows: [] }, // 내용은 겪은 것만(03 §5.5), 목록은 수만
+    ],
+    unlocks: [
+      ...u.backgrounds.map((id) => (content.has('background', id) ? content.get('background', id).name : id)),
+      ...u.titles, ...u.appearances,
+    ],
+  }
+}
+
 // ── 가문 탭 유품(03 §5.5): 지금 등록한 유품 2칸 + 대를 건너온 유품과 사연 ──
 
 const HOW: Record<string, string> = { shop: '샀다', aid: '받았다', start: '받았다' }

@@ -72,6 +72,9 @@ export function createItemInstance(
     history: [],
   }
   state.item_instances[inst.uid] = inst
+  // 가문 도감(12 §7.2): 처음 가진 인물과 본 등급
+  const seen = (state.family.codex.items[defId] ??= { first_gen: acquired.gen, first_char: acquired.char_uid, grades_seen: [] })
+  if (!seen.grades_seen.includes(inst.grade)) seen.grades_seen.push(inst.grade)
   return inst
 }
 

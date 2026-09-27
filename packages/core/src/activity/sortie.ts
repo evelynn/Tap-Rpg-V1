@@ -153,6 +153,7 @@ export function arrivePlace(world: World): void {
   const s = currentSortie(world)
   ch.location = s.location_id
   if (!ch.visited.includes(s.location_id)) ch.visited.push(s.location_id)
+  state.family.codex.locations[s.location_id] ??= { first_gen: ch.generation } // 가문 도감(12 §7.2)
   const pending = ch.next_visit_mods[s.location_id]
   if (pending) {
     delete ch.next_visit_mods[s.location_id]
@@ -245,6 +246,7 @@ export function arriveTown(world: World): void {
   const ch = characterOf(world)
   const s = currentSortie(world)
   ch.location = townId(world)
+  state.family.codex.locations[ch.location] ??= { first_gen: ch.generation }
   ch.last_trip_time = s.time_of_day
   ch.counters[COUNTERS.sorties] = (ch.counters[COUNTERS.sorties] ?? 0) + 1
   if ((ch.counters[COUNTERS.sortieDefeats] ?? 0) === 0) {

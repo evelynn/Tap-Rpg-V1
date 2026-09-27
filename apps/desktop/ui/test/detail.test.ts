@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
+import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, codexModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
 
 let content: Content
 
@@ -142,5 +142,12 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     const r = relicsModel(w)
     assert.equal(r.slots.length, 2)
     for (const p of r.past) assert.ok(p.lines.length >= 1 && p.lines.every((l) => !l.includes('{')), p.name)
+    // 도감: 장비·적·장소·사건, 겪은 것만 이름, 나머지는 ???
+    const cx = codexModel(w)
+    assert.deepEqual(cx.sections.map((s) => s.title), ['장비', '적', '장소', '사건'])
+    for (const s of cx.sections.slice(0, 3)) {
+      assert.ok(s.found > 0 && s.found <= s.total, s.title)
+      assert.equal(s.rows.filter((x) => x !== '???').length, s.found, s.title)
+    }
   })
 })

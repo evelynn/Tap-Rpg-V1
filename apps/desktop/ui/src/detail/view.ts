@@ -4,7 +4,7 @@ import {
   acceptEquipSuggestion, cancelEquipOrder, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
-  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
+  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, codexModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
 } from './model'
 
 export const TABS = ['일지', '인물', '방침', '가문'] as const
@@ -382,13 +382,13 @@ export class DetailWindow {
     return wrap
   }
 
-  // ── 가문: 하위 탭 5칸(03 §5.5). 서가는 M3(생애의 책), 도감은 도감 기록 설계 확인 뒤 ──
+  // ── 가문: 하위 탭 5칸(03 §5.5). 서가는 M3(생애의 책) ──
   private family(): Node[] {
     const f = familyModel(this.world)
-    const ready: Record<FamilySub, boolean> = { 연대기: true, 서가: false, 가계도: true, 도감: false, 유품: true }
+    const ready: Record<FamilySub, boolean> = { 연대기: true, 서가: false, 가계도: true, 도감: true, 유품: true }
     const subs = h('div', { class: 'd-chips' }, ...FAMILY_SUBS.map((t) => button(t, () => { this.familySub = t; this.render() },
       { on: t === this.familySub, disabled: !ready[t], ...(ready[t] ? {} : { title: '아직 만들지 않았습니다' }) })))
-    const body = this.familySub === '가계도' ? this.tree() : this.familySub === '유품' ? this.relics() : this.chronicle(f.rows)
+    const body = this.familySub === '가계도' ? this.tree() : this.familySub === '유품' ? this.relics() : this.familySub === '도감' ? this.codex() : this.chronicle(f.rows)
     return [h('div', { class: 'd-strong' }, f.title), subs, ...body]
   }
 
@@ -409,6 +409,22 @@ export class DetailWindow {
       list.append(box)
     }
     return [list, h('div', { class: 'd-dim' }, '후계 후보였던 인물은 아직 기록하지 않습니다.')]
+  }
+
+  private codex(): Node[] {
+    const m = codexModel(this.world)
+    const out: Node[] = m.sections.map((s) => {
+      const key = `x${s.title}`
+      const head = h('div', { class: `d-row${s.rows.length ? ' more' : ''}` }, h('span', { class: 'd-strong' }, s.title), ` ${s.found} / ${s.total}`,
+        s.rows.length ? h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸') : null)
+      if (s.rows.length) head.onclick = () => this.toggle(key)
+      const sec = h('div', { class: 'd-sec' }, head)
+      if (this.open.has(key)) for (const r of s.rows) sec.append(h('div', { class: `d-sub${r === '???' ? ' d-dim' : ''}` }, r))
+      return sec
+    })
+    out.push(h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '가문 해금'),
+      m.unlocks.length ? h('div', {}, m.unlocks.join(' · ')) : h('div', { class: 'd-dim' }, '아직 없습니다.')))
+    return out
   }
 
   private relics(): Node[] {
