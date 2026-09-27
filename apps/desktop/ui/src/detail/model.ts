@@ -227,6 +227,64 @@ export interface ChronicleRow {
   lines: string[] // 펼침: 주요 기록(나이순), 남긴 유품
 }
 
+// ── 가문 탭 가계도(03 §5.5): 플레이 인물을 대수 순으로. 뽑히지 않은 후계 후보는 저장되지 않아 아직 그리지 않는다 ──
+
+const ROLE_LABEL: Record<string, string> = { founder: '가문을 세움', direct: '직계', collateral: '방계', adopted: '입양' }
+
+export interface TreeNode { gen: number; name: string; role: string; dashed: boolean; current: boolean; row: number }
+
+// row: 연대기 목록에서 이 인물 줄의 순번(누르면 그 줄로 간다)
+export function treeModel(world: World): TreeNode[] {
+  const { family: fam, character: ch } = world.state
+  const past = [...fam.chronicle].sort((a, b) => a.gen - b.gen)
+  const nodes: TreeNode[] = past.map((r) => ({
+    gen: r.gen, name: r.name, role: ROLE_LABEL[r.family_role] ?? r.family_role,
+    dashed: r.family_role === 'collateral' || r.family_role === 'adopted', current: false, row: (ch ? 1 : 0) + (past.length - 1 - past.indexOf(r)),
+  }))
+  if (ch) {
+    const role = ch.family_role
+    nodes.push({ gen: ch.generation, name: ch.name, role: ROLE_LABEL[role] ?? role, dashed: role === 'collateral' || role === 'adopted', current: true, row: 0 })
+  }
+  return nodes
+}
+
+// ── 가문 탭 유품(03 §5.5): 지금 등록한 유품 2칸 + 대를 건너온 유품과 사연 ──
+
+const HOW: Record<string, string> = { shop: '샀다', aid: '받았다', start: '받았다' }
+
+export interface RelicModel { slots: (string | null)[]; past: { name: string; grade: { label: string; color: string }; lines: string[] }[] }
+
+export function relicsModel(world: World): RelicModel {
+  const { state, content } = world
+  const nameOf = (charUid: string): string =>
+    state.family.chronicle.find((r) => r.char_uid === charUid)?.name ?? (state.character?.uid === charUid ? state.character.name : '누군가')
+  const slots = ([1, 2] as const).map((p) => {
+    const d = state.inventory.relic_designations.find((r) => r.priority === p)
+    const inst = d && state.item_instances[d.uid]
+    return inst ? itemName(world, inst) : null
+  })
+  const passed = new Set(state.family.chronicle.flatMap((r) => r.relics_passed))
+  for (const [uid, inst] of Object.entries(state.item_instances)) if (inst.inherited_from_gen !== undefined) passed.add(uid)
+  const past = [...passed].map((u) => state.item_instances[u]).filter((i) => i !== undefined).sort((a, b) => a.acquired.gen - b.acquired.gen || a.uid.localeCompare(b.uid)).map((inst) => {
+    const a = inst.acquired
+    const def = content.get('item', inst.def_id)
+    const place = content.has('region', a.location) ? content.get('region', a.location).name : a.location
+    const who = { generation: a.gen, name: nameOf(a.char_uid) }
+    // 사연은 장비의 story_template(16 §2.5). {npc}처럼 채울 값이 없는 틀이면 획득 기록으로 대신한다
+    let story: string
+    try {
+      story = renderTemplate(def.story_template, who)
+    } catch {
+      story = renderTemplate(`{gen}대 {name:이/가} {age}세에 {place}에서 ${HOW[a.source] ?? '발견했다'}`, { gen: a.gen, name: who.name, age: a.age, place })
+    }
+    return {
+      name: itemName(world, inst), grade: GRADE[inst.grade] ?? GRADE.common!,
+      lines: [story, ...inst.history.map((h) => `${h.gen}대 ${h.age}세 · ${h.text}`)],
+    }
+  })
+  return { slots, past }
+}
+
 export function familyModel(world: World): { title: string; rows: ChronicleRow[] } {
   const { state, content } = world
   const fam = state.family

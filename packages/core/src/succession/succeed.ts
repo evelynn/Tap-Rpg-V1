@@ -13,7 +13,7 @@ import type { Appearance, Character } from '../state/character'
 import type { Candidate, LifeRecord } from '../state/family'
 import type { JournalDraft } from '../state/journal'
 import { issueUid } from '../state/uid'
-import { seasonAt } from '../time/index'
+import { ageAt, seasonAt } from '../time/index'
 import { createItemInstance } from '../sim/create'
 import { fireSuccession } from '../life/events'
 import { DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
@@ -261,7 +261,7 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
   state.pending_choice = null
 
   // 유품 이전 → 자동 장착 판단(저주 장비는 자동 장착하지 않는다, 12 §5.2)
-  const moved = transferRelics(w, relics, parent.generation, parent.name)
+  const moved = transferRelics(w, relics, parent.generation, parent.name, ageAt(parent.eff_min, time))
   for (const uid of moved.uids) {
     const inst = state.item_instances[uid]!
     const def = content.get('item', inst.def_id)

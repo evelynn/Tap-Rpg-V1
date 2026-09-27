@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, suggestionsModel } from '../src/detail/model'
+import { FILTERS, attitudeNote, characterModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
 
 let content: Content
 
@@ -127,5 +127,15 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     const ages = f.rows[1]!.lines.filter((l) => /^\d+세 /.test(l)).map((l) => Number(l.split('세')[0]))
     assert.ok(ages.length > 0, '주요 기록')
     assert.deepEqual(ages, [...ages].sort((a, b) => a - b))
+    // 가계도: 1대(가문을 세움) → 2대(현재). 누르면 가는 연대기 줄 순번이 맞다
+    const tree = treeModel(w)
+    assert.deepEqual(tree.map((n) => [n.gen, n.current]), [[1, false], [2, true]])
+    assert.equal(tree[0]!.role, '가문을 세움')
+    assert.match(f.rows[tree[0]!.row]!.head, /^1대 /)
+    assert.match(f.rows[tree[1]!.row]!.head, /^2대 /)
+    // 유품: 등록 2칸, 물려받은 유품은 사연 한 줄 이상
+    const r = relicsModel(w)
+    assert.equal(r.slots.length, 2)
+    for (const p of r.past) assert.ok(p.lines.length >= 1 && p.lines.every((l) => !l.includes('{')), p.name)
   })
 })

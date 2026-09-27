@@ -68,8 +68,9 @@ describe('유품 이전 문장의 조사(14 §6)', () => {
       const uid = give(w, 'W07', 'rare', 'bag')
       const inst = w.state.item_instances[uid]!
       const name = w.content.get('item', inst.def_id).name
-      const r = transferRelics(w, [inst], 1, parent)
+      const r = transferRelics(w, [inst], 1, parent, 64)
       assert.equal(inst.history.at(-1)!.text, `${parent}${hasFinal(parent) ? '이' : '가'} 남겼다`)
+      assert.equal(inst.history.at(-1)!.age, 64) // 물려준 나이(획득 나이가 아니다)
       assert.match(r.journal[0]!.line, new RegExp(`${hasFinal(name) ? '을' : '를'} 물려받았다$`))
     }
   })

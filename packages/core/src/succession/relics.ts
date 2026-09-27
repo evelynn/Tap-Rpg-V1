@@ -95,7 +95,8 @@ export interface RelicTransfer {
 
 // 후계자 가방으로 옮긴다: 잠재 상태 표식(inherited_from_gen)과 이력 한 줄을 남긴다(12 §5.5).
 // 변이 조건부 효과는 수정자의 when이 거짓이 되어 저절로 사라진다(12 §5.4, 09 §7.10)
-export function transferRelics(ctx: RuleContext, items: readonly ItemInstance[], fromGen: number, parentName: string): RelicTransfer {
+// parentAge: 이력 한 줄의 나이 = 물려준 인물의 생애 끝 나이(획득 나이가 아니다)
+export function transferRelics(ctx: RuleContext, items: readonly ItemInstance[], fromGen: number, parentName: string, parentAge: number): RelicTransfer {
   const journal: JournalDraft[] = []
   const uids: string[] = []
   const inv = ctx.state.inventory
@@ -106,7 +107,7 @@ export function transferRelics(ctx: RuleContext, items: readonly ItemInstance[],
     inst.history.push({
       gen: fromGen,
       char_name: parentName,
-      age: inst.acquired.age,
+      age: parentAge,
       kind: 'inherited',
       text: renderTemplate('{name:이/가} 남겼다', { name: parentName }),
     })

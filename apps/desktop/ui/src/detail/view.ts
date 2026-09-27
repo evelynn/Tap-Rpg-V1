@@ -4,10 +4,12 @@ import {
   acceptEquipSuggestion, cancelEquipOrder, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
-  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, suggestionsModel, type Filter, type ItemRow,
+  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
 } from './model'
 
 export const TABS = ['일지', '인물', '방침', '가문'] as const
+const FAMILY_SUBS = ['연대기', '서가', '가계도', '도감', '유품'] as const
+type FamilySub = (typeof FAMILY_SUBS)[number]
 export type Tab = (typeof TABS)[number]
 
 type Kids = (Node | string | null | false | undefined)[]
@@ -47,6 +49,7 @@ export class DetailWindow {
   private readonly open = new Set<string>() // 펼친 줄(일지 id, 연대기 줄, 장비 uid, 가방)
   private lethalAsk = false
   private cursedAsk: string | null = null // 확인 칸을 펼친 저주 장비 uid
+  private familySub: FamilySub = '연대기'
   private destAsk: string | null = null // 확인 칸을 펼친 목적지
   private readonly body: HTMLElement
   private readonly tabBar: HTMLElement
@@ -379,19 +382,57 @@ export class DetailWindow {
     return wrap
   }
 
-  // ── 가문(연대기) ──
+  // ── 가문: 하위 탭 5칸(03 §5.5). 서가는 M3(생애의 책), 도감은 도감 기록 설계 확인 뒤 ──
   private family(): Node[] {
     const f = familyModel(this.world)
-    const subs = h('div', { class: 'd-chips' }, button('연대기', () => {}, { on: true }),
-      ...['서가', '가계도', '도감', '유품'].map((t) => button(t, () => {}, { disabled: true, title: '다음 조각에서 만듭니다' })))
+    const ready: Record<FamilySub, boolean> = { 연대기: true, 서가: false, 가계도: true, 도감: false, 유품: true }
+    const subs = h('div', { class: 'd-chips' }, ...FAMILY_SUBS.map((t) => button(t, () => { this.familySub = t; this.render() },
+      { on: t === this.familySub, disabled: !ready[t], ...(ready[t] ? {} : { title: '아직 만들지 않았습니다' }) })))
+    const body = this.familySub === '가계도' ? this.tree() : this.familySub === '유품' ? this.relics() : this.chronicle(f.rows)
+    return [h('div', { class: 'd-strong' }, f.title), subs, ...body]
+  }
+
+  // 세로 가계도: 플레이 인물은 굵은 테두리, 방계·입양은 점선. 누르면 연대기의 그 줄을 펼친다
+  private tree(): Node[] {
+    const list = h('div', { class: 'd-tree' })
+    for (const n of treeModel(this.world)) {
+      if (list.childElementCount) list.append(h('div', { class: 'd-tree-link', 'aria-hidden': 'true' }, '│'))
+      const box = h('div', { class: `d-tree-node${n.dashed ? ' dashed' : ''}`, role: 'button', tabindex: '0' },
+        `${n.gen}대 ${n.name}`, h('span', { class: 'd-dim' }, ` · ${n.role}${n.current ? ' · 현재' : ''}`))
+      const go = (): void => {
+        this.familySub = '연대기'
+        this.open.add(`c${n.row}`)
+        this.render()
+      }
+      box.onclick = go
+      box.onkeydown = (e) => { if (e.key === 'Enter') go() }
+      list.append(box)
+    }
+    return [list, h('div', { class: 'd-dim' }, '후계 후보였던 인물은 아직 기록하지 않습니다.')]
+  }
+
+  private relics(): Node[] {
+    const m = relicsModel(this.world)
+    const slots = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '지금 남길 유품'),
+      ...m.slots.map((s, i) => h('div', { class: 'd-row' }, `★${i + 1}  ${s ?? '(비어 있음)'}`)))
+    const past = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '대를 건너온 유품'))
+    if (!m.past.length) past.append(h('div', { class: 'd-dim' }, '아직 물려준 유품이 없습니다.'))
+    for (const r of m.past) {
+      past.append(h('div', { class: 'd-row' }, r.name, ' ', h('span', { class: 'd-grade', style: `color:${r.grade.color}` }, r.grade.label)))
+      for (const l of r.lines) past.append(h('div', { class: 'd-sub' }, `· ${l}`))
+    }
+    return [slots, past]
+  }
+
+  private chronicle(rows: ReturnType<typeof familyModel>['rows']): Node[] {
     const list = h('div', { class: 'd-list' })
-    f.rows.forEach((r, i) => {
+    rows.forEach((r, i) => {
       const key = `c${i}`
       const row = h('div', { class: `d-row${r.lines.length ? ' more' : ''}` }, r.head, r.lines.length ? h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸') : null)
       if (r.lines.length) row.onclick = () => this.toggle(key)
       list.append(row)
       if (this.open.has(key)) for (const l of r.lines) list.append(h('div', { class: 'd-sub' }, `· ${l}`))
     })
-    return [h('div', { class: 'd-strong' }, f.title), subs, list]
+    return [list]
   }
 }
