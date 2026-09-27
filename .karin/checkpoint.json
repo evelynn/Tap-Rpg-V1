@@ -156,7 +156,7 @@
     },
     {
       "id": "F1",
-      "subject": "일지 상세 글을 본문으로 표시 + 비어 있는 detail 채우기 + 최근 요약(14·16 설계)",
+      "subject": "상세 창 모든 탭에서 세부 내역 글을 기본 표시(요약 위주 해소) + 비어 있는 detail 채우기 + 최근 요약",
       "status": "pending",
       "priority": "high"
     },
@@ -192,13 +192,19 @@
     },
     {
       "id": "F7",
-      "subject": "신적 개입(가호) 설계 — 힐링 방향, D77 후보, 사용자와 확정 뒤 구현",
+      "subject": "신적 개입(가호) 설계 — 힐링 방향, 시작 가호 포함, D77 후보, 사용자와 확정 뒤 구현",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "F8",
+      "subject": "성장 전달(레벨·숙련·특성) + 직업 체계(전직 단계·직업 특성·방향) + 스킬 습득 이벤트 — D78 후보",
       "status": "pending",
       "priority": "high"
     }
   ],
   "current_task": "F1",
-  "next_action": "HANDOFF §0-2: F7(재미 방향·가호) 방향 확정 질문 + F1 해석 확인 → F1~F6 → M3 → M1 독립 재검증",
+  "next_action": "F7·F8 설계 방향을 사용자와 확정(소유 문서·D77·D78) → F1(세부 글 기본 표시) → F2~F6 → M3 → M1 독립 재검증",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
