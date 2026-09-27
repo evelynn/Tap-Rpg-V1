@@ -153,10 +153,46 @@
       "subject": "name_pool 고갈 예외(succession/partner.ts:49) 재현·수정",
       "status": "completed",
       "priority": "medium"
+    },
+    {
+      "id": "F1",
+      "subject": "일지 상세 글을 본문으로 표시 + 비어 있는 detail 채우기 + 최근 요약(14·16 설계)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "F2",
+      "subject": "도감 '본 적 있음' 저장 + 12 §7.2 추가 항목 칸",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "F3",
+      "subject": "장비 정의 주석 칸(lore: 사연·주인·설명·발견·비밀), {npc} 해소",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "F4",
+      "subject": "가계도: 뽑히지 않은 후보 저장·그리기, 부모-자식 선, 동반자",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "F5",
+      "subject": "목적지 검토: lost_destination 안내·방침 처리, 드롭다운 정보·해금 안내",
+      "status": "pending",
+      "priority": "medium"
+    },
+    {
+      "id": "F6",
+      "subject": "v06 그림 흡수(208장, codex 완료 확인 뒤)",
+      "status": "pending",
+      "priority": "medium"
     }
   ],
-  "current_task": "M2c",
-  "next_action": "사용자 결정 대기 항목(HANDOFF §0-2: 최근 요약, 도감 추가 항목, {npc} 출처, 후계 후보 저장, lost_destination) → M3 생애의 책(18) → M1 독립 재검증",
+  "current_task": "F1",
+  "next_action": "HANDOFF §0-2의 사용자 피드백 F1~F6 순서대로(F1 해석 한 가지는 첫머리에 사용자에게 확인) → M3 → M1 독립 재검증",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
@@ -164,5 +200,5 @@
   ],
   "last_commit": "f0a627c",
   "verify_state": "pnpm check 1198 통과, lint:docs 0, content:check 0, sim 20가문×3생애 예외 0, 독립 검증 7건 반영 후 재검증 반례 0 (2026-09-27)",
-  "last_updated": "2026-09-27T12:00:00+09:00"
+  "last_updated": "2026-09-27T13:00:00+09:00"
 }
