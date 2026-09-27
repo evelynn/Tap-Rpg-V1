@@ -189,10 +189,16 @@
       "subject": "v06 그림 흡수(208장, codex 완료 확인 뒤)",
       "status": "pending",
       "priority": "medium"
+    },
+    {
+      "id": "F7",
+      "subject": "신적 개입(가호) 설계 — 힐링 방향, D77 후보, 사용자와 확정 뒤 구현",
+      "status": "pending",
+      "priority": "high"
     }
   ],
   "current_task": "F1",
-  "next_action": "HANDOFF §0-2의 사용자 피드백 F1~F6 순서대로(F1 해석 한 가지는 첫머리에 사용자에게 확인) → M3 → M1 독립 재검증",
+  "next_action": "HANDOFF §0-2: F7(재미 방향·가호) 방향 확정 질문 + F1 해석 확인 → F1~F6 → M3 → M1 독립 재검증",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
