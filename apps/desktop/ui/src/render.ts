@@ -72,20 +72,45 @@ export class Renderer {
   }
 
   // 가로 이음 띠를 offset만큼 밀어 [x0, x1) 구간에 채운다. 띠 폭·높이는 그림 그대로(원본 도트, D83).
-  // 띠는 창 아래에 붙이고(D84), 띠보다 위는 띠 맨 윗줄 색을 그대로 위로 이어 채운다(열마다 한 색, 번지지 않는다)
+  // 띠는 창 아래에 붙이고(D84), 띠보다 위는 띠 맨 윗줄에서 가장 흔한 색(하늘·천장) 한 가지로 채운다.
+  // 맨 윗줄을 그대로 위로 늘이면 윗변에 걸린 나무·기둥이 세로 줄이 된다
   private strip(file: string, offset: number, x0: number, x1: number): void {
     const img = this.images[file] as { width?: number; height?: number } | undefined
     const w = img?.width || STRIP_W
     const h = img?.height || 64
     const top = WIN.h - h
-    const o = ((Math.floor(offset) % w) + w) % w
-    for (let x = x0 - ((x0 + o) % w); x < x1; x += w) {
-      this.image(file, 0, 0, w, h, x, top)
-      if (top > 0) {
-        const src = this.images[file]
-        if (src) this.ctx.drawImage(src, 0, 0, w, 1, x, 0, w, top)
-      }
+    if (top > 0) {
+      this.ctx.fillStyle = this.skyOf(file)
+      this.ctx.fillRect(x0, 0, x1 - x0, top)
     }
+    const o = ((Math.floor(offset) % w) + w) % w
+    for (let x = x0 - ((x0 + o) % w); x < x1; x += w) this.image(file, 0, 0, w, h, x, top)
+  }
+
+  private readonly skies = new Map<string, string>()
+  private skyOf(file: string): string {
+    const hit = this.skies.get(file)
+    if (hit) return hit
+    let color = '#B5C7F5'
+    const src = this.images[file] as (CanvasImageSource & { width?: number }) | undefined
+    const k = this.scratch
+    if (src && k && src.width) {
+      const w = Math.min(src.width, k.canvas.width)
+      k.clearRect(0, 0, w, 1)
+      k.drawImage(src, 0, 0, w, 1, 0, 0, w, 1)
+      const d = k.getImageData(0, 0, w, 1).data
+      const count = new Map<number, number>()
+      for (let i = 0; i < w * 4; i += 4) {
+        const c = (d[i]! << 16) | (d[i + 1]! << 8) | d[i + 2]!
+        count.set(c, (count.get(c) ?? 0) + 1)
+      }
+      let best = 0
+      let n = -1
+      for (const [c, m] of count) if (m > n) [best, n] = [c, m]
+      color = `#${best.toString(16).padStart(6, '0')}`
+    }
+    this.skies.set(file, color)
+    return color
   }
 
   private image(file: string, sx: number, sy: number, w: number, h: number, dx: number, dy: number): void {

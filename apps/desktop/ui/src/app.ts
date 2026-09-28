@@ -1,5 +1,5 @@
 // 기본 창 한 프레임 만들기: 세계 구동 → 한 줄 기록·장면 → 연출 → FrameView. DOM이 없어 헤드리스로도 돈다.
-import { journalGrade, type World } from '@tap/core'
+import { journalGrade, type JournalEntry, type World } from '@tap/core'
 import { actViewOf, direct, type Stage } from './director'
 import { Driver } from './driver'
 import { WIN, stageOf } from './layout'
@@ -26,6 +26,7 @@ export class App {
   private notes = 0
   width: number = WIN.w // 기본 창 너비(D82). 인물 무리는 풍경 가운데
   readonly bubbles = new BubbleQueue()
+  lastTick: readonly JournalEntry[] = [] // 이번 프레임에 새로 생긴 기록(저장 시점 판단, 13 §8.1)
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
   // backgrounds: 불러온 장소 배경 띠(background.ts가 장소·계절·시간대로 고른다)
@@ -45,7 +46,8 @@ export class App {
   // now: 실시간 밀리초, dt: 지난 프레임부터 흐른 실시간
   step(now: number, dt: number, dark = false): FrameView {
     const { world, driver, lines } = this
-    for (const e of driver.tick(dt)) {
+    this.lastTick = driver.tick(dt)
+    for (const e of this.lastTick) {
       lines.push({
         id: e.id, text: e.line, grade: journalGrade(e),
         ...(e.refs?.event_id ? { eventId: e.refs.event_id } : {}),

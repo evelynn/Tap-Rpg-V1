@@ -6,3 +6,4 @@ export {
 export { type SettleOptions, settleOffline } from './settle'
 export { type ActionTally, type LifeSnapshot, type ReturnSummary, buildSummary, lifeSnapshot } from './summary'
 export { type OfflineResult, runOffline } from './run'
+export { SUMMARY_STOP_TEXT, type SummaryView, durationText, summaryView } from './summary-text'

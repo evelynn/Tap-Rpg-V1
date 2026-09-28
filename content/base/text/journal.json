@@ -1,4 +1,13 @@
 [
+  { "id": "summary.stop.life_end_retired", "max_len": 60, "variants": ["{name:은/는} {age}세에 모험을 내려놓았습니다."],
+    "_comment": "13 §6.2·14 §9 복귀 요약 멈춘 까닭(summaryView). {name} 인물, {age} 나이, {place} 장소, {heir} 후계자" },
+  { "id": "summary.stop.life_end_died", "max_len": 60, "variants": ["{place}에서 {name}의 등불이 꺼졌습니다."] },
+  { "id": "summary.stop.life_end_long_sleep", "max_len": 60, "variants": ["{name:은/는} {place}에서 긴 잠에 들었습니다."] },
+  { "id": "summary.stop.heir_ready", "max_len": 60, "variants": ["{heir:이/가} 출발 준비를 마쳤습니다."] },
+  { "id": "summary.stop.fate_pending", "max_len": 60, "variants": ["{name:은/는} 중요한 갈림길에서 당신의 결정을 기다립니다."] },
+  { "id": "summary.stop.chain_branch_pending", "max_len": 60, "variants": ["{name:은/는} 이야기의 갈림길 앞에서 당신의 선택을 기다립니다."] },
+  { "id": "summary.stop.stage_boundary", "max_len": 60, "variants": ["{name:이/가} {age}세가 되었습니다. 새 시기의 시작은 함께 보려고 기다렸습니다."] },
+  { "id": "summary.stop.cap_reached", "max_len": 60, "variants": ["부재가 길어 8시간까지만 이어갔습니다."] },
   { "id": "journal.hunt.win", "tag": "hunt",
     "variants": ["{enemy:을/를} 쫓아냈다", "{enemy:이/가} 꼬리를 말고 달아났다"],
     "_comment": "14 §5.1 태그별 문형·§4 묶음 문형. *_detail은 상세 기록(14 §1 문장 80자 이내)" },

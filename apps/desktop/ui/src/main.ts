@@ -1,5 +1,5 @@
 // 브라우저 진입점: 번들 읽기 → 세계 만들기 → 실시간 구동·그리기. Tauri 2 껍데기도 이 dist를 그대로 싣는다(파일 시스템을 쓰지 않는다).
-import { Content, ageAt, createGameWorld, runEvent, setAttitude, submitPendingAuto, type World } from '@tap/core'
+import { Content, ageAt, createGameWorld, runOffline, runEvent, setAttitude, submitPendingAuto, summaryView, type SaveMeta, type World } from '@tap/core'
 import { App } from './app'
 import { attitudeNote } from './detail/model'
 import { DetailWindow } from './detail/view'
@@ -8,10 +8,14 @@ import { SuccessionWindow } from './succession'
 import { SPEEDS } from './driver'
 import { WINDOW_SCALES, drawDue, surface, windowScale, windowWidth, type WindowScale } from './layout'
 import { Overlay } from './overlay'
+import { Saver, loadGame, localBackend, tauriBackend, tauriInvoke, type SaveBackend } from './persist'
+import { SUMMARY_MIN_SEC, SummaryWindow } from './summary'
 import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
 import { BACKGROUNDS, SHEETS, STRIPS } from './sprites'
+
+const APP_VERSION = '0.1.0'
 
 // 외형 ID는 화면 몫이다(tools/demo와 같은 임시 외형)
 const APPEARANCE = { body: 'body_base', hair: 'HR03', hair_color: 'hair_chestnut', skin_tone: 'skin_02', decor: [], age_stage_override: null }
@@ -31,20 +35,14 @@ function loadImage(src: string): Promise<HTMLImageElement | undefined> {
 
 // 주소 인자: ?name=모라&family=모래&seed=16진16자리&scale=1|2|3(화면 배율을 이번만 덮어씀)&width=528~1536&grid=1(선명도 확인 격자)
 
-// 창 설정은 설치별(13 §9 settings.json: window_scale·window_width·record_strip·speech_bubble). 시제품은 브라우저 저장소에 둔다
-const SETTINGS_KEY = 'tap.settings'
+// 창 설정은 설치별(13 §9 settings.json: window_scale·window_width·record_strip·speech_bubble).
+// 데스크톱은 %APPDATA%\Tap\settings.json, 브라우저 시제품은 저장소
 interface Settings { window_scale?: unknown; window_width?: unknown; record_strip?: unknown; speech_bubble?: unknown }
-function loadSettings(): Settings {
-  try {
-    return JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? '{}') as Settings
-  } catch {
-    return {}
-  }
-}
+let settings: Settings = {}
+let backend: SaveBackend = localBackend()
 function saveSettings(v: Settings): void {
-  try {
-    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ ...loadSettings(), ...v }))
-  } catch { /* 저장소를 못 쓰면 이번 실행만 */ }
+  settings = { ...settings, ...v }
+  void backend.writeSettings(JSON.stringify(settings)).catch(() => { /* 이번 실행만 */ })
 }
 function newWorld(content: Content, q: URLSearchParams): World {
   const bg = content.list('background').find((b) => b.unlock === null)
@@ -60,19 +58,34 @@ function newWorld(content: Content, q: URLSearchParams): World {
 
 async function start(): Promise<void> {
   const q = new URLSearchParams(location.search)
-  const saved = loadSettings()
+  const invoke = tauriInvoke()
+  backend = invoke ? tauriBackend(invoke) : localBackend()
+  try { settings = JSON.parse((await backend.readSettings()) ?? '{}') as Settings } catch { settings = {} }
+  const saved = settings
   let u: WindowScale = windowScale(q.get('scale') ?? saved.window_scale) // 화면 배율 100/200/300%(D81). 기본 1 = 100%(D75)
   let width = windowWidth(q.get('width') ?? saved.window_width) // 기본 창 너비(D82)
   let showStrip = saved.record_strip !== false // 기록 띠·말풍선은 기본 켬(03 §2.7)
   let showBubble = saved.speech_bubble !== false
   const grid = q.get('grid') === '1'
-  const content = Content.fromBundle(await (await fetch('content.json')).json())
+  const bundle = (await (await fetch('content.json')).json()) as { content_hash: string; packs: { id: string; version: string }[] }
+  const content = Content.fromBundle(bundle as never)
+  const meta = (): SaveMeta => ({ app_version: APP_VERSION, saved_at_utc: Date.now(), content_packs: bundle.packs, content_hash: bundle.content_hash })
+  // 저장에서 이어 간다(13 §2·§8). ?new=1 이거나 ?seed= 가 있으면 개발용으로 새 가문(저장을 덮어쓴다)
+  const fresh = q.get('new') === '1' || q.has('seed')
+  const loaded = fresh ? { kind: 'none' as const } : await loadGame(backend, content, Date.now())
+  const startNotes: string[] = []
+  if (loaded.kind === 'fail') startNotes.push(loaded.message)
+  if (loaded.kind === 'ok') {
+    if (loaded.recovered) startNotes.push(`최근 정상 기록(${new Date(loaded.savedAt).toLocaleString('ko-KR')})으로 복구했습니다.`)
+    if (loaded.readOnly) startNotes.push('더 새로운 버전에서 만든 기록입니다. 이 버전에서는 읽기만 하고 저장하지 않습니다.')
+    if (loaded.offlineFailed) startNotes.push('지난 이야기를 정리하지 못해 오프라인 진행 없이 시작합니다.')
+  }
 
   const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS])]
-  const loaded = await Promise.all(files.map((f) => loadImage(`sprites/${f}.png`)))
-  const images: Images = Object.fromEntries(files.map((f, i) => [f, loaded[i]]))
+  const pics = await Promise.all(files.map((f) => loadImage(`sprites/${f}.png`)))
+  const images: Images = Object.fromEntries(files.map((f, i) => [f, pics[i]]))
   const sceneFiles = Object.fromEntries(Object.entries(STRIPS).filter(([k, f]) => k !== 'bg' && images[f]))
-  const app = new App(newWorld(content, q), sceneFiles, new Set(BACKGROUNDS.filter((f) => images[f])), q.get('auto') === '1') // ?auto=1: 선택·계승 자동(개발용)
+  const app = new App(loaded.kind === 'ok' ? loaded.world : newWorld(content, q), sceneFiles, new Set(BACKGROUNDS.filter((f) => images[f])), q.get('auto') === '1') // ?auto=1: 선택·계승 자동(개발용)
   ;(globalThis as { tapApp?: App }).tapApp = app // 개발용: 콘솔에서 세계·대기열을 들여다본다
   // 개발용: 사건을 강제로 띄운다(예: tapDev.event('F03', 'A4'))
   ;(globalThis as { tapDev?: unknown }).tapDev = {
@@ -98,7 +111,7 @@ async function start(): Promise<void> {
   const canvas = document.getElementById('art') as HTMLCanvasElement
   const panel = new Panel(document.getElementById('col')!, u)
   const scratch = document.createElement('canvas')
-  scratch.width = 64
+  scratch.width = 1024 // 흰빛 덮기(인물 칸)와 띠 맨 윗줄 하늘색 재기(띠 폭)에 같이 쓴다
   scratch.height = 64
   // 캔버스 기억 크기 = 장치 픽셀, CSS 크기 = 장치 크기 / dpr. 표시 배율(dpr)이 바뀌면(다른 모니터, 확대) 다시 맞춘다
   let renderer!: Renderer
@@ -170,6 +183,35 @@ async function start(): Promise<void> {
   const choice = new ChoiceWindow(document.getElementById('choice')!, app.world, () => detail.render())
   const succession = new SuccessionWindow(document.getElementById('succession')!, app.world, () => detail.render())
   detail.onSuccession = () => succession.show()
+
+  // 저장(13 §8.1): 30초마다, 행동 적용 뒤(2초에 한 번까지), 귀환·큰 선택·생애 끝·계승은 백업과 함께, 종료 때
+  const saver = new Saver(backend, () => app.world, meta)
+  saver.readOnly = loaded.kind === 'ok' && loaded.readOnly
+  setInterval(() => void saver.request(), content.balance.offline.autosave_sec * 1000)
+  let lastState = app.world.state.current_activity.state
+  const afterStep = (now: number): void => {
+    const st = app.world.state.current_activity.state
+    const lifeTurn = app.lastTick.some((e) => e.tag === 'retire' || e.tag === 'death' || e.tag === 'succession')
+    if (lifeTurn) void saver.request({ backup: true, force: true })
+    else if (st !== lastState && (st === 'town_prep' || st === 'awaiting_choice' || st === 'awaiting_succession')) void saver.request({ backup: true })
+    else if (app.lastTick.length) saver.requestThrottled(now)
+    lastState = st
+  }
+  const quit = async (): Promise<void> => {
+    await saver.flush()
+    if (invoke) await invoke('app_exit')
+  }
+  ;(globalThis as { __TAURI__?: { event?: { listen(e: string, f: () => void): Promise<unknown> } } }).__TAURI__?.event?.listen('tap://quit', () => void quit())
+  addEventListener('pagehide', () => void saver.request())
+
+  // 복귀 요약(03 §9): 시작 때 10분 넘게 정산했으면 연다. 알림(복구·읽기 전용)만 있어도 연다
+  const summaryWin = new SummaryWindow(document.getElementById('summary')!, {
+    journal: () => detail.show('일지'), book: () => detail.show('가문'), choice: () => choice.show(), succession: () => succession.show(),
+  })
+  const sum = loaded.kind === 'ok' ? loaded.summary : null
+  if ((sum && sum.settled_sec >= SUMMARY_MIN_SEC) || startNotes.length) summaryWin.show(sum ? summaryView(app.world, sum) : null, startNotes)
+  else if (sum) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
+  if (loaded.kind !== 'ok') void saver.request({ backup: true }) // 새 가문은 바로 한 번 남긴다
   canvas.onclick = () => detail.show('일지')
   document.getElementById('strip')!.onclick = () => detail.show('일지')
   document.getElementById('bubble')!.onclick = () => detail.show('일지')
@@ -229,9 +271,20 @@ async function start(): Promise<void> {
   let last = performance.now()
   let lastDraw = -Infinity
   const advance = (now: number, cap: number) => {
-    const dt = Math.min(cap, Math.max(0, now - last))
+    const gap = now - last
+    // 잠자기·30초 넘게 멈춘 틱은 오프라인과 같은 규칙으로 정산한다(13 §7)
+    if (gap >= 30000 && !app.driver.paused && app.world.state.current_activity.state !== 'paused') {
+      try {
+        const r = runOffline(app.world, { now_utc: Date.now(), saved_at_utc: Date.now() - gap })
+        if (r.summary) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
+      } catch (e) { console.error('[텝] 실행 중 정산 실패', e) }
+      void saver.request({ backup: true })
+    }
+    const dt = Math.min(cap, Math.max(0, gap))
     last = now
-    return app.step(now, dt, dark.matches)
+    const view = app.step(now, dt, dark.matches)
+    afterStep(now)
+    return view
   }
   setInterval(() => { if (document.hidden) advance(performance.now(), 1000) }, 1000)
   const frame = (now: number): void => {

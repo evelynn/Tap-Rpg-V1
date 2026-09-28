@@ -8,3 +8,7 @@ export {
 export { type SaveMeta, makeSaveRoot, serializeSave } from './serialize'
 export { REPAIR_CODES, type RepairCode, type SaveDiagnostic, repairSave } from './repair'
 export { FATAL_CODES, type FatalCode, type LoadOk, type LoadFail, type LoadResult, loadSave } from './load'
+export {
+  BACKUP_MIN_GAP_MS, CORRUPT_KEEP, SAVE_FILE, TMP_FILE, backupFile, pickSave, preMigrationFile,
+  type PickFail, type PickOk, type PickResult, type SaveFailure, type SaveFile,
+} from './pick'

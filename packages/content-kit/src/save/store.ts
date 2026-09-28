@@ -2,9 +2,9 @@
 // 코어는 파일을 모르므로 직렬화·검사는 코어가 하고 이 파일은 바이트만 다룬다.
 import { closeSync, existsSync, fsyncSync, mkdirSync, openSync, readdirSync, readFileSync, renameSync, rmSync, statSync, writeSync } from 'node:fs'
 import { join } from 'node:path'
-import { loadSave, serializeSave, type Content, type FatalCode, type LoadOk, type SaveRoot } from '../core'
+import { pickSave, serializeSave, type Content, type FatalCode, type LoadOk, type SaveFile, type SaveRoot } from '../core'
 import {
-  at, backupFile, BACKUP_MIN_GAP_MS, backupPaths, CORRUPT_DIR, CORRUPT_KEEP, preMigrationFile, SAVE_FILE, TMP_FILE,
+  at, backupFile, BACKUP_MIN_GAP_MS, backupPaths, CORRUPT_DIR, CORRUPT_KEEP, SAVE_FILE, TMP_FILE,
   type SaveDir,
 } from './paths'
 
@@ -51,29 +51,6 @@ export function writeSave(dir: SaveDir, root: SaveRoot, opts: WriteOptions): voi
 
 // ── 읽기 ──
 
-interface Candidate {
-  file: string
-  text: string
-  ok: LoadOk | null
-  code: FatalCode | null
-  message: string
-}
-
-function tryRead(dir: SaveDir, file: string, content: Content): Candidate | null {
-  const path = at(dir, file)
-  if (!existsSync(path)) return null
-  let text: string
-  try {
-    text = readFileSync(path, 'utf8')
-  } catch (e) {
-    return { file, text: '', ok: null, code: 'K1', message: `읽을 수 없다: ${(e as Error).message}` }
-  }
-  const r = loadSave(text, content)
-  return r.ok
-    ? { file, text, ok: r, code: null, message: '' }
-    : { file, text, ok: null, code: r.code, message: r.message }
-}
-
 export interface ReadOk {
   ok: true
   file: string // 실제로 쓴 파일
@@ -90,30 +67,24 @@ export interface ReadFail {
 
 export type ReadResult = ReadOk | ReadFail
 
-// 13 §8.5 복구 절차. 모두 실패하면 손상 파일을 corrupt\로 옮긴다
+// 13 §8.5 복구 절차(고르기는 코어 pickSave). 모두 실패하면 손상 파일을 corrupt\로 옮긴다
 export function readSave(dir: SaveDir, content: Content, now: number): ReadResult {
-  const names = [SAVE_FILE, TMP_FILE, ...backupPaths(dir)]
-  const cands = names.map((n) => tryRead(dir, n, content)).filter((c): c is Candidate => c !== null)
-  const failed = cands.filter((c) => c.code !== null).map((c) => ({ file: c.file, code: c.code!, message: c.message }))
-
-  const save = cands.find((c) => c.file === SAVE_FILE)
-  const tmp = cands.find((c) => c.file === TMP_FILE)
-  // 2. 교체 직전에 종료된 경우: tmp가 정상이고 save.json보다 늦으면 tmp를 쓴다
-  const tmpWins = tmp?.ok && (!save?.ok || tmp.ok.root.header.saved_at_utc > save.ok.root.header.saved_at_utc)
-  const chosen = tmpWins ? tmp : (save?.ok ? save : cands.find((c) => c.ok !== null))
-
-  if (!chosen?.ok) {
-    return { ok: false, failed, quarantined: quarantine(dir, cands.map((c) => c.file), now) }
+  const files: SaveFile[] = []
+  const failed: ReadFail['failed'] = []
+  for (const file of [SAVE_FILE, TMP_FILE, ...backupPaths(dir)]) {
+    const path = at(dir, file)
+    if (!existsSync(path)) continue
+    try {
+      files.push({ file, text: readFileSync(path, 'utf8') })
+    } catch (e) {
+      failed.push({ file, code: 'K1', message: `읽을 수 없다: ${(e as Error).message}` })
+    }
   }
-
-  // 백업으로 복구한 뒤에도 같은 구간을 두 번 정산하지 않게, 읽을 수 있었던 파일 중 가장 늦은 high_water를 쓴다
-  const hw = Math.max(...cands.filter((c) => c.ok).map((c) => c.ok!.root.body.offline_state.high_water_utc))
-  if (hw > chosen.ok.root.body.offline_state.high_water_utc) chosen.ok.root.body.offline_state.high_water_utc = hw
-
+  const r = pickSave(files, content)
+  if (!r.ok) return { ok: false, failed: [...failed, ...r.failed], quarantined: quarantine(dir, [...failed.map((f) => f.file), ...r.files], now) }
   // 이전을 적용했으면 원본 사본을 남긴다(13 §8.7). 아직 아무것도 덮어쓰지 않은 시점이다
-  for (const v of chosen.ok.migrated) writeSynced(at(dir, preMigrationFile(v)), chosen.text)
-
-  return { ok: true, file: chosen.file, recovered: chosen.file.startsWith('backup_'), result: chosen.ok, failed }
+  for (const m of r.preMigration) writeSynced(at(dir, m.file), m.text)
+  return { ok: true, file: r.file, recovered: r.recovered, result: r.result, failed: [...failed, ...r.failed] }
 }
 
 // 손상 파일을 corrupt\{UTC시각}_{원래이름}으로 옮기고 최대 5개만 남긴다(13 §8.4)
