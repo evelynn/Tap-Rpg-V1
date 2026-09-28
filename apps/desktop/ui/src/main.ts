@@ -268,7 +268,7 @@ function boot(b: Boot): void {
   })
 
   const summaryWin = new SummaryWindow(document.getElementById('summary')!, {
-    journal: () => detail.show('일지'), book: () => detail.show('가문'), choice: () => choice.show(), succession: () => succession.show(),
+    journal: () => detail.show('일지'), book: () => detail.openBook(), choice: () => choice.show(), succession: () => succession.show(),
   })
   const sum = loaded.kind === 'ok' ? loaded.summary : null
   if ((sum && sum.settled_sec >= SUMMARY_MIN_SEC) || startNotes.length) summaryWin.show(sum ? summaryView(app.world, sum) : null, startNotes)

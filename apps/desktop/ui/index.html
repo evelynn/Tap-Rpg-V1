@@ -139,6 +139,28 @@
     .dwin .d-place { position: relative; height: 120px; margin: 8px 0; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; background: rgba(128,128,128,.12); }
     .dwin .d-place::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: rgba(128,128,128,.4); } /* 작업 표시줄 */
     .dwin .d-place-win { position: absolute; right: 8px; bottom: 16px; width: 96px; height: 16px; background: #5a7fa8; border-radius: 2px; }
+    /* 서가(03 §5.5)·책 보기(03 §5.6) */
+    .dwin .d-shelf { display: flex; gap: 4px; align-items: flex-end; min-height: 104px; padding-top: 8px; flex-wrap: wrap; }
+    .dwin .d-spine { position: relative; width: 20px; height: 96px; box-sizing: border-box; border: 1px solid rgba(0,0,0,.4); border-radius: 2px; cursor: pointer;
+      display: flex; flex-direction: column; align-items: center; padding-top: 4px; font-size: 12px; line-height: 12px; background: #8a6a4a; color: #fff; }
+    .dwin .d-spine.mid { width: 24px; } .dwin .d-spine.thick { width: 28px; }
+    .dwin .d-spine.died { background: #4a4a5a; } .dwin .d-spine.long_sleep { background: #3a4a6a; }
+    .dwin .d-spine.unread::before { content: ''; position: absolute; top: -6px; left: 40%; width: 3px; height: 12px; background: #c9453a; } /* 책갈피 끈 */
+    .dwin .d-spine.writing { border-style: dashed; background: transparent; color: inherit; opacity: .7; }
+    .dwin .d-spine .d-emblem { height: 12px; margin-bottom: 4px; }
+    .dwin .d-spine-name { writing-mode: vertical-rl; letter-spacing: 1px; }
+    .dwin .d-shelf-board { height: 16px; background: #6b4f36; border-radius: 2px; }
+    .dwin .d-shelf-head { min-height: 20px; }
+    .dwin .d-book-head, .dwin .d-book-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 32px; }
+    .dwin .d-book-foot { justify-content: center; }
+    .dwin .d-book-page { min-height: 360px; padding: 8px 0; font-size: 13px; line-height: 20px; }
+    .dwin .d-book-line.title { font-size: 18px; font-weight: bold; line-height: 28px; }
+    .dwin .d-book-line.head { font-size: 15px; font-weight: bold; }
+    .dwin .d-book-line.dim { opacity: .7; }
+    .dwin .d-book-line.fork { border-left: 2px solid currentColor; padding-left: 8px; background: rgba(128,128,128,.1); }
+    .dwin .d-book-line.letter { border-left: 1px solid rgba(128,128,128,.6); border-right: 1px solid rgba(128,128,128,.6); padding: 0 8px; }
+    .dwin .d-book-line.quote { padding-left: 16px; font-style: italic; }
+    .dwin .d-book-line.opener, .dwin .d-book-line.attitude { opacity: .85; }
     #controls { margin-top: 12px; display: flex; gap: 6px; }
     #info { margin-top: 8px; }
   </style>

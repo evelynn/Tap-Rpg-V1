@@ -3,6 +3,8 @@
 import {
   acceptEquipSuggestion, arm, armBlock, cancelEquipOrder, charges, healBlock, healNow, isArmed, unarm, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
+import { BookViewer, asBook, shelfView } from '../book'
+import * as core from '@tap/core'
 import {
   FILTERS, attitudeNote, characterModel, destinationModel, familyModel, lockedPlaces, journalModel, policyModel, codexModel, recentModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
 } from './model'
@@ -19,6 +21,12 @@ export function h(tag: string, attrs: Record<string, string> = {}, ...kids: Kids
   for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v)
   for (const k of kids) if (k !== null && k !== false && k !== undefined) el.append(k)
   return el
+}
+
+// 책을 처음 펼치면 opened(18 §7.2 덧붙임 전용). 코어 API가 있으면 그것으로
+function markOpened(world: World, gen: number): void {
+  const api = core as unknown as { markBookOpened?: (w: World, gen: number) => void }
+  if (api.markBookOpened) api.markBookOpened(world, gen)
 }
 
 export function button(label: string, onClick: () => void, opts: { on?: boolean; disabled?: boolean; title?: string } = {}): HTMLElement {
@@ -64,6 +72,7 @@ export class DetailWindow {
   private lethalAsk = false
   private cursedAsk: string | null = null // 확인 칸을 펼친 저주 장비 uid
   private familySub: FamilySub = '연대기'
+  private reader: BookViewer | null = null // 책 보기(03 §5.6)
   private destAsk: string | null = null // 확인 칸을 펼친 목적지
   onSuccession: (() => void) | null = null // 가문 탭 `계승 진행 ›`(03 §5.5)
   private readonly body: HTMLElement
@@ -82,6 +91,11 @@ export class DetailWindow {
     root.hidden = true
     root.tabIndex = -1
     root.addEventListener('keydown', (e) => {
+      // 책 보기 조작(03 §5.6): ←→·PageUp/Down·Home·End, Esc는 서가로
+      if (this.reader && this.tab === '가문' && this.reader.key(e)) {
+        e.preventDefault()
+        return
+      }
       if (e.key === 'Escape') this.hide()
       else if (e.ctrlKey && /^[1-4]$/.test(e.key)) {
         e.preventDefault()
@@ -465,15 +479,36 @@ export class DetailWindow {
   // ── 가문: 하위 탭 5칸(03 §5.5). 서가는 M3(생애의 책) ──
   private family(): Node[] {
     const f = familyModel(this.world)
-    const ready: Record<FamilySub, boolean> = { 연대기: true, 서가: false, 가계도: true, 도감: true, 유품: true }
+    const ready: Record<FamilySub, boolean> = { 연대기: true, 서가: true, 가계도: true, 도감: true, 유품: true }
+    // 책 보기(03 §5.6)가 열려 있으면 가문 머리·하위 탭 대신 책 면
+    if (this.reader) return this.reader.view()
     const subs = h('div', { class: 'd-chips' }, ...FAMILY_SUBS.map((t) => button(t, () => { this.familySub = t; this.render() },
       { on: t === this.familySub, disabled: !ready[t], ...(ready[t] ? {} : { title: '아직 만들지 않았습니다' }) })))
-    const body = this.familySub === '가계도' ? this.tree() : this.familySub === '유품' ? this.relics() : this.familySub === '도감' ? this.codex() : this.chronicle(f.rows)
+    const body = this.familySub === '가계도' ? this.tree() : this.familySub === '유품' ? this.relics() : this.familySub === '도감' ? this.codex() : this.familySub === '서가' ? this.shelf() : this.chronicle(f.rows)
     // 계승 대기 중이면 탭 위에 `계승 진행 ›`(03 §5.5)
     const go = this.world.state.current_activity.state === 'awaiting_succession' && this.onSuccession
       ? h('div', { class: 'd-acts' }, button('계승 진행 ›', () => this.onSuccession?.()))
       : null
     return [h('div', { class: 'd-strong' }, f.title), go, subs, ...body].filter((n): n is HTMLElement => n !== null)
+  }
+
+  // 서가(03 §5.5): 끝난 생애의 책. 책등을 누르면 책 보기
+  private shelf(): Node[] {
+    const s = this.world.state
+    const living = s.character && !s.family.chronicle.some((r) => r.char_uid === s.character!.uid) ? s.character.name : null
+    return [shelfView([...s.family.chronicle].sort((a, b) => a.gen - b.gen), living, (gen) => this.openBook(gen), () => this.show('일지'))]
+  }
+
+  // 책 보기를 연다(서가·연대기 `책 ›`·복귀 요약 `생애의 책`)
+  openBook(gen?: number): void {
+    const recs = [...this.world.state.family.chronicle].sort((a, b) => a.gen - b.gen)
+    const r = gen === undefined ? recs.at(-1) : recs.find((x) => x.gen === gen)
+    const b = r ? asBook(r) : null
+    this.familySub = '서가'
+    if (r && b) {
+      this.reader = new BookViewer(r.gen, b, () => { this.reader = null; this.render() }, () => markOpened(this.world, r.gen), () => this.render())
+    }
+    this.show('가문')
   }
 
   // 세로 가계도: 플레이 인물은 굵은 테두리, 방계·입양은 점선. 누르면 연대기의 그 줄을 펼친다
@@ -549,6 +584,9 @@ export class DetailWindow {
       }
       list.append(row)
       if (shown) for (const l of r.lines) list.append(h('div', { class: 'd-sub' }, `· ${l}`))
+      // 끝난 생애는 그 책으로(03 §5.5 연대기 `책 ›`)
+      const rec = this.world.state.family.chronicle.find((x) => x.gen === r.gen)
+      if (shown && rec && asBook(rec)) list.append(h('div', { class: 'd-acts' }, button('책 ›', () => this.openBook(r.gen))))
     })
     return [list]
   }

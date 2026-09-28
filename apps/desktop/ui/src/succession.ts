@@ -6,6 +6,8 @@ import {
   type BlessingSubject, type Candidate, type StartChoice, type StartKind, type World,
 } from '@tap/core'
 import { button, h } from './detail/view'
+import { BookViewer, asBook } from './book'
+import * as core from '@tap/core'
 
 const END_LABEL: Record<string, string> = { died: '사망', retired: '은퇴', long_sleep: '긴 잠' }
 const REL_LABEL: Record<string, string> = { direct: '자녀', collateral: '친척', adopted: '가문의 아이' }
@@ -33,6 +35,8 @@ export class SuccessionWindow {
   private readonly title: HTMLElement
   private readonly foot: HTMLElement
 
+  private reader: BookViewer | null = null // 2단계 책 보기(03 §5.6 `계승으로 돌아가기`)
+  private fullLog = false
   constructor(private readonly root: HTMLElement, private readonly world: World, private readonly onDone: () => void) {
     this.title = h('div', { class: 'd-title' })
     this.body = h('div', { class: 'd-body' })
@@ -116,16 +120,34 @@ export class SuccessionWindow {
   }
 
   // 2단계: 생애의 책(18). 책 본문·서가는 M3에서 만든다. 지금은 별칭과 주요 기록을 보인다
+  // 2단계 생애의 책(18 §8.1): 표지·제사·뒷표지 3줄, `책 펼치기 ›`, `이 생애의 일지 전체 보기 ›`. `다음`이 곧 건너뛰기
   private bookStep(): Node[] {
     const { state } = this.world
-    const r = this.plan.record
-    const byId = new Map(state.journal.map((e) => [e.id, e]))
-    const majors = r.major_entry_ids.map((id) => byId.get(id)).filter((e) => e !== undefined).sort((a, b) => a.id - b.id)
+    const r = state.family.chronicle.find((x) => x.char_uid === this.plan.record.char_uid) ?? this.plan.record
+    const b = asBook(r)
+    if (this.reader && b) return this.reader.view()
+    if (this.fullLog) {
+      const mine = state.journal.filter((e) => e.char_uid === r.char_uid && e.importance !== 'daily').sort((a, c) => a.id - c.id)
+      return [h('div', { class: 'd-acts' }, button('‹ 책으로', () => { this.fullLog = false; this.render() })),
+        ...mine.map((e) => h('div', { class: 'd-sub' }, `${e.age}세 ${e.line}`))]
+    }
+    const first = state.family.chronicle.length <= 1
+    const open = (): void => {
+      if (!b) return
+      this.reader = new BookViewer(r.gen, b, () => { this.reader = null; this.render() }, () => {
+        const api = core as unknown as { markBookOpened?: (w: World, gen: number) => void }
+        api.markBookOpened?.(this.world, r.gen)
+      }, () => this.render(), '계승으로 돌아가기')
+      this.reader.go(0)
+    }
     return [
-      h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, `${state.family.name} 가문 · 제${r.gen}권`), h('div', {}, `「${r.epithet}」`)),
-      h('div', { class: 'd-sec' }, ...majors.map((e) => h('div', { class: 'd-sub' }, `· ${e.age}세 ${e.line}`))),
-      h('div', { class: 'd-note' }, '생애의 책 본문과 서가는 다음 단계(M3)에서 열립니다.'),
-    ]
+      h('div', { class: 'd-sec' }, h('div', { class: 'd-dim' }, `${state.family.name} 가문 · 제${r.gen}권`), h('div', { class: 'd-strong' }, `「${b?.cover.title ?? r.epithet}」`),
+        b ? h('div', { class: 'd-dim' }, b.cover.subtitle) : null),
+      ...(b?.epigraph?.text ? [h('div', { class: 'd-sec' }, h('div', {}, b.epigraph.text), b.epigraph.speaker ? h('div', { class: 'd-dim' }, `— ${b.epigraph.speaker}`) : null)] : []),
+      ...(b?.back ? [h('div', { class: 'd-sec' }, ...b.back.map((l) => h('div', { class: 'd-sub' }, l)))] : []),
+      h('div', { class: 'd-acts' }, button('책 펼치기 ›', open, { disabled: !b }), button('이 생애의 일지 전체 보기 ›', () => { this.fullLog = true; this.render() })),
+      first ? h('div', { class: 'd-note' }, '서가는 가문 탭에서 언제든 다시 열 수 있습니다.') : null,
+    ].filter((n): n is HTMLElement => n !== null)
   }
 
   // 3단계: 후계자 카드(최대 3장이 한 줄, 넘치면 줄을 바꾼다)
