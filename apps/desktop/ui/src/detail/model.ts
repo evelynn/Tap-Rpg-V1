@@ -140,7 +140,7 @@ export interface CharacterModel {
   traits: { name: string; badge: string; negative: boolean; since: number; effect: string; inactive: string | null }[] // 얻은 나이, 효과 글(16 §2.7), 흐린 표시 사유(06 §8.1)
   injuries: string[]
   equipment: (ItemRow | { slot: string; empty: true })[]
-  bag: { used: number; max: number; items: ItemRow[]; consumables: string }
+  bag: { used: number; max: number; items: ItemRow[]; pending: ItemRow[]; consumables: string } // pending: 수령 대기함(03 §5.3)
   inTown: boolean // 장착·해제는 마을이면 즉시, 출정 중이면 예약(03 §5.3.1). 유품 변경은 마을에서만(12 §5.1)
 }
 
@@ -217,7 +217,7 @@ export function characterModel(world: World): CharacterModel | null {
     }),
     injuries: ch.injuries.map((i) => `${i.grade === 'serious' ? '중상' : '경상'} (${STAT_LABELS[i.stat]} −1) · ${Math.ceil(i.remaining_min)}분 뒤 회복`),
     equipment,
-    bag: { used: inv.bag.length, max: b.stats.bag_slots, items: inv.bag.map((u) => itemRow(world, u, false)), consumables },
+    bag: { used: inv.bag.length, max: b.stats.bag_slots, items: inv.bag.map((u) => itemRow(world, u, false)), pending: inv.pending_box.filter((u) => world.state.item_instances[u]).map((u) => itemRow(world, u, false)), consumables },
     inTown: isInTown(world),
   }
 }

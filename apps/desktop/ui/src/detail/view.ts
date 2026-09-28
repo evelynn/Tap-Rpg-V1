@@ -237,7 +237,18 @@ export class DetailWindow {
     const bagRow = h('div', { class: 'd-row more' }, `가방 ${m.bag.used}/${m.bag.max}${m.bag.consumables ? ` · ${m.bag.consumables}` : ''}`, h('span', { class: 'd-caret' }, this.open.has(bagKey) ? '▾' : '▸'))
     bagRow.onclick = () => this.toggle(bagKey)
     bag.append(bagRow)
-    if (this.open.has(bagKey)) for (const it of m.bag.items) bag.append(this.itemRow(it, m.inTown))
+    if (this.open.has(bagKey)) {
+      // 가방 20칸 격자(찬 칸은 등급 색 테두리, 가리키면 이름) → 목록 → 수령 대기함(03 §5.3)
+      bag.append(h('div', { class: 'd-bag-grid' }, ...Array.from({ length: m.bag.max }, (_, i) => {
+        const it = m.bag.items[i]
+        return it ? h('div', { class: 'd-bag-cell full', title: it.name, style: `border-color:${it.grade.color}` }, it.slot.slice(0, 1)) : h('div', { class: 'd-bag-cell' })
+      })))
+      for (const it of m.bag.items) bag.append(this.itemRow(it, m.inTown))
+      if (m.bag.pending.length) {
+        bag.append(h('div', { class: 'd-strong' }, `수령 대기함 ${m.bag.pending.length}`))
+        for (const it of m.bag.pending) bag.append(this.itemRow(it, m.inTown))
+      }
+    }
     return [head, stats, job, traits, inj, gear, bag].filter((n): n is HTMLElement => n !== null)
   }
 

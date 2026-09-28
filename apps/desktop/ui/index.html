@@ -139,6 +139,9 @@
     .dwin .d-place { position: relative; height: 120px; margin: 8px 0; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; background: rgba(128,128,128,.12); }
     .dwin .d-place::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: rgba(128,128,128,.4); } /* 작업 표시줄 */
     .dwin .d-place-win { position: absolute; right: 8px; bottom: 16px; width: 96px; height: 16px; background: #5a7fa8; border-radius: 2px; }
+    .dwin .d-bag-grid { display: grid; grid-template-columns: repeat(10, 20px); gap: 2px; margin: 4px 0 6px 16px; }
+    .dwin .d-bag-cell { width: 20px; height: 20px; box-sizing: border-box; border: 1px dashed rgba(128,128,128,.5); font-size: 11px; line-height: 18px; text-align: center; }
+    .dwin .d-bag-cell.full { border: 2px solid; }
     /* 서가(03 §5.5)·책 보기(03 §5.6) */
     .dwin .d-shelf { display: flex; gap: 4px; align-items: flex-end; min-height: 104px; padding-top: 8px; flex-wrap: wrap; }
     .dwin .d-spine { position: relative; width: 20px; height: 96px; box-sizing: border-box; border: 1px solid rgba(0,0,0,.4); border-radius: 2px; cursor: pointer;
