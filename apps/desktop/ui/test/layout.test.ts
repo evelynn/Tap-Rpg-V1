@@ -1,27 +1,37 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, WINDOW_SCALES, artScale, drawDue, surface, windowScale } from '../src/layout'
+import { COL, LAND, SCENE_W, TEXT, WIDTH, WIN, WINDOW_SCALES, artScale, drawDue, stageOf, surface, windowScale, windowWidth } from '../src/layout'
 import { SCENES } from '../src/scenes'
 import { measure11 } from './measure'
 
 describe('기본 창 768 × 64 배치(D75)', () => {
-  it('풍경 496 + 글자 칸 272, 주인공 x 72, 적 x 168, 장면 판 x 48~175', () => {
+  it('풍경 496 + 글자 칸 272. 인물 무리·장면 판은 풍경 가운데: 판 184~311, 주인공 208, 적 304(D82)', () => {
     assert.deepEqual(WIN, { w: 768, h: 64 })
     assert.equal(LAND.x + LAND.w, COL.x)
     assert.equal(COL.x + COL.w, WIN.w)
     assert.equal(COL.w, 272)
-    assert.equal(HERO_CX, 72)
-    assert.equal(ENEMY_CX, 168)
-    assert.equal(SCENE.x + SCENE.w, 176)
-    assert.ok(ENEMY_CX + 24 <= LAND.w && HERO_CX - 24 >= 0, '인물 셀(48)이 풍경 안에 든다')
+    assert.deepEqual(stageOf(768), { landW: 496, sceneX: 184, heroCx: 208, enemyCx: 304 })
+    assert.equal(stageOf(768).sceneX + SCENE_W / 2, 496 / 2, '장면 판 가운데 = 풍경 가운데')
   })
 
-  it('장면 표의 주인공 x(장면 판 기준)가 창에서 주인공 자리 근처에 온다(L09 x 24 → 72)', () => {
-    assert.equal(SCENE.x + SCENES.L09!.hero!.x, HERO_CX)
+  it('창 너비 528~1536(D82): 어느 너비에서도 장면 판과 인물 셀(48)이 풍경 안에 든다', () => {
+    for (const w of [WIDTH.min, 600, 768, 1000, WIDTH.max]) {
+      const st = stageOf(w)
+      assert.ok(st.sceneX >= 0 && st.sceneX + SCENE_W <= st.landW, `${w}: 장면 판`)
+      assert.ok(st.heroCx - 24 >= 0 && st.enemyCx + 24 <= st.landW, `${w}: 인물 셀`)
+    }
+    assert.deepEqual(stageOf(WIDTH.min), { landW: 256, sceneX: 64, heroCx: 88, enemyCx: 184 })
+    assert.deepEqual([400, 528, 900.4, 2000, '1200', 'x', undefined, null].map(windowWidth), [528, 528, 900, 1536, 1200, 768, 768, 768])
+    assert.deepEqual(surface(1, 1, 1000), { k: 1, devW: 1000, devH: 64, cssW: 1000, cssH: 64, artY: 0, logicalW: 1000 })
+  })
+
+  it('장면 표의 주인공 x(장면 판 기준)가 창에서 주인공 자리 근처에 온다(L09 x 24 → 주인공 자리)', () => {
+    const st = stageOf(768)
+    assert.equal(st.sceneX + SCENES.L09!.hero!.x, st.heroCx)
     for (const row of Object.values(SCENES)) {
       if (!row.hero) continue
-      const cx = SCENE.x + row.hero.x
-      assert.ok(cx >= 64 && cx <= 90, `${row.scene} 주인공 창 x ${cx}`)
+      const cx = st.sceneX + row.hero.x
+      assert.ok(cx >= st.heroCx - 8 && cx <= st.heroCx + 18, `${row.scene} 주인공 창 x ${cx}`)
     }
   })
 

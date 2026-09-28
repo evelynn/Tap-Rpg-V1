@@ -2,7 +2,8 @@
 import { journalGrade, type World } from '@tap/core'
 import { actViewOf, direct, type Stage } from './director'
 import { Driver } from './driver'
-import { ENEMY_CX, HERO_CX, SCENE } from './layout'
+import { WIN, stageOf } from './layout'
+import { BubbleQueue, bubbleWorthy, stripView } from './overlay'
 import { Animator } from './motion'
 import { LineQueue } from './records'
 import type { FrameView } from './render'
@@ -23,6 +24,8 @@ export class App {
   private offset = 0
   private stage: Stage
   private notes = 0
+  width: number = WIN.w // 기본 창 너비(D82). 인물 무리는 풍경 가운데
+  readonly bubbles = new BubbleQueue()
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
   // backgrounds: 불러온 장소 배경 띠(background.ts가 장소·계절·시간대로 고른다)
@@ -48,7 +51,11 @@ export class App {
         ...(e.refs?.event_id ? { eventId: e.refs.event_id } : {}),
         ...(e.tag === 'gear' && e.sub === 'rare_gain' ? { long: true } : {}), // 드롭 순간(D76)
       })
+      const ev = e.refs?.event_id
+      const category = ev && world.content.has('event', ev) ? world.content.get('event', ev).category : undefined
+      if (bubbleWorthy(e, category)) this.bubbles.push({ id: e.id, line: e.line, detail: e.detail ?? '' })
     }
+    this.bubbles.update(now)
     if (lines.update(now)) this.scenes.onLine(lines.current?.eventId, now)
 
     const paused = driver.paused
@@ -56,19 +63,20 @@ export class App {
     if (!paused) this.animate(now, dt, scene?.row.hero?.motion ?? null, scene !== null)
 
     const sv = statusViewOf(world)
+    const st = stageOf(this.width)
     const heroShown = scene ? scene.row.hero !== null : this.stage.hero !== null
     const hero = this.hero
     const foe = this.enemy?.anim
     return {
       bg: { file: this.backgrounds.size ? pickBackground(world, this.backgrounds) : STRIPS.bg, offset: this.offset },
-      scene: scene ? { file: this.sceneFiles[scene.row.scene]!, frame: scene.frame } : null,
+      scene: scene ? { file: this.sceneFiles[scene.row.scene]!, frame: scene.frame, x: st.sceneX } : null,
       paused,
       hero: heroShown ? {
-        sheet: hero.clip.sheet, cell: hero.cell, cx: scene?.row.hero ? SCENE.x + scene.row.hero.x : HERO_CX, flip: !scene && this.stage.flip, // 장면 표의 x는 장면 판 기준
+        sheet: hero.clip.sheet, cell: hero.cell, cx: scene?.row.hero ? st.sceneX + scene.row.hero.x : st.heroCx, flip: !scene && this.stage.flip, // 장면 표의 x는 장면 판 기준
         flash: hero.motion === 'hit' && hero.frame === 0,
       } : null,
       enemy: foe && !scene && !(foe.motion === 'exit' && foe.done) ? {
-        sheet: foe.clip.sheet, cell: foe.cell, cx: ENEMY_CX, flip: false, flash: foe.motion === 'hit' && foe.frame === 0,
+        sheet: foe.clip.sheet, cell: foe.cell, cx: st.enemyCx, flip: false, flash: foe.motion === 'hit' && foe.frame === 0,
       } : null,
       status: sv ? statusLine(sv) : world.state.family.name,
       icons: sv ? icons(sv) : [],
@@ -76,6 +84,9 @@ export class App {
       mark: world.state.pending_choice ? 'choice' : world.state.current_activity.state === 'awaiting_succession' ? 'succession' : null,
       attitude: world.content.get('attitude', world.state.policies.attitude).name,
       dark,
+      heroCx: st.heroCx,
+      strip: stripView(world),
+      bubble: this.bubbles.current,
     }
   }
 

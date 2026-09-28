@@ -6,7 +6,8 @@ import { DetailWindow } from './detail/view'
 import { ChoiceWindow } from './choice'
 import { SuccessionWindow } from './succession'
 import { SPEEDS } from './driver'
-import { WINDOW_SCALES, drawDue, surface, windowScale, type WindowScale } from './layout'
+import { WINDOW_SCALES, drawDue, surface, windowScale, windowWidth, type WindowScale } from './layout'
+import { Overlay } from './overlay'
 import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
@@ -28,18 +29,19 @@ function loadImage(src: string): Promise<HTMLImageElement | undefined> {
   })
 }
 
-// 주소 인자: ?name=모라&family=모래&seed=16진16자리&scale=1|2|3(화면 배율을 이번만 덮어씀)&grid=1(선명도 확인 격자)
+// 주소 인자: ?name=모라&family=모래&seed=16진16자리&scale=1|2|3(화면 배율을 이번만 덮어씀)&width=528~1536&grid=1(선명도 확인 격자)
 
-// 화면 배율은 설치별 설정(13 §9 settings.json `window_scale`). 시제품은 브라우저 저장소에 둔다
+// 창 설정은 설치별(13 §9 settings.json: window_scale·window_width·record_strip·speech_bubble). 시제품은 브라우저 저장소에 둔다
 const SETTINGS_KEY = 'tap.settings'
-function loadSettings(): { window_scale?: unknown } {
+interface Settings { window_scale?: unknown; window_width?: unknown; record_strip?: unknown; speech_bubble?: unknown }
+function loadSettings(): Settings {
   try {
-    return JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? '{}') as { window_scale?: unknown }
+    return JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? '{}') as Settings
   } catch {
     return {}
   }
 }
-function saveSettings(v: { window_scale: number }): void {
+function saveSettings(v: Settings): void {
   try {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify({ ...loadSettings(), ...v }))
   } catch { /* 저장소를 못 쓰면 이번 실행만 */ }
@@ -58,7 +60,11 @@ function newWorld(content: Content, q: URLSearchParams): World {
 
 async function start(): Promise<void> {
   const q = new URLSearchParams(location.search)
-  let u: WindowScale = windowScale(q.get('scale') ?? loadSettings().window_scale) // 화면 배율 100/200/300%(D81). 기본 1 = 100%(D75)
+  const saved = loadSettings()
+  let u: WindowScale = windowScale(q.get('scale') ?? saved.window_scale) // 화면 배율 100/200/300%(D81). 기본 1 = 100%(D75)
+  let width = windowWidth(q.get('width') ?? saved.window_width) // 기본 창 너비(D82)
+  let showStrip = saved.record_strip !== false // 기록 띠·말풍선은 기본 켬(03 §2.7)
+  let showBubble = saved.speech_bubble !== false
   const grid = q.get('grid') === '1'
   const content = Content.fromBundle(await (await fetch('content.json')).json())
 
@@ -82,8 +88,13 @@ async function start(): Promise<void> {
     },
   }
 
+  app.width = width
   const win = document.getElementById('win')!
-  win.style.setProperty('--u', String(u))
+  const stack = document.getElementById('stack')!
+  stack.style.setProperty('--u', String(u))
+  stack.style.setProperty('--w', String(width))
+  stack.classList.toggle('nostrip', !showStrip)
+  const overlay = new Overlay(document.getElementById('strip')!, document.getElementById('bubble')!)
   const canvas = document.getElementById('art') as HTMLCanvasElement
   const panel = new Panel(document.getElementById('col')!, u)
   const scratch = document.createElement('canvas')
@@ -92,7 +103,7 @@ async function start(): Promise<void> {
   // 캔버스 기억 크기 = 장치 픽셀, CSS 크기 = 장치 크기 / dpr. 표시 배율(dpr)이 바뀌면(다른 모니터, 확대) 다시 맞춘다
   let renderer!: Renderer
   const fit = (): void => {
-    const s = surface(devicePixelRatio || 1, u)
+    const s = surface(devicePixelRatio || 1, u, width)
     canvas.width = s.devW
     canvas.height = s.devH
     canvas.style.width = `${s.cssW}px`
@@ -109,11 +120,34 @@ async function start(): Promise<void> {
   const setScale = (s: WindowScale): void => {
     if (s === u) return
     u = s
-    win.style.setProperty('--u', String(u))
+    stack.style.setProperty('--u', String(u))
     panel.setScale(u)
     fit()
     saveSettings({ window_scale: u })
   }
+  // 창 너비(03 §2.8, D82): 기본 창 오른쪽 끝을 끌어 528~1536으로. 끄는 동안 다시 맞추고 놓으면 기억한다
+  const setWidth = (w: number): void => {
+    width = windowWidth(w)
+    app.width = width
+    stack.style.setProperty('--w', String(width))
+    fit()
+  }
+  const grip = document.getElementById('grip')!
+  grip.addEventListener('pointerdown', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    grip.setPointerCapture(e.pointerId)
+    const x0 = e.clientX
+    const w0 = width
+    const move = (ev: PointerEvent): void => setWidth(w0 + (ev.clientX - x0) / u)
+    const up = (): void => {
+      grip.removeEventListener('pointermove', move)
+      saveSettings({ window_width: width })
+    }
+    grip.addEventListener('pointermove', move)
+    grip.addEventListener('pointerup', up, { once: true })
+  })
+  grip.addEventListener('click', (e) => e.stopPropagation())
   const dark = matchMedia('(prefers-color-scheme: dark)')
 
   // 개발용 조작(배속·멈춤)
@@ -137,6 +171,8 @@ async function start(): Promise<void> {
   const succession = new SuccessionWindow(document.getElementById('succession')!, app.world, () => detail.render())
   detail.onSuccession = () => succession.show()
   canvas.onclick = () => detail.show('일지')
+  document.getElementById('strip')!.onclick = () => detail.show('일지')
+  document.getElementById('bubble')!.onclick = () => detail.show('일지')
   // 우클릭 메뉴(03 §2.6). 시제품은 창 조작(축소 창·위치 잠금·설정·숨기기)이 없어 그 항목은 뺀다
   win.addEventListener('contextmenu', (e) => {
     e.preventDefault()
@@ -144,6 +180,9 @@ async function start(): Promise<void> {
     menu.openAt(e.clientX, e.clientY, [
       { label: '상세 창 열기', run: () => detail.show('일지') },
       { label: app.driver.paused ? '다시 진행' : '일시정지', run: () => app.driver.setPaused(!app.driver.paused) },
+      'sep',
+      { label: '기록 띠', checked: showStrip, run: () => { showStrip = !showStrip; stack.classList.toggle('nostrip', !showStrip); saveSettings({ record_strip: showStrip }) } },
+      { label: '말풍선', checked: showBubble, run: () => { showBubble = !showBubble; saveSettings({ speech_bubble: showBubble }) } },
       'sep',
       ...WINDOW_SCALES.map((s) => ({ label: `화면 배율 ${s * 100}%`, checked: s === u, run: () => setScale(s) })),
     ])
@@ -204,6 +243,7 @@ async function start(): Promise<void> {
     lastDraw = now
     renderer.draw(view)
     panel.update(view)
+    overlay.update(view.strip, view.bubble, view.heroCx, showStrip, showBubble)
     const ch = app.world.state.character
     pause.textContent = app.driver.paused ? '다시 진행' : '일시정지'
     info.textContent = ch
@@ -212,6 +252,24 @@ async function start(): Promise<void> {
     requestAnimationFrame(frame)
   }
   requestAnimationFrame(frame)
+  fitNativeWindow()
+}
+
+// 데스크톱 exe(Tauri)에서는 창 크기를 내용에 맞춘다: 빈 영역을 남기지 않고, 상세 창을 열면 늘고 닫으면 줄어든다
+function fitNativeWindow(): void {
+  const tauri = (globalThis as { __TAURI__?: { window: { getCurrentWindow(): { setSize(s: unknown): Promise<void> } }; dpi: { LogicalSize: new (w: number, h: number) => unknown } } }).__TAURI__
+  if (!tauri) return
+  const root = document.getElementById('app')!
+  const margin = 16 // body 여백(index.html)
+  let last = ''
+  new ResizeObserver(() => {
+    const r = root.getBoundingClientRect()
+    const w = Math.ceil(r.width) + margin * 2
+    const h = Math.ceil(r.height) + margin * 2
+    if (`${w}x${h}` === last) return
+    last = `${w}x${h}`
+    void tauri.window.getCurrentWindow().setSize(new tauri.dpi.LogicalSize(w, h)).catch(() => { /* 권한이 없으면 그대로 */ })
+  }).observe(root)
 }
 
 start().catch((e: unknown) => {

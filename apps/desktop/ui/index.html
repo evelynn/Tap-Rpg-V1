@@ -7,7 +7,28 @@
     body { margin: 16px; background: #d9d4cc; color: #2b2233; font: 13px system-ui, "Malgun Gothic", sans-serif; }
     @media (prefers-color-scheme: dark) { body { background: #15121a; color: #f4efe6; } }
     /* 기본 창 768 × 64(100% 기준, D75). --u는 화면 배율 1·2·3(D81, main.ts가 넣는다) */
-    #win { position: relative; width: calc(768px * var(--u, 1)); height: calc(64px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
+    /* 기본 창 너비 --w는 528~1536(D82, main.ts가 넣는다). 기록 띠·말풍선은 기본 창 바로 위(03 §2.7) */
+    #app { display: inline-block; }
+    #stack { position: relative; width: calc(var(--w, 768) * 1px * var(--u, 1)); --paper: 244, 239, 230; color: #2b2233;
+      font: calc(11px * var(--u, 1)) / calc(13px * var(--u, 1)) system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif; }
+    #stack.nostrip { padding-top: calc(64px * var(--u, 1)); } /* 띠가 꺼져도 말풍선 자리를 남긴다 */
+    #strip { box-sizing: border-box; height: calc(72px * var(--u, 1)); padding: calc(4px * var(--u, 1)) calc(5px * var(--u, 1)); overflow: hidden;
+      background: rgba(var(--paper), .88); cursor: pointer; word-break: keep-all; overflow-wrap: anywhere; }
+    #strip[hidden] { display: none; }
+    #strip .row { white-space: nowrap; }
+    #strip .detail { opacity: .7; }
+    #bubble { position: absolute; z-index: 6; bottom: calc(70px * var(--u, 1)); left: calc((var(--cx, 208) - 20) * 1px * var(--u, 1));
+      max-width: calc(300px * var(--u, 1)); box-sizing: border-box; padding: calc(4px * var(--u, 1)) calc(7px * var(--u, 1));
+      background: rgb(var(--paper)); border: 1px solid rgba(0, 0, 0, .35); border-radius: calc(6px * var(--u, 1));
+      box-shadow: 0 2px 6px rgba(0, 0, 0, .3); line-height: calc(14px * var(--u, 1)); cursor: pointer; word-break: keep-all; overflow-wrap: anywhere; }
+    #bubble[hidden] { display: none; }
+    #bubble .line { font-weight: bold; }
+    #bubble .detail { opacity: .8; }
+    #bubble::after { content: ''; position: absolute; left: calc(16px * var(--u, 1)); bottom: calc(-6px * var(--u, 1)); border: calc(6px * var(--u, 1)) solid transparent;
+      border-bottom: 0; border-top-color: rgb(var(--paper)); }
+    @media (prefers-color-scheme: dark) { #stack { --paper: 42, 37, 48; color: #f4efe6; } }
+    #win { position: relative; width: 100%; height: calc(64px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
+    #grip { position: absolute; z-index: 5; top: 0; right: -3px; width: 6px; height: 100%; cursor: ew-resize; }
     /* 캔버스 CSS 크기 = 장치 크기 / dpr(main.ts가 넣는다). 브라우저가 다시 늘이지 않게 pixelated도 둔다 */
     #art { position: absolute; left: 0; bottom: 0; display: block; image-rendering: pixelated; }
     /* 글자 칸 x 496~767(272). 작은 글자 2줄: 1줄 y 17 이름·상태 + 오른쪽 아이콘·표식(84), 2줄 y 34 한 줄 기록(03 §2.2) */
@@ -99,16 +120,23 @@
   </style>
 </head>
 <body>
-  <div id="win" aria-label="텝 기본 창">
-    <canvas id="art"></canvas>
-    <div id="col"></div>
+  <div id="app">
+  <div id="stack">
+    <div id="strip" aria-label="기록 띠" title="누르면 일지를 엽니다"></div>
+    <div id="win" aria-label="텝 기본 창">
+      <canvas id="art"></canvas>
+      <div id="col"></div>
+      <div id="grip" title="끌어서 창 너비를 바꿉니다"></div>
+    </div>
+    <div id="bubble" role="status" hidden></div>
   </div>
   <div id="controls"></div>
   <div id="info">불러오는 중…</div>
-  <div id="menu"></div>
   <div id="detail" class="dwin" role="dialog" aria-label="상세 창"></div>
   <div id="choice" class="dwin" role="dialog" aria-label="운명 선택 창"></div>
   <div id="succession" class="dwin" role="dialog" aria-label="계승 화면"></div>
+  </div>
+  <div id="menu"></div>
   <script type="module" src="main.js"></script>
 </body>
 </html>

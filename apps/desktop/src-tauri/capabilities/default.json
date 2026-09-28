@@ -1,0 +1,7 @@
+{
+  "$schema": "../gen/schemas/desktop-schema.json",
+  "identifier": "default",
+  "description": "기본 창: 화면 내용에 맞춰 창 크기를 바꾼다(D82)",
+  "windows": ["main"],
+  "permissions": ["core:default", "core:window:allow-set-size"]
+}

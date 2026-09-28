@@ -1,8 +1,9 @@
 // 기본 창 풍경 그리기(03 §2.2, D75). 캔버스에는 픽셀 그림만 그리고 글자 칸은 DOM(panel.ts)이 맡는다.
 // 캔버스 기억 크기는 장치 픽셀이고, 그림은 정수 배율 k로만 키운다(가장 가까운 이웃). 좌표는 모두 논리 픽셀이다.
-import { GROUND_Y, SCENE, STRIP_W, WIN, type Surface } from './layout'
+import { GROUND_Y, SCENE_W, STRIP_W, WIN, type Surface } from './layout'
 import { SHEETS, cellRect } from './sprites'
 import type { Icon } from './status'
+import type { BubbleItem, StripView } from './overlay'
 
 export interface SpriteDraw {
   sheet: string // SHEETS 키
@@ -14,7 +15,7 @@ export interface SpriteDraw {
 
 export interface FrameView {
   bg: { file: string; offset: number } // 풍경 전체(글자 판 뒤까지)를 채우는 띠
-  scene: { file: string; frame: number } | null // 이벤트 장면(x 48~175). 그 밖의 풍경은 어둡게
+  scene: { file: string; frame: number; x: number } | null // 이벤트 장면(판 x ~ x + 127, 풍경 가운데 D82). 그 밖의 풍경은 어둡게
   paused: boolean
   hero: SpriteDraw | null
   enemy: SpriteDraw | null
@@ -24,6 +25,9 @@ export interface FrameView {
   mark: 'choice' | 'succession' | null
   attitude: string // 태도 이름. 표식은 첫 글자(자리 표시)
   dark: boolean
+  heroCx: number // 평소 주인공 자리(말풍선 꼬리, D82)
+  strip: StripView // 기록 띠(03 §2.7)
+  bubble: BubbleItem | null // 말풍선
 }
 
 export type Images = Record<string, CanvasImageSource | undefined>
@@ -51,9 +55,10 @@ export class Renderer {
     this.strip(v.bg.file, v.bg.offset, 0, logicalW)
     if (v.scene) {
       c.fillStyle = SCENE_DIM
-      c.fillRect(0, 0, SCENE.x, WIN.h)
-      c.fillRect(SCENE.x + SCENE.w, 0, logicalW - SCENE.x - SCENE.w, WIN.h)
-      this.image(v.scene.file, v.scene.frame * SCENE.w, 0, SCENE.w, WIN.h, SCENE.x, 0)
+      const x = v.scene.x
+      c.fillRect(0, 0, x, WIN.h)
+      c.fillRect(x + SCENE_W, 0, logicalW - x - SCENE_W, WIN.h)
+      this.image(v.scene.file, v.scene.frame * SCENE_W, 0, SCENE_W, WIN.h, x, 0)
     }
     if (v.enemy) this.sprite(v.enemy)
     if (v.hero) this.sprite(v.hero)

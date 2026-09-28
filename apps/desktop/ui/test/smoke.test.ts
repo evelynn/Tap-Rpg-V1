@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed } from '@tap/core'
 import { App, PAUSE_LINE } from '../src/app'
-import { HERO_CX, SCENE, TEXT, surface } from '../src/layout'
+import { TEXT, stageOf, surface } from '../src/layout'
 import { Renderer, type FrameView } from '../src/render'
 import { STRIPS } from '../src/sprites'
 import { measure11 } from './measure'
@@ -64,7 +64,7 @@ describe('기본 창 연기 시험', () => {
       r.draw(v)
       seen.lines.add(v.line)
       if (v.hero) seen.heroes.add(`${v.hero.sheet}:${v.hero.cell}`)
-      if (v.hero && !v.scene) assert.equal(v.hero.cx, HERO_CX)
+      if (v.hero && !v.scene) assert.equal(v.hero.cx, stageOf(768).heroCx)
       if (v.enemy) seen.enemies++
       if (v.bg.offset !== prevOffset) seen.scroll = true
       prevOffset = v.bg.offset
@@ -107,8 +107,8 @@ describe('기본 창 연기 시험', () => {
     app.lines.push({ id: 1e9, text: '부모의 편지가 왔다', grade: 'A', eventId: 'S07' })
     const v = app.step(100000, 16) // 앞 기록의 표시 시간이 지나 편지 기록으로 바뀐다
     assert.equal(v.line, PAUSE_LINE) // 멈춤 중에는 안내 문구가 기록 자리를 대신한다
-    assert.deepEqual(v.scene, { file: STRIPS.ES18, frame: 0 })
-    assert.equal(v.hero?.cx, SCENE.x + 30) // 장면 표 x 30(장면 판 기준) → 창 x 78
+    assert.deepEqual(v.scene, { file: STRIPS.ES18, frame: 0, x: 184 })
+    assert.equal(v.hero?.cx, stageOf(768).sceneX + 30) // 장면 표 x 30(장면 판 기준) → 창 x 214
     assert.equal(v.enemy, null)
   })
 })

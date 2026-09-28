@@ -1,14 +1,27 @@
 // 기본 창 768 × 64 배치(03 §2.2, D75)와 픽셀 그림 정수 배율(03 §14). DOM 없이 계산만 한다.
 // 기준은 Windows 표시 배율 100%(devicePixelRatio 1): 논리 1픽셀 = 화면 1픽셀, 그림은 배율 없이 1:1로 그린다.
 
-export const WIN = { w: 768, h: 64 }
+export const WIN = { w: 768, h: 64 } // 기본 너비·높이(너비는 D82로 조절)
 export const LAND = { x: 0, w: 496 } // 풍경(배경·캐릭터·적·장면)
 export const COL = { x: 496, w: 272 } // 글자 칸(88% 판 위 DOM 글자)
 export const GROUND_Y = 56
 export const STRIP_W = 256 // 배경 띠 한 장 폭. 풍경 496을 가로로 이어 채운다
-export const HERO_CX = 72 // 주인공 가로 중심
-export const ENEMY_CX = 168 // 적 가로 중심(왼쪽을 봄)
-export const SCENE = { x: 48, w: 128 } // 이벤트 장면·패널 자리. 장면 표의 x는 이 판 기준(24 → 창 72)
+export const SCENE_W = 128 // 이벤트 장면·패널 자리 폭. 장면 표의 x는 이 판 기준(24 → 주인공 자리)
+
+// 기본 창 너비(03 §2.8, D82): 528~1536, 기본 768. 글자 칸 272는 오른쪽에 붙고 풍경만 바뀐다
+export const WIDTH = { min: 528, max: 1536, def: 768 } as const
+export function windowWidth(v: unknown): number {
+  const n = Math.round(Number(v))
+  return Number.isFinite(n) && v !== null && v !== '' ? Math.min(WIDTH.max, Math.max(WIDTH.min, n)) : WIDTH.def
+}
+
+// 인물 무리·장면 판은 풍경 가운데(03 §2.2, D82): 판 x P = round(L/2) − 64, 주인공 P + 24, 적 P + 120
+export interface Stage { landW: number; sceneX: number; heroCx: number; enemyCx: number }
+export function stageOf(width: number): Stage {
+  const landW = width - COL.w
+  const sceneX = Math.round(landW / 2) - SCENE_W / 2
+  return { landW, sceneX, heroCx: sceneX + 24, enemyCx: sceneX + 120 }
+}
 
 // 글자 칸 안쪽: 왼쪽 5는 풍경에서 판으로 넘어가는 그라데이션, 오른쪽 5는 여백. 작은 글자 2줄을 세로 가운데(위아래 17)에 둔다
 export const TEXT = {
@@ -54,9 +67,10 @@ export interface Surface {
   logicalW: number // 그림을 채울 논리 폭. 창이 768·k보다 넓으면 배경을 더 이어 그린다(늘이지 않는다)
 }
 
-export function surface(dpr: number, userScale = 1): Surface {
+// width: 기본 창 너비(D82, 100% 기준 논리 픽셀)
+export function surface(dpr: number, userScale = 1, width: number = WIN.w): Surface {
   const k = artScale(dpr, userScale)
-  const devW = Math.round(WIN.w * userScale * dpr)
+  const devW = Math.round(width * userScale * dpr)
   const devH = Math.round(WIN.h * userScale * dpr)
   return { k, devW, devH, cssW: devW / dpr, cssH: devH / dpr, artY: devH - WIN.h * k, logicalW: Math.ceil(devW / k) }
 }
