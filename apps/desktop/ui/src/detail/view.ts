@@ -173,9 +173,10 @@ export class DetailWindow {
         s.effect ? h('div', { class: 'd-note' }, s.effect) : null))))
     // 특성은 한 줄에 하나, 얻은 나이와 효과 글을 늘 보인다(03 §5.3, D77)
     const traits = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '특성'),
-      ...m.traits.map((t) => h('div', { class: 'd-item' },
-        h('div', {}, h('span', { class: `d-badge${t.negative ? ' neg' : ''}` }, `${t.name} [${t.badge}]`), h('span', { class: 'd-dim' }, ` ${t.since}세부터`)),
-        h('div', { class: 'd-note' }, t.effect))))
+      ...m.traits.map((t) => h('div', { class: `d-item${t.inactive ? ' d-off' : ''}` },
+        h('div', {}, h('span', { class: `d-badge${t.negative ? ' neg' : ''}` }, `${t.name} [${t.badge}]`),
+          h('span', { class: 'd-dim' }, t.inactive ? ` (${t.inactive})` : ` ${t.since}세부터`)),
+        t.inactive ? null : h('div', { class: 'd-note' }, t.effect))))
     const inj = m.injuries.length ? h('div', { class: 'd-sec' }, `부상: ${m.injuries.join(', ')}`) : null
     const gear = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '장비'),
       ...m.equipment.map((e) => ('empty' in e ? h('div', { class: 'd-row' }, `${e.slot}  (비어 있음)`) : this.itemRow(e, m.inTown))))
@@ -413,7 +414,7 @@ export class DetailWindow {
         `${n.gen}대 ${n.name}`, h('span', { class: 'd-dim' }, ` · ${n.role}${n.current ? ' · 현재' : ''}`))
       const go = (): void => {
         this.familySub = '연대기'
-        this.folded.delete(`c${n.row}`)
+        this.folded.delete(`c${n.gen}`)
         this.render()
       }
       box.onclick = go
@@ -455,8 +456,8 @@ export class DetailWindow {
   private chronicle(rows: ReturnType<typeof familyModel>['rows']): Node[] {
     const list = h('div', { class: 'd-list' })
     // 주요 기록은 기본으로 펼쳐 두고, 머리줄을 누르면 접는다(03 §5.5, D77)
-    rows.forEach((r, i) => {
-      const key = `c${i}`
+    rows.forEach((r) => {
+      const key = `c${r.gen}`
       const shown = !this.folded.has(key)
       const row = h('div', { class: `d-row${r.lines.length ? ' more' : ''}` }, h('span', { class: 'd-tag' }, r.head), r.lines.length ? h('span', { class: 'd-caret' }, shown ? '▾' : '▸') : null)
       if (r.lines.length) {

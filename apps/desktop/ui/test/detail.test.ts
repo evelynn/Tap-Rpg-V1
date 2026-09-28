@@ -115,6 +115,14 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     for (const it of m.equipment) if (!('empty' in it)) assert.equal(it.desc, w.content.get('item', w.state.item_instances[it.uid]!.def_id).description)
   })
 
+  it('대체된 특성은 흐리게 남고 바뀐 특성 이름을 보인다(06 §8.1)', () => {
+    const w = newWorld()
+    const ch = w.state.character!
+    ch.traits.push({ id: 'TI07', since_age: 18, source: 'new', inactive: 'replaced' }, { id: 'TA07', since_age: 30, source: 'acquired' })
+    const t = characterModel(w)!.traits.find((x) => x.name === w.content.get('trait', 'TI07').name)!
+    assert.equal(t.inactive, `${w.content.get('trait', 'TA07').name}로 바뀜`)
+  })
+
   it('교체 제안: 자동 교체가 꺼져 있을 때만, 슬롯 · 장비(출처) · 개선률 · 요인 한 줄', () => {
     const w = newWorld()
     w.state.inventory.equip_suggestions = [{ slot: 'weapon', source: { shop_def_id: 'W02', grade: 'common', price: 1200 }, improvement: 0.123, reason: 'weapon_hit', created_eff_min: 0 }]

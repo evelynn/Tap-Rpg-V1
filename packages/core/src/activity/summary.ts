@@ -1,6 +1,6 @@
 // 최근 요약(14 §1.1, D77): 출정이 끝나 마을에 닿을 때 출정 요약, 다음 출정을 떠날 때 마을 체류 요약을 만든다.
 // 렌더링 끝난 문장으로 character.recent_summaries에 두고 balance.ui.recent_summary_keep개만 남긴다.
-import { baseScore, journalGrade } from '../journal/index'
+import { byScore, entryScore, journalGrade } from '../journal/index'
 import { characterOf } from '../rules/context'
 import { maxHp } from '../rules/derived'
 import { xpToNext } from '../rules/growth'
@@ -46,15 +46,22 @@ function bodyLine(world: World): { hp: number; injury: string } {
   return { hp: Math.round((Math.max(0, ch.hp) / maxHp(world)) * 100), injury: parts.length ? parts.join(' · ') : text(world, SUMMARY_TEXT.noInjury) }
 }
 
-// 가운데 문장: 그 기간 이 인물의 중요도 A·B 기록(묶음 제외)을 18 §4.1 점수 높은 순, 같으면 나중 것부터
-function highlights(world: World, fromJr: number, n: number): string[] {
+// 가운데 문장: 그 기간 이 인물의 중요도 A·B 기록(묶음 제외)을 18 §4.1 점수·동률 순서로 고른다.
+// skipGrowth: 마을 체류 요약은 [성장]을 뺀다 — 귀환 순간의 경험치(의뢰 보상·무사 귀환)로 생긴 레벨업은 출정 숫자 줄에 이미 들었다
+function highlights(world: World, fromJr: number, n: number, skipGrowth = false): string[] {
+  const { state, content } = world
   const ch = characterOf(world)
-  const cat = (id: string | undefined): string | undefined => (id && world.content.has('event', id) ? world.content.get('event', id).category : undefined)
-  const pool: JournalEntry[] = world.state.journal.filter((e) => e.id >= fromJr && e.char_uid === ch.uid && !(e.bundle_count && e.bundle_count > 1)
-    && ['A', 'B'].includes(journalGrade(e)))
+  const cat = (id: string | undefined): string | undefined => (id && content.has('event', id) ? content.get('event', id).category : undefined)
+  const mine = state.journal.filter((e) => e.char_uid === ch.uid).sort((a, b) => a.id - b.id)
+  const first = new Map<string, number>()
+  for (const e of mine) if (e.importance !== 'daily' && !e.bundle_count && !first.has(e.tag)) first.set(e.tag, e.id)
+  const relics = new Set([...state.inventory.relic_designations.map((r) => r.uid),
+    ...Object.values(state.item_instances).filter((i) => i.inherited_from_gen !== undefined).map((i) => i.uid)])
+  const pool: JournalEntry[] = mine.filter((e) => e.id >= fromJr && !(e.bundle_count && e.bundle_count > 1)
+    && ['A', 'B'].includes(journalGrade(e)) && !(skipGrowth && e.tag === 'growth'))
   return pool
-    .map((e) => ({ e, score: baseScore(e, cat(e.refs?.event_id)) }))
-    .sort((a, b) => b.score - a.score || b.e.id - a.e.id)
+    .map((e) => ({ e, score: entryScore(e, cat(e.refs?.event_id), first, relics) }))
+    .sort(byScore)
     .slice(0, n)
     .sort((a, b) => a.e.id - b.e.id)
     .map(({ e }) => (/[.?!"”]$/.test(e.line) ? e.line : `${e.line}.`))
@@ -96,7 +103,7 @@ export function townSummary(world: World): void {
   const body = bodyLine(world)
   const first = rests > 0 ? text(world, SUMMARY_TEXT.town, { count: rests }) : text(world, SUMMARY_TEXT.townNoRest)
   const coins = diff < 0 ? `−${-diff}` : `+${diff}`
-  push(world, 'town', [first, ...highlights(world, from, 1), text(world, SUMMARY_TEXT.townNumbers, { coins, hp: body.hp, injury: body.injury })])
+  push(world, 'town', [first, ...highlights(world, from, 1, true), text(world, SUMMARY_TEXT.townNumbers, { coins, hp: body.hp, injury: body.injury })])
   delete ch.counters[STAY.fromJr]
   delete ch.counters[STAY.coins]
   delete ch.counters[STAY.rests]

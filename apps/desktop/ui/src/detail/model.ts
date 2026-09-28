@@ -114,7 +114,7 @@ export interface CharacterModel {
   line3: string // 체력 78/100 · 피로 34 · 동전 1,248
   stats: { label: string; value: number; base: number; use: string }[] // use: 쓰임(01 §2.1, D77)
   skills: { label: string; rank: number; max: number; uses: number; next: number | null; effect: string | null }[] // effect: 더하는 판정
-  traits: { name: string; badge: string; negative: boolean; since: number; effect: string }[] // 얻은 나이, 효과 글(16 §2.7)
+  traits: { name: string; badge: string; negative: boolean; since: number; effect: string; inactive: string | null }[] // 얻은 나이, 효과 글(16 §2.7), 흐린 표시 사유(06 §8.1)
   injuries: string[]
   equipment: (ItemRow | { slot: string; empty: true })[]
   bag: { used: number; max: number; items: ItemRow[]; consumables: string }
@@ -173,9 +173,13 @@ export function characterModel(world: World): CharacterModel | null {
         effect: rank > 0 ? `${useText(world, skillUseText(s))} 판정 +${rank}` : null,
       }
     }),
-    traits: ch.traits.filter((t) => !t.inactive).map((t) => ({
-      name: content.get('trait', t.id).name, ...traitBadge(t.id, t.source), since: t.since_age, effect: content.get('trait', t.id).effect_text,
-    })),
+    traits: ch.traits.map((t) => {
+      const by = t.inactive === 'replaced' ? content.list('trait').find((x) => x.replaces === t.id && ch.traits.some((y) => y.id === x.id)) : undefined
+      return {
+        name: content.get('trait', t.id).name, ...traitBadge(t.id, t.source), since: t.since_age, effect: content.get('trait', t.id).effect_text,
+        inactive: !t.inactive ? null : by ? renderTemplate('{t:으로/로} 바뀜', { t: by.name }) : t.inactive === 'replaced' ? '바뀜' : '기록으로 옮겨짐',
+      }
+    }),
     injuries: ch.injuries.map((i) => `${i.grade === 'serious' ? '중상' : '경상'} (${STAT_LABELS[i.stat]} −1) · ${Math.ceil(i.remaining_min)}분 뒤 회복`),
     equipment,
     bag: { used: inv.bag.length, max: b.stats.bag_slots, items: inv.bag.map((u) => itemRow(world, u, false)), consumables },
@@ -256,6 +260,7 @@ export function destinationModel(world: World): { current: string; places: Place
 // ── 가문 탭 연대기(03 §5.5) ──
 
 export interface ChronicleRow {
+  gen: number
   head: string // 1대 모라  18~68세 · 은퇴 · 수호자 Lv26
   lines: string[] // 펼침: 주요 기록(나이순), 남긴 유품
 }
@@ -369,6 +374,7 @@ export function familyModel(world: World): { title: string; rows: ChronicleRow[]
       eventCategory: (id) => (content.has('event', id) ? content.get('event', id).category : undefined),
     })
     rows.push({
+      gen: ch.generation,
       head: `${ch.generation}대 ${ch.name}  ${content.balance.time.start_age}세~ · 현재 · ${ch.specialization === 'none' ? '초보' : SPEC_LABELS[ch.specialization]} Lv${ch.level} (${age}세)`,
       lines: majors.map((e) => `${e.age}세 ${e.line}`),
     })
@@ -378,6 +384,7 @@ export function familyModel(world: World): { title: string; rows: ChronicleRow[]
     const majors = r.major_entry_ids.map((id) => byId.get(id)).filter((e): e is JournalEntry => !!e).sort((a, b) => a.id - b.id)
     const relics = r.relics_passed.map((u) => state.item_instances[u]).filter((i) => i !== undefined).map((i) => itemName(world, i))
     rows.push({
+      gen: r.gen,
       head: `${r.gen}대 ${r.name}  ${content.balance.time.start_age}~${r.end_age}세 · ${END_LABEL[r.end_kind] ?? r.end_kind} · ${spec} Lv${r.peak_level}`,
       lines: [...majors.map((e) => `${e.age}세 ${e.line}`), ...(relics.length ? [`유품: ${relics.join(', ')}`] : [])],
     })

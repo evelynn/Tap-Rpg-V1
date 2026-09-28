@@ -16,7 +16,7 @@ import { issueUid } from '../state/uid'
 import { ageAt, seasonAt } from '../time/index'
 import { createItemInstance } from '../sim/create'
 import { fireSuccession } from '../life/events'
-import { DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
+import { DEPART_DETAIL, DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
 import {
   candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
 } from './candidates'
@@ -296,6 +296,9 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
     fireSuccession(w, heir.location, ports, { heir: heir.name, parent_call: call, first_page: plan.firstPage })
   }
   // 출발 풍경 한 줄(12 §1.3, D76). 기본 창은 이 기록이 보이는 동안 계승 출발 장면 ES21을 그린다
-  addJournal(w, { tag: 'succession', importance: 'family', line: textLine(content, DEPART_LINE, { heir: heir.name }, '{heir:은/는} 마을 어귀를 나섰다.') })
+  addJournal(w, {
+    tag: 'succession', importance: 'family', line: textLine(content, DEPART_LINE, { heir: heir.name }, '{heir:은/는} 마을 어귀를 나섰다.'),
+    detail: textLine(content, DEPART_DETAIL, { heir: heir.name }, '{heir:은/는} 수첩을 배낭 깊숙이 넣고 첫 출정을 준비했다.'),
+  })
   return heir
 }

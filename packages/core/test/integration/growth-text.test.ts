@@ -52,10 +52,11 @@ describe('성장 기록과 상세 글(D77)', () => {
     assert.equal(back.levelFrom, seen.level - 1)
   })
 
-  it('휴식·줍기·교체·길드 등급 기록이 상세 문장을 가진다(14 §1)', () => {
+  it('모든 기록이 상세 문장·판정 기록·이유 가운데 하나를 가진다(14 §1, D77)', () => {
     const w = makeGame()
-    const mine = run(w, 60)
-    const lacking = mine.filter((e) => ['rest', 'gear', 'growth'].includes(e.tag) && !e.detail && !(e.bundle_count && e.bundle_count > 1))
+    w.state.policies.attitude = 'challenging'
+    const mine = run(w, 200)
+    const lacking = mine.filter((e) => !e.detail && !e.check && !e.reason)
     assert.deepEqual(lacking.map((e) => e.line), [])
     const rest = mine.find((e) => e.tag === 'rest' && !(e.bundle_count && e.bundle_count > 1))!
     assert.match(rest.detail!, /쉬었다/)

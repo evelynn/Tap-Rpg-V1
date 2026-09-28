@@ -123,6 +123,12 @@ export function transferRelics(ctx: RuleContext, items: readonly ItemInstance[],
   return { uids, journal }
 }
 
+// 한 판단 지점에 여러 레벨이 올랐을 때 잠재가 실제로 풀린 레벨
+const openedAt = (ctx: RuleContext, inst: ItemInstance, from: number, to: number): number => {
+  for (let l = from + 1; l <= to; l++) if (!isDormant(ctx.content, inst, l)) return l
+  return to
+}
+
 // 잠재 상태가 열린 유품(12 §5.5 개방 기록). 레벨이 오른 자리에서 부른다
 export function dormantOpened(ctx: RuleContext, beforeLevel: number, afterLevel: number): JournalDraft[] {
   const out: JournalDraft[] = []
@@ -138,7 +144,7 @@ export function dormantOpened(ctx: RuleContext, beforeLevel: number, afterLevel:
     out.push({
       tag: 'gear',
       line: renderTemplate('{item:이/가} 손에 맞기 시작했다', { item: itemName(ctx, inst) }),
-      detail: textLine(ctx.content, DORMANT_DETAIL, { level: afterLevel, item: itemName(ctx, inst) }, '레벨 {level:이/가} 되자 {item:이/가} 제 힘을 내기 시작했다.'),
+      detail: textLine(ctx.content, DORMANT_DETAIL, { level: openedAt(ctx, inst, beforeLevel, afterLevel), item: itemName(ctx, inst) }, '레벨 {level:이/가} 되자 {item:이/가} 제 힘을 내기 시작했다.'),
       refs: { item_uid: inst.uid },
     })
   }

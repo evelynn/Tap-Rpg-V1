@@ -104,6 +104,16 @@ describe('기록 한 줄 문형(14 §5.1)', () => {
     assert.deepEqual([bond!.tag, bond!.line, bond!.detail], ['bond', '가문 연대기에 새 장이 열렸다', '모라가 18세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다.'])
   })
 
+  it('도감 기록을 앞 세대가 이미 남겼으면 상세는 다시 찾음 문형(D59)', () => {
+    const tw = makeWorld()
+    const first = effectRun(tw, { place: 'A1', vars: {} })
+    runEffects(first, [{ type: 'family_record', kind: 'codex', key: 'A1-7', text: '이름 없는 무덤' }], 't')
+    tw.w.state.journal.push({ ...first.out.journal[0]!, id: 1, gen: 1, char_uid: tw.w.state.character!.uid, eff_min: 0, age: 18, season: 'spring', importance: 'family', offline: false })
+    const again = effectRun(tw, { place: 'A1', vars: {} })
+    runEffects(again, [{ type: 'family_record', kind: 'codex', key: 'A1-7', text: '이름 없는 무덤' }], 't')
+    assert.equal(again.out.journal[0]!.detail, '모라가 가문 수첩에 적힌 이름 없는 무덤을 직접 찾아냈다.')
+  })
+
   it('가문 업적: 조사는 업적 이름을 따른다(은빛 패를)', () => {
     const tw = makeWorld()
     tw.w.state.character!.guild_rank = 'silver'

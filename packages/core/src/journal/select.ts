@@ -54,6 +54,19 @@ function excluded(e: ChronicleEntry, all: readonly ChronicleEntry[]): boolean {
   return false
 }
 
+// 18 §4.1 선별 점수(기본 + 태그 첫 기록 +3 + 유품 +3 + 인용 쌍 +2). first = 이 인물의 태그별 첫 기록(묶음 제외) id
+export function entryScore(e: ChronicleEntry, category: string | undefined, first: ReadonlyMap<string, number>, relics: ReadonlySet<string>): number {
+  let score = baseScore(e, category)
+  if (first.get(e.tag) === e.id) score += 3
+  if (e.refs?.item_uid !== undefined && relics.has(e.refs.item_uid)) score += 3
+  if (e.detail && QUOTE_PAIR.test(e.detail)) score += 2
+  return score
+}
+
+// 18 §4.1 동률 순서: 점수 높은 것 → 유효 분이 이른 것 → id가 작은 것
+export const byScore = <T extends { score: number; e: Pick<ChronicleEntry, 'eff_min' | 'id'> }>(a: T, b: T): number =>
+  b.score - a.score || Math.round(a.e.eff_min * 100) - Math.round(b.e.eff_min * 100) || a.e.id - b.e.id
+
 // 이 인물의 연대기 주요 기록. 점수 상위 n = min(후보 수, clamp(점수 기준 이상 후보 수))개를 시간 순서로 돌려준다
 export function chronicleMajor<T extends ChronicleEntry>(entries: readonly T[], charUid: string, opts: ChronicleOptions): T[] {
   const all = entries.filter((e) => e.char_uid === charUid).sort((a, b) => a.id - b.id)
@@ -71,18 +84,12 @@ export function chronicleMajor<T extends ChronicleEntry>(entries: readonly T[], 
       || (e.tag === 'trait' && e.sub === 'trait_gain')
       || categoryOf(e) === 'fate'
   }
-  const scored = mine.filter(candidate).map((e) => {
-    let score = baseScore(e, categoryOf(e))
-    if (firstOfTag.get(e.tag) === e.id) score += 3
-    if (e.refs?.item_uid !== undefined && relics.has(e.refs.item_uid)) score += 3
-    if (e.detail && QUOTE_PAIR.test(e.detail)) score += 2
-    return { e, score, effC: Math.round(e.eff_min * 100) }
-  })
+  const scored = mine.filter(candidate).map((e) => ({ e, score: entryScore(e, categoryOf(e), firstOfTag, relics) }))
   const [lo, hi] = opts.clamp
   const strong = scored.filter((s) => s.score >= opts.scoreGte).length
   const n = Math.min(scored.length, Math.max(lo, Math.min(hi, strong)))
   return scored
-    .sort((a, b) => b.score - a.score || a.effC - b.effC || a.e.id - b.e.id)
+    .sort(byScore)
     .slice(0, n)
     .map((s) => s.e)
     .sort((a, b) => a.id - b.id)

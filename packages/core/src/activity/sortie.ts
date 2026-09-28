@@ -14,6 +14,7 @@ import { issueUid } from '../state/uid'
 import { renderTemplate } from '../text/index'
 import type { World } from '../sim/world'
 import { sortieStart, sortieSummary, townSummary } from './summary'
+import { line } from './lines'
 
 // 저장 스키마에 자리가 없어 카운터로 세는 값(T11 후보)
 export const COUNTERS = {
@@ -204,7 +205,7 @@ export function recordDeficit(world: World, s: Sortie): void {
     excluded_until_decision: excluded ? ch.decision_seq + cfg.exclude_decisions : prev.excluded_until_decision,
   }
   if (excluded && prev.excluded_until_decision === null) {
-    addJournal(world, { tag: 'town', line: renderTemplate(cfg.line, { place: r.name }) })
+    addJournal(world, { tag: 'town', line: renderTemplate(cfg.line, { place: r.name }), detail: line(world.content, 'deficit_detail', { place: r.name }) })
   }
 }
 
@@ -239,7 +240,13 @@ export function settleQuest(world: World, s: Sortie): void {
   const eff = ev ? ev.choices.flatMap((c) => Object.values(c.outcomes).flatMap((o) => (o ? findEffect(o.effects, 'accept_quest') ?? [] : []))) : []
   const lines = (eff[0] as unknown as { lines?: Record<string, string> } | undefined)?.lines
   if (lines?.[key]) {
-    addJournal(world, { tag: 'town', line: renderTemplate(lines[key], { coins, place: world.content.get('region', q.location_id).name }) })
+    const place = world.content.get('region', q.location_id).name
+    // 보수가 0이면 동전 구절을 뺀 문형(14 §4 "동전 0개" 금지)
+    const detailKey = key === 'cancel' ? 'quest_cancel_detail' : coins === 0 ? 'quest_unpaid_detail' : key === 'complete' ? 'quest_complete_detail' : 'quest_partial_detail'
+    addJournal(world, {
+      tag: 'town', line: renderTemplate(lines[key], { coins, place }),
+      detail: line(world.content, detailKey, { name: ch.name, place, coins, xp, count: q.goal_wins, n: q.wins }),
+    })
   }
 }
 

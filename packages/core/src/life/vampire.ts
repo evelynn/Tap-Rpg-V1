@@ -8,6 +8,7 @@ import { STATS } from '../schema/index'
 import type { JournalDraft } from '../state/journal'
 import { renderTemplate } from '../text/index'
 import { ageAt } from '../time/index'
+import { THIRST_DETAIL, textLine } from './text'
 
 export type MutationSpec = NonNullable<ContentDef<'trait'>['mutation']>
 export type ThirstStage = MutationSpec['thirst']['stages'][number]
@@ -89,7 +90,10 @@ export function addThirst(ctx: RuleContext, delta: number): { value: number; jou
   const journal: JournalDraft[] = []
   if (after && after.id !== beforeStage?.id && after.line !== undefined) {
     const tag = after.from >= THIRST_MAX - 10 ? 'important' : 'trait'
-    if (tag === 'important' || firstReactionThisSortie(ctx, after.id)) journal.push({ tag, line: renderTemplate(after.line, { name: ch.name }) })
+    if (tag === 'important' || firstReactionThisSortie(ctx, after.id)) {
+      const detail = textLine(ctx.content, THIRST_DETAIL, { name: ch.name, count: Math.round(thirst(ctx)) }, '')
+      journal.push({ tag, line: renderTemplate(after.line, { name: ch.name }), ...(detail ? { detail } : {}) })
+    }
   }
   return { value: ch.mutation.thirst, journal }
 }

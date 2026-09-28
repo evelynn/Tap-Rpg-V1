@@ -25,6 +25,7 @@ const GEAR_TEXT = {
   pickup: ['journal.gear.pickup_detail', '{name:은/는} 주운 {item:을/를} {old_item} 대신 찼다.'],
   pickupEmpty: ['journal.gear.pickup_empty_detail', '{name:은/는} 주운 {item:을/를} 빈 자리에 찼다.'],
   swapEmpty: ['journal.gear.swap_empty_detail', '{name:은/는} 빈 자리에 {item:을/를} 갖췄다.'],
+  rareGain: ['journal.gear.rare_gain_detail', '{name:이/가} {place}에서 드문 물건 {item:을/를} 손에 넣었다.'],
 } as const
 for (const [id] of Object.values(GEAR_TEXT)) registerTextSlot(id, '장비 기록(08, D77)')
 const gearText = (ctx: RuleContext, [id, fallback]: readonly [string, string], v: Record<string, string>): string =>
@@ -282,7 +283,12 @@ export function markRareGain(ctx: RuleContext, uid: string, journal: JournalDraf
   const inv = ctx.state.inventory
   const kept = inv.bag.includes(uid) || inv.pending_box.includes(uid) || Object.values(inv.equipped).includes(uid)
   if (!kept) return journal
-  return [...journal, { tag: 'gear', importance: 'major', sub: 'rare_gain', line: renderTemplate(LINE_GAIN, { item: itemName(ctx, inst) }), refs: { item_uid: uid } }]
+  const loc = inst.acquired.location
+  const place = ctx.content.has('region', loc) ? ctx.content.get('region', loc).name : loc
+  return [...journal, {
+    tag: 'gear', importance: 'major', sub: 'rare_gain', line: renderTemplate(LINE_GAIN, { item: itemName(ctx, inst) }),
+    detail: gearText(ctx, GEAR_TEXT.rareGain, { name: characterOf(ctx).name, place, item: itemName(ctx, inst) }), refs: { item_uid: uid },
+  }]
 }
 
 // 지정 장비 지급(사건 add_item·관문 보상 등): 등급이 없으면 변동 장비는 table로 굴린다. 고유 장비는 가문에 있으면 대체(08 §9.5).

@@ -236,7 +236,7 @@ export function gateTurnBackJournal(world: World): JournalDraft {
   if (r.gate.lethal && !world.state.policies.lethal_allowed && lines.lethal_blocked) {
     return { tag: 'dungeon', line: lines.lethal_blocked.line, detail: lines.lethal_blocked.detail, refs: { location_id: s.location_id } }
   }
-  return { tag: 'dungeon', line: lines.turn_back, refs: { location_id: s.location_id } }
+  return { tag: 'dungeon', line: lines.turn_back, detail: line(world.content, 'gate_turn_back_detail', { name: characterOf(world).name, place: r.name }), refs: { location_id: s.location_id } }
 }
 
 // ── 방 처리 ──
@@ -443,6 +443,7 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
         addJournal(world, {
           tag: 'dungeon',
           line: (region.kind === 'dungeon_floor' ? region.quiet_line : undefined) ?? b.events.quiet_room.line,
+          detail: line(world.content, 'dungeon_quiet_detail', { name: ch.name, place: region.name }),
           refs: { location_id: place },
         })
       }
@@ -523,7 +524,7 @@ export const gateResolver: ActionResolver = {
         detail: line(world.content, 'dungeon_gate_detail', { enemy: enemy.name, place: r.name }),
         refs: { location_id: s.location_id, sortie_id: s.id },
       }]
-      : [{ tag: 'dungeon', line: line(world.content, 'dungeon_gate', {}, 0), refs: { location_id: s.location_id } }]
+      : [{ tag: 'dungeon', line: line(world.content, 'dungeon_gate', {}, 0), detail: line(world.content, 'gate_lost_detail', { enemy: enemy.name, place: r.name }), refs: { location_id: s.location_id } }]
     return { duration_sec: sec, outcome: enc.combat.outcome, effects: [{ kind: 'gate', enc, spec, cleared } as unknown as { type: string }], journal }
   },
   apply(world: World, action): void {

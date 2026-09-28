@@ -45,6 +45,7 @@ export const EVENT_TEXT = {
   codex: 'journal.discovery.codex', // 14 §5.1 [발견] 도감 한 줄
   traitGain: 'journal.trait.gain_detail', // 14 §5.1 [특성] 획득 상세(D77)
   codexDetail: 'journal.discovery.place_detail', // 도감 기록 상세는 [발견] 첫 발견 상세(D77)
+  codexAgainDetail: 'journal.discovery.place_again_detail', // 후손이 다시 적을 때
   check: { success: 'journal.check.success', partial: 'journal.check.partial', failure: 'journal.check.failure' },
 } as const
 for (const id of [EVENT_TEXT.lootCoins, EVENT_TEXT.noOffer, EVENT_TEXT.chronicle, EVENT_TEXT.codex, EVENT_TEXT.traitGain, ...Object.values(EVENT_TEXT.check)]) {
@@ -392,8 +393,11 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
   family_record: (run, e) => {
     const text = render(e.text, runValues(run))
     if (e.kind === 'codex') {
-      note(run, 'discovery', render(textVariant(run.w, EVENT_TEXT.codex), { item: text }), {
-        importance: 'family', detail: render(textVariant(run.w, EVENT_TEXT.codexDetail), { name: ch(run).name, place: text }),
+      const line = render(textVariant(run.w, EVENT_TEXT.codex), { item: text })
+      // 도감 기록은 가문 보존이라 일지에 남는다. 앞 세대가 같은 줄을 남겼으면 가문 최초가 아니다(14 §5.1 다시 찾음, D59)
+      const again = run.w.state.journal.some((j) => j.tag === 'discovery' && j.line === line)
+      note(run, 'discovery', line, {
+        importance: 'family', detail: render(textVariant(run.w, again ? EVENT_TEXT.codexAgainDetail : EVENT_TEXT.codexDetail), { name: ch(run).name, place: text }),
       })
     }
     else note(run, e.kind === 'bond' ? 'bond' : 'house', textVariant(run.w, EVENT_TEXT.chronicle), { detail: text, importance: 'family' })

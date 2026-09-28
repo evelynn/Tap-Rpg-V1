@@ -20,6 +20,7 @@ import type { Effect } from '../schema/index'
 import { ageAt } from '../time/index'
 import type { World } from '../sim/world'
 import { COUNTERS, currentSortie } from './sortie'
+import { line } from './lines'
 
 export interface EncounterSpec {
   place: string
@@ -182,7 +183,12 @@ export function applyEncounterStep(world: World, spec: EncounterSpec, out: Encou
   if (out.defeat) {
     applyDefeat(world, out.defeat)
     ch.counters[COUNTERS.sortieDefeats] = (ch.counters[COUNTERS.sortieDefeats] ?? 0) + 1
-    if (out.defeat.rescuer) addJournal(world, { tag: 'injury', line: out.defeat.rescuer.line, refs: { location_id: spec.place } })
+    if (out.defeat.rescuer) {
+      addJournal(world, {
+        tag: 'injury', line: out.defeat.rescuer.line, refs: { location_id: spec.place },
+        detail: line(world.content, 'rescued_detail', { name: ch.name, place: world.content.get('region', spec.place).name }),
+      })
+    }
     // 최후 판정 성공(치명 패배에서 판정을 굴려 살아남음)이면 유품 귀환(12 §5.6)
     if (spec.lethal && out.defeat.check && out.defeat.outcome !== 'died') {
       const back = relicReturn(world, spec.place)
