@@ -1,11 +1,11 @@
 {
   "karin_version": "1.3.0",
   "session": 7,
-  "feature": "텝 M2 — 브라우저 시제품(768×64) + 이미지 생성 아트 v06",
+  "feature": "텝 데스크톱 완성본 — 투명 창·저장·그림·남은 기능",
   "phase": "build",
   "complexity": "Complex",
   "level": "Dynamic",
-  "plan_file": "C:/Users/hansol/.claude/plans/reflective-floating-lovelace.md",
+  "plan_file": "C:/Users/hansol/.claude/plans/sprightly-herding-moore.md",
   "handoff": ".karin/HANDOFF.md",
   "stack": "Tauri 2 + TypeScript (pnpm 모노레포, 오프라인 설치). M2는 브라우저 시제품 apps/desktop/ui(esbuild + node:http), Tauri 창은 네트워크 허용 뒤",
   "design_docs": "docs/design/00~18 (01 수치·ID, 00 §2.4 규칙 소유표, 00 §3 결정 D01~D76), docs/dev/*, docs/art/{PROMPTS,V06_REQUEST}.md, docs/research/TBH_분석.md",
@@ -231,10 +231,52 @@
       "subject": "원본 도트 그대로: art:native 배경 152장(6da9cfa). 남음: 장면 띠(원본이 규격보다 작음 85×42)·캐릭터·적(원본 도트 4.5·7 vs 규격 5.25·10.7)",
       "status": "in_progress",
       "priority": "high"
+    },
+    {
+      "id": "P1",
+      "subject": "저장·이어하기(A1~A4)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "P2",
+      "subject": "창 완성: 투명 창·트레이·설정(A5~A11)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "P3",
+      "subject": "첫 실행·안내(A12~A13)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "P4",
+      "subject": "그림 완성 D86(A14~A17)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "P5",
+      "subject": "남은 기능 F2·F4·F5·상세(A18~A22)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "P6",
+      "subject": "생애의 책 M3(A23~A25)",
+      "status": "pending",
+      "priority": "high"
+    },
+    {
+      "id": "P7",
+      "subject": "통합 검증(A26~A30)",
+      "status": "pending",
+      "priority": "high"
     }
   ],
-  "current_task": "F2",
-  "next_action": "D83 장면·캐릭터 원본 도트 결정 → 적 변형·ES20 UI 연결 → F2 도감 → F4 → F5 → M3",
+  "current_task": "P1",
+  "next_action": "P1 Rust save 명령 + persist.ts",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
