@@ -168,8 +168,8 @@
     },
     {
       "id": "F3",
-      "subject": "장비 정의 주석 칸(lore: 사연·주인·설명·발견·비밀), {npc} 해소",
-      "status": "pending",
+      "subject": "장비 주석 칸 D80(lore: 사연·주인·얻는 곳·npc·비밀) — 26개 작성, 장비 펼침·유품·도감 표시(3d9c0d0)",
+      "status": "completed",
       "priority": "high"
     },
     {
@@ -201,10 +201,22 @@
       "subject": "직업·성장 — 사용자 확정(12직업·2차 Lv20·자동 기술·요령+교관 부모), D79로 문서화·구현. 초안 §5",
       "status": "pending",
       "priority": "high"
+    },
+    {
+      "id": "D81",
+      "subject": "화면 배율 100·200·300%(기본 창 전체 정수배, 우클릭 메뉴·기억, 1c68869)",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "V78",
+      "subject": "D78·D79 독립 검증 10건 반영(ef3ec00, I91)",
+      "status": "completed",
+      "priority": "high"
     }
   ],
-  "current_task": "F8",
-  "next_action": "F8 직업·성장 D79 설계(12직업·2차 Lv20·F04·자동 기술·요령+교관 부모) → 코어 → UI → F2~F5 → F6 나머지 → M3",
+  "current_task": "F2",
+  "next_action": "F2 도감 본 적 있음 + 12 §7.2 칸 → F4 가계도 → F5 목적지 → F6 나머지(codex 납품 뒤) → M3 생애의 책",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
@@ -212,5 +224,5 @@
   ],
   "last_commit": "442a84b",
   "verify_state": "pnpm check 1220 통과(480분 정산 CPU 시험은 전체 실행 부하 때 가끔 2초를 넘는다 — 단독 0.3~0.8초), lint 0, content 0 (2026-09-28)",
-  "last_updated": "2026-09-28T19:00:00+09:00"
+  "last_updated": "2026-09-28T00:00:00+09:00"
 }
