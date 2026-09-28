@@ -156,7 +156,7 @@
     },
     {
       "id": "F1",
-      "subject": "상세 창 세부 글 기본 표시·빈 상세 채우기·레벨업/숙련 기록·최근 요약 (D77, 4561f1c·f8d7bb1)",
+      "subject": "상세 창 세부 글 기본 표시·빈 상세 채우기·레벨업/숙련 기록·최근 요약 (D77, 4561f1c·f8d7bb1) + 독립 검증 7건 반영(0686719)",
       "status": "completed",
       "priority": "high"
     },
@@ -186,8 +186,8 @@
     },
     {
       "id": "F6",
-      "subject": "v06 그림 흡수 — 사용자 확인: codex v06 전부 완료(2026-09-28)",
-      "status": "pending",
+      "subject": "v06 흡수 — 1차 완료(배경 29·장면 16, 7dd7e73). 남음: 층(mid/near/far)·캐릭터 장비 파생·적 변형·보스, codex 배치18~34 납품 뒤 변형 흡수",
+      "status": "in_progress",
       "priority": "medium"
     },
     {
@@ -203,14 +203,14 @@
       "priority": "high"
     }
   ],
-  "current_task": "F6",
-  "next_action": "D77 독립 검증 결과 반영 → F6 v06 흡수 → F7(D78)·F8(D79) 설계 문서화·구현 → F2~F5 → M3",
+  "current_task": "F7",
+  "next_action": "F7 가호(D78)·F8 직업(D79) 소유 문서 설계(초안 docs/dev/F7F8_DESIGN_DRAFT.md §5 확정안) → 구현 → F2~F5 → F6 나머지 → M3",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
     "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "f8d7bb1",
-  "verify_state": "pnpm check 1205 통과, lint:docs 0, content:check 0 (2026-09-28). D77 독립 검증 진행 중",
-  "last_updated": "2026-09-28T15:00:00+09:00"
+  "last_commit": "0686719",
+  "verify_state": "pnpm check 1210 통과, lint:docs 0, content:check 0, sim 10가문×3생애 예외 0, D77 독립 검증 7건 반영 (2026-09-28)",
+  "last_updated": "2026-09-28T19:00:00+09:00"
 }
