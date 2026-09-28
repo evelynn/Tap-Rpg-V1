@@ -76,6 +76,16 @@ function scopeOf(w: EventWorld, occ: Pick<EventOccurrence, 'event_id' | 'place' 
 const visibleChoices = (ev: Event, test: ConditionTest, excluded: readonly string[] = []) =>
   ev.choices.filter((c) => !c.starlight && !excluded.includes(c.id) && (c.requires === undefined || test(c.requires)))
 
+// 05 §8.1 추천: 근접·탐색·생존·교섭 단계 → 누적 사용 횟수 → 같으면 수호자·길잡이·약초꾼·행상 순(자동 전문화 `숙련 높은 쪽`)
+export function recommendedSpecKey(w: EventWorld): string {
+  const s = characterOf(ruleContext(w, () => false)).skills
+  const order = [['melee', 'combat_first'], ['search', 'search_first'], ['survival', 'care_first'], ['negotiation', 'trade_first']] as const
+  return order.reduce((best, cur) => {
+    const a = s[best[0]], b = s[cur[0]]
+    return b.rank > a.rank || (b.rank === a.rank && b.uses > a.uses) ? cur : best
+  })[1]
+}
+
 // 사전 방침(10 §8.4): 자동 전문화가 거절보다 우선. 중대 분기(branch)에는 방침을 적용하지 않는다
 function policyChoice(w: EventWorld, ev: Event): string | null {
   const ph = ev.policy_hooks
@@ -83,12 +93,7 @@ function policyChoice(w: EventWorld, ev: Event): string | null {
   const pol = w.state.policies
   if (ph.auto_specialization_map && pol.auto_specialization !== 'none') {
     let key: string = pol.auto_specialization
-    if (key === 'higher_skill') {
-      // 근접·탐색 단계 → 누적 사용 횟수 → 같으면 전투형(05 §8.4)
-      const s = characterOf(ruleContext(w, () => false)).skills
-      const d = s.melee.rank - s.search.rank || s.melee.uses - s.search.uses
-      key = d >= 0 ? 'combat_first' : 'search_first'
-    }
+    if (key === 'higher_skill') key = recommendedSpecKey(w)
     const id = ph.auto_specialization_map[key]
     if (id) return id
   }

@@ -6,7 +6,7 @@
   "triggers": ["town_return"],
   "condition": { "all": [
     { "level_gte": 8 },
-    { "any": [ { "skill_rank_gte": { "skill": "melee", "rank": 2 } }, { "skill_rank_gte": { "skill": "search", "rank": 2 } } ] },
+    { "any": [ { "skill_rank_gte": { "skill": "melee", "rank": 2 } }, { "skill_rank_gte": { "skill": "search", "rank": 2 } }, { "skill_rank_gte": { "skill": "survival", "rank": 2 } }, { "skill_rank_gte": { "skill": "negotiation", "rank": 2 } } ] },
     { "specialization": ["none"] }
   ] },
   "weight": 10,
@@ -16,14 +16,14 @@
   "hold": "fate",
   "policy_hooks": {
     "decline_choice": "defer",
-    "auto_specialization_map": { "combat_first": "guardian", "search_first": "pathfinder" },
+    "auto_specialization_map": { "combat_first": "guardian", "search_first": "pathfinder", "care_first": "herbalist", "trade_first": "merchant" },
     "max_presentations": 2,
     "represent_after": { "level_gain": 3, "skill_rank_up": ["melee", "search"] }
   },
   "_note": "11 F01, 05 §8.3·§8.4, 10 §8.4. 효과 수치는 선택 창이 balance.specializations를 읽어 보여준다(11에 수치 없음). 자동 전문화 '숙련 높은 쪽'(higher_skill)은 근접·탐색 단계 → 사용 횟수 → 수호자 순 비교라 고정 선택지 표로 적지 못했다. 자동 처리 기록 끝의 '(미리 정한 방침에 따라)'와 두 번째 제시의 아직은 상세 문장은 적을 자리가 없다. 가중치는 11에 없어 10",
   "hold_line": "갈림길 앞에서 결정을 기다린다",
   "preview": {
-    "body": "하델이 길드 명부를 덮고 {name:을/를} 부른다. \"이제 초보 딱지는 뗄 때가 됐지. 방패를 들고 앞에 설 텐가, 지도를 들고 앞서 걸을 텐가?\"",
+    "body": "하델이 길드 명부를 덮고 {name:을/를} 부른다. \"이제 초보 딱지는 뗄 때가 됐지. 방패를 들고 앞에 설 텐가, 지도를 들고 앞서 걸을 텐가? 약초 주머니나 봇짐을 메고 싶다면 그것도 길이야.\"",
     "note": "근접 {n}단계 · 탐색 {m}단계 · 태도 {attitude}",
     "variants": [
       { "when": { "reaction_active": "dr_specialist_guardian" }, "text": "{parent_call:은/는} 수호자의 길을 걸었다." },
@@ -68,6 +68,8 @@
         }
       }
     },
+    {"id": "herbalist", "label": "약초꾼의 길 (돌봄형)", "risk": "none", "preview": {"benefit": "약초꾼의 전문화 효과를 모두 받는다", "cost": "다른 길의 효과를 받지 못한다", "reversible": false}, "outcomes": {"always": {"effects": [{"type": "specialize", "spec": "herbalist"}, {"type": "set_family_flag", "key": "fam.specialist_herbalist"}, {"type": "animation", "action": "cheer"}], "line": "약초꾼의 길을 택했다", "detail": "하델이 잡화점 쪽을 턱으로 가리켰다. \"미루한테 가 봐. 다친 사람을 일으키는 것도 모험이야.\"", "tag": "growth"}}},
+    {"id": "merchant", "label": "행상의 길 (거래형)", "risk": "none", "preview": {"benefit": "행상의 전문화 효과를 모두 받는다", "cost": "다른 길의 효과를 받지 못한다", "reversible": false}, "outcomes": {"always": {"effects": [{"type": "specialize", "spec": "merchant"}, {"type": "set_family_flag", "key": "fam.specialist_merchant"}, {"type": "animation", "action": "cheer"}], "line": "행상의 길을 택했다", "detail": "하델이 헌 봇짐을 내밀었다. \"길 위에서 사고파는 이도 길을 아는 법이지.\"", "tag": "growth"}}},
     {
       "id": "defer", "label": "아직은 (초보로 남는다)", "risk": "none", "decline": true,
       "preview": { "benefit": "결정을 미룬다", "cost": "전문화 효과 없음. 첫 제시라면 조건이 되었을 때 한 번 더 묻는다. 두 번째 제시라면 이번 생애는 초보 모험가로 마친다", "reversible": true },

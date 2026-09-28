@@ -8,6 +8,7 @@ import { maxHp } from '../rules/derived'
 import { ageAt, lifeStageAt, seasonAt, type StageBoundaries } from '../time/index'
 import { regionMatches } from '../content/index'
 import { bind, ruleContext, type EventScope, type EventWorld } from './scope'
+import { secondJobReady } from '../jobs/index'
 
 export interface CondCtx {
   w: EventWorld
@@ -156,6 +157,7 @@ export const CONDITION_EVAL: Record<string, Eval> = {
     return v === 'none' ? inj.length === 0 : v === 'any' ? inj.length > 0 : inj.some((i) => i.grade === v)
   },
   specialization: (list, c) => list.includes(c.ch.specialization),
+  second_job_ready: (_v, c) => secondJobReady(c.rule),
   // 첫 검증판의 변이는 하나(vampire)뿐이라 변이 여부로 본다
   mutation: (v, c) => (v === 'none') === (c.ch.mutation === null),
   generation_gte: (n, c) => c.w.state.family.generation >= n,

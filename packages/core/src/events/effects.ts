@@ -15,6 +15,7 @@ import { addFatigue } from '../rules/fatigue'
 import { addSkillUses, addXp, type LevelUp } from '../rules/growth'
 import { recordCheckUse } from '../rules/check'
 import { crisisMoment, isCrisisTrait } from '../blessing/index'
+import { learnJobTechnique, learnTechnique } from '../jobs/index'
 import { ageAt } from '../time/index'
 import { chainDoneKey, chainOutcomeKey, chainStageKey, chainUnfinishedKey } from '../schema/index'
 import { rollEventCheck, type EventCheck } from './check'
@@ -249,12 +250,25 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
     if (e.spec !== 'defer') {
       c.specialization = e.spec
       c.spec_deferred_until_level = null
+      learnJobTechnique(run.rule) // 전직 기술(05 §8.1)
       return
     }
     const ra = run.scope.eventId ? run.w.content.get('event', run.scope.eventId).policy_hooks?.represent_after : undefined
     c.spec_deferred_until_level = ra ? c.level + ra.level_gain : null
     for (const s of ra?.skill_rank_up ?? []) c.counters[deferRankKey(s)] = c.skills[s].rank
   },
+  // 2차 전직(05 §8.5): defer면 레벨이 represent_levels 오를 때까지 미룬다
+  set_job2: (run, e) => {
+    const c = ch(run)
+    const r = run.w.content.balance.job_rules
+    if (e.job === 'defer') {
+      c.counters[r.defer_counter] = c.level + r.represent_levels
+      return
+    }
+    c.job2 = e.job
+    learnJobTechnique(run.rule)
+  },
+  learn_technique: (run, e) => { learnTechnique(run.rule, e.technique, 'event') },
   extend_lifespan: (run, e) => {
     const c = ch(run)
     const { content } = run.w
@@ -291,6 +305,8 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
     ch(run).flags[chainStageKey(chain.id)] = chain.stages
     setFamilyFlag(run, chainDoneKey(chain.id), true)
     crisisMoment(run.rule) // 극복 순간 3: 연속 사건 줄기 완결(01 §19)
+    const tech = run.w.content.balance.job_rules.chain_techniques[chain.id]
+    if (tech) learnTechnique(run.rule, tech, 'event') // 유적 기술(05 §10.1)
     if (e.outcome !== 'done') setFamilyFlag(run, chainOutcomeKey(chain.id, e.outcome), true)
     delete run.w.state.family.flags[chainUnfinishedKey(chain.id)]
   },

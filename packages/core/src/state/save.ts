@@ -43,7 +43,7 @@ export const policiesSchema = s({
   lethal_allowed: z.boolean(),
   lethal_scope: s({ gate_battles: z.boolean(), fate_choices: z.boolean() }),
   fate_handling: z.enum(['hold', 'decline_and_continue']),
-  auto_specialization: z.enum(['none', 'combat_first', 'search_first', 'higher_skill']),
+  auto_specialization: z.enum(['none', 'combat_first', 'search_first', 'care_first', 'trade_first', 'higher_skill']),
   auto_equip: z.boolean(),
   destination: defId, // "auto" 또는 장소 id
   destination_warning_ack: z.boolean(),

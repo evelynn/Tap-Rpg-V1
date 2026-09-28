@@ -185,6 +185,13 @@ export class DetailWindow {
       h('div', { class: 'd-col' }, h('div', { class: 'd-strong' }, '숙련'), ...m.skills.map((s) => h('div', { class: 'd-item' },
         h('div', {}, `${s.label} ${'●'.repeat(s.rank)}${'○'.repeat(s.max - s.rank)} ${Math.floor(s.uses)}${s.next !== null ? `/${s.next}` : ''}`),
         s.effect ? h('div', { class: 'd-note' }, s.effect) : null))))
+    // 직업·기술 칸(03 §5.3, D79): 직업 이름과 효과 글, 익힌 기술마다 이름·얻은 곳·효과
+    const job = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, `직업 · ${m.job.name}`),
+      ...m.job.lines.map((l) => h('div', { class: 'd-note' }, l)),
+      h('div', { class: 'd-strong' }, '기술'),
+      ...(m.techniques.length
+        ? m.techniques.map((t) => h('div', { class: 'd-item' }, h('div', {}, `${t.name} `, h('span', { class: 'd-dim' }, `(${t.source})`)), h('div', { class: 'd-note' }, t.effect)))
+        : [h('div', { class: 'd-dim' }, '아직 익힌 기술이 없습니다.')]))
     // 특성은 한 줄에 하나, 얻은 나이와 효과 글을 늘 보인다(03 §5.3, D77)
     const traits = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '특성'),
       ...m.traits.map((t) => h('div', { class: `d-item${t.inactive ? ' d-off' : ''}` },
@@ -217,7 +224,7 @@ export class DetailWindow {
     bagRow.onclick = () => this.toggle(bagKey)
     bag.append(bagRow)
     if (this.open.has(bagKey)) for (const it of m.bag.items) bag.append(this.itemRow(it, m.inTown))
-    return [head, stats, traits, inj, gear, bag].filter((n): n is HTMLElement => n !== null)
+    return [head, stats, job, traits, inj, gear, bag].filter((n): n is HTMLElement => n !== null)
   }
 
   // 장비 줄: 누르면 동작 단추를 줄 아래에 펼친다(팝업 아님, 03 §5.3.1)
@@ -347,7 +354,7 @@ export class DetailWindow {
         })))
       : null
 
-    const spec = h('select', {}, ...([['none', '없음(보류)'], ['combat_first', '전투형 우선'], ['search_first', '탐색형 우선'], ['higher_skill', '숙련 높은 쪽']] as const)
+    const spec = h('select', {}, ...([['none', '없음(보류)'], ['combat_first', '전투형 우선'], ['search_first', '탐색형 우선'], ['care_first', '돌봄형 우선'], ['trade_first', '거래형 우선'], ['higher_skill', '숙련 높은 쪽']] as const)
       .map(([v, t]) => { const o = h('option', { value: v }, t) as HTMLOptionElement; o.selected = p.auto_specialization === v; return o })) as HTMLSelectElement
     spec.onchange = () => set('auto_specialization', spec.value as Policies['auto_specialization'])
 

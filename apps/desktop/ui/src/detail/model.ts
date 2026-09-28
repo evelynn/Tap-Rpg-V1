@@ -92,6 +92,14 @@ export function recentModel(world: World, n = 3): SummaryRow[] {
   }))
 }
 
+// 직업 이름(05 §8): `초보` 또는 `수호자` · `수호자 · 파수꾼`
+export function jobLabel(world: World, spec: string, job2: string | null | undefined): string {
+  if (spec === 'none') return '초보'
+  const t1 = SPEC_LABELS[spec as keyof typeof SPEC_LABELS] ?? spec
+  const t2 = job2 ? world.content.balance.second_jobs[job2]?.name : undefined
+  return t2 ? `${t1} · ${t2}` : t1
+}
+
 // ── 인물 탭(03 §5.3) ──
 
 export interface ItemRow {
@@ -114,6 +122,8 @@ export interface CharacterModel {
   line3: string // 체력 78/100 · 피로 34 · 동전 1,248
   stats: { label: string; value: number; base: number; use: string }[] // use: 쓰임(01 §2.1, D77)
   skills: { label: string; rank: number; max: number; uses: number; next: number | null; effect: string | null }[] // effect: 더하는 판정
+  job: { name: string; lines: string[] } // 직업 이름과 효과 글(05 §8.2·§8.6, D79)
+  techniques: { name: string; source: string; effect: string }[] // 익힌 기술(05 §10)
   traits: { name: string; badge: string; negative: boolean; since: number; effect: string; inactive: string | null }[] // 얻은 나이, 효과 글(16 §2.7), 흐린 표시 사유(06 §8.1)
   injuries: string[]
   equipment: (ItemRow | { slot: string; empty: true })[]
@@ -122,6 +132,7 @@ export interface CharacterModel {
 }
 
 const num = (n: number): string => n.toLocaleString('ko-KR')
+const TECH_SOURCE: Record<string, string> = { job: '전직', event: '사건', note: '가문 수첩' }
 
 function itemRow(world: World, uid: string, equipped: boolean): ItemRow {
   const inst = world.state.item_instances[uid]!
@@ -144,7 +155,7 @@ export function characterModel(world: World): CharacterModel | null {
   const { content } = world
   const b = content.balance
   const age = ageAt(ch.eff_min, b.time)
-  const spec = ch.specialization === 'none' ? '초보' : SPEC_LABELS[ch.specialization]
+  const spec = jobLabel(world, ch.specialization, ch.job2)
   const thresholds = b.skills.rank_thresholds
   const traitBadge = (id: string, source: string): { badge: string; negative: boolean } => {
     const t = content.get('trait', id)
@@ -173,6 +184,16 @@ export function characterModel(world: World): CharacterModel | null {
         effect: rank > 0 ? `${useText(world, skillUseText(s))} 판정 +${rank}` : null,
       }
     }),
+    job: {
+      name: ch.specialization === 'none' ? '초보 모험가' : jobLabel(world, ch.specialization, ch.job2),
+      lines: [
+        ...(ch.specialization === 'none' ? [] : [b.job_rules.spec_effect_text[ch.specialization] ?? '']),
+        ...(ch.job2 && b.second_jobs[ch.job2] ? [b.second_jobs[ch.job2]!.effect_text] : []),
+      ].filter(Boolean),
+    },
+    techniques: ch.techniques.map((t) => ({
+      name: b.techniques[t.id]?.name ?? t.id, source: TECH_SOURCE[t.source] ?? t.source, effect: b.techniques[t.id]?.effect_text ?? '',
+    })),
     traits: ch.traits.map((t) => {
       const by = t.inactive === 'replaced' ? content.list('trait').find((x) => x.replaces === t.id && ch.traits.some((y) => y.id === x.id)) : undefined
       return {
@@ -375,12 +396,12 @@ export function familyModel(world: World): { title: string; rows: ChronicleRow[]
     })
     rows.push({
       gen: ch.generation,
-      head: `${ch.generation}대 ${ch.name}  ${content.balance.time.start_age}세~ · 현재 · ${ch.specialization === 'none' ? '초보' : SPEC_LABELS[ch.specialization]} Lv${ch.level} (${age}세)`,
+      head: `${ch.generation}대 ${ch.name}  ${content.balance.time.start_age}세~ · 현재 · ${jobLabel(world, ch.specialization, ch.job2)} Lv${ch.level} (${age}세)`,
       lines: majors.map((e) => `${e.age}세 ${e.line}`),
     })
   }
   for (const r of [...fam.chronicle].sort((a, b) => b.gen - a.gen)) {
-    const spec = r.specialization === 'none' ? '초보' : SPEC_LABELS[r.specialization]
+    const spec = jobLabel(world, r.specialization, r.job2)
     const majors = r.major_entry_ids.map((id) => byId.get(id)).filter((e): e is JournalEntry => !!e).sort((a, b) => a.id - b.id)
     const relics = r.relics_passed.map((u) => state.item_instances[u]).filter((i) => i !== undefined).map((i) => itemName(world, i))
     rows.push({

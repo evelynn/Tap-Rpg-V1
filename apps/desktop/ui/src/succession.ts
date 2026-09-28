@@ -93,7 +93,7 @@ export class SuccessionWindow {
   private lifeStep(): Node[] {
     const { content, state } = this.world
     const r = this.plan.record
-    const spec = r.specialization === 'none' ? '초보' : SPEC_LABELS[r.specialization]
+    const spec = r.specialization === 'none' ? '초보' : `${SPEC_LABELS[r.specialization]}${r.job2 && content.balance.second_jobs[r.job2] ? ` · ${content.balance.second_jobs[r.job2]!.name}` : ''}`
     const s = r.summary
     const luck = state.journal.filter((e) => e.char_uid === r.char_uid && e.sub === 'blessing').length
     const out: Node[] = [
@@ -102,6 +102,7 @@ export class SuccessionWindow {
       h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '걸어온 길'),
         h('div', { class: 'd-sub' }, `· 출정 ${s.sorties}번 · 발견 ${s.discoveries}곳 · 쓰러진 적 ${s.defeats}번 · 중상 ${s.serious_injuries}번`),
         h('div', { class: 'd-sub' }, `· 번 동전 ${s.coins_earned.toLocaleString('ko-KR')}`),
+        r.techniques.length ? h('div', { class: 'd-sub' }, `· 익힌 기술: ${r.techniques.map((t) => content.balance.techniques[t]?.name ?? t).join(', ')}`) : null,
         luck ? h('div', { class: 'd-sub' }, `· 이상한 행운 ${luck}번`) : null), // 사용자는 알고 인물은 모르는 표현(D78)
     ]
     if (r.cause) {

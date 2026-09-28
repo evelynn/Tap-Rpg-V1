@@ -17,6 +17,7 @@ import { ageAt, seasonAt } from '../time/index'
 import { createItemInstance } from '../sim/create'
 import { fireSuccession } from '../life/events'
 import { DEPART_DETAIL, DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
+import { writeNote } from '../jobs/index'
 import { applyStartBlessing, refundArmedAtLifeEnd, repeatStartChoice, successionGain, type StartChoice } from '../blessing/index'
 import {
   candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
@@ -91,6 +92,7 @@ export function endLife(w: LifeWorld, input: LifeEndInput): SuccessionPlan {
 
   // 1단계: 미완 연속 사건 → 후보층 → 넘길 유품 → 정산. 걸어 둔 가호의 별빛은 가문에 돌려준다(04 §10.3 2번)
   refundArmedAtLifeEnd(ctx)
+  writeNote(ctx) // 가문 수첩 요령(12 §7.7)
   const unfinished = closeLifeChains(w)
   if (!heirCandidates(w.state.family, ch).length) createFallbackCandidates(ctx, w.rng.life)
   const relics = relicsToPass(ctx, input.kind)
@@ -211,6 +213,8 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
     retire_age: time.base_retire_age,
     lifespan_extended: false,
     specialization: 'none',
+    job2: null,
+    techniques: [],
     f01_presentations: 0,
     spec_deferred_until_level: null,
     mutation: null,

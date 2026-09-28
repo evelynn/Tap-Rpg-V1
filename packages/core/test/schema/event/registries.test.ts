@@ -36,7 +36,7 @@ const CONDITIONS_16 = [
 const CONDITIONS_NEW = [
   'location_match', 'trait_hook', 'received_relic', 'discovery_found', 'first_sortie_of_character', 'safe_returns_gte',
   'codex_count_gte', 'codex_complete', 'reaction_active', 'life_end_kind', 'died_at', 'thirst_stage_gte', 'combat_kind', 'main_place',
-  'has_consumable',
+  'has_consumable', 'second_job_ready',
 ]
 // 16 §4.3 50종 + CONTENT_SCHEMA §4.2 신설 6종
 const EFFECTS_16 = [
@@ -48,7 +48,7 @@ const EFFECTS_16 = [
   'if', 'on_town_return', 'schedule_event', 'reopen_choices', 'npc_relation', 'skill_use', 'family_record', 'unlock_family',
   'journal', 'animation',
 ]
-const EFFECTS_NEW = ['add_material', 'remove_consumable', 'roll_check', 'reveal_discovery', 'open_chest', 'create_partner']
+const EFFECTS_NEW = ['add_material', 'remove_consumable', 'roll_check', 'reveal_discovery', 'open_chest', 'create_partner', 'set_job2', 'learn_technique']
 // 16 §1.4.3 변수 등록표 전부(83개, D77로 5개 추가)
 const TEMPLATE_VARS_16 = [
   'name', 'heir', 'parent_name', 'parent_call', 'partner', 'job', 'child', 'guardian', 'friend', 'family', 'generation', 'age',
@@ -66,7 +66,7 @@ const TEMPLATE_VARS_NEW = ['relic_uid']
 const sorted = (xs: readonly string[]) => [...xs].sort()
 
 describe('기본 등록', () => {
-  it('조건 57종·효과 56종·선택자 7종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
+  it('조건 58종·효과 58종·선택자 7종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
     assert.equal(CONDITIONS_16.length, 42)
     assert.equal(EFFECTS_16.length, 50)
     assert.equal(TEMPLATE_VARS_16.length, 83)

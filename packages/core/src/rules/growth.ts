@@ -78,7 +78,7 @@ export function allocationWeights(ctx: RuleContext): number[] {
   const g = ctx.content.balance.growth.alloc
   const ch = characterOf(ctx)
   const u = ch.stat_use_points
-  const spec = ch.specialization === 'none' ? null : ctx.content.balance.specializations[ch.specialization]
+  const spec = ch.job2 ? ctx.content.balance.second_jobs[ch.job2] ?? null : ch.specialization === 'none' ? null : ctx.content.balance.specializations[ch.specialization]
   const main = STATS.filter((s) => s !== 'luk')
   const sum = main.reduce((acc, s) => acc + u[s], 0)
   return STATS.map((s) => {

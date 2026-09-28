@@ -1,6 +1,6 @@
 // 상태 기계와 행동 해석기 등록(04 §2). 결정기는 행동과 행동 사이(판단 지점)에서만 불린다.
 import { decideSortie } from '../ai/index'
-import { autoChoose, emptyScope, makeConditionTest, submitChoice, type EventPorts, type EventResult, type SortiePort } from '../events/index'
+import { autoChoose, emptyScope, recommendedSpecKey, makeConditionTest, submitChoice, type EventPorts, type EventResult, type SortiePort } from '../events/index'
 import { characterOf, type ConditionTest } from '../rules/context'
 import type { Modifier } from '../schema/index'
 import type { ActionKind } from '../state/activity'
@@ -128,6 +128,11 @@ export function submitPendingAuto(world: World): EventResult | null {
   const test = makeConditionTest(world, scope)
   const ev = world.content.get('event', p.event_id)
   const visible = ev.choices.filter((c) => p.choices_visible.includes(c.id) && !p.excluded.includes(c.id))
+  // 헤드리스 진행의 직업 선택은 05 §8.1 추천(가장 높은 숙련)을 따른다. 2차 전직(F04)은 태도로 가른다: 안정적이면 첫 갈래, 그 밖은 둘째 갈래
+  const recommended = ev.policy_hooks?.auto_specialization_map?.[recommendedSpecKey(world)]
+  if (recommended && visible.some((c) => c.id === recommended)) return submitChoice(world, recommended, world.ports)
+  const jobs = visible.filter((c) => c.outcomes.always?.effects.some((e) => e.type === 'set_job2' && (e as { job?: string }).job !== 'defer'))
+  if (jobs.length) return submitChoice(world, jobs[world.state.policies.attitude === 'stable' ? 0 : jobs.length - 1]!.id, world.ports)
   const auto = autoChoose(world, { content: world.content, state: world.state, test }, visible, scope)
   return submitChoice(world, auto.choiceId, world.ports)
 }

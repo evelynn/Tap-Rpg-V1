@@ -8,6 +8,7 @@ import { BLESSING_ARMED, BLESSING_STARTS } from '../state/character'
 import type { JournalDraft } from '../state/journal'
 import { Pcg32, sha256, utf8 } from '../rng/index'
 import { renderTemplate } from '../text/index'
+import { learnTechnique } from '../jobs/index'
 import { ageAt } from '../time/index'
 
 export type ArmedKind = (typeof BLESSING_ARMED)[number]
@@ -189,6 +190,7 @@ export function safeReturn(ctx: RuleContext): void {
   if (!b.serious_recovered) return
   b.serious_recovered = false
   crisisMoment(ctx)
+  learnTechnique(ctx, ctx.content.balance.job_rules.crisis_technique, 'event') // 극복 기술(05 §10.1, D79)
 }
 
 export const isCrisisTrait = (ctx: RuleContext, traitId: string): boolean => cfg(ctx).crisis_traits.includes(traitId)

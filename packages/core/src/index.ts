@@ -80,3 +80,5 @@ export * from './save/index'
 export * from './offline/index'
 // 가호(01 §19, 04 §10.3, D78)
 export * from './blessing/index'
+// 직업·기술(05 §8·§10, D79)
+export * from './jobs/index'

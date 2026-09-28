@@ -236,6 +236,7 @@ export function activityWeights(ctx: RuleContext, cands: readonly Candidate[]): 
     const traitRaw = hookSum(ctx, 'activity_weight_add', (v) => (v as Partial<Record<Activity, number>>)[act])
     w += Math.max(cfg.trait_sum_cap[0], Math.min(cfg.trait_sum_cap[1], traitRaw))
     w += spec?.activity_weight_add[act] ?? 0
+    w += (ch.job2 ? b.second_jobs[ch.job2]?.activity_weight_add[act] : undefined) ?? 0 // 2차 직업(05 §8.6)
     // 임무: 우선 처리하지 못한(보류·한도 초과) 임무의 활동에 보너스.
     // 우선 처리할 임무가 있으면 decideSortie가 이미 그 장소로 빠져나가므로 여기서는 다시 거르지 않는다(04 §5.2)
     for (const m of missions) if (m.activity === act) w += missionBonus(ctx, m)

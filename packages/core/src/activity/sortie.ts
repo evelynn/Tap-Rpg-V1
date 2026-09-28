@@ -16,6 +16,8 @@ import type { World } from '../sim/world'
 import { sortieStart, sortieSummary, townSummary } from './summary'
 import { line } from './lines'
 import { safeReturn } from '../blessing/index'
+import { noteEncounter } from '../jobs/index'
+import { livingRetirees } from '../life/index'
 
 // 저장 스키마에 자리가 없어 카운터로 세는 값(T11 후보)
 export const COUNTERS = {
@@ -277,6 +279,10 @@ export function arriveTown(world: World): void {
   state.current_activity.state = 'town_idle'
   ch.counters[COUNTERS.townStep] = 1
   sortieSummary(world, s, defeated) // 출정 요약(14 §1.1)
+  // 수첩 속 요령(12 §7.7): 은퇴 교관 부모가 살아 있으면 판정 없이 가르친다
+  const r = content.balance.job_rules
+  const teacher = livingRetirees(world).some((x) => x.role === r.teacher_role && x.char_uid === ch.parent_uid)
+  noteEncounter(world, world.rng.event, ch.parent_call ?? '앞 세대', teacher)
 }
 
 // 마을 정비까지 끝나면 출정 객체를 지운다(재료 판매가 loot를 읽는다)

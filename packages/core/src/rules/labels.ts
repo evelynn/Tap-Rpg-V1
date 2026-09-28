@@ -9,7 +9,7 @@ export const SKILL_LABELS: Record<(typeof SKILLS)[number], string> = {
   melee: '근접', mobility: '기동', search: '탐색', survival: '생존', negotiation: '교섭',
 }
 export const SPEC_LABELS: Record<Exclude<(typeof SPECIALIZATIONS)[number], 'none'>, string> = {
-  guardian: '수호자', pathfinder: '길잡이',
+  guardian: '수호자', pathfinder: '길잡이', herbalist: '약초꾼', merchant: '행상',
 }
 export const WEATHER_LABELS: Record<(typeof WEATHERS)[number], string> = {
   clear: '맑음', rain: '비', fog: '안개', snow: '눈',

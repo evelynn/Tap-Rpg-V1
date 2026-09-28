@@ -1,0 +1,345 @@
+{
+  "id": "F04",
+  "name": "두 번째 갈림길",
+  "category": "fate",
+  "locations": [
+    "T00"
+  ],
+  "triggers": [
+    "town_return"
+  ],
+  "condition": {
+    "second_job_ready": true
+  },
+  "weight": 10,
+  "check_override": 1,
+  "max_per_life": 2,
+  "allow_serious_injury": false,
+  "hold": "fate",
+  "policy_hooks": {
+    "decline_choice": "enough",
+    "max_presentations": 2
+  },
+  "_note": "11 F04, 05 §8.5(D79). 2차 전직은 자동으로 고르지 않는다(거절 방침이면 enough). 재제시는 set_job2 defer가 counters.job2_defer_level에 적고 second_job_ready가 본다",
+  "hold_line": "두 번째 갈림길 앞에서 결정을 기다린다",
+  "preview": {
+    "body": "오랜 길이 두 갈래로 나뉜다. 여기까지 온 {name:을/를} 누군가 기다리고 있다.",
+    "variants": [
+      {
+        "when": {
+          "specialization": [
+            "guardian",
+            "merchant"
+          ]
+        },
+        "text": "하델이 연습장 난간에 기대어 {name:을/를} 본다. \"여기까지 온 사람은 드물지. 이제 어떤 사람이 될지 한 번 더 정할 때야.\""
+      },
+      {
+        "when": {
+          "specialization": [
+            "pathfinder"
+          ]
+        },
+        "text": "길드 본부 갈림목에서 편지가 왔다. \"당신의 지도를 보았습니다. 더 먼 길을 그리겠습니까, 더 깊은 곳을 열겠습니까?\""
+      },
+      {
+        "when": {
+          "specialization": [
+            "herbalist"
+          ]
+        },
+        "text": "미루가 말린 약초 다발을 건넨다. \"손이 익었네요. 이제 사람을 돌볼지, 들판을 지킬지 골라 봐요.\""
+      }
+    ]
+  },
+  "intro": {
+    "lines": [
+      "두 번째 갈림길 앞에 섰다",
+      "오랜 길이 두 갈래로 나뉘었다"
+    ],
+    "detail": "두 번째 갈림길이 {name:을/를} 기다렸다. {name:은/는} 당신의 결정을 기다린다.",
+    "tag": "important"
+  },
+  "choices": [
+    {
+      "id": "warden",
+      "label": "파수꾼의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "guardian"
+        ]
+      },
+      "preview": {
+        "benefit": "최대 체력 +10%, 부상 판정 +1, 체력이 5%p 더 남았을 때 물러선다. 기술 끝까지 선다",
+        "cost": "선봉장 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "warden"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "파수꾼의 길을 택했다",
+          "detail": "하델이 오래된 문장 방패를 두드렸다. \"지키는 사람이 끝까지 서 있어야 모두 돌아오지.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "vanguard",
+      "label": "선봉장의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "guardian"
+        ]
+      },
+      "preview": {
+        "benefit": "관문·보스 전투 명중 +1·피해 +1, 체력이 5%p 덜 남을 때까지 버틴다. 기술 첫 일격",
+        "cost": "파수꾼 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "vanguard"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "선봉장의 길을 택했다",
+          "detail": "하델이 웃었다. \"앞장서는 발이 무거우면 안 돼. 가볍게, 그러나 먼저.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "surveyor",
+      "label": "측량사의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "pathfinder"
+        ]
+      },
+      "preview": {
+        "benefit": "모험 발견 ×1.2, 길찾기 판정 +1. 기술 지름길",
+        "cost": "틈새꾼 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "surveyor"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "측량사의 길을 택했다",
+          "detail": "편지 끝에 작은 축척 자가 동봉되어 있었다.",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "delver",
+      "label": "틈새꾼의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "pathfinder"
+        ]
+      },
+      "preview": {
+        "benefit": "함정 감지·해제 +1, 다음 방 보물 방 확률 +5%p. 기술 틈 사이 걸음",
+        "cost": "측량사 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "delver"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "틈새꾼의 길을 택했다",
+          "detail": "편지와 함께 녹슨 열쇠 꾸러미가 왔다. \"닫힌 곳이 당신을 기다립니다.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "apothecary",
+      "label": "약사의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "herbalist"
+        ]
+      },
+      "preview": {
+        "benefit": "휴식 회복 +20%, 부상 판정 +1. 기술 응급 처치",
+        "cost": "들지기 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "apothecary"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "약사의 길을 택했다",
+          "detail": "미루가 작은 약연을 내주었다. \"빻는 소리가 고르면 약도 고르게 돼요.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "fieldkeeper",
+      "label": "들지기의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "herbalist"
+        ]
+      },
+      "preview": {
+        "benefit": "야영 체력 ×1.3, 날씨 견디기 +2, 피로가 10% 덜 쌓인다. 기술 별 아래 잠",
+        "cost": "약사 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "fieldkeeper"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "들지기의 길을 택했다",
+          "detail": "미루가 별 그림 천을 건넸다. \"들판에서 자는 밤이 무섭지 않게요.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "caravaner",
+      "label": "상단주의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "merchant"
+        ]
+      },
+      "preview": {
+        "benefit": "판매가 +10%, 동전 ×1.05. 기술 값 매기는 눈",
+        "cost": "이야기꾼 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "caravaner"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "상단주의 길을 택했다",
+          "detail": "하델이 장부 한 권을 던져 주었다. \"숫자도 길이야. 틀리면 길을 잃지.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "storyteller",
+      "label": "이야기꾼의 길",
+      "risk": "none",
+      "requires": {
+        "specialization": [
+          "merchant"
+        ]
+      },
+      "preview": {
+        "benefit": "교섭 판정 +1, 사교를 쓰는 판정 +1, 야영 피로 −10. 기술 모닥불 이야기",
+        "cost": "상단주 효과를 받지 못한다",
+        "reversible": false
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "storyteller"
+            },
+            {
+              "type": "animation",
+              "action": "cheer"
+            }
+          ],
+          "line": "이야기꾼의 길을 택했다",
+          "detail": "하델이 모닥불 쪽을 가리켰다. \"네 이야기를 들으러 사람들이 모이더군.\"",
+          "tag": "growth"
+        }
+      }
+    },
+    {
+      "id": "enough",
+      "label": "지금의 길로 충분하다",
+      "risk": "none",
+      "decline": true,
+      "preview": {
+        "benefit": "결정을 미룬다",
+        "cost": "2차 효과 없음. 레벨이 3 오르면 한 번 더 묻는다(생애 2번까지)",
+        "reversible": true
+      },
+      "outcomes": {
+        "always": {
+          "effects": [
+            {
+              "type": "set_job2",
+              "job": "defer"
+            }
+          ],
+          "line": "지금의 길로 충분하다고 했다",
+          "detail": "\"그것도 좋은 대답이지.\"",
+          "tag": "growth"
+        }
+      }
+    }
+  ]
+}

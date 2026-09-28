@@ -121,6 +121,8 @@ export function buildLifeRecord(ctx: RuleContext, input: LifeRecordInput): LifeR
     cause: input.cause,
     attitudes_used: attitudesUsed(ch),
     specialization: ch.specialization,
+    job2: ch.job2,
+    techniques: ch.techniques.map((t) => t.id),
     mutation: ch.mutation ? 'vampire' : 'none',
     peak_level: ch.level,
     summary: {

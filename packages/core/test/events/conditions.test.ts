@@ -92,6 +92,13 @@ const CASES: Record<string, [Case, Case]> = {
     { cond: { injury: 'serious' } },
   ],
   specialization: [{ cond: { specialization: ['none'] } }, { cond: { specialization: ['guardian'] } }],
+  second_job_ready: [
+    {
+      cond: { second_job_ready: true },
+      setup: (tw) => { const c = tw.w.state.character!; c.specialization = 'guardian'; c.level = 20; c.skills.melee.rank = 3 },
+    },
+    { cond: { second_job_ready: true }, setup: (tw) => { const c = tw.w.state.character!; c.specialization = 'guardian'; c.level = 19; c.skills.melee.rank = 3 } },
+  ],
   mutation: [{ cond: { mutation: 'none' } }, { cond: { mutation: 'vampire' } }],
   generation_gte: [{ cond: { generation_gte: 1 } }, { cond: { generation_gte: 2 } }],
   visited: [

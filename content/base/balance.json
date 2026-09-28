@@ -397,7 +397,7 @@
       "activity_weight_add": { "dungeon": 5, "adventure": -5 },
       "skill_use_mult": { "melee": 1.25, "survival": 1.25 },
       "growth": { "primary": "str", "secondary": "wil" },
-      "eval_armor_add": 0.2
+      "eval_armor_add": 0.2, "technique": "shield_hold"
     },
     "pathfinder": {
       "modifiers": [ { "target": "check.trap_detect", "op": "add", "value": 2 }, { "target": "check.trap_disarm", "op": "add", "value": 2 },
@@ -408,9 +408,39 @@
       "activity_weight_add": { "adventure": 10, "hunt": -5 },
       "skill_use_mult": { "search": 1.25, "mobility": 1.25 },
       "growth": { "primary": "dex", "secondary": "kno" },
-      "eval_armor_add": 0
-    }
+      "eval_armor_add": 0, "technique": "footstep_read"
+    },
+    "herbalist": {"modifiers": [{"target": "rest_recovery_mult", "op": "mul", "value": 1.2}, {"target": "check.forage", "op": "add", "value": 2}, {"target": "forage_reward_mult", "op": "mul", "value": 1.3}, {"target": "check.injury", "op": "add", "value": 1}], "activity_weight_add": {"hunt": 5, "dungeon": -5}, "skill_use_mult": {"survival": 1.25, "search": 1.25}, "growth": {"primary": "kno", "secondary": "wil"}, "eval_armor_add": 0, "technique": "herb_poultice"},
+    "merchant": {"modifiers": [{"target": "price_mult", "op": "add", "value": -0.05}, {"target": "sell_mult", "op": "add", "value": 0.1}, {"target": "check.skill.negotiation", "op": "add", "value": 2}, {"target": "coin_mult", "op": "mul", "value": 1.05}], "activity_weight_add": {"adventure": 5, "dungeon": -5}, "skill_use_mult": {"negotiation": 1.25, "mobility": 1.25}, "growth": {"primary": "soc", "secondary": "dex"}, "eval_armor_add": 0, "technique": "bargain"}
   },
+  "second_jobs": {"_comment": "05 §8.6 2차 직업(D79). 1차 효과에 더한다",
+    "warden": {"name": "파수꾼", "parent": "guardian", "modifiers": [{"target": "hp_max_mult", "op": "add", "value": 0.1}, {"target": "check.injury", "op": "add", "value": 1}, {"target": "retreat_hp_add", "op": "add", "value": 0.05}], "activity_weight_add": {}, "growth": {"primary": "str", "secondary": "wil"}, "technique": "stand_fast", "effect_text": "최대 체력 +10%, 부상 판정 +1, 체력이 5%p 더 남았을 때 물러선다"},
+    "vanguard": {"name": "선봉장", "parent": "guardian", "modifiers": [{"target": "hit", "op": "add", "value": 1, "when": {"combat_kind": ["elite_gate", "boss_gate"]}}, {"target": "damage", "op": "add", "value": 1, "when": {"combat_kind": ["elite_gate", "boss_gate"]}}, {"target": "retreat_hp_add", "op": "add", "value": -0.05}], "activity_weight_add": {"dungeon": 5}, "growth": {"primary": "str", "secondary": "dex"}, "technique": "first_blow", "effect_text": "관문·보스 전투 명중 +1·피해 +1, 체력이 5%p 덜 남을 때까지 버틴다"},
+    "surveyor": {"name": "측량사", "parent": "pathfinder", "modifiers": [{"target": "discovery_chance_mult", "op": "mul", "value": 1.2}, {"target": "check.pathfinding", "op": "add", "value": 1}], "activity_weight_add": {"adventure": 5}, "growth": {"primary": "kno", "secondary": "dex"}, "technique": "shortcut", "effect_text": "모험 발견 ×1.2, 길찾기 판정 +1"},
+    "delver": {"name": "틈새꾼", "parent": "pathfinder", "modifiers": [{"target": "check.trap_detect", "op": "add", "value": 1}, {"target": "check.trap_disarm", "op": "add", "value": 1}, {"target": "treasure_room_chance_add", "op": "add", "value": 0.05}], "activity_weight_add": {"dungeon": 10, "adventure": -5}, "growth": {"primary": "dex", "secondary": "kno"}, "technique": "gap_step", "effect_text": "함정 감지·해제 +1, 다음 방 보물 방 확률 +5%p"},
+    "apothecary": {"name": "약사", "parent": "herbalist", "modifiers": [{"target": "rest_recovery_mult", "op": "mul", "value": 1.2}, {"target": "check.injury", "op": "add", "value": 1}], "activity_weight_add": {}, "growth": {"primary": "kno", "secondary": "soc"}, "technique": "first_aid", "effect_text": "휴식 회복 +20%, 부상 판정 +1"},
+    "fieldkeeper": {"name": "들지기", "parent": "herbalist", "modifiers": [{"target": "camp_hp_mult", "op": "mul", "value": 1.3}, {"target": "check.weather", "op": "add", "value": 2}, {"target": "fatigue_gain_mult", "op": "mul", "value": 0.9}], "activity_weight_add": {"adventure": 5}, "growth": {"primary": "wil", "secondary": "kno"}, "technique": "starlit_sleep", "effect_text": "야영 체력 ×1.3, 날씨 견디기 +2, 피로가 10% 덜 쌓인다"},
+    "caravaner": {"name": "상단주", "parent": "merchant", "modifiers": [{"target": "sell_mult", "op": "add", "value": 0.1}, {"target": "coin_mult", "op": "mul", "value": 1.05}], "activity_weight_add": {"hunt": 5}, "growth": {"primary": "soc", "secondary": "kno"}, "technique": "appraiser", "effect_text": "판매가 +10%, 동전 ×1.05"},
+    "storyteller": {"name": "이야기꾼", "parent": "merchant", "modifiers": [{"target": "check.skill.negotiation", "op": "add", "value": 1}, {"target": "check.stat.soc", "op": "add", "value": 1}, {"target": "camp_fatigue_add", "op": "add", "value": -10}], "activity_weight_add": {"adventure": 5}, "growth": {"primary": "soc", "secondary": "wil"}, "technique": "fireside_tale", "effect_text": "교섭 판정 +1, 사교를 쓰는 판정 +1, 야영 피로 −10"}
+  },
+  "techniques": {"_comment": "05 §10 기술(D79). 기존 수정자 목표만 쓴다",
+    "shield_hold": {"name": "방패 버티기", "effect_text": "출정마다 한 번, 체력이 퇴각 기준에 닿으면 두 번째 숨으로 버틴다", "modifiers": [{"target": "second_wind", "op": "charges_per_sortie", "value": 1}]},
+    "footstep_read": {"name": "발소리 읽기", "effect_text": "출정마다 한 번, 매복을 알아채 일반 조우로 바꾼다", "modifiers": [{"target": "ambush_negate", "op": "charges_per_sortie", "value": 1}]},
+    "herb_poultice": {"name": "약초 찜질", "effect_text": "숨 고르기 회복 +50%", "modifiers": [{"target": "breather_mult", "op": "add", "value": 0.5}]},
+    "bargain": {"name": "흥정 솜씨", "effect_text": "상점 구매가 −5%, 판매가 +5%", "modifiers": [{"target": "price_mult", "op": "add", "value": -0.05}, {"target": "sell_mult", "op": "add", "value": 0.05}]},
+    "stand_fast": {"name": "끝까지 선다", "effect_text": "최후 판정 +2", "modifiers": [{"target": "final_check_add", "op": "add", "value": 2}]},
+    "first_blow": {"name": "첫 일격", "effect_text": "관문·보스 전투 첫 라운드 명중 +3", "modifiers": [{"target": "first_round_hit_add", "op": "add", "value": 3, "when": {"combat_kind": ["elite_gate", "boss_gate"]}}]},
+    "shortcut": {"name": "지름길", "effect_text": "이동 시간 ×0.9(원래 시간의 60% 아래로는 줄지 않는다)", "modifiers": [{"target": "travel_time_mult", "op": "mul", "value": 0.9}]},
+    "gap_step": {"name": "틈 사이 걸음", "effect_text": "함정 회피 판정 +2, 다음 방 보물 방 확률 +5%p", "modifiers": [{"target": "check.trap_evade", "op": "add", "value": 2}, {"target": "treasure_room_chance_add", "op": "add", "value": 0.05}]},
+    "first_aid": {"name": "응급 처치", "effect_text": "휴식 회복 +20%, 부상 판정 +1", "modifiers": [{"target": "rest_recovery_mult", "op": "mul", "value": 1.2}, {"target": "check.injury", "op": "add", "value": 1}]},
+    "starlit_sleep": {"name": "별 아래 잠", "effect_text": "야영 체력 ×1.3, 야영 피로 −10", "modifiers": [{"target": "camp_hp_mult", "op": "mul", "value": 1.3}, {"target": "camp_fatigue_add", "op": "add", "value": -10}]},
+    "appraiser": {"name": "값 매기는 눈", "effect_text": "판매가 +10%, 동전 ×1.05", "modifiers": [{"target": "sell_mult", "op": "add", "value": 0.1}, {"target": "coin_mult", "op": "mul", "value": 1.05}]},
+    "fireside_tale": {"name": "모닥불 이야기", "effect_text": "야영 피로 −10, 교섭 판정 +1", "modifiers": [{"target": "camp_fatigue_add", "op": "add", "value": -10}, {"target": "check.skill.negotiation", "op": "add", "value": 1}]},
+    "hadel_counter": {"name": "하델의 받아치기", "effect_text": "관문·보스 전투 명중 +1", "modifiers": [{"target": "hit", "op": "add", "value": 1, "when": {"combat_kind": ["elite_gate", "boss_gate"]}}]},
+    "fallen_rise": {"name": "넘어진 자리에서", "effect_text": "부상 판정 +2", "modifiers": [{"target": "check.injury", "op": "add", "value": 2}]},
+    "old_lamp": {"name": "옛 광부의 등불 요령", "effect_text": "공포 판정 +2", "modifiers": [{"target": "check.fear", "op": "add", "value": 2}]}
+  },
+  "job_rules": {"second_level": 20, "second_rank": 3, "represent_levels": 3, "defer_counter": "job2_defer_level", "tech_job_cap": 2, "tech_event_cap": 2, "crisis_technique": "fallen_rise", "chain_techniques": {"C01": "old_lamp"}, "note_min_level": 5, "note_chance": 0.2, "note_check": "ruin_lore", "note_dc": 12, "note_counter": "note_tried", "teacher_role": "instructor", "spec_effect_text": {"guardian": "최대 체력 +15%, 방어 +1, 관문·보스 전투 명중 +1, 부상 판정 +1", "pathfinder": "탐색 판정 +2, 함정 회피 +1, 이동 시간 −20%, 모험 발견 ×1.25", "herbalist": "휴식 회복 +20%, 채집 판정 +2, 채집 보상 ×1.3, 부상 판정 +1", "merchant": "상점 구매가 −5%, 판매가 +10%, 교섭 판정 +2, 동전 ×1.05"}, "_comment": "05 §8.5·§10, 12 §7.7(D79)"},
   "policy_defaults": {                                  "_comment": "01 §18.2, 16 §5.9. 콘텐츠 ID·수치만. 코드 열거 기본값은 저장 스키마에",
     "attitude": "adventurous", "reserve_custom_range": [0.1, 0.6], "reserve_custom_default": 0.3
   },

@@ -61,6 +61,8 @@ export const characterSchema = s({
   retire_age: intV,
   lifespan_extended: z.boolean(),
   specialization: z.enum(SPECIALIZATIONS),
+  job2: z.string().nullable().default(null), // 2차 직업(balance.second_jobs 키, 05 §8.5, D79)
+  techniques: z.array(s({ id: z.string(), source: z.enum(['job', 'event', 'note']), eff_min: effMinV })).default([]), // 05 §10
   f01_presentations: nat,
   spec_deferred_until_level: intV.nullable(),
   mutation: s({ trait_id: defId, since_age: intV, long_sleep_age: intV, thirst: z.number().min(0) }).nullable(), // 갈증: 분당 증가를 소수로 누적(I73)

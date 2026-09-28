@@ -115,7 +115,9 @@ export function registerBaseEffects(): void {
   // 특성·생애
   registerEffect('add_trait', { trait_id: ref('trait') }, '특성 획득', undefined, 2)
   registerEffect('remove_trait', { trait_id: ref('trait') }, '특성 제거', undefined, 2)
-  registerEffect('specialize', { spec: z.enum(['guardian', 'pathfinder', 'defer']) }, '전문화 확정 또는 미룸', undefined, 2)
+  registerEffect('specialize', { spec: z.enum(['guardian', 'pathfinder', 'herbalist', 'merchant', 'defer']) }, '전문화 확정 또는 미룸', undefined, 2)
+  registerEffect('set_job2', { job: z.string() }, '2차 직업 확정 또는 미룸(defer, D79)', undefined, 2)
+  registerEffect('learn_technique', { technique: z.string() }, '사건 기술 익힘(05 §10, D79)', undefined, 2)
   registerEffect('extend_lifespan', { years: posInt, cap: int.optional() }, '은퇴 나이 연장(cap 없으면 balance 상한)')
   registerEffect('mutate', { trait_id: ref('trait') }, '변이(kind mutation 특성)', undefined, 2)
   registerEffect('register_relic', { selector: z.enum(['this_item', 'uid']), priority: z.union([z.literal(1), z.literal(2)]) }, '유품 등록')

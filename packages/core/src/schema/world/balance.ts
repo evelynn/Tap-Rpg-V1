@@ -182,7 +182,22 @@ const specialization = obj({
   skill_use_mult: z.partialRecord(skill, nonNeg),
   growth: obj({ primary: z.enum(STATS), secondary: z.enum(STATS) }),
   eval_armor_add: num,
+  technique: z.string().optional(), // 전직 기술(05 §10, D79)
 })
+
+// 2차 직업(05 §8.6, D79). 1차 효과에 더한다
+const secondJob = obj({
+  name: z.string(),
+  parent: z.enum(SPECIALIZATIONS).exclude(['none']),
+  modifiers: z.array(modifier),
+  activity_weight_add: z.partialRecord(activity, int),
+  growth: obj({ primary: z.enum(STATS), secondary: z.enum(STATS) }),
+  technique: z.string(),
+  effect_text: z.string(),
+})
+
+// 기술(05 §10, D79)
+const technique = obj({ name: z.string(), effect_text: z.string(), modifiers: z.array(modifier) })
 
 const appearanceWeights = weightTable(['parent', 'partner', 'random'])
 
@@ -574,6 +589,16 @@ export const balanceSchema = obj({
   }),
   // 키는 코드 열거 SPECIALIZATIONS(none 제외, DS-30)
   specializations: noted(z.record(z.enum(SPECIALIZATIONS).exclude(['none']), specialization)),
+  second_jobs: noted(z.record(z.string(), secondJob)),
+  techniques: noted(z.record(z.string(), technique)),
+  // 05 §8.5·§10·12 §7.7(D79)
+  job_rules: obj({
+    second_level: posInt, second_rank: posInt, represent_levels: posInt, defer_counter: z.string(),
+    tech_job_cap: nonNegInt, tech_event_cap: nonNegInt,
+    crisis_technique: z.string(), chain_techniques: z.record(z.string(), z.string()),
+    note_min_level: posInt, note_chance: num, note_check: z.string(), note_dc: posInt, note_counter: z.string(), teacher_role: z.string(),
+    spec_effect_text: z.record(z.string(), z.string()),
+  }),
   policy_defaults: obj({
     attitude: ref('attitude'),
     reserve_custom_range: ratioRange,

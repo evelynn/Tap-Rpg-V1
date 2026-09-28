@@ -55,7 +55,7 @@ describe('선택 대기(10 §8)', () => {
     assert.equal(res.held, true)
     const p = tw.w.state.pending_choice!
     assert.equal(p.kind, 'fate')
-    assert.deepEqual(p.choices_visible, ['guardian', 'pathfinder', 'defer'])
+    assert.deepEqual(p.choices_visible, ['guardian', 'pathfinder', 'herbalist', 'merchant', 'defer'])
     assert.equal(tw.w.state.current_activity.state, 'awaiting_choice')
     assert.equal(tw.w.clockRunning, false)
     assert.equal(tw.w.advance(600), 0)

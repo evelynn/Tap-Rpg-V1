@@ -37,6 +37,8 @@ export const lifeRecordSchema = s({
   }).nullable(),
   attitudes_used: z.record(defId, effMinV),
   specialization: z.enum(SPECIALIZATIONS),
+  job2: z.string().nullable().default(null), // D79
+  techniques: z.array(z.string()).default([]), // D79 익힌 기술 id
   mutation: z.enum(MUTATIONS),
   peak_level: intV.min(1),
   summary: s({ sorties: nat, encounters: nat, defeats: nat, serious_injuries: nat, discoveries: nat, coins_earned: nat }),
@@ -83,6 +85,8 @@ export const familySchema = s({
   unlocks: s({ backgrounds: z.array(defId), appearances: z.array(z.string()), titles: z.array(z.string()) }),
   achievements: z.record(defId, s({ gen: intV, char_uid: uid })),
   notices_shown: z.record(z.string(), intV), // C25
+  // 가문 수첩 요령(12 §7.7, D79)
+  technique_note: s({ tech_id: z.string(), gen: intV.min(1) }).nullable().default(null),
   // 가호 별빛(01 §19, D78). 이 칸이 없던 저장은 별빛 1
   blessing: s({ charges: nat, total_used: nat }).default({ charges: 1, total_used: 0 }),
   keepsakes: z.array(s({ name: z.string(), from_def_id: defId, gen: intV, text: z.string() })),

@@ -157,7 +157,7 @@ export const ACTIVITY_STATES = [
   'town_idle', 'town_prep', 'travel', 'hunt', 'adventure', 'dungeon',
   'camp', 'return', 'treatment', 'awaiting_choice', 'awaiting_succession', 'paused',
 ] as const
-export const SPECIALIZATIONS = ['none', 'guardian', 'pathfinder'] as const
+export const SPECIALIZATIONS = ['none', 'guardian', 'pathfinder', 'herbalist', 'merchant'] as const // 1차 직업(05 §8, D79)
 export const MUTATIONS = ['none', 'vampire'] as const
 export const INJURY_GRADES = ['light', 'serious'] as const
 export const END_KINDS = ['retired', 'died', 'long_sleep'] as const

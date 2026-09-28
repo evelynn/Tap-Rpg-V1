@@ -64,6 +64,13 @@ export function collectModSources(ctx: RuleContext): ModSource[] {
     const spec = b.specializations[ch.specialization]
     if (spec) out.push({ kind: 'specialization', key: ch.specialization, label: SPEC_LABELS[ch.specialization], modifiers: spec.modifiers })
   }
+  // 2차 직업과 기술(05 §8.6·§10, D79)
+  const job2 = ch.job2 ? b.second_jobs[ch.job2] : undefined
+  if (job2 && ch.job2) out.push({ kind: 'specialization', key: ch.job2, label: job2.name, modifiers: job2.modifiers })
+  for (const t of ch.techniques) {
+    const def = b.techniques[t.id]
+    if (def) out.push({ kind: 'specialization', key: t.id, label: def.name, modifiers: def.modifiers })
+  }
 
   // 대기 scope와 만료된 eff_min 수정자는 빼고 모은다
   const temps = [...ch.temp_mods, ...(sortie?.temp_mods ?? [])].filter(

@@ -49,6 +49,7 @@ const BASE: [string, z.ZodType, string][] = [
   ['coins_gte', int, '소지금 ≥'],
   ['injury', z.enum(['none', 'light', 'serious', 'any']), '부상 상태'],
   ['specialization', z.array(z.enum(SPECIALIZATIONS)), '전문화'],
+  ['second_job_ready', z.literal(true), '2차 전직 조건(05 §8.5, D79)'],
   ['mutation', z.enum(MUTATIONS), '변이'],
   ['generation_gte', int, '가문 대수 ≥'],
   ['visited', ref('region'), '이번 생애에 장소 방문'],
