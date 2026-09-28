@@ -65,6 +65,14 @@ export const itemSchema = def({
   visual_group: z.string(),
   story_template: template,
   description: z.string(),
+  // 장비 주석 칸(16 §2.5, D80): 사연·주인·얻는 곳·{npc} 이름·비밀. 비밀은 reveal 시점에만 보인다
+  lore: obj({
+    tale: z.string().min(1),
+    owner: z.string().optional(),
+    found: z.string().optional(),
+    npc: z.string().optional(),
+    secret: obj({ text: z.string().min(1), reveal: z.enum(['owned', 'inherited']) }).optional(),
+  }),
 }).superRefine((it, ctx) => {
   const add = (path: string, message: string, rule?: string) =>
     ctx.addIssue({ code: 'custom', path: [path], message, ...(rule ? { params: { rule } } : {}) })
@@ -83,6 +91,11 @@ export const itemSchema = def({
     const shopOnly = it.sources.length > 0 && it.sources.every((s) => s.kind === 'shop' || s.kind === 'guild_special')
     if (shopOnly && it.reacquire) add('reacquire', '상점 전용 고유 장비는 reacquire를 두지 않는다', 'V15')
     if (!shopOnly && !it.reacquire) add('reacquire', '고유 장비는 재획득 대체 reacquire가 필요하다(08 §9.5)', 'V15')
+  }
+  // D80: 사연 틀이 {npc}를 쓰면 주석 칸에 그 이름이 있어야 한다
+  if (/\{npc[}:]/.test(it.story_template) && !it.lore.npc) add('lore', 'story_template이 {npc}를 쓰면 lore.npc가 필요하다(16 §2.5, D80)')
+  for (const [k, v] of [['tale', it.lore.tale], ['owner', it.lore.owner], ['found', it.lore.found], ['secret', it.lore.secret?.text]] as const) {
+    if (v && [...v].length > 120) add('lore', `lore.${k}는 120자 이내(D80)`)
   }
   // V16 저주 장비(offer_purchase 풀 검사는 W1 교차)
   if (it.cursed && it.shop?.length) add('shop', '저주 장비는 상점에 진열하지 않는다', 'V16')

@@ -18,5 +18,6 @@
   "sellable": false,
   "visual_group": "V1",
   "story_template": "{generation}대 {name:이/가} 이끼숲의 샘에서 받았다.",
-  "description": "마른 가지 끝에서 반딧불이 꺼지지 않는다. 탐색 판정 +1, 매복 확률 −5%p"
+  "description": "마른 가지 끝에서 반딧불이 꺼지지 않는다. 탐색 판정 +1, 매복 확률 −5%p",
+  "lore": { "tale": "이끼숲 샘가에 떨어진 마른 가지다. 반딧불 한 마리가 가지 끝을 떠나지 않는다.", "found": "이끼숲의 샘" }
 }

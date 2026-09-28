@@ -113,6 +113,19 @@ export interface ItemRow {
   equipped: boolean
   order: 'equip' | 'unequip' | null // 출정 중 예약(03 §5.3.1)
   desc: string // 장비 설명(16 §2.5 description, 늘 보임 D77)
+  lore: string[] // 장비 주석(16 §2.5 lore, D80): 펼치면 보인다
+}
+
+// 장비 주석 줄(16 §2.5 lore, D80). 비밀은 가문이 가진 적 있거나(owned) 유품으로 이어진 적 있을 때(inherited)만
+export function loreLines(world: World, defId: string): string[] {
+  const { state, content } = world
+  const lore = content.get('item', defId).lore
+  const s = lore.secret
+  const open = !!s && (s.reveal === 'owned'
+    ? !!state.family.codex.items[defId]
+    : Object.values(state.item_instances).some((i) => i.def_id === defId && i.inherited_from_gen !== undefined) ||
+      state.family.chronicle.some((r) => r.relics_passed.some((u) => state.item_instances[u]?.def_id === defId)))
+  return [lore.tale, ...(lore.owner ? [`주인 · ${lore.owner}`] : []), ...(lore.found ? [`얻는 곳 · ${lore.found}`] : []), ...(open ? [`비밀 · ${s!.text}`] : [])]
 }
 
 export interface CharacterModel {
@@ -143,6 +156,7 @@ function itemRow(world: World, uid: string, equipped: boolean): ItemRow {
     cursed: def.cursed, locked: inst.locked, relic: relic as 1 | 2 | null, equipped,
     order: world.state.inventory.equip_orders?.find((o) => o.uid === uid)?.op ?? null,
     desc: def.description,
+    lore: loreLines(world, def.id),
   }
 }
 
@@ -312,7 +326,7 @@ export function treeModel(world: World): TreeNode[] {
 // ── 가문 탭 도감(03 §5.5, 12 §7.2): 장비·적·장소는 겪은 것만 이름을 보인다. 장비 격자 그림과 '본 적 있음'(상점 진열)
 // 단계는 아직 없다(그림은 아트 뒤, 본 적 기록은 저장 칸이 없다) ──
 
-export interface CodexSection { title: string; found: number; total: number; rows: string[] }
+export interface CodexSection { title: string; found: number; total: number; rows: string[]; notes?: string[][] } // notes: 줄마다 펼침 글(장비 주석, D80)
 
 export function codexModel(world: World): { sections: CodexSection[]; unlocks: string[] } {
   const { content, state } = world
@@ -327,9 +341,11 @@ export function codexModel(world: World): { sections: CodexSection[]; unlocks: s
     rows: list.map((d) => (got[d.id] ? `${d.name}${detail(d)}` : '???')),
   })
   const u = state.family.unlocks
+  const itemSec = section('장비', items, cx.items, (d) => ` · ${grades(cx.items[d.id]!.grades_seen)} · ${cx.items[d.id]!.first_gen}대`)
+  itemSec.notes = items.map((d) => (cx.items[d.id] ? loreLines(world, d.id) : []))
   return {
     sections: [
-      section('장비', items, cx.items, (d) => ` · ${grades(cx.items[d.id]!.grades_seen)} · ${cx.items[d.id]!.first_gen}대`),
+      itemSec,
       section('적', enemies, cx.enemies, (d) => ` · 처치 ${num(cx.enemies[d.id]!.defeats)}`),
       section('장소', places, cx.locations, (d) => ` · ${cx.locations[d.id]!.first_gen}대`),
       { title: '사건', found: events.filter((e) => cx.events[e.id]).length, total: events.length, rows: [] }, // 내용은 겪은 것만(03 §5.5), 목록은 수만
@@ -345,7 +361,7 @@ export function codexModel(world: World): { sections: CodexSection[]; unlocks: s
 
 const HOW: Record<string, string> = { shop: '샀다', aid: '받았다', start: '받았다' }
 
-export interface RelicModel { slots: (string | null)[]; past: { name: string; grade: { label: string; color: string }; lines: string[] }[] }
+export interface RelicModel { slots: (string | null)[]; past: { name: string; grade: { label: string; color: string }; lines: string[]; lore: string[] }[] }
 
 export function relicsModel(world: World): RelicModel {
   const { state, content } = world
@@ -362,8 +378,8 @@ export function relicsModel(world: World): RelicModel {
     const a = inst.acquired
     const def = content.get('item', inst.def_id)
     const place = content.has('region', a.location) ? content.get('region', a.location).name : a.location
-    const who = { generation: a.gen, name: nameOf(a.char_uid) }
-    // 사연은 장비의 story_template(16 §2.5). {npc}처럼 채울 값이 없는 틀이면 획득 기록으로 대신한다
+    const who = { generation: a.gen, name: nameOf(a.char_uid), ...(def.lore.npc ? { npc: def.lore.npc } : {}) }
+    // 사연은 장비의 story_template(16 §2.5), {npc}는 lore.npc(D80). 채울 값이 없는 틀이면 획득 기록으로 대신한다
     let story: string
     try {
       story = renderTemplate(def.story_template, who)
@@ -373,6 +389,7 @@ export function relicsModel(world: World): RelicModel {
     return {
       name: itemName(world, inst), grade: GRADE[inst.grade] ?? GRADE.common!,
       lines: [story, ...inst.history.map((h) => `${h.gen}대 ${h.age}세 · ${h.text}`)],
+      lore: loreLines(world, def.id).filter((l) => !l.startsWith('얻는 곳 · ')), // 사연·주인·공개된 비밀(03 §5.5, D80)
     }
   })
   return { slots, past }

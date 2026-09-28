@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, codexModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, recentModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
+import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, codexModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, loreLines, policyModel, recentModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
 
 let content: Content
 
@@ -158,6 +158,18 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     assert.ok(destinationModel(w).places.every((o) => o.ask === o.reckless))
   })
 
+  it('장비 주석(D80): 펼침에 사연·주인·얻는 곳, 비밀은 가진 적(owned)·유품으로 이어진 적(inherited)이 있을 때만', () => {
+    const w = newWorld()
+    const weapon = characterModel(w)!.equipment.find((e) => !('empty' in e) && e.slot === '무기') as { lore: string[] }
+    assert.equal(weapon.lore[0], w.content.get('item', 'W01').lore.tale)
+    assert.ok(weapon.lore.some((l) => l.startsWith('비밀 · ')), '처음 받은 검은 가진 적 있음')
+    assert.ok(!loreLines(w, 'W05').some((l) => l.startsWith('비밀 · ')), '가진 적 없는 장비의 비밀은 숨긴다')
+    assert.ok(!loreLines(w, 'W07').some((l) => l.startsWith('비밀 · ')))
+    const inst = Object.values(w.state.item_instances)[0]!
+    w.state.item_instances.fake = { ...inst, uid: 'fake', def_id: 'W07', inherited_from_gen: 1 }
+    assert.ok(loreLines(w, 'W07').includes(`비밀 · ${w.content.get('item', 'W07').lore.secret!.text}`), '유품으로 이어지면 공개')
+  })
+
   it('계승 대기 중이면 끝난 인물을 가계도·연대기에 두 번 그리지 않는다(독립 검증 7)', () => {
     const w = newWorld()
     for (let i = 0; i < 20000 && w.state.current_activity.state !== 'awaiting_succession'; i++) {
@@ -205,5 +217,8 @@ describe('상세 창 뷰 모델(03 §5)', () => {
       assert.ok(s.found > 0 && s.found <= s.total, s.title)
       assert.equal(s.rows.filter((x) => x !== '???').length, s.found, s.title)
     }
+    // 도감 장비 칸: 가진 적 있는 칸만 주석 글이 있다(D80)
+    const it0 = cx.sections[0]!
+    it0.rows.forEach((r, i) => assert.equal(it0.notes![i]!.length > 0, r !== '???', r))
   })
 })

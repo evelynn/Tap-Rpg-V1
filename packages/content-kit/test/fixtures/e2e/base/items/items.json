@@ -1,14 +1,14 @@
 [
   {
     "id": "W01", "name": "짧은 검", "slot": "weapon", "stat": "str", "tier": 1, "grade_mode": "rolled", "unique": false, "cursed": false,
-    "sources": [], "sellable": true, "visual_group": "sword", "story_template": "{name:이/가} 처음 든 검", "description": "지원품 검"
+    "sources": [], "sellable": true, "visual_group": "sword", "story_template": "{name:이/가} 처음 든 검", "description": "지원품 검", "lore": { "tale": "이야기" }
   },
   {
     "id": "A01", "name": "누비옷", "slot": "armor", "tier": 1, "grade_mode": "rolled", "unique": false, "cursed": false,
-    "sources": [], "sellable": true, "visual_group": "cloth", "story_template": "{name:이/가} 입던 옷", "description": "천 옷"
+    "sources": [], "sellable": true, "visual_group": "cloth", "story_template": "{name:이/가} 입던 옷", "description": "천 옷", "lore": { "tale": "이야기" }
   },
   {
     "id": "A02", "name": "가죽 조끼", "slot": "armor", "tier": 1, "grade_mode": "rolled", "unique": false, "cursed": false,
-    "sources": [], "sellable": true, "visual_group": "leather", "story_template": "{name:이/가} 첫 출정에서 얻은 조끼", "description": "가죽 조끼"
+    "sources": [], "sellable": true, "visual_group": "leather", "story_template": "{name:이/가} 첫 출정에서 얻은 조끼", "description": "가죽 조끼", "lore": { "tale": "이야기" }
   }
 ]

@@ -56,7 +56,7 @@ export const BACKGROUNDS = {
 
 const item = (id: string, name: string, slot: string, tier: number, extra: Record<string, unknown> = {}) => ({
   id, name, slot, tier, grade_mode: 'rolled', unique: false, cursed: false,
-  sources: [{ kind: 'shop' }], sellable: true, visual_group: 'V', story_template: '샀다.', description: '장비',
+  sources: [{ kind: 'shop' }], sellable: true, visual_group: 'V', story_template: '샀다.', description: '장비', lore: { tale: '장비 이야기' },
   ...(slot === 'weapon' ? { stat: 'str' } : {}),
   ...extra,
 })

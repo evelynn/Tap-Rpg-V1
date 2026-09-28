@@ -241,6 +241,8 @@ export class DetailWindow {
     row.onclick = () => this.toggle(key)
     wrap.append(row, h('div', { class: 'd-note d-indent' }, it.desc)) // 장비 설명은 늘 보인다(D77)
     if (this.open.has(key)) {
+      // 장비 주석(16 §2.5 lore, D80): 사연·주인·얻는 곳, 공개된 비밀
+      wrap.append(...it.lore.map((l) => h('div', { class: `d-note d-indent${l.startsWith('비밀 · ') ? ' d-strong' : ''}` }, l)))
       const w = this.world
       const town = inTown ? undefined : '마을에서만 할 수 있습니다'
       const bagFull = w.state.inventory.bag.length >= w.content.balance.stats.bag_slots
@@ -495,7 +497,12 @@ export class DetailWindow {
         s.rows.length ? h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸') : null)
       if (s.rows.length) head.onclick = () => this.toggle(key)
       const sec = h('div', { class: 'd-sec' }, head)
-      if (this.open.has(key)) for (const r of s.rows) sec.append(h('div', { class: `d-sub${r === '???' ? ' d-dim' : ''}` }, r))
+      if (this.open.has(key)) {
+        s.rows.forEach((r, i) => {
+          sec.append(h('div', { class: `d-sub${r === '???' ? ' d-dim' : ''}` }, r))
+          for (const l of s.notes?.[i] ?? []) sec.append(h('div', { class: 'd-note d-indent2' }, l))
+        })
+      }
       return sec
     })
     out.push(h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '가문 해금'),
@@ -512,6 +519,7 @@ export class DetailWindow {
     for (const r of m.past) {
       past.append(h('div', { class: 'd-row' }, r.name, ' ', h('span', { class: 'd-grade', style: `color:${r.grade.color}` }, r.grade.label)))
       for (const l of r.lines) past.append(h('div', { class: 'd-sub' }, `· ${l}`))
+      for (const l of r.lore) past.append(h('div', { class: 'd-note d-indent' }, l))
     }
     return [slots, past]
   }

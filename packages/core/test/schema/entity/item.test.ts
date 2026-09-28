@@ -16,7 +16,7 @@ const W07 = {
   sellable: false, appraisal_override: 5500,
   visual_group: 'V07',
   story_template: '{generation}대 {name:이/가} 무너진 갱도 다리를 다시 놓고 {npc}에게 받았다.',
-  description: '작은 종이 먼저 운다.',
+  description: '작은 종이 먼저 운다.', lore: { tale: '이야기', npc: '세나', secret: { text: '무서우면 흔들어', reveal: 'inherited' } },
 }
 
 // J01 구조자 고정(5.5)
@@ -32,7 +32,7 @@ const J01 = {
   sources: [{ kind: 'event', id: 'C02-3' }],
   reacquire: { pool: ['J02'], grade: 'rare' },
   sellable: false, appraisal_override: 211,
-  visual_group: 'V_J01', story_template: '토리가 고맙다며 목에 걸어 주었다.', description: '위험할 때 불면 누군가 온다.',
+  visual_group: 'V_J01', story_template: '토리가 고맙다며 목에 걸어 주었다.', description: '위험할 때 불면 누군가 온다.', lore: { tale: '이야기' },
 }
 
 // R03 1회용 유물
@@ -47,7 +47,7 @@ const R03 = {
   sources: [{ kind: 'event', id: 'F02', detail: 'bottle' }],
   reacquire: { pool: ['W08', 'A06'], grade: 'rare' },
   sellable: false, appraisal_override: 22500,
-  visual_group: 'V_R03', story_template: '별잠 샘에서 물을 병에 담아 돌아왔다.', description: '별잠 샘의 물 한 모금.',
+  visual_group: 'V_R03', story_template: '별잠 샘에서 물을 병에 담아 돌아왔다.', description: '별잠 샘의 물 한 모금.', lore: { tale: '이야기' },
 }
 
 // W08: shop 2항목(대장간 금패 + 길드 특별 상점 pick_group) + 흡혈귀 수정자(09 §7.7)
@@ -66,7 +66,7 @@ const W08 = {
     { facility: 'guild', guild_rank_req: 'gold', grades: ['rare'], pick_group: 'guild_t2' },
   ],
   sellable: true,
-  visual_group: 'V_W08', story_template: '중층 은빛 광맥 옆에서 찾았다.', description: '은빛 광맥이 어둠 속 날갯짓을 비춘다.',
+  visual_group: 'V_W08', story_template: '중층 은빛 광맥 옆에서 찾았다.', description: '은빛 광맥이 어둠 속 날갯짓을 비춘다.', lore: { tale: '이야기' },
 }
 
 // J05: 장소 전용 드롭(sources drop 항목) + reacquire.reroll, 저주
@@ -83,7 +83,7 @@ const J05 = {
   sources: [{ kind: 'drop', id: 'D3', room: 'treasure', grade_is: 'rare', chance: 0.5, once_per_life: true }],
   reacquire: { reroll: true },
   sellable: true, appraisal_override: 12000,
-  visual_group: 'V_J05', story_template: '심층 상자 속에서 혼자 울리고 있었다.', description: '종 조각이 숨은 길을 속삭인다.',
+  visual_group: 'V_J05', story_template: '심층 상자 속에서 혼자 울리고 있었다.', description: '종 조각이 숨은 길을 속삭인다.', lore: { tale: '이야기' },
 }
 
 // R01: 길드 특별 상점 전용 고유 — reacquire 금지
@@ -95,7 +95,7 @@ const R01 = {
   sources: [{ kind: 'guild_special' }],
   shop: [{ facility: 'guild', guild_rank_req: 'silver' }],
   price_override: 2850, sellable: true,
-  visual_group: 'V_R01', story_template: '하델이 건넸다.', description: '위험한 순간 방울이 울리면 길이 열린다.',
+  visual_group: 'V_R01', story_template: '하델이 건넸다.', description: '위험한 순간 방울이 울리면 길이 열린다.', lore: { tale: '이야기' },
 }
 
 // J02: 등급별 수정자
@@ -109,7 +109,7 @@ const J02 = {
   },
   sources: [{ kind: 'drop', id: 'H1' }],
   sellable: true,
-  visual_group: 'V_J02', story_template: '들쥐 굴에서 반짝이던 것이다.', description: '가끔 운이 따른다.',
+  visual_group: 'V_J02', story_template: '들쥐 굴에서 반짝이던 것이다.', description: '가끔 운이 따른다.', lore: { tale: '이야기' },
 }
 
 // W01: 기본 성능 덮어쓰기와 판매가 덮어쓰기
@@ -120,7 +120,7 @@ const W01 = {
   cursed: false,
   sources: [{ kind: 'start' }, { kind: 'aid' }],
   sellable: true, sell_price_override: 5,
-  visual_group: 'V01', story_template: '길드에서 처음 받았다.', description: '이가 빠지고 녹이 슬었다. 그래도 첫 검이다.',
+  visual_group: 'V01', story_template: '길드에서 처음 받았다.', description: '이가 빠지고 녹이 슬었다. 그래도 첫 검이다.', lore: { tale: '이야기' },
 }
 
 describe('item: 검증 기준 예시', () => {
@@ -164,6 +164,12 @@ describe('item: 그 밖의 규칙', () => {
   it('모르는 필드·null 생략 필드는 실패(strict)', () => {
     assertIssue(itemSchema, edit(W07, { note: 'x' }), '')
     assertIssue(itemSchema, edit(W07, { shop: null }), 'shop')
+  })
+  it('주석 칸(D80): lore 필수, {npc}를 쓰면 lore.npc 필수, 글은 120자 이내, 비밀은 열리는 때가 필요', () => {
+    assertIssue(itemSchema, edit(W01, { lore: undefined }), 'lore')
+    assertIssue(itemSchema, edit(W07, { lore: { tale: '이야기' } }), 'lore')
+    assertIssue(itemSchema, edit(W01, { lore: { tale: '가'.repeat(121) } }), 'lore')
+    assertIssue(itemSchema, edit(W01, { lore: { tale: '이야기', secret: { text: '비밀' } } }), 'lore.secret.reveal')
   })
   it('수정자 target 오류는 그 경로로', () => {
     assertIssue(itemSchema, edit(W08, { modifiers: [{ target: 'no_such_target', op: 'add', value: 1 }] }), 'modifiers.0.target')

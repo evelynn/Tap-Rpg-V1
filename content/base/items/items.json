@@ -7,7 +7,8 @@
     "sellable": true, "sell_price_override": 5,
     "visual_group": "V1",
     "story_template": "{generation}대 {name:이/가} 길드에서 처음 받았다.",
-    "description": "이가 빠지고 녹이 슬었다. 그래도 첫 검이다."
+    "description": "이가 빠지고 녹이 슬었다. 그래도 첫 검이다.",
+    "lore": {"tale": "길드 창고 맨 아래 칸에서 나온 검이다. 누가 처음 썼는지는 장부에도 남아 있지 않다.", "owner": "여러 신입이 거쳐 간 길드의 첫 검", "found": "도토리 여울 길드 출장소 창고", "secret": {"text": "칼자루 안쪽에 칼끝으로 새긴 작은 이름이 여섯 개 있다. 모두 무사히 은퇴한 사람들이다.", "reveal": "owned"}}
   },
   {
     "id": "W02", "name": "여울 대장간 한손검", "slot": "weapon", "tier": 1, "grade_mode": "rolled", "unique": false,
@@ -18,7 +19,8 @@
     "sellable": true,
     "visual_group": "V1",
     "story_template": "{name:이/가} 첫 벌이로 {npc}에게 샀다.",
-    "description": "여울 대장간의 표준 한손검."
+    "description": "여울 대장간의 표준 한손검.",
+    "lore": {"tale": "보름이 한 해에 스무 자루씩 벼리는 표준 한손검이다. 칼등에 망치 자국이 꼭 세 번씩 찍혀 있다.", "found": "여울 대장간 진열대", "npc": "보름"}
   },
   {
     "id": "W03", "name": "버들가지 단검", "slot": "weapon", "tier": 1, "grade_mode": "rolled", "unique": false,
@@ -30,7 +32,8 @@
     "sellable": true,
     "visual_group": "V2",
     "story_template": "여울가 풀숲에서 주운 단검이다.",
-    "description": "먼저 휘두를 때 손에 착 붙는다. 선제 공격 라운드 명중 +1"
+    "description": "먼저 휘두를 때 손에 착 붙는다. 선제 공격 라운드 명중 +1",
+    "lore": {"tale": "여울가 버드나무 가지처럼 가늘고 잘 휜다. 손잡이에 감긴 풀끈은 누가 감았는지 모른다.", "found": "여울가 풀숲, 여울 대장간", "secret": {"text": "풀끈을 풀면 안쪽에 '토리'라는 서툰 글씨가 있다. 광대 집안 아이의 나무칼을 누군가 쇠로 다시 벼려 준 것이다.", "reveal": "owned"}}
   },
   {
     "id": "W04", "name": "순찰대 장검", "slot": "weapon", "tier": 2, "grade_mode": "rolled", "unique": false,
@@ -41,7 +44,8 @@
     "sellable": true,
     "visual_group": "V3",
     "story_template": "{name:이/가} 동패를 받던 날 샀다.",
-    "description": "여울 순찰대가 쓰던 장검."
+    "description": "여울 순찰대가 쓰던 장검.",
+    "lore": {"tale": "여울 순찰대가 해마다 새로 맞추는 장검이다. 물러난 칼은 대장간을 거쳐 다시 팔린다.", "owner": "여울 순찰대", "found": "여울 대장간"}
   },
   {
     "id": "W05", "name": "광부의 곡괭이", "slot": "weapon", "tier": 2, "grade_mode": "rolled", "unique": false,
@@ -56,7 +60,8 @@
     "visual_group": "V5",
     "story_template": "상층 코볼트 굴에서 끌어냈다.",
     "description": "광맥을 잘 찾아 파고, 코볼트가 이 곡괭이를 싫어한다. 광맥 채취 보상 +50%, 코볼트 계열 대상 피해 +2",
-    "_note": "폐광 광맥은 16 §2.3 장소 태그 mine(W05)으로 가린다"
+    "_note": "폐광 광맥은 16 §2.3 장소 태그 mine(W05)으로 가린다",
+    "lore": {"tale": "코볼트들이 광부들에게서 빼앗아 쓰던 곡괭이다. 자루 끝에 광부 조합의 불꽃 표식이 남아 있다.", "owner": "종소리 폐광의 옛 광부", "found": "폐광 상층 코볼트 굴", "secret": {"text": "불꽃 표식 옆에 '도한'이라는 이름이 긁혀 있다. 세나의 아버지가 쓰던 곡괭이다.", "reveal": "owned"}}
   },
   {
     "id": "W06", "name": "늑대송곳니 창", "slot": "weapon", "tier": 3, "grade_mode": "rolled", "unique": false,
@@ -68,7 +73,8 @@
     "sellable": true,
     "visual_group": "V4",
     "story_template": "늑대 언덕 바위틈에 꽂혀 있었다.",
-    "description": "늑대의 움직임을 읽기 쉽다. 늑대 계열 대상 명중 +2"
+    "description": "늑대의 움직임을 읽기 쉽다. 늑대 계열 대상 명중 +2",
+    "lore": {"tale": "창끝에 늑대 송곳니를 박아 넣었다. 언덕 늑대들은 이 창 냄새를 맡으면 잠시 머뭇거린다.", "found": "늑대 언덕 바위틈, 여울 대장간"}
   },
   {
     "id": "W07", "name": "종이 달린 짧은 검", "slot": "weapon", "tier": 3, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
@@ -83,7 +89,8 @@
     "sellable": false,
     "visual_group": "V1",
     "story_template": "{generation}대 {name:이/가} 무너진 갱도 다리를 다시 놓고 {npc}에게 받았다.",
-    "description": "작은 종이 먼저 운다. 공포 판정 +2. 출정당 1회, 매복 시도를 일반 조우로 바꾼다"
+    "description": "작은 종이 먼저 운다. 공포 판정 +2. 출정당 1회, 매복 시도를 일반 조우로 바꾼다",
+    "lore": {"tale": "도한이 폐광에 들어가기 전 집에 두고 간 검이다. 손잡이의 작은 종은 딸 세나가 달아 주었다.", "owner": "돌아오지 않은 광부 도한", "found": "무너진 갱도 다리를 다시 놓은 날, 세나에게서", "npc": "세나", "secret": {"text": "종 안쪽에 '무서우면 흔들어'라고 새겨져 있다. 도한이 어린 딸에게 남긴 말이다.", "reveal": "inherited"}}
   },
   {
     "id": "W08", "name": "은빛 광맥 장검", "slot": "weapon", "tier": 4, "grade_mode": "rolled", "unique": false,
@@ -102,7 +109,8 @@
     "sellable": true,
     "visual_group": "V3",
     "story_template": "중층 은빛 광맥 옆에서 찾았다.",
-    "description": "은빛 광맥이 어둠 속 날갯짓을 비춘다. 박쥐 계열 대상 피해 +3"
+    "description": "은빛 광맥이 어둠 속 날갯짓을 비춘다. 박쥐 계열 대상 피해 +3",
+    "lore": {"tale": "중층 은빛 광맥에서 캔 은을 섞어 벼렸다. 어둠 속에서 칼날이 희미하게 빛난다.", "found": "폐광 중층, 여울 대장간, 길드 특별 상점"}
   },
   {
     "id": "W09", "name": "종탑 강철검", "slot": "weapon", "tier": 5, "grade_mode": "rolled", "unique": false,
@@ -113,7 +121,8 @@
     "sellable": true,
     "visual_group": "V3",
     "story_template": "별패를 받은 해에 주문했다.",
-    "description": "종탑 대장간이 마지막으로 벼린 검."
+    "description": "종탑 대장간이 마지막으로 벼린 검.",
+    "lore": {"tale": "종탑 대장간이 문을 닫기 전 마지막으로 벼린 검 가운데 하나다. 칼날에 종탑 그림자가 비친다.", "found": "여울 대장간 주문"}
   },
   {
     "id": "W10", "name": "파수꾼의 종추", "slot": "weapon", "tier": 5, "grade_mode": "fixed", "fixed_grade": "legendary", "unique": true,
@@ -128,7 +137,8 @@
     "sellable": false,
     "visual_group": "V6",
     "story_template": "{name:이/가} 부서진 종을 멈추고 거두었다.",
-    "description": "종추가 울리면 적이 먼저 움츠린다. 관문 전투 첫 라운드 적 명중 −3, 공포 판정 자동 성공"
+    "description": "종추가 울리면 적이 먼저 움츠린다. 관문 전투 첫 라운드 적 명중 −3, 공포 판정 자동 성공",
+    "lore": {"tale": "부서진 종의 파수꾼이 쥐고 있던 종추다. 흔들면 폐광 전체가 멀리서 함께 울리는 것 같다.", "owner": "부서진 종의 파수꾼", "found": "폐광 심층, 종의 방", "secret": {"text": "손잡이에 처음 종을 단 종지기의 이름이 남아 있다. 파수꾼은 그가 돌아오기를 기다리며 종을 지켰다.", "reveal": "inherited"}}
   },
   {
     "id": "A01", "name": "누빈 천옷", "slot": "armor", "tier": 1, "grade_mode": "fixed", "fixed_grade": "common", "unique": false,
@@ -138,7 +148,8 @@
     "sellable": true, "sell_price_override": 5,
     "visual_group": "천옷 / 투구 없음",
     "story_template": "떠나는 날 아침에 받았다.",
-    "description": "어머니가 누벼 준 천옷. 칼은 막지 못한다."
+    "description": "어머니가 누벼 준 천옷. 칼은 막지 못한다.",
+    "lore": {"tale": "떠나는 날 아침 가족이 누벼 준 천옷이다. 칼은 막지 못해도 추운 밤은 막아 준다.", "owner": "떠나보낸 가족", "found": "집을 떠나는 날 아침", "secret": {"text": "안감에 작은 부적 주머니가 꿰매져 있다. 안에는 말린 들꽃 한 송이가 들어 있다.", "reveal": "owned"}}
   },
   {
     "id": "A02", "name": "여울 가죽조끼", "slot": "armor", "tier": 1, "grade_mode": "rolled", "unique": false,
@@ -149,7 +160,8 @@
     "visual_group": "가죽 / 투구 없음",
     "story_template": "들쥐 굴 옆에서 주운 조끼다.",
     "description": "여울 사람들이 즐겨 입는 가죽조끼.",
-    "_note": "첫 인물 보장 드롭(01 §9.5)은 balance.first_sortie.guaranteed_drop이 준다. drop 획득처로 적으면 H1 일반 드롭 후보가 되므로 적지 않는다"
+    "_note": "첫 인물 보장 드롭(01 §9.5)은 balance.first_sortie.guaranteed_drop이 준다. drop 획득처로 적으면 H1 일반 드롭 후보가 되므로 적지 않는다",
+    "lore": {"tale": "여울 사람들이 밭일에도 사냥에도 입는 가죽조끼다. 주머니가 여섯 개나 달려 있다.", "found": "여울 대장간, 들쥐 굴 옆"}
   },
   {
     "id": "A03", "name": "순찰대 가죽갑옷", "slot": "armor", "tier": 2, "grade_mode": "rolled", "unique": false,
@@ -159,7 +171,8 @@
     "sellable": true,
     "visual_group": "가죽 / 가죽 모자",
     "story_template": "동패를 받고 처음 산 갑옷이다.",
-    "description": "순찰대가 입던 두툼한 가죽갑옷."
+    "description": "순찰대가 입던 두툼한 가죽갑옷.",
+    "lore": {"tale": "순찰대가 입던 두툼한 가죽갑옷이다. 어깨에 순찰대 문양을 떼어 낸 자국이 남아 있다.", "owner": "여울 순찰대", "found": "여울 대장간"}
   },
   {
     "id": "A04", "name": "광부의 두꺼운 외투", "slot": "armor", "tier": 2, "grade_mode": "rolled", "unique": false,
@@ -173,7 +186,8 @@
     "visual_group": "천옷 / 광부 모자",
     "story_template": "{npc}의 가게 구석에 걸려 있었다.",
     "description": "먼지를 덜 마신다. 폐광(D1~D3, H4, H5) 피로 획득 −30%",
-    "_note": "폐광(D1~D3, H4, H5)은 16 §2.3 장소 태그 dusty(TI05·A04)로 가린다"
+    "_note": "폐광(D1~D3, H4, H5)은 16 §2.3 장소 태그 dusty(TI05·A04)로 가린다",
+    "lore": {"tale": "광부들이 폐광 먼지를 막으려고 입던 외투다. 미루가 헌 외투를 기워 가게에 걸어 두었다.", "owner": "옛 광부들", "found": "잡화점 구석, 폐광 상층", "npc": "미루"}
   },
   {
     "id": "A05", "name": "박쥐가죽 망토옷", "slot": "armor", "tier": 3, "grade_mode": "rolled", "unique": false,
@@ -187,7 +201,8 @@
     "sellable": true,
     "visual_group": "가죽 / 두건",
     "story_template": "중층 박쥐 둥지 아래서 찾았다.",
-    "description": "발소리가 가볍고 어둠에 섞인다. 기동 판정 +1, 밤 출정 은밀 판정 +1"
+    "description": "발소리가 가볍고 어둠에 섞인다. 기동 판정 +1, 밤 출정 은밀 판정 +1",
+    "lore": {"tale": "종굴 박쥐 가죽을 이어 만든 망토옷이다. 걸을 때 소리가 거의 나지 않는다.", "found": "폐광 중층 박쥐 둥지 아래, 여울 대장간"}
   },
   {
     "id": "A06", "name": "코볼트 판금 조각갑", "slot": "armor", "tier": 4, "grade_mode": "rolled", "unique": false,
@@ -204,7 +219,8 @@
     "sellable": true,
     "visual_group": "금속 / 조각 투구",
     "story_template": "코볼트 창고에서 끌어낸 갑옷이다.",
-    "description": "단단하지만 무겁다. 이동 시간 +10%"
+    "description": "단단하지만 무겁다. 이동 시간 +10%",
+    "lore": {"tale": "코볼트들이 광산 철판을 두드려 만든 갑옷이다. 모양은 투박해도 무척 단단하다.", "owner": "폐광의 코볼트", "found": "폐광 중층·심층 창고, 여울 대장간"}
   },
   {
     "id": "A07", "name": "종지기의 청동 흉갑", "slot": "armor", "tier": 5, "grade_mode": "rolled", "unique": false,
@@ -215,7 +231,8 @@
     "sellable": true,
     "visual_group": "금속 / 종 모양 투구",
     "story_template": "심층 종루 아래에 남아 있었다.",
-    "description": "종지기의 흉갑은 쓰러져도 숨을 지켜 준다. 부상 판정 +2"
+    "description": "종지기의 흉갑은 쓰러져도 숨을 지켜 준다. 부상 판정 +2",
+    "lore": {"tale": "옛 종지기들이 종루를 오르내리며 입던 청동 흉갑이다. 가슴에 종 모양 무늬가 있다.", "owner": "옛 종지기", "found": "심층 종루 아래", "secret": {"text": "흉갑 안쪽에 종을 치는 순서가 적혀 있다. 이 순서대로 치면 부서진 종이 잠든다고 한다.", "reveal": "owned"}}
   },
   {
     "id": "J01", "name": "낡은 호각", "slot": "accessory", "tier": 1, "grade_mode": "fixed", "fixed_grade": "good", "unique": true,
@@ -230,7 +247,8 @@
     "sellable": false,
     "visual_group": "표시 안 함",
     "story_template": "{npc:이/가} 고맙다며 목에 걸어 주었다.",
-    "description": "위험할 때 불면 누군가 온다. 일반 활동 패배 시 동전·재료 손실 50% → 20%, 이번 출정 획득 장비 손실은 20% 확률로만"
+    "description": "위험할 때 불면 누군가 온다. 일반 활동 패배 시 동전·재료 손실 50% → 20%, 이번 출정 획득 장비 손실은 20% 확률로만",
+    "lore": {"tale": "광대 집안이 대대로 불던 나무 호각이다. 불면 가족 가운데 누군가가 꼭 달려온다.", "owner": "광대 집안 막내 토리", "found": "길 잃은 토리를 집에 데려다준 뒤", "npc": "토리", "secret": {"text": "옆면에 가족 여섯의 이름이 새겨져 있고 맨 끝 한 칸이 비어 있다. 토리는 그 칸에 당신 가문의 이름을 새기고 싶다고 했다.", "reveal": "inherited"}}
   },
   {
     "id": "J02", "name": "들쥐 이빨 목걸이", "slot": "accessory", "tier": 1, "grade_mode": "rolled", "unique": false,
@@ -244,7 +262,8 @@
     "sellable": true,
     "visual_group": "표시 안 함",
     "story_template": "들쥐 굴에서 반짝이던 것이다.",
-    "description": "가끔 운이 따른다. 행운 +1"
+    "description": "가끔 운이 따른다. 행운 +1",
+    "lore": {"tale": "여울 들쥐의 앞니를 꿰어 만든 목걸이다. 여울 사람들은 이것을 작은 행운 부적으로 여긴다.", "found": "여울가 들쥐 굴"}
   },
   {
     "id": "J03", "name": "매의 깃 장식", "slot": "accessory", "tier": 2, "grade_mode": "rolled", "unique": false,
@@ -259,7 +278,8 @@
     "sellable": true,
     "visual_group": "깃 부품",
     "story_template": "{npc:이/가} 좋은 깃이라며 권했다.",
-    "description": "바람의 방향이 보인다. 탐색 판정 +1"
+    "description": "바람의 방향이 보인다. 탐색 판정 +1",
+    "lore": {"tale": "언덕 매가 떨어뜨린 깃을 엮어 만든 장식이다. 미루는 결이 곧은 깃만 골라 판다.", "found": "잡화점", "npc": "미루"}
   },
   {
     "id": "J04", "name": "광부의 등불", "slot": "accessory", "tier": 3, "grade_mode": "rolled", "unique": false,
@@ -275,7 +295,8 @@
     "sellable": true,
     "visual_group": "등불 부품",
     "story_template": "광부 조합 회관 선반에 있었다.",
-    "description": "꺼지지 않는 작은 불. 폐광의 어둠 불리(EN07 어둠 방어 포함) 무시, 공포 판정 +1"
+    "description": "꺼지지 않는 작은 불. 폐광의 어둠 불리(EN07 어둠 방어 포함) 무시, 공포 판정 +1",
+    "lore": {"tale": "광부 조합이 조합원에게 하나씩 나눠 주던 등불이다. 기름을 넣지 않아도 작은 불이 꺼지지 않는다.", "owner": "광부 조합", "found": "광부 조합 회관 선반, 잡화점", "secret": {"text": "밑바닥에 조합원 번호가 찍혀 있다. 번호를 따라가면 버려진 광부 마을의 빈집 하나에 닿는다.", "reveal": "owned"}}
   },
   {
     "id": "J05", "name": "속삭이는 종 조각", "slot": "accessory", "tier": 4, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
@@ -293,7 +314,8 @@
     "visual_group": "표시 안 함",
     "story_template": "심층 상자 속에서 혼자 울리고 있었다.",
     "description": "종 조각이 숨은 길을 속삭인다. 밤마다 다른 것도 속삭인다. 탐색 판정 +3, 함정 감지·회피·해제 판정 +2 / 의지 판정 −2. 출정의 첫 판단 지점에서 공포 판정. 실패하면 피로 +10과 기록 '종 조각이 이름을 불렀다.'",
-    "_note": "08 §3.4 출정 첫 판단 지점의 공포 판정(실패 시 피로 +10)은 장비 필드로 적을 자리가 없다. 사건(조건 equipped J05) 또는 새 필드가 필요하다"
+    "_note": "08 §3.4 출정 첫 판단 지점의 공포 판정(실패 시 피로 +10)은 장비 필드로 적을 자리가 없다. 사건(조건 equipped J05) 또는 새 필드가 필요하다",
+    "lore": {"tale": "부서진 종에서 떨어져 나온 조각이다. 귀에 대면 숨은 길을 속삭인다.", "found": "폐광 심층 보물 상자", "secret": {"text": "밤마다 속삭이는 것은 길이 아니라 옛 종지기의 이름이다. 조각은 아직 주인을 부르고 있다.", "reveal": "owned"}}
   },
   {
     "id": "R01", "name": "귀환의 방울", "slot": "relic", "tier": 2, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
@@ -305,7 +327,8 @@
     "visual_group": "표시 안 함",
     "story_template": "{npc:이/가} \"한 번은 살려 줄 거다\"라며 건넸다.",
     "description": "위험한 순간 방울이 울리면 길이 열린다. 출정당 1회. 일반 활동 HP 0 → 동전·재료·장비 손실 없이 탈출, 부상 판정 +5. 치명 활동 HP 0 → 최후 판정 없이 중상 + 탈출. 방전 후 마을 도착 시 재충전",
-    "_note": "구매가 2,850은 단계·슬롯·희귀 배수 기준가와 같아 price_override를 두지 않는다. 탈출 때의 부상 판정 +5는 탈출 절차(엔진) 몫이다. '생애 1개'(08 §5.1·§14)는 shop 항목에 적을 필드가 없다. 고유 규칙은 가문에 있을 때만 진열에서 빼므로 판 뒤 다시 사는 것은 막지 못한다(미결: 생애 구매 한도 필드 또는 엔진 규칙)"
+    "_note": "구매가 2,850은 단계·슬롯·희귀 배수 기준가와 같아 price_override를 두지 않는다. 탈출 때의 부상 판정 +5는 탈출 절차(엔진) 몫이다. '생애 1개'(08 §5.1·§14)는 shop 항목에 적을 필드가 없다. 고유 규칙은 가문에 있을 때만 진열에서 빼므로 판 뒤 다시 사는 것은 막지 못한다(미결: 생애 구매 한도 필드 또는 엔진 규칙)",
+    "lore": {"tale": "하델이 현역 시절 허리에 달고 다니던 방울이다. 위험할 때 울리면 돌아가는 길이 보인다.", "owner": "은퇴 모험가 하델", "found": "길드 특별 상점", "npc": "하델", "secret": {"text": "하델이 다리를 다친 그날, 방울은 울리지 않았다. 하델은 그 뒤로 방울을 다시 차지 않았다.", "reveal": "owned"}}
   },
   {
     "id": "R02", "name": "길잡이 나침반", "slot": "relic", "tier": 2, "grade_mode": "rolled", "unique": false,
@@ -329,7 +352,8 @@
     "sellable": true,
     "visual_group": "표시 안 함",
     "story_template": "여행 수첩 사이에 끼워 두었다.",
-    "description": "바늘이 아직 가 보지 않은 길을 가리킨다. 모험 발견 장면 가중치 ×1.2, 이동 시간 −10%"
+    "description": "바늘이 아직 가 보지 않은 길을 가리킨다. 모험 발견 장면 가중치 ×1.2, 이동 시간 −10%",
+    "lore": {"tale": "바늘이 북쪽이 아니라 아직 가 보지 않은 길을 가리킨다. 길잡이들 사이를 오래 돌아다닌 물건이다.", "found": "잡화점"}
   },
   {
     "id": "R03", "name": "별잠 물병", "slot": "relic", "tier": 4, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
@@ -345,7 +369,8 @@
     "visual_group": "표시 안 함",
     "story_template": "별잠 샘에서 물을 병에 담아 돌아왔다.",
     "description": "별잠 샘의 물 한 모금. 단 한 번 쓸 수 있다. 최후 판정에 +5, 또는 중상 즉시 치유(출정 계속 가능). 사용하면 빈 별잠 물병 기념품이 되어 효과가 사라진다. 쓰지 않은 채 유품으로 이어받으면 후계자가 그 한 번을 쓸 수 있고, 다시 채워지지 않는다",
-    "_note": "사용 순서(최후 판정 우선, 중상 즉시 치유는 치명 위험 허용이 꺼져 있을 때만)는 08 §3.5 엔진 규칙이다"
+    "_note": "사용 순서(최후 판정 우선, 중상 즉시 치유는 치명 위험 허용이 꺼져 있을 때만)는 08 §3.5 엔진 규칙이다",
+    "lore": {"tale": "별잠 샘의 물을 담은 작은 병이다. 병 속에서 별빛 하나가 천천히 떠다닌다.", "found": "길바뀜의 틈, 별잠 샘"}
   },
   {
     "id": "R04", "name": "성주의 은잔", "slot": "relic", "tier": 4, "grade_mode": "fixed", "fixed_grade": "rare", "unique": true,
@@ -360,6 +385,7 @@
     "visual_group": "표시 안 함",
     "story_template": "성주는 떠나는 {name}의 손에 잔을 쥐여 주었다.",
     "description": "잔에 달빛이 고인다. 밤 출정에서 인물이 주는 피해 +20%(올림) / 낮 출정 피로 획득 +20%. 흡혈귀(TM01)는 낮 출정 불리를 받지 않는다",
-    "_note": "09 §7.7: 흡혈귀 밤 피해 +10%와 더해 +30%(곱이 아니라 합). TM01의 damage_mult와 이 night_damage_mult를 합산하는 것은 엔진 규칙이다"
+    "_note": "09 §7.7: 흡혈귀 밤 피해 +10%와 더해 +30%(곱이 아니라 합). TM01의 damage_mult와 이 night_damage_mult를 합산하는 것은 엔진 규칙이다",
+    "lore": {"tale": "달그늘의 성주 비엘이 두고 간 은잔이다. 잔에 달빛이 고인다.", "owner": "달그늘의 성주 비엘", "found": "달그늘 지하", "secret": {"text": "잔 바닥에 '끝이 있는 삶에게'라고 새겨져 있다. 비엘은 잔을 마시지 않은 사람에게만 이 잔을 준다.", "reveal": "owned"}}
   }
 ]

@@ -87,7 +87,7 @@ const town = (id: string, facility = 'inn') =>
 const item = (id: string, over: Obj = {}) =>
   def('item', {
     id, name: '누비옷', slot: 'armor', tier: 1, grade_mode: 'rolled', unique: false, cursed: false, sources: [],
-    sellable: true, visual_group: 'cloth', story_template: '{name:이/가} 입던 옷', description: '천 옷', ...over,
+    sellable: true, visual_group: 'cloth', story_template: '{name:이/가} 입던 옷', description: '천 옷', lore: { tale: '이야기' }, ...over,
   })
 const chain = (id: string, stages: number) =>
   def('chain', {
