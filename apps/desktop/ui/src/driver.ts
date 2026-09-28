@@ -1,5 +1,5 @@
 // 세계 구동: 실시간 × 배속만큼 유효 진행 시간을 흘리고 새 기록을 돌려준다.
-// 운명 선택 창·계승 화면이 아직 없어 선택 대기·계승 대기는 잠시 보여 준 뒤 자동으로 처리한다(시제품 한정).
+// 선택 대기·계승 대기는 사용자가 운명 선택 창·계승 화면에서 고를 때까지 멈춘다. 개발용 `?auto=1`이면 잠시 보여 준 뒤 자동으로 처리한다.
 import { pendingSuccession, submitPendingAuto, succeed, type JournalEntry, type World } from '@tap/core'
 
 export const SPEEDS = [1, 10, 60, 600] as const
@@ -12,7 +12,7 @@ export class Driver {
   private waitMs = 0
   private lastId = 0
 
-  constructor(readonly world: World) {}
+  constructor(readonly world: World, private readonly auto = false) {}
 
   get paused(): boolean {
     return this.world.state.current_activity.state === 'paused'
@@ -28,6 +28,7 @@ export class Driver {
     const w = this.world
     if (this.paused) return []
     if (w.state.pending_choice || w.state.current_activity.state === 'awaiting_succession') {
+      if (!this.auto) return this.fresh()
       this.waitMs += dtMs
       if (this.waitMs >= Math.max(MIN_WAIT_MS, AUTO_WAIT_MS / this.speed)) {
         this.waitMs = 0

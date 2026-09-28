@@ -1,8 +1,10 @@
 // 브라우저 진입점: 번들 읽기 → 세계 만들기 → 실시간 구동·그리기. Tauri 2 껍데기도 이 dist를 그대로 싣는다(파일 시스템을 쓰지 않는다).
-import { Content, ageAt, createGameWorld, setAttitude, type World } from '@tap/core'
+import { Content, ageAt, createGameWorld, runEvent, setAttitude, submitPendingAuto, type World } from '@tap/core'
 import { App } from './app'
 import { attitudeNote } from './detail/model'
 import { DetailWindow } from './detail/view'
+import { ChoiceWindow } from './choice'
+import { SuccessionWindow } from './succession'
 import { SPEEDS } from './driver'
 import { drawDue, surface } from './layout'
 import { QuickMenu } from './menu'
@@ -49,8 +51,21 @@ async function start(): Promise<void> {
   const loaded = await Promise.all(files.map((f) => loadImage(`sprites/${f}.png`)))
   const images: Images = Object.fromEntries(files.map((f, i) => [f, loaded[i]]))
   const sceneFiles = Object.fromEntries(Object.entries(STRIPS).filter(([k, f]) => k !== 'bg' && images[f]))
-  const app = new App(newWorld(content, q), sceneFiles, new Set(BACKGROUNDS.filter((f) => images[f])))
+  const app = new App(newWorld(content, q), sceneFiles, new Set(BACKGROUNDS.filter((f) => images[f])), q.get('auto') === '1') // ?auto=1: 선택·계승 자동(개발용)
   ;(globalThis as { tapApp?: App }).tapApp = app // 개발용: 콘솔에서 세계·대기열을 들여다본다
+  // 개발용: 사건을 강제로 띄운다(예: tapDev.event('F03', 'A4'))
+  ;(globalThis as { tapDev?: unknown }).tapDev = {
+    event: (id: string, place: string) => runEvent(app.world, id, { place, force: true }, app.world.ports),
+    // 생애가 끝나 계승 대기가 될 때까지 선택은 자동으로 풀며 흘린다
+    toSuccession: () => {
+      const w = app.world
+      for (let i = 0; i < 40000 && w.state.current_activity.state !== 'awaiting_succession'; i++) {
+        if (w.state.pending_choice) submitPendingAuto(w)
+        else w.advance(600)
+      }
+      return w.state.current_activity.state
+    },
+  }
 
   const win = document.getElementById('win')!
   win.style.setProperty('--u', String(u))
@@ -93,10 +108,24 @@ async function start(): Promise<void> {
   // 상세 창(03 §5): 풍경·한 줄 기록 → 일지, 이름·상태 줄·아이콘 → 인물, 태도 표식 → 태도 빠른 메뉴(03 §2.6)
   const detail = new DetailWindow(document.getElementById('detail')!, app.world, (t) => app.note(t), () => app.driver.setPaused(!app.driver.paused))
   const menu = new QuickMenu(document.getElementById('menu')!)
+  // 운명 선택 창(03 §6)·계승 화면(03 §8): 중요 선택·계승 대기 표식을 누르면 연다(스스로 열지 않는다, 03 §1)
+  const choice = new ChoiceWindow(document.getElementById('choice')!, app.world, () => detail.render())
+  const succession = new SuccessionWindow(document.getElementById('succession')!, app.world, () => detail.render())
+  detail.onSuccession = () => succession.show()
   canvas.onclick = () => detail.show('일지')
   const col = document.getElementById('col')!
   col.addEventListener('click', (e) => {
     const t = e.target as HTMLElement
+    if (t.closest('.mark.choice')) {
+      e.stopPropagation()
+      choice.show()
+      return
+    }
+    if (t.closest('.mark.succession')) {
+      e.stopPropagation()
+      succession.show()
+      return
+    }
     const mark = t.closest<HTMLElement>('.attitude')
     if (mark) {
       e.stopPropagation() // 문서 클릭이 막 연 메뉴를 닫지 않게
@@ -119,7 +148,7 @@ async function start(): Promise<void> {
     else if (t.closest('.status, .icons')) detail.show('인물')
     else if (t.closest('.record')) detail.show('일지')
   })
-  setInterval(() => detail.render(), 1000) // 열려 있을 때만 다시 그린다
+  setInterval(() => { detail.render(); choice.render() }, 1000) // 열려 있을 때만 다시 그린다
 
   // 진행은 매 프레임, 그리기는 초당 최대 30번(drawDue). 숨어 있으면 브라우저가 프레임을 멈추므로
   // 1초마다 진행만 한다(그리기 0, 03 §10·D76)

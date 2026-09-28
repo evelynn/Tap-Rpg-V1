@@ -26,8 +26,8 @@ export class App {
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
   // backgrounds: 불러온 장소 배경 띠(background.ts가 장소·계절·시간대로 고른다)
-  constructor(readonly world: World, private readonly sceneFiles: Record<string, string>, private readonly backgrounds: ReadonlySet<string> = new Set()) {
-    this.driver = new Driver(world)
+  constructor(readonly world: World, private readonly sceneFiles: Record<string, string>, private readonly backgrounds: ReadonlySet<string> = new Set(), autoChoices = false) {
+    this.driver = new Driver(world, autoChoices)
     const ui = world.content.balance.ui
     this.lines = new LineQueue({ minSec: ui.line_min_sec, importantSec: ui.important_line_sec, queueMax: ui.line_queue_max })
     this.scenes = new SceneTracker(new Set(Object.keys(sceneFiles)))

@@ -173,7 +173,9 @@ function hold(w: EventWorld, occ: EventOccurrence): EventResult {
     preview_rendered: {
       body,
       ...(ev.preview?.note !== undefined ? { note: render(ev.preview.note, vals) } : {}),
-      choices: Object.fromEntries(choices.map((c) => [c.id, { label: render(c.label, vals), ...(c.preview ? renderPreview(c.preview) : {}) }])),
+      // 별빛 길(10 §8.3)은 비추기 전에는 고를 수 없지만, 비춘 뒤 창에 보일 문구를 함께 만들어 둔다
+      choices: Object.fromEntries([...choices, ...ev.choices.filter((c) => c.starlight && (c.requires === undefined || test(c.requires)))]
+        .map((c) => [c.id, { label: render(c.label, vals), ...(c.preview ? renderPreview(c.preview) : {}) }])),
     },
   }
   ca.state = 'awaiting_choice'

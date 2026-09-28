@@ -41,7 +41,7 @@ function newWorld(name = '모라', seed = '0123456789abcdef') {
 }
 
 function newApp(): App {
-  return new App(newWorld(), SCENE_FILES)
+  return new App(newWorld(), SCENE_FILES, new Set(), true) // 선택·계승은 자동(개발용 ?auto=1과 같다)
 }
 
 before(() => {

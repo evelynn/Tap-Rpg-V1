@@ -1,7 +1,7 @@
 // 상세 창(03 §5, 480 × 560) DOM. 탭 4개(일지·인물·방침·가문), Esc 닫기, Ctrl+1~4 탭 전환.
 // 세계를 바꾸는 조작은 코어 함수만 부른다(잠금·유품·장착·태도·방침 값). 글자는 모두 textContent로 넣는다.
 import {
-  acceptEquipSuggestion, cancelEquipOrder, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
+  acceptEquipSuggestion, arm, armBlock, cancelEquipOrder, charges, healBlock, healNow, isArmed, unarm, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
   FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, codexModel, recentModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
@@ -14,14 +14,14 @@ export type Tab = (typeof TABS)[number]
 
 type Kids = (Node | string | null | false | undefined)[]
 
-function h(tag: string, attrs: Record<string, string> = {}, ...kids: Kids): HTMLElement {
+export function h(tag: string, attrs: Record<string, string> = {}, ...kids: Kids): HTMLElement {
   const el = document.createElement(tag)
   for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, v)
   for (const k of kids) if (k !== null && k !== false && k !== undefined) el.append(k)
   return el
 }
 
-function button(label: string, onClick: () => void, opts: { on?: boolean; disabled?: boolean; title?: string } = {}): HTMLElement {
+export function button(label: string, onClick: () => void, opts: { on?: boolean; disabled?: boolean; title?: string } = {}): HTMLElement {
   const b = h('button', { type: 'button', ...(opts.title ? { title: opts.title } : {}) }, label) as HTMLButtonElement
   if (opts.on) b.classList.add('on')
   b.disabled = !!opts.disabled
@@ -43,6 +43,19 @@ const HELP: Partial<Record<keyof Policies, string>> = {
   destination: '특정 장소를 고르면 태도와 상관없이 그곳을 우선합니다. 위험 허용 상한을 넘거나 무모한 곳은 한 번 확인한 뒤 고를 수 있습니다. 목숨을 걸어야 하는 관문은 치명 위험 허용이 켜져 있어야 도전합니다.',
 }
 
+// 가호 문구(03 §5.4, D78)
+const BLESSING_HELP = '인물은 알지 못하는 도움입니다. 걸어 둔 가호는 조건이 오는 순간 스스로 일어납니다. 켜 두어서 차오르지 않고, 인물이 고비를 넘길 때와 세대가 바뀔 때 차오릅니다.'
+const ARMED_NAME = { final_save: '최후의 순간을 지킨다', miracle: '기적의 주사위', mitigate: '궂은일을 누그러뜨린다' } as const
+const ARMED_NOTE = {
+  final_save: '치명 관문에서 쓰러져도 한 번 살아 돌아옵니다(생애 1번)',
+  miracle: '중요한 판정이 실패하면 한 번 더 굴립니다',
+  mitigate: '다음 패배의 손실을 막고 큰 부상을 가볍게 합니다',
+} as const
+const BLOCK_TEXT: Record<string, string> = {
+  no_charge: '별빛이 모자랍니다', life_cap: '이번 생애에는 더 쓸 수 없습니다(3번)', armed: '이미 걸어 두었습니다',
+  used: '이번 생애에 이미 썼습니다', no_target: '지금은 쓸 곳이 없습니다',
+}
+
 export class DetailWindow {
   tab: Tab = '일지'
   private filter: Filter = '전체'
@@ -52,6 +65,7 @@ export class DetailWindow {
   private cursedAsk: string | null = null // 확인 칸을 펼친 저주 장비 uid
   private familySub: FamilySub = '연대기'
   private destAsk: string | null = null // 확인 칸을 펼친 목적지
+  onSuccession: (() => void) | null = null // 가문 탭 `계승 진행 ›`(03 §5.5)
   private readonly body: HTMLElement
   private readonly tabBar: HTMLElement
   private readonly title: HTMLElement
@@ -353,8 +367,46 @@ export class DetailWindow {
         toggle('자동 계승', 'auto_succession'),
         toggle('오프라인 진행', 'offline_progress'),
         toggle('  생애 단계 경계 정지', 'stage_boundary_stop', !p.offline_progress)),
+      this.blessing(),
       h('div', { class: 'd-dim' }, '모든 변경은 다음 행동부터 적용됩니다.'),
     ].filter((n): n is HTMLElement => n !== null)
+  }
+
+  // 가호 칸(03 §5.4, 04 §10.3, D78): 별빛, 이번 생애 사용, 걸어 둔 가호(걸기 ↔ 풀기), 상처 치유, 자동 사용 방침
+  private blessing(): HTMLElement {
+    const w = this.world
+    const b = w.content.balance.blessing
+    const ch = w.state.character
+    const sec = h('div', { class: 'd-sec', title: BLESSING_HELP }, h('div', { class: 'd-strong' }, '가호'))
+    if (!ch) return sec
+    const n = charges(w)
+    sec.append(h('div', {}, `별빛 ${'✦'.repeat(n)}${'✧'.repeat(Math.max(0, b.cap - n))} (${n}/${b.cap}) · 이번 생애 ${ch.blessing.uses + ch.blessing.armed.length}/${b.life_uses}`))
+    const why = (r: string | null): string | undefined => (r ? BLOCK_TEXT[r] : undefined)
+    const armedRow = (kind: 'final_save' | 'miracle' | 'mitigate'): HTMLElement => {
+      const on = isArmed(w, kind)
+      const block = on ? null : armBlock(w, kind)
+      return h('div', { class: 'd-item' },
+        h('div', { class: 'd-line' }, h('span', { class: 'd-grow' }, `${ARMED_NAME[kind]} · 별빛 ${b.costs[kind]}`),
+          button(on ? '걸어 둠 · 풀기' : '걸기', () => {
+            if (on) unarm(w, kind)
+            else arm(w, kind)
+            this.render()
+          }, { on, disabled: block !== null, ...(why(block) ? { title: why(block)! } : {}) })),
+        h('div', { class: 'd-note' }, ARMED_NOTE[kind]))
+    }
+    const hb = healBlock(w)
+    sec.append(
+      armedRow('final_save'), armedRow('miracle'), armedRow('mitigate'),
+      h('div', { class: 'd-item' },
+        h('div', { class: 'd-line' }, h('span', { class: 'd-grow' }, `상처를 낫게 한다 · 별빛 ${b.costs.heal}`),
+          button('지금 쓰기', () => { healNow(w); this.render() }, { disabled: hb !== null, ...(why(hb) ? { title: why(hb)! } : {}) })),
+        h('div', { class: 'd-note' }, '중상 하나를 바로 낫게 합니다')),
+      h('div', { class: 'd-line', title: '치명 관문에 들어갈 때 별빛이 2개 이상이면 최후의 순간을 스스로 걸어 둡니다.' }, h('span', { class: 'd-label' }, '가호 자동 사용'),
+        h('span', { class: 'd-seg' }, ...([['off', '끔'], ['final_only', '최후의 순간만']] as const).map(([v, t]) =>
+          button(t, () => { w.state.policies.blessing_auto = v; this.render() }, { on: w.state.policies.blessing_auto === v })))),
+      h('div', { class: 'd-note' }, BLESSING_HELP),
+    )
+    return sec
   }
 
   // 목적지: 상한을 넘거나 무모한 곳은 줄 아래 확인 칸을 펼친 뒤 정한다(03 §5.4, 01 §7.1). 확인은 고를 때 한 번만
@@ -402,7 +454,11 @@ export class DetailWindow {
     const subs = h('div', { class: 'd-chips' }, ...FAMILY_SUBS.map((t) => button(t, () => { this.familySub = t; this.render() },
       { on: t === this.familySub, disabled: !ready[t], ...(ready[t] ? {} : { title: '아직 만들지 않았습니다' }) })))
     const body = this.familySub === '가계도' ? this.tree() : this.familySub === '유품' ? this.relics() : this.familySub === '도감' ? this.codex() : this.chronicle(f.rows)
-    return [h('div', { class: 'd-strong' }, f.title), subs, ...body]
+    // 계승 대기 중이면 탭 위에 `계승 진행 ›`(03 §5.5)
+    const go = this.world.state.current_activity.state === 'awaiting_succession' && this.onSuccession
+      ? h('div', { class: 'd-acts' }, button('계승 진행 ›', () => this.onSuccession?.()))
+      : null
+    return [h('div', { class: 'd-strong' }, f.title), go, subs, ...body].filter((n): n is HTMLElement => n !== null)
   }
 
   // 세로 가계도: 플레이 인물은 굵은 테두리, 방계·입양은 점선. 누르면 연대기의 그 줄을 펼친다

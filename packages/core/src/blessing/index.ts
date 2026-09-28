@@ -215,13 +215,30 @@ export interface StartChoice {
   skill?: Skill // seed
 }
 
-// 타고난 재능 후보: 가지지 않은 긍정 선천 특성을 06 §6.3 가중으로 뽑는다. 가문 시드 + 대수로 정해져 다시 열어도 같다(12 §10)
-export function talentOffers(ctx: RuleContext): string[] {
+// 축복을 받을 대상. 계승 5단계에서는 후계자가 아직 없으므로 후보 카드 값으로 미리 본다(03 §8)
+export interface BlessingSubject {
+  generation: number
+  traits: readonly string[] // 가진 특성 id
+  birthStats: Record<Stat, number>
+  background: string
+  ranks: Record<Skill, number>
+}
+
+export function subjectOf(ctx: RuleContext): BlessingSubject {
   const ch = characterOf(ctx)
-  if (ch.traits.filter((t) => ctx.content.get('trait', t.id).kind === 'innate').length >= ctx.content.balance.stats.trait_caps.innate) return []
+  return {
+    generation: ch.generation, traits: ch.traits.map((t) => t.id), birthStats: { ...ch.birth_stats }, background: ch.background,
+    ranks: Object.fromEntries(SKILLS.map((k) => [k, ch.skills[k].rank])) as Record<Skill, number>,
+  }
+}
+
+// 타고난 재능 후보: 가지지 않은 긍정 선천 특성을 06 §6.3 가중으로 뽑는다. 가문 시드 + 대수로 정해져 다시 열어도 같다(12 §10)
+export function talentOffers(ctx: RuleContext, subj: BlessingSubject = subjectOf(ctx)): string[] {
+  const innate = subj.traits.filter((id) => ctx.content.get('trait', id).kind === 'innate')
+  if (innate.length >= ctx.content.balance.stats.trait_caps.innate) return []
   const pool = ctx.content.list('trait').filter((t) => t.kind === 'innate' && (t.birth_weight ?? 0) > 0
-    && !('inherit_class' in t && t.inherit_class === 'negative') && !ch.traits.some((x) => x.id === t.id))
-  const h = sha256(utf8(`${ctx.state.family.family_seed}:blessing:${ch.generation}`))
+    && !('inherit_class' in t && t.inherit_class === 'negative') && !subj.traits.includes(t.id))
+  const h = sha256(utf8(`${ctx.state.family.family_seed}:blessing:${subj.generation}`))
   const rd = (o: number) => [...h.slice(o, o + 8)].reduce((a, v) => (a << 8n) | BigInt(v), 0n)
   const rng = Pcg32.seed(rd(0), rd(8))
   const out: string[] = []
@@ -235,24 +252,22 @@ export function talentOffers(ctx: RuleContext): string[] {
 }
 
 // 기울어진 재능이 옮길 수 있는 쌍: 합 11, 한 능력치 1~4(01 §2.1)
-export function canTilt(ctx: RuleContext, from: Stat, to: Stat): boolean {
-  const ch = characterOf(ctx)
-  const cap = ctx.content.balance.stats.birth_cap
-  return from !== to && ch.birth_stats[from] > ctx.content.balance.stats.birth_base && ch.birth_stats[to] < cap
+export function canTilt(ctx: RuleContext, from: Stat, to: Stat, subj: BlessingSubject = subjectOf(ctx)): boolean {
+  const st = ctx.content.balance.stats
+  return from !== to && subj.birthStats[from] > Math.max(1, st.birth_base) && subj.birthStats[to] < st.birth_cap
 }
 
-export const seedSkills = (ctx: RuleContext): Skill[] => {
-  const ch = characterOf(ctx)
-  const bgSkill = ctx.content.get('background', ch.background).start_skill
-  return SKILLS.filter((s) => s !== bgSkill && ch.skills[s].rank === 0)
+export const seedSkills = (ctx: RuleContext, subj: BlessingSubject = subjectOf(ctx)): Skill[] => {
+  const bgSkill = ctx.content.get('background', subj.background).start_skill
+  return SKILLS.filter((s) => s !== bgSkill && subj.ranks[s] === 0)
 }
 
-export function startBlock(ctx: RuleContext, c: StartChoice): string | null {
-  if (mine(ctx).start !== null) return '이미 시작 축복을 받았다'
+export function startBlock(ctx: RuleContext, c: StartChoice, subj: BlessingSubject = subjectOf(ctx), taken: StartKind | null = mine(ctx).start): string | null {
+  if (taken !== null) return '이미 시작 축복을 받았다'
   switch (c.kind) {
-    case 'talent': return c.trait && talentOffers(ctx).includes(c.trait) ? null : '고를 수 있는 특성이 아니다'
-    case 'tilt': return c.from && c.to && canTilt(ctx, c.from, c.to) ? null : '옮길 수 없는 능력치다'
-    case 'seed': return c.skill && seedSkills(ctx).includes(c.skill) ? null : '고를 수 없는 숙련이다'
+    case 'talent': return c.trait && talentOffers(ctx, subj).includes(c.trait) ? null : '고를 수 있는 특성이 아니다'
+    case 'tilt': return c.from && c.to && canTilt(ctx, c.from, c.to, subj) ? null : '옮길 수 없는 능력치다'
+    case 'seed': return c.skill && seedSkills(ctx, subj).includes(c.skill) ? null : '고를 수 없는 숙련이다'
     default: return null
   }
 }
