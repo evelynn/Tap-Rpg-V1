@@ -192,8 +192,8 @@
     },
     {
       "id": "F7",
-      "subject": "가호 설계 — 사용자 확정(권장안 4개), D78로 문서화·구현. 초안 docs/dev/F7F8_DESIGN_DRAFT.md §5",
-      "status": "pending",
+      "subject": "가호 D78 — 설계(1495dae)·코어(4ad90d3)·UI 방침 칸/운명 선택 창/계승 화면(f1a929b)",
+      "status": "completed",
       "priority": "high"
     },
     {
@@ -203,14 +203,14 @@
       "priority": "high"
     }
   ],
-  "current_task": "F7",
-  "next_action": "F7 가호(D78)·F8 직업(D79) 소유 문서 설계(초안 docs/dev/F7F8_DESIGN_DRAFT.md §5 확정안) → 구현 → F2~F5 → F6 나머지 → M3",
+  "current_task": "F8",
+  "next_action": "F8 직업·성장 D79 설계(12직업·2차 Lv20·F04·자동 기술·요령+교관 부모) → 코어 → UI → F2~F5 → F6 나머지 → M3",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
     "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "0686719",
-  "verify_state": "pnpm check 1210 통과, lint:docs 0, content:check 0, sim 10가문×3생애 예외 0, D77 독립 검증 7건 반영 (2026-09-28)",
+  "last_commit": "442a84b",
+  "verify_state": "pnpm check 1220 통과(480분 정산 CPU 시험은 전체 실행 부하 때 가끔 2초를 넘는다 — 단독 0.3~0.8초), lint 0, content 0 (2026-09-28)",
   "last_updated": "2026-09-28T19:00:00+09:00"
 }
