@@ -21,23 +21,29 @@ export interface BookLike {
 }
 
 export const PAGE = { lines: 18, chars: 34 } as const
+const ages = (a: number, b: number): string => (a === b ? `${a}세` : `${a}~${b}세`)
 
-export type Line = { text: string; cls?: string }
+// 한 줄 = 화면의 한 문단(줄바꿈은 화면이 어절 단위로 한다). rows는 쪽 나누기용 추정 줄 수
+export type Line = { text: string; cls?: string; rows: number }
 export interface Page { lines: Line[]; part: string }
 
 export const EMBLEM: Record<string, string> = { lamp_lit: '●', lamp_out: '○', moon: '☾' } // 켜진 등불·꺼진 등불·초승달. 그림 부품(15 §11)이 오기 전 글자 표식
 export const END_WORD: Record<string, string> = { retired: '은퇴', died: '돌아오지 않음', long_sleep: '긴 잠' }
 
-const wrap = (text: string, chars: number): string[] => {
-  const out: string[] = []
-  for (const para of text.split('\n')) {
-    let rest = [...para]
-    if (!rest.length) { out.push(''); continue }
-    while (rest.length) {
-      out.push(rest.slice(0, chars).join(''))
-      rest = rest.slice(chars)
-    }
+const rowsOf = (text: string, chars: number): number => Math.max(1, Math.ceil([...text].length / chars))
+const line = (text: string, chars: number, cls?: string): Line => ({ text, rows: rowsOf(text, chars), ...(cls ? { cls } : {}) })
+
+// 한 쪽보다 긴 문단만 어절 경계에서 나눈다
+function splitLong(l: Line, maxRows: number, chars: number): Line[] {
+  if (l.rows <= maxRows) return [l]
+  const words = l.text.split(' ')
+  const out: Line[] = []
+  let cur = ''
+  for (const w of words) {
+    const next = cur ? `${cur} ${w}` : w
+    if (rowsOf(next, chars) > maxRows && cur) { out.push({ ...l, text: cur, rows: rowsOf(cur, chars) }); cur = w } else cur = next
   }
+  if (cur) out.push({ ...l, text: cur, rows: rowsOf(cur, chars) })
   return out
 }
 
@@ -45,54 +51,58 @@ function blockLines(b: BookBlock, chars: number): Line[] {
   const cls = b.kind === 'fork' ? 'fork' : b.kind === 'letter' ? 'letter' : b.kind === 'quote_last' ? 'quote' : b.kind === 'attitude' ? 'attitude' : b.kind === 'opener' ? 'opener' : undefined
   const texts = b.lines ?? (b.text !== undefined ? [b.text] : [])
   const width = cls === 'fork' || cls === 'letter' || cls === 'quote' ? chars - 2 : chars
-  return texts.flatMap((t) => wrap(t, width)).map((text) => ({ text, ...(cls ? { cls } : {}) }))
+  return texts.flatMap((t) => t.split(/\n/)).map((t) => line(t, width, cls))
 }
 
-// 부분마다 새 쪽, 블록은 나누지 않되 한 쪽보다 길면 줄 단위로 잇는다. 블록 사이 한 줄
+// 부분마다 새 쪽, 블록은 쪽 사이에서 나누지 않되 한 쪽보다 길면 문단 단위로 잇는다. 블록 사이 반 줄(8)
 export function bookPages(book: BookLike, page: { lines: number; chars: number } = PAGE): Page[] {
   const pages: Page[] = []
   const part = (name: string, blocks: Line[][]): void => {
     let cur: Line[] = []
-    const flush = (): void => { if (cur.length) { pages.push({ lines: cur, part: name }); cur = [] } }
+    let used = 0
+    const flush = (): void => { if (cur.length) { pages.push({ lines: cur, part: name }); cur = []; used = 0 } }
     for (const b of blocks) {
-      const need = b.length + (cur.length ? 1 : 0)
-      if (cur.length && cur.length + need > page.lines) flush()
-      if (cur.length) cur.push({ text: '' })
-      for (const l of b) {
-        if (cur.length >= page.lines) flush()
-        cur.push(l)
+      const size = b.reduce((n, l) => n + l.rows, 0)
+      if (cur.length && used + size + 0.5 > page.lines) flush()
+      let first = true
+      for (const l0 of b) {
+        for (const l of splitLong(l0, page.lines, page.chars)) {
+          if (cur.length && used + l.rows > page.lines) flush()
+          cur.push(first && cur.length ? { ...l, cls: `${l.cls ?? ''} gap`.trim() } : l)
+          used += l.rows + (first && cur.length > 1 ? 0.5 : 0)
+          first = false
+        }
       }
     }
     flush()
-    if (!pages.some((p) => p.part === name)) pages.push({ lines: [{ text: '' }], part: name })
+    if (!pages.some((p) => p.part === name)) pages.push({ lines: [line('', page.chars)], part: name })
   }
+  const ch0 = page.chars
   const c = book.cover
-  part('표지', [[{ text: `${c.family} 가문 · 제${c.volume}권`, cls: 'dim' }], [{ text: `「${c.title}」`, cls: 'title' }], [{ text: `${c.subtitle}  ${EMBLEM[c.emblem] ?? ''}`, cls: 'dim' }]])
+  part('표지', [[line(`${c.family} 가문 · 제${c.volume}권`, ch0, 'dim')], [line(`「${c.title}」`, ch0, 'title')], [line(`${c.subtitle}  ${EMBLEM[c.emblem] ?? ''}`, ch0, 'dim')]])
   const ep: Line[][] = []
-  if (book.epigraph?.text) ep.push([...wrap(book.epigraph.text, page.chars).map((t) => ({ text: t, cls: 'quote' })), ...(book.epigraph.speaker ? [{ text: `— ${book.epigraph.speaker}`, cls: 'dim' }] : [])])
-  if (book.received_by) ep.push([{ text: `받은 사람 · ${book.received_by.name}${book.received_by.old_name ? `(${book.received_by.old_name})` : ''}`, cls: 'dim' }])
-  if (book.binder) ep.push([{ text: `엮은 사람 · ${book.binder}`, cls: 'dim' }])
+  if (book.epigraph?.text) ep.push([line(book.epigraph.text, ch0, 'quote'), ...(book.epigraph.speaker ? [line(`— ${book.epigraph.speaker}`, ch0, 'dim')] : [])])
+  if (book.received_by) ep.push([line(`받은 사람 · ${book.received_by.name}${book.received_by.old_name ? `(${book.received_by.old_name})` : ''}`, ch0, 'dim')])
+  if (book.binder) ep.push([line(`엮은 사람 · ${book.binder}`, ch0, 'dim')])
   part('속표지', ep)
-  part('차례', [book.chapters.map((ch) => ({ text: `${ch.head}${ch.subtitle ? ` — ${ch.subtitle}` : ''} · ${ages(ch.age_from, ch.age_to)}` })),
-    [{ text: '부록 · 함께 걸은 사람들 · 남긴 것 · 걸어온 길', cls: 'dim' }, ...(book.afterword ? [{ text: '후기', cls: 'dim' }] : [])]])
+  part('차례', [book.chapters.map((ch) => line(`${ch.head}${ch.subtitle ? ` — ${ch.subtitle}` : ''} · ${ages(ch.age_from, ch.age_to)}`, ch0)),
+    [line('부록 · 함께 걸은 사람들 · 남긴 것 · 걸어온 길', ch0, 'dim'), ...(book.afterword ? [line('후기', ch0, 'dim')] : [])]])
   for (const ch of book.chapters) {
-    part(ch.head, [[{ text: ch.head, cls: 'head' }, ...(ch.subtitle ? [{ text: ch.subtitle, cls: 'dim' }] : []), { text: ages(ch.age_from, ch.age_to), cls: 'dim' }],
-      ...ch.blocks.map((b) => blockLines(b, page.chars))])
+    part(ch.head, [[line(ch.head, ch0, 'head'), ...(ch.subtitle ? [line(ch.subtitle, ch0, 'dim')] : []), line(ages(ch.age_from, ch.age_to), ch0, 'dim')],
+      ...ch.blocks.map((b) => blockLines(b, ch0))])
   }
   const a = book.appendix
   if (a) {
-    part('부록', [[{ text: '함께 걸은 사람들', cls: 'head' }, ...a.people.flatMap((p) => wrap(p, page.chars).map((text) => ({ text })))],
-      [{ text: '남긴 것', cls: 'head' }, ...a.left.flatMap((p) => wrap(p, page.chars).map((text) => ({ text })))],
-      [{ text: '걸어온 길', cls: 'head' }, ...a.walk.flatMap((p) => wrap(p, page.chars).map((text) => ({ text })))]])
+    part('부록', [[line('함께 걸은 사람들', ch0, 'head'), ...a.people.map((p) => line(p, ch0))],
+      [line('남긴 것', ch0, 'head'), ...a.left.map((p) => line(p, ch0))],
+      [line('걸어온 길', ch0, 'head'), ...a.walk.map((p) => line(p, ch0))]])
   }
-  if (book.afterword?.text) part('후기', [[{ text: '후기', cls: 'head' }, ...wrap(book.afterword.text, page.chars - 2).map((text) => ({ text, cls: 'letter' }))]])
+  if (book.afterword?.text) part('후기', [[line('후기', ch0, 'head'), ...book.afterword.text.split(/\n/).map((t) => line(t, ch0 - 2, 'letter'))]])
   return pages
 }
 
-// 형식이 어긋난 옛 책은 null(코어 bookOf, 16 B15)
 export const asBook = (r: LifeRecord): BookLike | null => bookOf(r) as BookLike | null
 
-const ages = (a: number, b: number): string => (a === b ? `${a}세` : `${a}~${b}세`)
 
 // 서가 머리줄(18 §3.1): 1대 「제목」 · 18~68세 · 은퇴 · 새 책
 export const shelfHead = (r: LifeRecord, b: BookLike): string =>

@@ -20,17 +20,18 @@ describe('생애의 책 쪽 나누기', () => {
   })
   it('한 쪽은 18줄을 넘지 않고, 블록은 쪽 사이에서 나누지 않는다(한 쪽보다 긴 블록만 잇는다)', () => {
     const pages = bookPages(book(20))
-    for (const p of pages) assert.ok(p.lines.length <= 18)
+    for (const p of pages) assert.ok(p.lines.reduce((n, l) => n + l.rows, 0) <= 18)
     const ch = pages.filter((p) => p.part === '1장 · 새내기')
     assert.ok(ch.length >= 2)
-    // 60자 블록은 2줄(34자씩) — 쪽 끝에서 한 줄만 남기고 넘어가지 않는다
-    for (const p of ch.slice(1)) assert.notEqual(p.lines[0]!.text, '')
+    // 문단은 쪽 사이에서 자르지 않는다(60자 = 추정 2줄)
+    for (const p of ch) for (const l of p.lines) assert.ok(l.text === '' || l.rows >= 1)
     const long = bookPages(book(1, 34 * 25))
     assert.ok(long.filter((p) => p.part === '1장 · 새내기').length >= 2, '긴 블록은 줄 단위로 잇는다')
   })
-  it('갈림길 상자는 모양 표시(fork)를 달고 좁은 폭으로 접는다', () => {
+  it('갈림길 상자는 모양 표시(fork)를 달고 좁은 폭(32자)으로 줄 수를 잰다. 문단은 어절 중간에서 자르지 않는다', () => {
     const lines = bookPages(book(3)).flatMap((p) => p.lines)
-    assert.ok(lines.some((l) => l.cls === 'fork'))
-    assert.ok(lines.filter((l) => l.cls === 'fork').every((l) => [...l.text].length <= 32))
+    const fork = lines.find((l) => l.cls?.includes('fork'))!
+    assert.equal(fork.rows, Math.ceil(60 / 32))
+    assert.equal(fork.text, '가'.repeat(60))
   })
 })

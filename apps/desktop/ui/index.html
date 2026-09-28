@@ -156,7 +156,8 @@
     .dwin .d-shelf-head { min-height: 20px; }
     .dwin .d-book-head, .dwin .d-book-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; height: 32px; }
     .dwin .d-book-foot { justify-content: center; }
-    .dwin .d-book-page { min-height: 360px; padding: 8px 0; font-size: 13px; line-height: 20px; }
+    .dwin .d-book-page { min-height: 360px; padding: 8px 0; font-size: 13px; line-height: 20px; word-break: keep-all; overflow-wrap: anywhere; }
+    .dwin .d-book-line.gap { margin-top: 8px; } /* 블록 사이 8(03 §5.6) */
     .dwin .d-book-line.title { font-size: 18px; font-weight: bold; line-height: 28px; }
     .dwin .d-book-line.head { font-size: 15px; font-weight: bold; }
     .dwin .d-book-line.dim { opacity: .7; }
