@@ -18,8 +18,9 @@ export function windowWidth(v: unknown): number {
 
 // 인물 무리·장면 판은 풍경 가운데(03 §2.2, D82): 판 x P = round(L/2) − 64, 주인공 P + 24, 적 P + 120
 export interface Stage { landW: number; sceneX: number; heroCx: number; enemyCx: number }
-export function stageOf(width: number): Stage {
-  const landW = width - COL.w
+// colW: 글자 칸 폭(글자 배율 100/125/150%면 272/340/408, 03 §14)
+export function stageOf(width: number, colW: number = COL.w): Stage {
+  const landW = width - colW
   const sceneX = Math.round(landW / 2) - SCENE_W / 2
   return { landW, sceneX, heroCx: sceneX + 24, enemyCx: sceneX + 120 }
 }

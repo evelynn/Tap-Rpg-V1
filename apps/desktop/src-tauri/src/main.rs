@@ -3,6 +3,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod save;
+mod shell;
 
 use std::time::Duration;
 use tauri::{Emitter, Manager};
@@ -30,8 +31,11 @@ fn main() {
             save::settings_read,
             save::settings_write,
             save::save_open_folder,
+            shell::tray_tooltip,
         ])
         .setup(|app| {
+            shell::build_tray(app.handle())?;
+            shell::watch_fullscreen(app.handle().clone());
             let handle = app.handle().clone();
             // 두 번째 실행의 보이기 요청을 1초마다 확인한다
             std::thread::spawn(move || loop {
@@ -48,10 +52,10 @@ fn main() {
             Ok(())
         })
         .on_window_event(|window, event| {
-            // 닫기는 저장을 마친 뒤 화면이 app_exit로 끝낸다(13 §8.1 종료 저장)
+            // 기본 창에는 닫기가 없다: Alt+F4 등 닫기 요청은 숨기기(트레이로), 완전 종료는 트레이 `종료`(03 §10)
             if let tauri::WindowEvent::CloseRequested { api, .. } = event {
                 api.prevent_close();
-                let _ = window.emit("tap://quit", ());
+                let _ = window.emit("tap://tray", "hide".to_string());
             }
         })
         .run(tauri::generate_context!())

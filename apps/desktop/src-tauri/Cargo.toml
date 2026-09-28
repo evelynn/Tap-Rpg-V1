@@ -8,7 +8,8 @@ edition = "2021"
 tauri-build = { version = "2.5", features = [] }
 
 [dependencies]
-tauri = { version = "2.10", features = [] }
+tauri = { version = "2.10", features = ["tray-icon"] }
+windows-sys = { version = "0.59", features = ["Win32_Foundation", "Win32_Graphics_Gdi", "Win32_UI_WindowsAndMessaging"] }
 
 [features]
 # tauri CLI 없이 cargo로 빌드하므로 화면 파일(../ui/dist)을 exe에 넣는 기능을 기본으로 켠다

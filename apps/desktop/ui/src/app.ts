@@ -24,7 +24,8 @@ export class App {
   private offset = 0
   private stage: Stage
   private notes = 0
-  width: number = WIN.w // 기본 창 너비(D82). 인물 무리는 풍경 가운데
+  width: number = WIN.w // 기본 창 전체 너비(D82, 글자 배율로 늘어난 글자 칸 포함). 인물 무리는 풍경 가운데
+  colW = 272 // 글자 칸 폭(03 §14 글자 배율)
   readonly bubbles = new BubbleQueue()
   lastTick: readonly JournalEntry[] = [] // 이번 프레임에 새로 생긴 기록(저장 시점 판단, 13 §8.1)
 
@@ -65,7 +66,7 @@ export class App {
     if (!paused) this.animate(now, dt, scene?.row.hero?.motion ?? null, scene !== null)
 
     const sv = statusViewOf(world)
-    const st = stageOf(this.width)
+    const st = stageOf(this.width, this.colW)
     const heroShown = scene ? scene.row.hero !== null : this.stage.hero !== null
     const hero = this.hero
     const foe = this.enemy?.anim

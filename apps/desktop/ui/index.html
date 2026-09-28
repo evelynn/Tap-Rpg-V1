@@ -5,7 +5,7 @@
   <title>텝 기본 창</title>
   <style>
     body { margin: 16px; background: #d9d4cc; color: #2b2233; font: 13px system-ui, "Malgun Gothic", sans-serif; }
-    @media (prefers-color-scheme: dark) { body { background: #15121a; color: #f4efe6; } }
+    html.dark body { background: #15121a; color: #f4efe6; }
     /* 기본 창 768 × 128(100% 기준, D75·D84). --u는 화면 배율 1·2·3(D81, main.ts가 넣는다) */
     /* 기본 창 너비 --w는 528~1536(D82, main.ts가 넣는다). 기록 띠·말풍선은 기본 창 바로 위(03 §2.7) */
     #app { display: inline-block; }
@@ -26,30 +26,30 @@
     #bubble .detail { opacity: .8; }
     #bubble::after { content: ''; position: absolute; left: calc(16px * var(--u, 1)); bottom: calc(-6px * var(--u, 1)); border: calc(6px * var(--u, 1)) solid transparent;
       border-bottom: 0; border-top-color: rgb(var(--paper)); }
-    @media (prefers-color-scheme: dark) { #stack { --paper: 42, 37, 48; color: #f4efe6; } }
+    html.dark #stack { --paper: 42, 37, 48; color: #f4efe6; }
     #win { position: relative; width: 100%; height: calc(128px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
     #grip { position: absolute; z-index: 5; top: 0; right: -3px; width: 6px; height: 100%; cursor: ew-resize; }
     /* 캔버스 CSS 크기 = 장치 크기 / dpr(main.ts가 넣는다). 브라우저가 다시 늘이지 않게 pixelated도 둔다 */
     #art { position: absolute; left: 0; bottom: 0; display: block; image-rendering: pixelated; }
     /* 글자 칸 x 496~767(272). 작은 글자 2줄: 1줄 y 17 이름·상태 + 오른쪽 아이콘·표식(84), 2줄 y 34 한 줄 기록(03 §2.2) */
-    #col { position: absolute; top: 0; right: 0; width: calc(272px * var(--u)); height: 100%;
-      font: calc(11px * var(--u)) / calc(13px * var(--u)) system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
+    #col { --s: calc(var(--u, 1) * var(--t, 1)); position: absolute; top: 0; right: 0; width: calc(272px * var(--s)); height: 100%;
+      font: calc(11px * var(--s)) / calc(13px * var(--s)) system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
       color: #2b2233; --paper: 244, 239, 230; }
     #col.dark { color: #f4efe6; --paper: 42, 37, 48; }
     /* 판: 불투명도 88%, 왼쪽 5는 풍경에서 넘어오는 그라데이션 */
-    #col .plate { position: absolute; inset: 0; background: linear-gradient(to right, rgba(var(--paper), 0), rgba(var(--paper), .88) calc(5px * var(--u))); }
-    #col .status, #col .icons, #col .record { position: absolute; height: calc(13px * var(--u)); white-space: nowrap; }
-    #col .status { left: calc(5px * var(--u)); width: calc(175px * var(--u)); top: calc(49px * var(--u)); font-weight: bold; }
-    #col .icons { right: calc(5px * var(--u)); width: calc(84px * var(--u)); top: calc(49px * var(--u)); display: flex; align-items: center; gap: calc(2px * var(--u)); }
-    #col .ico { width: calc(12px * var(--u)); height: calc(12px * var(--u)); flex: none; }
-    #col .mark, #col .attitude { flex: none; width: calc(12px * var(--u)); height: calc(12px * var(--u)); box-sizing: border-box; border-radius: calc(2px * var(--u));
-      font-size: calc(9px * var(--u)); line-height: calc(12px * var(--u)); font-weight: bold; text-align: center; }
-    #col .mark { margin-left: calc(2px * var(--u)); } /* 아이콘과 표식 사이 4 = gap 2 + 2 */
+    #col .plate { position: absolute; inset: 0; background: linear-gradient(to right, rgba(var(--paper), 0), rgba(var(--paper), .88) calc(5px * var(--s))); }
+    #col .status, #col .icons, #col .record { position: absolute; height: calc(13px * var(--s)); white-space: nowrap; }
+    #col .status { left: calc(5px * var(--s)); width: calc(175px * var(--s)); top: calc((64px - 15px * var(--t, 1)) * var(--u, 1)); font-weight: bold; }
+    #col .icons { right: calc(5px * var(--s)); width: calc(84px * var(--s)); top: calc((64px - 15px * var(--t, 1)) * var(--u, 1)); display: flex; align-items: center; gap: calc(2px * var(--s)); }
+    #col .ico { width: calc(12px * var(--s)); height: calc(12px * var(--s)); flex: none; }
+    #col .mark, #col .attitude { flex: none; width: calc(12px * var(--s)); height: calc(12px * var(--s)); box-sizing: border-box; border-radius: calc(2px * var(--s));
+      font-size: calc(9px * var(--s)); line-height: calc(12px * var(--s)); font-weight: bold; text-align: center; }
+    #col .mark { margin-left: calc(2px * var(--s)); } /* 아이콘과 표식 사이 4 = gap 2 + 2 */
     #col .mark.none { visibility: hidden; }
     #col .mark.choice { background: #7b5cc4; color: #fff; }
     #col .mark.succession { background: #a8894a; color: #fff; }
-    #col .attitude { border: 1px solid currentColor; line-height: calc(12px * var(--u) - 2px); font-weight: normal; }
-    #col .record { left: calc(5px * var(--u)); right: calc(5px * var(--u)); top: calc(66px * var(--u)); }
+    #col .attitude { border: 1px solid currentColor; line-height: calc(12px * var(--s) - 2px); font-weight: normal; }
+    #col .record { left: calc(5px * var(--s)); right: calc(5px * var(--s)); top: calc((64px + 2px * var(--t, 1)) * var(--u, 1)); }
     #win canvas, #col .status, #col .icons, #col .record { cursor: pointer; }
     /* 상세 창 480 × 560(03 §5). 시제품에서는 개발용 단추 아래에 둔다. 본문 13, 최소 12, 소제목 15 굵게, 안쪽 여백 16 */
     #menu { position: absolute; z-index: 20; min-width: 132px; padding: 4px 0; background: #fbf8f2; color: #2b2233; border: 1px solid #8a8a8a; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); font: 12px system-ui, sans-serif; }
@@ -57,7 +57,7 @@
     #menu button { display: block; width: 100%; text-align: left; padding: 3px 10px; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
     #menu button:hover, #menu button:focus { background: #5a7fa8; color: #fff; outline: none; }
     #menu hr { margin: 4px 0; border: 0; border-top: 1px solid rgba(128, 128, 128, .4); }
-    @media (prefers-color-scheme: dark) { #menu { background: #2a2530; color: #f4efe6; } }
+    html.dark #menu { background: #2a2530; color: #f4efe6; }
     .dwin { margin-top: 12px; width: 480px; height: 560px; display: flex; flex-direction: column; z-index: 10;
       background: #f4efe6; color: #2b2233; font: 13px/1.5 system-ui, "Malgun Gothic", sans-serif; box-shadow: 0 4px 16px rgba(0, 0, 0, .35); outline: none; }
     .dwin[hidden] { display: none; }
@@ -74,7 +74,7 @@
     .dwin .d-card.on { border-color: #5a7fa8; background: rgba(90,127,168,.12); }
     .dwin input[type=text] { font: inherit; width: 120px; }
     .dwin { word-break: keep-all; overflow-wrap: anywhere; }
-    @media (prefers-color-scheme: dark) { .dwin { background: #2a2530; color: #f4efe6; } }
+    html.dark .dwin { background: #2a2530; color: #f4efe6; }
     .dwin button { font: inherit; font-size: 12px; padding: 1px 8px; border: 1px solid #8a8a8a; background: transparent; color: inherit; border-radius: 3px; cursor: pointer; }
     .dwin button.on { background: #5a7fa8; border-color: #5a7fa8; color: #fff; }
     .dwin button:disabled { opacity: .45; cursor: default; }
@@ -108,7 +108,7 @@
     .dwin .d-grade { font-weight: bold; }
     .dwin .d-acts { display: flex; gap: 6px; padding: 2px 0 6px 16px; }
     .dwin .d-line { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
-    .dwin .d-label { width: 110px; flex: none; white-space: pre; }
+    .dwin .d-label { flex: 0 0 auto; min-width: 110px; max-width: 190px; white-space: normal; } /* 긴 이름이 단추 뒤로 가리지 않게 줄을 바꾼다 */
     .dwin .d-seg { display: flex; gap: 2px; flex-wrap: wrap; }
     .dwin .d-confirm { margin: 4px 0 4px 16px; padding: 8px; border: 1px solid #d9534f; }
     .dwin .d-tree { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 0; }
@@ -116,6 +116,27 @@
     .dwin .d-tree-node.dashed { border-style: dashed; }
     .dwin .d-tree-link { padding-left: 20px; opacity: .6; line-height: 1; }
     .dwin progress { width: 120px; vertical-align: middle; }
+    /* 데스크톱 투명 창(D85): 배경 투명, 판은 기본 창 위로 쌓는다(아래가 기본 창). 개발용 단추는 ?dev=1만 */
+    html.desktop, html.desktop body { background: transparent; margin: 0; overflow: hidden; }
+    html.desktop #app { display: inline-flex; flex-direction: column-reverse; align-items: flex-start; gap: 6px; padding: 6px; }
+    html.desktop .dwin { margin-top: 0; }
+    html:not(.dev) #controls, html:not(.dev) #info { display: none; }
+    html.booting #stack, html.booting #controls, html.booting #info { display: none; } /* 첫 실행 창 동안 */
+    html.through #stack { opacity: .8; } /* 클릭 통과 중 80%(03 §10) */
+    html.hc #col .plate, html.hc #strip { background: rgb(var(--paper)); }
+    html.hc #art { filter: brightness(.6) saturate(.5); }
+    html.hc #col, html.hc #strip { color: #000; }
+    html.hc.dark #col, html.hc.dark #strip { color: #fff; }
+    .dwin { zoom: var(--t, 1); } /* 글자 배율은 상세 창 등 판에도(03 §7) */
+    #settings { width: 400px; height: 480px; }
+    #settings .d-foot, #firstrun .d-foot, #summary .d-foot { height: auto; min-height: 32px; padding: 6px 16px; }
+    #firstrun { width: 480px; height: 560px; }
+    .dwin .d-preview { height: 110px; display: flex; align-items: center; justify-content: center; }
+    .dwin .d-hero { width: 48px; height: 48px; background: url(sprites/chr_actions18_48.png) 0 0; image-rendering: pixelated; transform: scale(2); animation: tap-idle .88s steps(4) infinite; }
+    @keyframes tap-idle { to { background-position: -192px 0; } }
+    .dwin .d-place { position: relative; height: 120px; margin: 8px 0; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; background: rgba(128,128,128,.12); }
+    .dwin .d-place::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: rgba(128,128,128,.4); } /* 작업 표시줄 */
+    .dwin .d-place-win { position: absolute; right: 8px; bottom: 16px; width: 96px; height: 16px; background: #5a7fa8; border-radius: 2px; }
     #controls { margin-top: 12px; display: flex; gap: 6px; }
     #info { margin-top: 8px; }
   </style>
@@ -133,10 +154,12 @@
   </div>
   <div id="controls"></div>
   <div id="info">불러오는 중…</div>
-  <div id="detail" class="dwin" role="dialog" aria-label="상세 창"></div>
-  <div id="choice" class="dwin" role="dialog" aria-label="운명 선택 창"></div>
-  <div id="succession" class="dwin" role="dialog" aria-label="계승 화면"></div>
-  <div id="summary" class="dwin" role="dialog" aria-label="자리를 비운 동안"></div>
+  <div id="detail" class="dwin" hidden role="dialog" aria-label="상세 창"></div>
+  <div id="choice" class="dwin" hidden role="dialog" aria-label="운명 선택 창"></div>
+  <div id="succession" class="dwin" hidden role="dialog" aria-label="계승 화면"></div>
+  <div id="summary" class="dwin" hidden role="dialog" aria-label="자리를 비운 동안"></div>
+  <div id="settings" class="dwin" hidden role="dialog" aria-label="설정"></div>
+  <div id="firstrun" class="dwin" role="dialog" aria-label="처음 시작" hidden></div>
   </div>
   <div id="menu"></div>
   <script type="module" src="main.js"></script>
