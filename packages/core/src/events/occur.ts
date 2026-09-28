@@ -9,7 +9,7 @@ import { consumeArmed, miracleJournal } from '../blessing/index'
 import { characterOf, type ConditionTest } from '../rules/context'
 import type { LevelUp } from '../rules/growth'
 import { autoChoose } from './choice'
-import { rollEventCheck } from './check'
+import { partialOn, rollEventCheck } from './check'
 import { makeConditionTest } from './conditions'
 import { EVENT_TEXT, newEffectOutput, resultValues, runEffects, type EffectOutput, type EffectRun } from './effects'
 import type { EventPorts } from './ports'
@@ -76,10 +76,10 @@ function scopeOf(w: EventWorld, occ: Pick<EventOccurrence, 'event_id' | 'place' 
 const visibleChoices = (ev: Event, test: ConditionTest, excluded: readonly string[] = []) =>
   ev.choices.filter((c) => !c.starlight && !excluded.includes(c.id) && (c.requires === undefined || test(c.requires)))
 
-// 05 §8.1 추천: 근접·탐색·생존·교섭 단계 → 누적 사용 횟수 → 같으면 수호자·길잡이·약초꾼·행상 순(자동 전문화 `숙련 높은 쪽`)
+// 05 §8.1 추천: 근접 → 수호자, 탐색·기동 → 길잡이, 생존 → 약초꾼, 교섭 → 행상. 단계 → 누적 사용 횟수 → 같으면 앞 순서(자동 전문화 `숙련 높은 쪽`)
 export function recommendedSpecKey(w: EventWorld): string {
   const s = characterOf(ruleContext(w, () => false)).skills
-  const order = [['melee', 'combat_first'], ['search', 'search_first'], ['survival', 'care_first'], ['negotiation', 'trade_first']] as const
+  const order = [['melee', 'combat_first'], ['search', 'search_first'], ['mobility', 'search_first'], ['survival', 'care_first'], ['negotiation', 'trade_first']] as const
   return order.reduce((best, cur) => {
     const a = s[best[0]], b = s[cur[0]]
     return b.rank > a.rank || (b.rank === a.rank && b.uses > a.uses) ? cur : best
@@ -258,7 +258,7 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
     let roll = rollEventCheck(w, rule, spec, scope, occ.dice[choice.id] ?? w.rng.event.d20())
     // 기적의 주사위(04 §10.3 6번): 연속·운명 사건 판정만
     if (b.blessing.miracle_event_categories.includes(ev.category)) {
-      roll = miracleReroll(rule, w.rng.event, roll, roll.record.result === 'partial')
+      roll = miracleReroll(rule, w.rng.event, roll, partialOn(rule, spec, roll.kind)) // 다시 굴린 값도 부분 성공이 될 수 있다(독립 검증 D78-7)
       if (roll.record.reroll && consumeArmed(rule, 'miracle')) addJournal(w, miracleJournal(rule, roll.record.reroll.first, roll.record.reroll.second))
     }
     recordCheckUse(rule, roll, { event: true }) // 판정 있는 선택지는 결과와 무관하게 숙련 사용(10 §6.2)

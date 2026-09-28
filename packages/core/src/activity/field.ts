@@ -3,9 +3,11 @@ import { hookSum } from '../ai/index'
 import { retreatHpRatio } from '../combat/index'
 import { addJournal } from '../journal/index'
 import { autoDrinkDue, drinkThirstConsumable, lifeEndDue, thirstFromProgress } from '../life/index'
-import { maxHp } from '../rules/derived'
+import { maxHp, roundHalfUp } from '../rules/derived'
 import { characterOf, type RuleContext } from '../rules/context'
-import { carryGroupCount, hasSeriousInjury, tickInjuries, usePotions } from '../recovery/index'
+import { carryGroupCount, chargesLeft, hasSeriousInjury, tickInjuries, useCharge, usePotions } from '../recovery/index'
+import { modValue } from '../rules/modifiers'
+import { line } from './lines'
 import type { World } from '../sim/world'
 import { addPendingSec, currentSortie, sortieElapsedMin } from './sortie'
 
@@ -77,6 +79,21 @@ export interface FieldOptions {
   nextRoomOk?: () => boolean
 }
 
+// 두 번째 숨(08 X01, 05 §10 방패 버티기): 체력이 퇴각 기준에 닿은 판단 지점에서 출정당 한 번
+// 최대 HP × second_wind_ratio를 되찾는다. 되찾았으면 true(독립 검증 D79-5)
+function secondWind(world: World): boolean {
+  const c = chargesLeft(world, 'second_wind')[0]
+  const ratio = modValue(world, 'second_wind_ratio', 0)
+  if (!c || ratio <= 0) return false
+  const ch = characterOf(world)
+  const max = maxHp(world)
+  const hp = Math.max(0, Math.min(max - ch.hp, roundHalfUp(max * ratio)))
+  useCharge(world, c.uid, 'second_wind')
+  ch.hp += hp
+  addJournal(world, { tag: 'rest', line: line(world.content, 'rest_second_wind'), detail: line(world.content, 'rest_second_wind_detail', { name: ch.name, hp }) })
+  return true
+}
+
 // 04 §7.5 현장 판단. 회복약 자동 사용과 CP08 자동 음용은 이 안에서 한다
 export function fieldJudgment(world: World, opts: FieldOptions = {}): FieldDecision {
   const ch = characterOf(world)
@@ -85,7 +102,9 @@ export function fieldJudgment(world: World, opts: FieldOptions = {}): FieldDecis
   autoPotions(world)
   autoDrink(world, 'sortie')
   const att = world.content.get('attitude', world.state.policies.attitude)
-  if (ch.hp <= maxHp(world) * retreatHpRatio(world)) {
+  const retreatLine = maxHp(world) * retreatHpRatio(world)
+  if (ch.hp <= retreatLine) secondWind(world)
+  if (ch.hp <= retreatLine) {
     return att.retreat_camp && canCamp(world, true) ? 'camp' : 'return'
   }
   if (ch.fatigue >= fatigueLimit(world)) return canCamp(world, false) ? 'camp' : 'return'

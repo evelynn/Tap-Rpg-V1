@@ -2,7 +2,7 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
-  collectModSources, learnTechnique, noteEncounter, runEvent, secondJobReady, submitChoice, submitPendingAuto, writeNote, type World,
+  chargesLeft, collectModSources, fieldJudgment, learnTechnique, nextRoomWeights, recommendedSpecKey, useCharge, noteEncounter, runEvent, secondJobReady, submitChoice, submitPendingAuto, writeNote, type World,
 } from '../../src/index'
 import { makeGame } from './life-fixture'
 
@@ -95,5 +95,77 @@ describe('직업과 기술(D79)', () => {
     assert.ok(rec, '한 생애가 끝났다')
     assert.ok(rec.techniques.length <= 4)
     if (rec.specialization !== 'none') assert.ok(rec.techniques.length >= 1, '전직 기술')
+  })
+
+  it('사건 기술 상한이 차 있으면 수첩 요령을 만나지 않는다(익혔다는 기록만 남지 않는다, 독립 검증 D79-6)', () => {
+    const w = makeGame()
+    const c = w.state.character!
+    w.state.family.technique_note = { tech_id: 'old_lamp', gen: 1 }
+    c.generation = 2
+    c.level = 6
+    learnTechnique(w, 'hadel_counter', 'event')
+    learnTechnique(w, 'fallen_rise', 'event')
+    const n = w.state.journal.length
+    w.content.balance.job_rules.note_chance = 1
+    try {
+      noteEncounter(w, w.rng.event, '어머니', true)
+    } finally {
+      w.content.balance.job_rules.note_chance = 0.2
+    }
+    assert.equal(w.state.journal.length, n)
+    assert.ok(!c.techniques.some((t) => t.id === 'old_lamp'))
+  })
+
+  it('기술 출정 충전: 발소리 읽기의 매복 무효가 충전 목록에 들고, 쓰면 줄고, 새 출정에 다시 찬다(독립 검증 D79-5)', () => {
+    const w = makeGame()
+    learnTechnique(w, 'footstep_read', 'job')
+    assert.deepEqual(chargesLeft(w, 'ambush_negate'), [{ uid: 'tech:footstep_read', left: 1 }])
+    useCharge(w, 'tech:footstep_read', 'ambush_negate')
+    assert.deepEqual(chargesLeft(w, 'ambush_negate'), [])
+    for (let i = 0; i < 400 && w.state.current_activity.sortie?.activity !== 'hunt'; i++) w.advance(60)
+    for (let i = 0; i < 2000 && w.state.current_activity.sortie; i++) w.advance(60)
+    for (let i = 0; i < 2000 && !w.state.current_activity.sortie; i++) w.advance(60)
+    assert.ok(w.state.current_activity.sortie, '다음 출정')
+    assert.equal(chargesLeft(w, 'ambush_negate').length, 1)
+  })
+
+  it('방패 버티기: 체력이 퇴각 기준에 닿은 판단 지점에서 출정당 한 번 최대 HP 10%를 되찾는다', () => {
+    const w = makeGame()
+    for (let i = 0; i < 400 && !w.state.current_activity.sortie; i++) w.advance(60)
+    assert.ok(w.state.current_activity.sortie)
+    learnTechnique(w, 'shield_hold', 'job')
+    const c = w.state.character!
+    w.state.inventory.consumables = {}
+    c.hp = 1
+    fieldJudgment(w)
+    const e = w.state.journal.at(-1)!
+    assert.equal(e.line, '두 번째 숨으로 버텼다')
+    assert.ok(c.hp > 1)
+    const after = c.hp
+    c.hp = 1
+    fieldJudgment(w)
+    assert.equal(c.hp, 1, '출정당 한 번')
+    assert.ok(after > 1)
+  })
+
+  it('틈 사이 걸음: 다음 방이 보물 방일 몫을 5%p 올린다', () => {
+    const w = makeGame()
+    const share = () => {
+      const ws = nextRoomWeights(w, 'D1', ['combat'], 1)
+      const total = Object.values(ws).reduce((a, b) => a + b, 0)
+      return ws.treasure / total
+    }
+    const before = share()
+    learnTechnique(w, 'gap_step', 'event')
+    assert.ok(Math.abs(share() - before - 0.05) < 1e-9, `${before} → ${share()}`)
+  })
+
+  it('F01 추천: 기동이 가장 높으면 길잡이(05 §8.1 탐색·기동 → 길잡이, 독립 검증 D79-8)', () => {
+    const w = makeGame()
+    const s = w.state.character!.skills
+    s.mobility = { rank: 3, uses: 99 }
+    s.melee = { rank: 2, uses: 30 }
+    assert.equal(recommendedSpecKey(w), 'search_first')
+    assert.deepEqual(w.content.get('event', 'F01').policy_hooks?.represent_after?.skill_rank_up, ['melee', 'search', 'survival', 'negotiation'])
   })
 })

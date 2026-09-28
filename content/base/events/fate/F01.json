@@ -18,7 +18,7 @@
     "decline_choice": "defer",
     "auto_specialization_map": { "combat_first": "guardian", "search_first": "pathfinder", "care_first": "herbalist", "trade_first": "merchant" },
     "max_presentations": 2,
-    "represent_after": { "level_gain": 3, "skill_rank_up": ["melee", "search"] }
+    "represent_after": { "level_gain": 3, "skill_rank_up": ["melee", "search", "survival", "negotiation"] }
   },
   "_note": "11 F01, 05 §8.3·§8.4, 10 §8.4. 효과 수치는 선택 창이 balance.specializations를 읽어 보여준다(11에 수치 없음). 자동 전문화 '숙련 높은 쪽'(higher_skill)은 근접·탐색 단계 → 사용 횟수 → 수호자 순 비교라 고정 선택지 표로 적지 못했다. 자동 처리 기록 끝의 '(미리 정한 방침에 따라)'와 두 번째 제시의 아직은 상세 문장은 적을 자리가 없다. 가중치는 11에 없어 10",
   "hold_line": "갈림길 앞에서 결정을 기다린다",

@@ -150,6 +150,7 @@ export function startSortie(world: World, choice: SortieChoice): Sortie {
     const inst = uid ? state.item_instances[uid] : undefined
     if (inst?.charges) delete inst.charges
   }
+  for (const t of ch.techniques) delete t.charges
   return s
 }
 

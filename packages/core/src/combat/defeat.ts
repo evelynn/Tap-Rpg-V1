@@ -4,7 +4,7 @@ import type { Rng } from '../rules/random'
 import { characterOf, type RuleContext } from '../rules/context'
 import { checkDc, miracleReroll, recordCheckUse, rollCheck, type CheckRoll } from '../rules/check'
 import { addJournal } from '../journal/index'
-import { consumeArmed, finalSaveJournal, isArmed, miracleJournal, mitigateJournal, noviceGuardActive } from '../blessing/index'
+import { consumeCommitted, finalSaveJournal, isArmed, miracleJournal, mitigateJournal, noviceGuardActive } from '../blessing/index'
 import { maxHp, type Stat } from '../rules/derived'
 import type { RankUp } from '../rules/growth'
 import { collectModSources, modValue } from '../rules/modifiers'
@@ -243,9 +243,19 @@ export function applyDefeat(ctx: RuleContext, r: DefeatResult): { injury: Injury
   const rankUps = r.check ? recordCheckUse(ctx, r.check, { statPoints: content.balance.growth.use_points.injury_or_final }) : []
   // 가호 발동(04 §10.3): 걸어 둔 가호를 쓰고 인물이 모르는 흔적을 남긴다
   const reroll = r.check?.record.reroll
-  if (reroll && consumeArmed(ctx, 'miracle')) addJournal(ctx, miracleJournal(ctx, reroll.first, reroll.second))
-  if (r.blessing === 'final_save' && consumeArmed(ctx, 'final_save')) addJournal(ctx, finalSaveJournal(ctx, r.place))
-  if (r.blessing === 'mitigate' && consumeArmed(ctx, 'mitigate')) addJournal(ctx, mitigateJournal(ctx, r.place))
+  // 효과는 resolve가 이미 정했다. 그 사이 풀었어도 쓴 것으로 센다(consumeCommitted)
+  if (reroll) {
+    consumeCommitted(ctx, 'miracle')
+    addJournal(ctx, miracleJournal(ctx, reroll.first, reroll.second))
+  }
+  if (r.blessing === 'final_save') {
+    consumeCommitted(ctx, 'final_save')
+    addJournal(ctx, finalSaveJournal(ctx, r.place))
+  }
+  if (r.blessing === 'mitigate') {
+    consumeCommitted(ctx, 'mitigate')
+    addJournal(ctx, mitigateJournal(ctx, r.place))
+  }
   if (r.blessing === 'first_step' && ch.blessing.novice_guard) {
     ch.blessing.novice_guard = false
     addJournal(ctx, mitigateJournal(ctx, r.place))

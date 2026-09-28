@@ -40,13 +40,18 @@ export function secondJobReady(ctx: RuleContext): boolean {
 }
 
 // 기술 익힘(05 §10.1): 같은 기술은 한 번, 사건·수첩 기술은 사건 상한 안. 익히면 [성장] 기록(14 §5.1)
-export function learnTechnique(ctx: RuleContext, id: string, source: TechSource): boolean {
+export function canLearn(ctx: RuleContext, id: string, source: TechSource): boolean {
   const ch = characterOf(ctx)
-  const def = ctx.content.balance.techniques[id]
-  if (!def || ch.techniques.some((t) => t.id === id)) return false
+  if (!ctx.content.balance.techniques[id] || ch.techniques.some((t) => t.id === id)) return false
   const r = rules(ctx)
   const count = (s: (x: TechSource) => boolean) => ch.techniques.filter((t) => s(t.source)).length
-  if (source === 'job' ? count((x) => x === 'job') >= r.tech_job_cap : count((x) => x !== 'job') >= r.tech_event_cap) return false
+  return source === 'job' ? count((x) => x === 'job') < r.tech_job_cap : count((x) => x !== 'job') < r.tech_event_cap
+}
+
+export function learnTechnique(ctx: RuleContext, id: string, source: TechSource): boolean {
+  if (!canLearn(ctx, id, source)) return false
+  const ch = characterOf(ctx)
+  const def = ctx.content.balance.techniques[id]!
   ch.techniques.push({ id, source, eff_min: ch.eff_min })
   addJournal(ctx, {
     tag: 'growth', sub: 'tech', importance: 'major',
@@ -81,7 +86,8 @@ export function noteEncounter(ctx: RuleContext, rng: Rng, parentCall: string, te
   const note = ctx.state.family.technique_note
   const r = rules(ctx)
   if (!note || note.gen >= ch.generation || ch.level < r.note_min_level || ch.counters[r.note_counter]) return
-  if (ch.techniques.some((t) => t.id === note.tech_id)) return
+  // 익힐 수 없으면(이미 앎·사건 기술 상한) 만나지 않는다. 익혔다는 기록만 남는 일을 막는다(독립 검증 D79-6)
+  if (!canLearn(ctx, note.tech_id, 'note')) return
   if (!rng.chance(r.note_chance)) return
   ch.counters[r.note_counter] = 1
   const name = techName(ctx.content, note.tech_id)

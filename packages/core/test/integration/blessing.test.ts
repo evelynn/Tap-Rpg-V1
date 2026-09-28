@@ -3,9 +3,9 @@ import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import {
   applyDefeat, applyStartBlessing, arm, armBlock, charges, crisisMoment, healBlock, healNow, illuminate, illuminateBlock, isArmed,
-  resolveDefeat, runEvent, submitChoice, submitPendingAuto, succeed, talentOffers, unarm, usesLeft, type World,
+  canTilt, heirStats, heirSubject, loadGameWorld, pendingSuccession, resolveDefeat, runEvent, submitChoice, submitPendingAuto, succeed, talentOffers, unarm, usesLeft, type World,
 } from '../../src/index'
-import { makeGame } from './life-fixture'
+import { baseContent, makeGame } from './life-fixture'
 
 const serious = (w: World) => w.state.character!.injuries.push({ grade: 'serious', stat: 'str', remaining_min: 100, source: 'test' } as never)
 
@@ -149,5 +149,103 @@ describe('가호(D78)', () => {
     const heir = succeed(w, { blessing: { kind: 'handful' } })
     assert.equal(heir.blessing.start, 'handful')
     assert.equal(charges(w), Math.min(3, before + 2))
+  })
+
+  it('행동 시작에 고른 가호는 적용 전에 풀어도 쓴 것으로 센다(독립 검증 D78-2)', () => {
+    const w = makeGame()
+    w.state.family.blessing.charges = 3
+    assert.ok(arm(w, 'final_save'))
+    const r = defeatUntil(w, true, (x) => x.blessing === 'final_save')
+    assert.ok(unarm(w, 'final_save'))
+    assert.equal(charges(w), 3)
+    applyDefeat(w, r)
+    const b = w.state.character!.blessing
+    assert.deepEqual([charges(w), b.uses, b.final_used], [1, 1, true])
+    assert.ok(w.state.journal.some((e) => e.sub === 'blessing'))
+  })
+
+  it('계승을 기다리는 동안은 가호를 걸 수 없다(별빛을 잃지 않는다, 독립 검증 D78-4)', () => {
+    const w = makeGame({ autoSuccession: false })
+    for (let i = 0; i < 40000 && w.state.current_activity.state !== 'awaiting_succession'; i++) {
+      if (w.state.pending_choice) submitPendingAuto(w)
+      else w.advance(600)
+    }
+    w.state.family.blessing.charges = 2
+    assert.equal(armBlock(w, 'miracle'), 'no_target')
+    assert.equal(arm(w, 'miracle'), false)
+    succeed(w, { blessing: null })
+    assert.equal(charges(w), 3)
+  })
+
+  it('기적의 주사위로 다시 굴린 값도 부분 성공이 될 수 있다(독립 검증 D78-7)', () => {
+    const results = [13, 14, 16].map((second) => {
+      const w = makeGame()
+      w.state.family.blessing.charges = 3
+      runEvent(w, 'C01-3', { place: 'D2', force: true }, w.ports)
+      w.state.pending_choice!.pre_rolled.rescue = 2
+      arm(w, 'miracle')
+      const d20 = w.rng.event.d20.bind(w.rng.event)
+      w.rng.event.d20 = () => second
+      try {
+        submitChoice(w, 'rescue', w.ports)
+      } finally {
+        w.rng.event.d20 = d20
+      }
+      const e = w.state.journal.find((x) => x.check?.reroll)!
+      return [e.check!.dc - e.check!.total, e.check!.result]
+    })
+    // 힘 +3, DC 19: 16 → 부족 3 실패, 17 → 부족 2 부분 성공, 19 → 성공
+    assert.deepEqual(results, [[3, 'failure'], [2, 'partial'], [0, 'success']])
+  })
+
+  it('가호 자동 `최후의 순간만`은 치명 관문 앞에서 돌아서면 걸지 않는다(독립 검증 D78-3)', () => {
+    const w = makeGame({ attitude: 'challenging', lethal: false })
+    w.state.policies.blessing_auto = 'final_only'
+    let turned = false
+    for (let i = 0; i < 20000 && !turned; i++) {
+      w.state.family.blessing.charges = 3
+      if (w.state.pending_choice) submitPendingAuto(w)
+      else w.advance(60)
+      assert.equal(isArmed(w, 'final_save'), false)
+      turned = w.state.journal.some((e) => e.line === '부서진 종 앞에서 돌아섰다.')
+    }
+    assert.ok(turned, '치명 관문 앞에서 돌아섰다')
+  })
+
+  it('계승 화면의 시작 축복 미리보기는 출발 때 확정되는 능력치로 보고, 맞지 않는 축복은 아무것도 바꾸기 전에 거절한다(독립 검증 D78-1)', () => {
+    const w = makeGame({ seed: 's3', autoSuccession: false, attitude: 'challenging' })
+    for (let i = 0; i < 40000 && w.state.current_activity.state !== 'awaiting_succession'; i++) {
+      if (w.state.pending_choice) submitPendingAuto(w)
+      else w.advance(600)
+    }
+    const plan = pendingSuccession(w)!
+    const snap = JSON.stringify(w.snapshot())
+    const STATS = ['str', 'dex', 'kno', 'wil', 'soc', 'luk'] as const
+    let tried = 0
+    for (const c of plan.candidates) {
+      const subj = heirSubject(w, c)
+      let rejected = false
+      for (const from of STATS) {
+        for (const to of STATS) {
+          const ok = canTilt(w, from, to, subj)
+          if (from === to || (!ok && rejected)) continue
+          const w2 = loadGameWorld(baseContent(), JSON.parse(snap))
+          if (ok) {
+            const heir = succeed(w2, { uid: c.uid, blessing: { kind: 'tilt', from, to } })
+            const want = { ...heirStats(w, c) }
+            want[from] -= 1
+            want[to] += 1
+            assert.deepEqual(heir.birth_stats, want)
+            tried++
+          } else {
+            rejected = true
+            assert.throws(() => succeed(w2, { uid: c.uid, blessing: { kind: 'tilt', from, to } }), /시작 축복을 줄 수 없다/)
+            assert.equal(w2.state.family.generation, w.state.family.generation, '거절되면 세대가 그대로')
+            assert.ok(pendingSuccession(w2), '계승 대기 그대로')
+          }
+        }
+      }
+    }
+    assert.ok(tried > 0)
   })
 })

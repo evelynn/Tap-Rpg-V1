@@ -21,7 +21,7 @@ export function eventCheckDc(w: EventWorld, rule: RuleContext, c: EventCheck, sc
 }
 
 // partial_allowed는 종류 기본값을 끄는 용도로만 쓴다(16 §4.2)
-function partialOn(rule: RuleContext, c: EventCheck, kind: string): boolean {
+export function partialOn(rule: RuleContext, c: EventCheck, kind: string): boolean {
   return c.partial_allowed !== false && partialAllowed(rule, kind, c.partial_allowed)
 }
 

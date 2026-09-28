@@ -107,6 +107,13 @@ export function nextRoomWeights(ctx: RuleContext, place: string, before: readonl
   // 함정 조우 수정자는 상대 가산이다(07 §5.2, D53)
   const trapAdd = modValue(ctx, 'trap_encounter_add', 0)
   if (trapAdd !== 0) w.trap = w.trap * (1 + trapAdd)
+  // 보물 방 확률 가산(16 treasure_room_chance_add, 2차 틈새꾼·틈 사이 걸음): 보물 방 몫을 절대값 p만큼 올린다(독립 검증 D79-5)
+  const p = modValue(ctx, 'treasure_room_chance_add', 0)
+  const total = ROOM_KINDS.reduce((s, k) => s + w[k], 0)
+  if (p > 0 && total > 0 && w.treasure < total) {
+    const q = Math.min(0.95, w.treasure / total + p)
+    w.treasure = (q * (total - w.treasure)) / (1 - q)
+  }
   return w
 }
 
@@ -218,7 +225,8 @@ export function gatePrep(world: World): number {
 function autoArmFinal(world: World): void {
   if (world.state.policies.blessing_auto !== 'final_only') return
   const r = world.content.get('region', currentSortie(world).location_id)
-  if (r.kind !== 'dungeon_floor' || !r.gate.lethal || isArmed(world, 'final_save')) return
+  // 격파한 층의 관문 잔당은 치명이 아니다(07 §4.5)
+  if (r.kind !== 'dungeon_floor' || !r.gate.lethal || gateCleared(world, r.id) || isArmed(world, 'final_save')) return
   if (charges(world) >= world.content.balance.blessing.costs.final_save && usesLeft(world) > 0) arm(world, 'final_save')
 }
 
@@ -490,11 +498,10 @@ export const roomResolver: ActionResolver = {
     if (d !== 'continue' || world.state.pending_choice) return
     if (!hasNext) {
       gatePrep(world)
-      autoArmFinal(world)
       if (!gateAllowed(world)) {
         addJournal(world, gateTurnBackJournal(world))
         beginReturn(world)
-      }
+      } else autoArmFinal(world) // 들어가기로 정한 뒤에만 건다(04 §10.3 8번, 독립 검증 D78-3)
     }
   },
 }

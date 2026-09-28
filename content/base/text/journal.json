@@ -55,6 +55,10 @@
 
   { "id": "journal.rest.camp", "tag": "rest",
     "variants": ["배낭을 베개 삼아 잠들었다", "모닥불 옆에서 빵을 먹었다"] },
+  { "id": "journal.rest.second_wind", "tag": "rest", "variants": ["두 번째 숨으로 버텼다"],
+    "_note": "14 §5.1 [휴식] 두 번째 숨(08 X01, 05 §10 방패 버티기)" },
+  { "id": "journal.rest.second_wind_detail", "tag": "rest", "max_len": 80,
+    "variants": ["{name:은/는} 무너지려던 순간 숨을 다시 고르고 체력 {hp:을/를} 되찾았다."] },
   { "id": "journal.rest.inn", "tag": "rest",
     "variants": ["도토리 모자에서 늦잠까지 푹 잤다", "여관 창가 자리에서 푹 쉬었다", "따뜻한 수프를 먹고 일찍 잤다",
       "여관 이불을 덮고 곯아떨어졌다"] },

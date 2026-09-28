@@ -18,7 +18,7 @@ import { createItemInstance } from '../sim/create'
 import { fireSuccession } from '../life/events'
 import { DEPART_DETAIL, DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
 import { writeNote } from '../jobs/index'
-import { applyStartBlessing, refundArmedAtLifeEnd, repeatStartChoice, successionGain, type StartChoice } from '../blessing/index'
+import { applyStartBlessing, refundArmedAtLifeEnd, repeatStartChoice, startBlock, successionGain, type BlessingSubject, type StartChoice } from '../blessing/index'
 import {
   candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
 } from './candidates'
@@ -150,13 +150,28 @@ export interface HeirChoice {
   blessing?: StartChoice | null // 시작 축복(01 §19). null = 내리지 않는다, 없으면 방침 `시작 축복 자동`
 }
 
+// 후계자의 출생 능력치(12 §3.4): 4단계에서 고른 출신 배경과 지금 부모의 최고 능력치로 확정한다.
+// startHeir와 계승 화면 미리보기(시작 축복 5단계)가 같은 값을 써야 한다(독립 검증 D78-1)
+export function heirStats(w: LifeWorld, cand: Candidate, background: string = defaultBackground(w.content)): Character['birth_stats'] {
+  return candidateStats(w.content, w.state.family.family_seed, cand, background, parentBestStats(characterOf(w)))
+}
+
+// 시작 축복을 받을 후계자(출발 직후 모습). 출신 배경 숙련은 첫 단계로 시작한다
+export function heirSubject(w: LifeWorld, cand: Candidate, background: string = defaultBackground(w.content)): BlessingSubject {
+  const bgSkill = w.content.get('background', background).start_skill
+  const first = skillRank(w.content, w.content.balance.skills.rank_thresholds[0] ?? 0)
+  return {
+    generation: w.state.family.generation + 1, traits: cand.traits.map((t) => t.id), birthStats: heirStats(w, cand, background), background,
+    ranks: Object.fromEntries(SKILLS.map((k) => [k, k === bgSkill ? first : 0])) as BlessingSubject['ranks'],
+  }
+}
+
 // 3~5단계: 후계자 확정 → 유전·유품·돈 이전 → 새 인물 출발. 5단계 사건(S05)은 ports를 주면 함께 발화한다
 export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice = {}, ports?: EventPorts): Character {
   const { content } = w
   const state = w.state
   const fam = state.family
   const parent = characterOf(w)
-  const parentBest = parentBestStats(parent)
   const cand = plan.candidates.find((c) => c.uid === (choice.uid ?? plan.defaultHeirUid))
   if (!cand) throw new Error('후계자 후보가 없다')
 
@@ -164,7 +179,12 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
   const background = choice.background ?? defaultBackground(content)
   const bg = content.get('background', background)
   if (bg.unlock !== null && !fam.unlocks.backgrounds.includes(bg.id)) throw new Error(`출신 배경 '${bg.id}'이 해금되지 않았다`)
-  const stats = candidateStats(content, fam.family_seed, cand, background, parentBest)
+  const stats = heirStats(w, cand, background)
+  // 고른 시작 축복은 아무것도 바꾸기 전에 검사한다(중간에 멈춰 반쯤 계승된 저장을 남기지 않는다, 독립 검증 D78-1)
+  if (choice.blessing) {
+    const why = startBlock(w, choice.blessing, heirSubject(w, cand, background), null)
+    if (why) throw new Error(`시작 축복을 줄 수 없다: ${why}`)
+  }
   const call = parentCall(content, w.rng.life, cand.relation)
 
   // 기념품 전환과 남은 장비 정리(12 §6.1). 넘길 유품만 남긴다

@@ -132,10 +132,26 @@ export function chargesLeft(ctx: RuleContext, target: string): { uid: string; le
     const left = inst.charges?.[target] ?? (m.value as number)
     if (left > 0) out.push({ uid: inst.uid, left })
   }
+  // 익힌 기술의 출정 충전(05 §10, 독립 검증 D79-5). uid는 `tech:{기술 id}`
+  for (const t of ctx.state.character?.techniques ?? []) {
+    const m = ctx.content.balance.techniques[t.id]?.modifiers.find((x) => x.target === target && x.op.startsWith('charges_') && typeof x.value === 'number')
+    if (!m) continue
+    const left = t.charges?.[target] ?? (m.value as number)
+    if (left > 0) out.push({ uid: `${TECH_UID}${t.id}`, left })
+  }
   return out
 }
 
+export const TECH_UID = 'tech:'
+
 export function useCharge(ctx: RuleContext, uid: string, target: string): void {
+  if (uid.startsWith(TECH_UID)) {
+    const t = characterOf(ctx).techniques.find((x) => x.id === uid.slice(TECH_UID.length))
+    if (!t) throw new Error(`익힌 기술이 없다: ${uid}`)
+    const left = chargesLeft(ctx, target).find((c) => c.uid === uid)?.left ?? 0
+    t.charges = { ...t.charges, [target]: Math.max(0, left - 1) }
+    return
+  }
   const inst = ctx.state.item_instances[uid]
   if (!inst) throw new Error(`충전 장비가 없다: ${uid}`)
   const left = chargesLeft(ctx, target).find((c) => c.uid === uid)?.left ?? 0

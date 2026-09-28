@@ -2,7 +2,7 @@
 // 1 생애 정리 · 2 생애의 책(책 본문은 M3) · 3 후계자 · 4 물려줄 것 · 5 출발(이름·태도·시작 축복, D78).
 // 중간에 닫으면 계승 대기가 그대로 남는다. `출발`만 세계를 바꾼다(succeed).
 import {
-  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, canTilt, defaultBackground, itemName, pendingSuccession, seedSkills, succeed, talentOffers,
+  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, canTilt, heirStats, heirSubject, itemName, pendingSuccession, seedSkills, succeed, talentOffers,
   type BlessingSubject, type Candidate, type StartChoice, type StartKind, type World,
 } from '@tap/core'
 import { button, h } from './detail/view'
@@ -136,7 +136,7 @@ export class SuccessionWindow {
         h('div', { class: 'd-strong' }, `${c.uid === this.plan.defaultHeirUid ? '★ ' : ''}${c.name} · ${REL_LABEL[c.relation] ?? c.relation}`),
         ...c.traits.map((t) => h('div', {}, `${this.world.content.get('trait', t.id).name} (${FROM_LABEL[t.from] ?? `${this.plan.record.name}에게`})`)),
         c.relation === 'adopted' && !c.traits.length ? h('div', { class: 'd-dim' }, '가문의 가르침을 받았다') : null,
-        h('div', { class: 'd-dim' }, topStats(c)),
+        h('div', { class: 'd-dim' }, topStats(this.world, c)),
         ...c.episodes.slice(0, 2).map((e) => h('div', { class: 'd-note' }, e)))
       const pick = (): void => {
         this.heir = c.uid
@@ -245,18 +245,13 @@ export class SuccessionWindow {
   }
 }
 
-const topStats = (c: Candidate): string => (Object.keys(STAT_LABELS) as Stat[])
-  .sort((a, b) => c.birth_stats[b] - c.birth_stats[a]).slice(0, 2).map((k) => `${STAT_LABELS[k]} ${c.birth_stats[k]}`).join(' · ')
-
-// 후계자는 아직 없으므로 후보 카드 값으로 축복을 미리 본다(출신 배경은 기본값, 숙련은 배경 숙련만 1단계)
-function subjectFor(w: World, c: Candidate): BlessingSubject {
-  const background = defaultBackground(w.content)
-  const bgSkill = w.content.get('background', background).start_skill
-  return {
-    generation: w.state.family.generation + 1, traits: c.traits.map((t) => t.id), birthStats: { ...c.birth_stats }, background,
-    ranks: Object.fromEntries((Object.keys(SKILL_LABELS) as Skill[]).map((k) => [k, k === bgSkill ? 1 : 0])) as Record<Skill, number>,
-  }
+const topStats = (w: World, c: Candidate): string => {
+  const st = heirStats(w, c)
+  return (Object.keys(STAT_LABELS) as Stat[]).sort((a, b) => st[b] - st[a]).slice(0, 2).map((k) => `${STAT_LABELS[k]} ${st[k]}`).join(' · ')
 }
+
+// 후계자는 아직 없으므로 출발 때 확정될 능력치로 축복을 미리 본다(core heirSubject: startHeir와 같은 값, 독립 검증 D78-1)
+const subjectFor = (w: World, c: Candidate): BlessingSubject => heirSubject(w, c)
 
 function defaultStart(w: World, kind: StartKind, subj: BlessingSubject): StartChoice {
   if (kind === 'talent') return { kind, ...(talentOffers(w, subj)[0] ? { trait: talentOffers(w, subj)[0]! } : {}) }

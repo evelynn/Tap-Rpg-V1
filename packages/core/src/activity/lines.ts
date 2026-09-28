@@ -23,6 +23,8 @@ export const ACTIVITY_TEXT = {
   travel_depart_rain: 'journal.travel.depart_rain',
   travel_depart_detail: 'journal.travel.depart_detail',
   rest_camp: 'journal.rest.camp',
+  rest_second_wind: 'journal.rest.second_wind',
+  rest_second_wind_detail: 'journal.rest.second_wind_detail',
   rest_inn: 'journal.rest.inn',
   rest_no_rain_detail: 'journal.rest.no_rain_detail',
   rest_rain_detail: 'journal.rest.rain_detail',

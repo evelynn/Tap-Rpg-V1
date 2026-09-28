@@ -413,6 +413,10 @@ export class DetailWindow {
       h('div', { class: 'd-line', title: '치명 관문에 들어갈 때 별빛이 2개 이상이면 최후의 순간을 스스로 걸어 둡니다.' }, h('span', { class: 'd-label' }, '가호 자동 사용'),
         h('span', { class: 'd-seg' }, ...([['off', '끔'], ['final_only', '최후의 순간만']] as const).map(([v, t]) =>
           button(t, () => { w.state.policies.blessing_auto = v; this.render() }, { on: w.state.policies.blessing_auto === v })))),
+      // 시작 축복 자동(01 §18.2): 자동 계승일 때 앞 세대가 받은 축복 종류를 다시 내린다(독립 검증 D78-10)
+      h('div', { class: 'd-line', title: '자동 계승일 때 앞 세대가 받은 시작 축복을 같은 종류로 내립니다. 기울어진 재능은 사람이 고릅니다.' }, h('span', { class: 'd-label' }, '시작 축복 자동'),
+        h('span', { class: 'd-seg' }, ...([['none', '없음'], ['repeat', '지난번과 같게']] as const).map(([v, t]) =>
+          button(t, () => { w.state.policies.start_blessing_auto = v; this.render() }, { on: w.state.policies.start_blessing_auto === v })))),
       h('div', { class: 'd-note' }, BLESSING_HELP),
     )
     return sec

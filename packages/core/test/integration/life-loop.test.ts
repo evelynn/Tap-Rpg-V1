@@ -90,7 +90,7 @@ describe('치명 위험 허용 끔(09 §5)', () => {
 describe('치명 위험 허용 켬: 사망 → 계승(04 §2.2, 09 §5)', () => {
   it('최후 판정에 지면 귀환하지 않고 연대기에 원인이 남은 채 다음 세대로 이어진다', () => {
     // 시드는 "치명 관문에서 최후 판정에 진다"를 재현하는 값이다. 행동 길이·판단 순서가 바뀌면 다시 고른다
-    const world = makeGame({ seed: '0000000000005180', attitude: 'challenging', lethal: true })
+    const world = makeGame({ seed: '00000000000051d2', attitude: 'challenging', lethal: true })
     const r = run(world, { steps: 1400 })
     assert.equal(r.stalls, 0)
     assert.equal(world.state.current_activity.state, 'awaiting_succession')

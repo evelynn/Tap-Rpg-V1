@@ -44,6 +44,8 @@ export type BlockReason = 'no_charge' | 'life_cap' | 'armed' | 'used' | 'no_targ
 const costOf = (ctx: RuleContext, kind: ArmedKind | 'heal' | 'illuminate'): number => cfg(ctx).costs[kind]
 
 function blocked(ctx: RuleContext, kind: ArmedKind | 'heal' | 'illuminate'): BlockReason | null {
+  // 생애가 끝나 계승을 기다리는 동안은 쓸 인물이 없다(걸어 둔 별빛은 이미 돌려받았다, 독립 검증 D78-4)
+  if (ctx.state.current_activity.state === 'awaiting_succession') return 'no_target'
   if (usesLeft(ctx) <= 0) return 'life_cap'
   if (charges(ctx) < costOf(ctx, kind)) return 'no_charge'
   return null
@@ -95,6 +97,18 @@ export function consumeArmed(ctx: RuleContext, kind: ArmedKind): boolean {
   ctx.state.family.blessing.total_used += 1
   if (kind === 'final_save') b.final_used = true
   return true
+}
+
+// 행동 시작(resolve)에 이미 고른 가호를 적용 때 센다. 그 사이 풀어 별빛을 돌려받았어도 효과는 이미 났으므로
+// 다시 떼고 사용 1번으로 센다(독립 검증 D78-2: 풀기로 효과만 남기고 별빛을 되찾는 반복을 막는다)
+export function consumeCommitted(ctx: RuleContext, kind: ArmedKind): void {
+  if (consumeArmed(ctx, kind)) return
+  const f = ctx.state.family.blessing
+  const b = mine(ctx)
+  f.charges = Math.max(0, f.charges - costOf(ctx, kind))
+  f.total_used += 1
+  b.uses += 1
+  if (kind === 'final_save') b.final_used = true
 }
 
 function spend(ctx: RuleContext, kind: 'heal' | 'illuminate'): void {

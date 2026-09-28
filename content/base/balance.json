@@ -386,7 +386,7 @@
     "cap": 3, "start": 1, "succession_gain": 1, "crisis_gain": 1, "crisis_per_life": 2, "life_uses": 3,
     "costs": { "final_save": 2, "heal": 1, "miracle": 1, "illuminate": 1, "mitigate": 1 },
     "crisis_traits": ["TA02", "TA06", "TA07"],
-    "miracle_checks": ["injury", "fear"], "miracle_event_categories": ["chain", "fate"],
+    "miracle_checks": ["injury"], "miracle_event_categories": ["chain", "fate"],
     "novice_until_age": 30, "seed_uses": 15, "talent_offers": 3
   },  "_note": "생애 단계 경계 정지의 경계는 aging.life_stages",
   "specializations": {                                  "_comment": "05 §5.2, §8.2, 04 §5.2, 08 §7.4. 키는 코드 열거 SPECIALIZATIONS(DS-30)",
@@ -424,7 +424,7 @@
     "storyteller": {"name": "이야기꾼", "parent": "merchant", "modifiers": [{"target": "check.skill.negotiation", "op": "add", "value": 1}, {"target": "check.stat.soc", "op": "add", "value": 1}, {"target": "camp_fatigue_add", "op": "add", "value": -10}], "activity_weight_add": {"adventure": 5}, "growth": {"primary": "soc", "secondary": "wil"}, "technique": "fireside_tale", "effect_text": "교섭 판정 +1, 사교를 쓰는 판정 +1, 야영 피로 −10"}
   },
   "techniques": {"_comment": "05 §10 기술(D79). 기존 수정자 목표만 쓴다",
-    "shield_hold": {"name": "방패 버티기", "effect_text": "출정마다 한 번, 체력이 퇴각 기준에 닿으면 두 번째 숨으로 버틴다", "modifiers": [{"target": "second_wind", "op": "charges_per_sortie", "value": 1}]},
+    "shield_hold": {"name": "방패 버티기", "effect_text": "출정마다 한 번, 체력이 퇴각 기준에 닿으면 두 번째 숨으로 버틴다", "modifiers": [{"target": "second_wind", "op": "charges_per_sortie", "value": 1}, {"target": "second_wind_ratio", "op": "add", "value": 0.1}]},
     "footstep_read": {"name": "발소리 읽기", "effect_text": "출정마다 한 번, 매복을 알아채 일반 조우로 바꾼다", "modifiers": [{"target": "ambush_negate", "op": "charges_per_sortie", "value": 1}]},
     "herb_poultice": {"name": "약초 찜질", "effect_text": "숨 고르기 회복 +50%", "modifiers": [{"target": "breather_mult", "op": "add", "value": 0.5}]},
     "bargain": {"name": "흥정 솜씨", "effect_text": "상점 구매가 −5%, 판매가 +5%", "modifiers": [{"target": "price_mult", "op": "add", "value": -0.05}, {"target": "sell_mult", "op": "add", "value": 0.05}]},
