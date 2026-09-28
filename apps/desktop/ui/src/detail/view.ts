@@ -4,7 +4,7 @@ import {
   acceptEquipSuggestion, cancelEquipOrder, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
-  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, codexModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
+  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, codexModel, recentModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
 } from './model'
 
 export const TABS = ['일지', '인물', '방침', '가문'] as const
@@ -46,7 +46,8 @@ const HELP: Partial<Record<keyof Policies, string>> = {
 export class DetailWindow {
   tab: Tab = '일지'
   private filter: Filter = '전체'
-  private readonly open = new Set<string>() // 펼친 줄(일지 id, 연대기 줄, 장비 uid, 가방)
+  private readonly open = new Set<string>() // 펼친 줄(장비 uid, 가방, 도감 칸, 교체 제안). 세부 글은 펼침 없이 늘 보인다(D77)
+  private readonly folded = new Set<string>() // 접은 연대기 줄(연대기 주요 기록은 기본으로 펼쳐 둔다, D77)
   private lethalAsk = false
   private cursedAsk: string | null = null // 확인 칸을 펼친 저주 장비 uid
   private familySub: FamilySub = '연대기'
@@ -132,21 +133,25 @@ export class DetailWindow {
       this.filter = f
       this.render()
     }, { on: f === this.filter })))
+    // 최근 요약 3개(03 §5.2, 14 §1.1). 첫 출정 전에는 칸을 그리지 않는다
+    const recent = recentModel(this.world)
+    const summary = recent.length
+      ? h('div', { class: 'd-sec d-summary' }, h('div', { class: 'd-strong' }, '최근 요약'),
+        ...recent.map((r) => h('div', { class: 'd-sum' }, h('div', { class: 'd-group' }, r.head),
+          ...r.lines.map((l, i) => h('div', { class: i === r.lines.length - 1 ? 'd-sub d-num' : 'd-sub' }, l)))))
+      : null
+    // 기록마다 한 줄 문장 아래에 세부 내역을 늘 보인다(D77)
     const list = h('div', { class: 'd-list' })
     for (const g of journalModel(this.world, this.filter)) {
       list.append(h('div', { class: 'd-group' }, g.head))
       for (const r of g.rows) {
-        const key = `j${r.id}`
-        const row = h('div', { class: `d-row${r.more.length ? ' more' : ''}` },
-          h('span', { class: 'd-tag' }, r.tag), ` ${r.line}`, r.bundle ? h('span', { class: 'd-dim' }, ` (묶음 ×${r.bundle})`) : null,
-          r.more.length ? h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸') : null)
-        if (r.more.length) row.onclick = () => this.toggle(key)
-        list.append(row)
-        if (this.open.has(key)) for (const m of r.more) list.append(h('div', { class: 'd-sub' }, m))
+        list.append(h('div', { class: 'd-row' },
+          h('span', { class: 'd-tag' }, r.tag), ` ${r.line}`, r.bundle ? h('span', { class: 'd-dim' }, ` (묶음 ×${r.bundle})`) : null))
+        for (const m of r.more) list.append(h('div', { class: 'd-sub' }, m))
       }
     }
     if (!list.childElementCount) list.append(h('div', { class: 'd-dim' }, '아직 기록이 없습니다.'))
-    return [chips, list]
+    return [summary, chips, list].filter((n): n is HTMLElement => n !== null)
   }
 
   // ── 인물 ──
@@ -159,11 +164,18 @@ export class DetailWindow {
       h('div', { class: 'd-strong' }, m.title),
       h('div', {}, `Lv ${lv.lv} `, bar, lv.next ? ` ${lv.xp.toLocaleString('ko-KR')} / ${lv.next.toLocaleString('ko-KR')}` : ' 최고 레벨'),
       h('div', {}, m.line2), h('div', {}, m.line3))
+    // 능력치·숙련 줄 아래에 쓰임과 더하는 판정을 늘 보인다(03 §5.3, D77)
     const stats = h('div', { class: 'd-sec d-cols' },
-      h('div', {}, h('div', { class: 'd-strong' }, '능력치'), ...m.stats.map((s) => h('div', {}, `${s.label} ${s.value}${s.value !== s.base ? ` (기본 ${s.base})` : ''}`))),
-      h('div', {}, h('div', { class: 'd-strong' }, '숙련'), ...m.skills.map((s) => h('div', {}, `${s.label} ${'●'.repeat(s.rank)}${'○'.repeat(s.max - s.rank)} ${s.uses}${s.next !== null ? `/${s.next}` : ''}`))))
+      h('div', { class: 'd-col' }, h('div', { class: 'd-strong' }, '능력치'), ...m.stats.map((s) => h('div', { class: 'd-item' },
+        h('div', {}, `${s.label} ${s.value}${s.value !== s.base ? ` (기본 ${s.base})` : ''}`), s.use ? h('div', { class: 'd-note' }, s.use) : null))),
+      h('div', { class: 'd-col' }, h('div', { class: 'd-strong' }, '숙련'), ...m.skills.map((s) => h('div', { class: 'd-item' },
+        h('div', {}, `${s.label} ${'●'.repeat(s.rank)}${'○'.repeat(s.max - s.rank)} ${Math.floor(s.uses)}${s.next !== null ? `/${s.next}` : ''}`),
+        s.effect ? h('div', { class: 'd-note' }, s.effect) : null))))
+    // 특성은 한 줄에 하나, 얻은 나이와 효과 글을 늘 보인다(03 §5.3, D77)
     const traits = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '특성'),
-      h('div', { class: 'd-chips' }, ...m.traits.map((t) => h('span', { class: `d-badge${t.negative ? ' neg' : ''}` }, `${t.name} [${t.badge}]`))))
+      ...m.traits.map((t) => h('div', { class: 'd-item' },
+        h('div', {}, h('span', { class: `d-badge${t.negative ? ' neg' : ''}` }, `${t.name} [${t.badge}]`), h('span', { class: 'd-dim' }, ` ${t.since}세부터`)),
+        h('div', { class: 'd-note' }, t.effect))))
     const inj = m.injuries.length ? h('div', { class: 'd-sec' }, `부상: ${m.injuries.join(', ')}`) : null
     const gear = h('div', { class: 'd-sec' }, h('div', { class: 'd-strong' }, '장비'),
       ...m.equipment.map((e) => ('empty' in e ? h('div', { class: 'd-row' }, `${e.slot}  (비어 있음)`) : this.itemRow(e, m.inTown))))
@@ -205,7 +217,7 @@ export class DetailWindow {
       it.order ? h('span', { class: 'd-dim' }, it.order === 'equip' ? ' · 다음 마을 도착 때 장착' : ' · 다음 마을 도착 때 해제') : null,
       h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸'))
     row.onclick = () => this.toggle(key)
-    wrap.append(row)
+    wrap.append(row, h('div', { class: 'd-note d-indent' }, it.desc)) // 장비 설명은 늘 보인다(D77)
     if (this.open.has(key)) {
       const w = this.world
       const town = inTown ? undefined : '마을에서만 할 수 있습니다'
@@ -401,7 +413,7 @@ export class DetailWindow {
         `${n.gen}대 ${n.name}`, h('span', { class: 'd-dim' }, ` · ${n.role}${n.current ? ' · 현재' : ''}`))
       const go = (): void => {
         this.familySub = '연대기'
-        this.open.add(`c${n.row}`)
+        this.folded.delete(`c${n.row}`)
         this.render()
       }
       box.onclick = go
@@ -442,12 +454,20 @@ export class DetailWindow {
 
   private chronicle(rows: ReturnType<typeof familyModel>['rows']): Node[] {
     const list = h('div', { class: 'd-list' })
+    // 주요 기록은 기본으로 펼쳐 두고, 머리줄을 누르면 접는다(03 §5.5, D77)
     rows.forEach((r, i) => {
       const key = `c${i}`
-      const row = h('div', { class: `d-row${r.lines.length ? ' more' : ''}` }, r.head, r.lines.length ? h('span', { class: 'd-caret' }, this.open.has(key) ? '▾' : '▸') : null)
-      if (r.lines.length) row.onclick = () => this.toggle(key)
+      const shown = !this.folded.has(key)
+      const row = h('div', { class: `d-row${r.lines.length ? ' more' : ''}` }, h('span', { class: 'd-tag' }, r.head), r.lines.length ? h('span', { class: 'd-caret' }, shown ? '▾' : '▸') : null)
+      if (r.lines.length) {
+        row.onclick = () => {
+          if (shown) this.folded.add(key)
+          else this.folded.delete(key)
+          this.render()
+        }
+      }
       list.append(row)
-      if (this.open.has(key)) for (const l of r.lines) list.append(h('div', { class: 'd-sub' }, `· ${l}`))
+      if (shown) for (const l of r.lines) list.append(h('div', { class: 'd-sub' }, `· ${l}`))
     })
     return [list]
   }

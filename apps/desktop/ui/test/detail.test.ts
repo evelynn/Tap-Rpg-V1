@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
 import { Content, createGameWorld, submitPendingAuto, succeed, type World } from '@tap/core'
-import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, codexModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
+import { COMBAT_CHECKS, FILTERS, attitudeNote, characterModel, codexModel, checkFormula, destinationModel, familyModel, inFilter, journalModel, policyModel, recentModel, relicsModel, suggestionsModel, treeModel } from '../src/detail/model'
 
 let content: Content
 
@@ -85,6 +85,34 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     const weapon = w.state.inventory.equipped.weapon!
     w.state.inventory.equip_orders = [{ uid: weapon, op: 'unequip' }]
     assert.equal((characterModel(w)!.equipment[0] as { order: string | null }).order, 'unequip')
+  })
+
+  it('세부 글(D77): 일지 세부 내역은 상세 줄마다 나뉘고, 최근 요약은 최근 3개를 최신부터', () => {
+    const w = newWorld()
+    w.advance(3 * 3600)
+    const rows = journalModel(w, '전체').flatMap((g) => g.rows)
+    const e = w.state.journal.find((x) => x.detail?.includes('\n'))!
+    const row = rows.find((r) => r.id === e.id)!
+    assert.deepEqual(row.more.slice(0, e.detail!.split('\n').length), e.detail!.split('\n'))
+    const rec = recentModel(w)
+    assert.equal(rec.length, 3)
+    const all = w.state.character!.recent_summaries
+    assert.deepEqual(rec[0]!.lines, all.at(-1)!.lines)
+    assert.match(rec[0]!.head, /^\d+세 (봄|여름|가을|겨울) · (출정|마을)$/)
+  })
+
+  it('세부 글(D77): 능력치 쓰임, 단계가 있는 숙련의 판정 보정, 특성 효과 글과 얻은 나이, 장비 설명', () => {
+    const w = newWorld()
+    w.advance(3 * 3600)
+    const m = characterModel(w)!
+    assert.equal(m.stats.find((s) => s.label === '힘')!.use, '근접 명중·피해와 최대 체력')
+    for (const s of m.skills) {
+      if (s.rank > 0) assert.match(s.effect!, new RegExp(` 판정 \\+${s.rank}$`))
+      else assert.equal(s.effect, null)
+    }
+    assert.ok(m.traits.length > 0)
+    for (const t of m.traits) assert.ok(t.effect.length > 0 && t.since >= 18, t.name)
+    for (const it of m.equipment) if (!('empty' in it)) assert.equal(it.desc, w.content.get('item', w.state.item_instances[it.uid]!.def_id).description)
   })
 
   it('교체 제안: 자동 교체가 꺼져 있을 때만, 슬롯 · 장비(출처) · 개선률 · 요인 한 줄', () => {

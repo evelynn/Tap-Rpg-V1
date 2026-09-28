@@ -1,8 +1,8 @@
 // 상세 창(03 §5) 뷰 모델: 세계에서 탭별로 보일 값을 만든다. DOM이 없어 헤드리스 테스트로 검사한다.
 // 첫 조각: 일지·인물·방침·가문 연대기. 서가·책 보기(M3)·가계도·도감·목적지 고르기는 다음 조각이다.
 import {
-  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, activityOf, ageAt, effectiveStat, isInTown, isUnlocked, itemName, lifeStageOf, maxHp,
-  placeRiskCap, rankAllowed, renderTemplate, riskDiff, riskGrade, riskRank, xpToNext,
+  SKILL_LABELS, SPEC_LABELS, STAT_LABELS, activityOf, ageAt, chronicleMajor, effectiveStat, isInTown, isUnlocked, itemName, lifeStageOf, maxHp,
+  placeRiskCap, rankAllowed, renderTemplate, riskDiff, riskGrade, riskRank, skillUseText, statUseText, xpToNext,
   type JournalEntry, type World,
 } from '@tap/core'
 
@@ -51,7 +51,7 @@ export interface EntryRow {
   tag: string // 표시 글자 [사냥]
   line: string
   bundle: number | null // (묶음 ×N)
-  // 펼침(▸): 상세 문장, 자동 선택 이유, 판정 식(01 §3.1 형식)
+  // 세부 내역(늘 보임, D77): 상세 문장(줄마다), 자동 선택 이유, 판정 식(01 §3.1 형식)
   more: string[]
 }
 export interface JournalGroup { head: string; rows: EntryRow[] }
@@ -73,11 +73,23 @@ export function journalModel(world: World, filter: Filter): JournalGroup[] {
   for (const e of entries) {
     const head = `${e.age}세 ${SEASON_LABEL[e.season] ?? e.season}`
     if (groups.at(-1)?.head !== head) groups.push({ head, rows: [] })
-    const more = [e.detail, e.reason ? `이유: ${e.reason}` : undefined, e.check ? checkFormula(e.check) : undefined]
+    const detail = e.detail && e.detail !== e.line ? e.detail.split('\n') : []
+    const more = [...detail, e.reason ? `이유: ${e.reason}` : undefined, e.check ? checkFormula(e.check) : undefined]
       .filter((s): s is string => !!s && s !== e.line)
     groups.at(-1)!.rows.push({ id: e.id, tag: `[${TAG_LABEL[e.tag] ?? e.tag}]`, line: e.line, bundle: e.bundle_count && e.bundle_count > 1 ? e.bundle_count : null, more })
   }
   return groups
+}
+
+// 최근 요약(03 §5.2, 14 §1.1): 최근 3개를 최신부터
+export interface SummaryRow { head: string; lines: string[] }
+
+export function recentModel(world: World, n = 3): SummaryRow[] {
+  const ch = world.state.character
+  if (!ch) return []
+  return ch.recent_summaries.slice(-n).reverse().map((r) => ({
+    head: `${r.age}세 ${SEASON_LABEL[r.season] ?? r.season} · ${r.kind === 'sortie' ? '출정' : '마을'}`, lines: r.lines,
+  }))
 }
 
 // ── 인물 탭(03 §5.3) ──
@@ -92,6 +104,7 @@ export interface ItemRow {
   relic: 1 | 2 | null // ★ 순위
   equipped: boolean
   order: 'equip' | 'unequip' | null // 출정 중 예약(03 §5.3.1)
+  desc: string // 장비 설명(16 §2.5 description, 늘 보임 D77)
 }
 
 export interface CharacterModel {
@@ -99,9 +112,9 @@ export interface CharacterModel {
   level: { lv: number; xp: number; next: number | null }
   line2: string // 길잡이 · 은패 · 도전적
   line3: string // 체력 78/100 · 피로 34 · 동전 1,248
-  stats: { label: string; value: number; base: number }[]
-  skills: { label: string; rank: number; max: number; uses: number; next: number | null }[]
-  traits: { name: string; badge: string; negative: boolean }[]
+  stats: { label: string; value: number; base: number; use: string }[] // use: 쓰임(01 §2.1, D77)
+  skills: { label: string; rank: number; max: number; uses: number; next: number | null; effect: string | null }[] // effect: 더하는 판정
+  traits: { name: string; badge: string; negative: boolean; since: number; effect: string }[] // 얻은 나이, 효과 글(16 §2.7)
   injuries: string[]
   equipment: (ItemRow | { slot: string; empty: true })[]
   bag: { used: number; max: number; items: ItemRow[]; consumables: string }
@@ -118,8 +131,12 @@ function itemRow(world: World, uid: string, equipped: boolean): ItemRow {
     uid, slot: SLOT_LABEL[def.slot] ?? def.slot, name: itemName(world, inst), grade: GRADE[inst.grade] ?? GRADE.common!,
     cursed: def.cursed, locked: inst.locked, relic: relic as 1 | 2 | null, equipped,
     order: world.state.inventory.equip_orders?.find((o) => o.uid === uid)?.op ?? null,
+    desc: def.description,
   }
 }
+
+// {use} 명사구(14 §5.1). 문형이 없으면 빈 글
+const useText = (world: World, id: string): string => (world.content.has('text', id) ? world.content.get('text', id).variants[0]! : '')
 
 export function characterModel(world: World): CharacterModel | null {
   const ch = world.state.character
@@ -146,11 +163,19 @@ export function characterModel(world: World): CharacterModel | null {
     level: { lv: ch.level, xp: ch.xp, next: xpToNext(content, ch.level) },
     line2: `${spec} · ${content.get('guild_rank', ch.guild_rank).name} · ${content.get('attitude', world.state.policies.attitude).name}`,
     line3: `체력 ${Math.max(0, ch.hp)}/${maxHp(world)} · 피로 ${Math.round(ch.fatigue)} · 동전 ${num(ch.coins)}`,
-    stats: (Object.keys(STAT_LABELS) as (keyof typeof STAT_LABELS)[]).map((s) => ({ label: STAT_LABELS[s], value: effectiveStat(world, s), base: ch.stats[s] })),
-    skills: (Object.keys(SKILL_LABELS) as (keyof typeof SKILL_LABELS)[]).map((s) => ({
-      label: SKILL_LABELS[s], rank: ch.skills[s].rank, max: b.skills.max_rank, uses: ch.skills[s].uses, next: thresholds[ch.skills[s].rank] ?? null,
+    stats: (Object.keys(STAT_LABELS) as (keyof typeof STAT_LABELS)[]).map((s) => ({
+      label: STAT_LABELS[s], value: effectiveStat(world, s), base: ch.stats[s], use: useText(world, statUseText(s)),
     })),
-    traits: ch.traits.map((t) => ({ name: content.get('trait', t.id).name, ...traitBadge(t.id, t.source) })),
+    skills: (Object.keys(SKILL_LABELS) as (keyof typeof SKILL_LABELS)[]).map((s) => {
+      const rank = ch.skills[s].rank
+      return {
+        label: SKILL_LABELS[s], rank, max: b.skills.max_rank, uses: ch.skills[s].uses, next: thresholds[rank] ?? null,
+        effect: rank > 0 ? `${useText(world, skillUseText(s))} 판정 +${rank}` : null,
+      }
+    }),
+    traits: ch.traits.filter((t) => !t.inactive).map((t) => ({
+      name: content.get('trait', t.id).name, ...traitBadge(t.id, t.source), since: t.since_age, effect: content.get('trait', t.id).effect_text,
+    })),
     injuries: ch.injuries.map((i) => `${i.grade === 'serious' ? '중상' : '경상'} (${STAT_LABELS[i.stat]} −1) · ${Math.ceil(i.remaining_min)}분 뒤 회복`),
     equipment,
     bag: { used: inv.bag.length, max: b.stats.bag_slots, items: inv.bag.map((u) => itemRow(world, u, false)), consumables },
@@ -335,7 +360,18 @@ export function familyModel(world: World): { title: string; rows: ChronicleRow[]
   const rows: ChronicleRow[] = []
   if (ch && !fam.chronicle.some((r) => r.char_uid === ch.uid)) {
     const age = ageAt(ch.eff_min, content.balance.time)
-    rows.push({ head: `${ch.generation}대 ${ch.name}  ${content.balance.time.start_age}세~ · 현재 · ${ch.specialization === 'none' ? '초보' : SPEC_LABELS[ch.specialization]} Lv${ch.level} (${age}세)`, lines: [] })
+    // 살아 있는 인물도 지금까지의 주요 기록을 같은 선별(12 §7.1, 18 §4.1)로 보인다(D77)
+    const cm = content.balance.inheritance.chronicle_major
+    const relicUids = [...state.inventory.relic_designations.map((r) => r.uid),
+      ...Object.values(state.item_instances).filter((i) => i.inherited_from_gen !== undefined).map((i) => i.uid)]
+    const majors = chronicleMajor(state.journal, ch.uid, {
+      relicUids, clamp: cm.clamp, scoreGte: cm.score_gte,
+      eventCategory: (id) => (content.has('event', id) ? content.get('event', id).category : undefined),
+    })
+    rows.push({
+      head: `${ch.generation}대 ${ch.name}  ${content.balance.time.start_age}세~ · 현재 · ${ch.specialization === 'none' ? '초보' : SPEC_LABELS[ch.specialization]} Lv${ch.level} (${age}세)`,
+      lines: majors.map((e) => `${e.age}세 ${e.line}`),
+    })
   }
   for (const r of [...fam.chronicle].sort((a, b) => b.gen - a.gen)) {
     const spec = r.specialization === 'none' ? '초보' : SPEC_LABELS[r.specialization]

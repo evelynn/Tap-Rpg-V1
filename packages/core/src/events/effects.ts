@@ -147,8 +147,7 @@ function addTrait(run: EffectRun, id: string): void {
   }
   // 상세(14 §5.1 [특성] 획득, D77): 새 버릇 문장 + 효과 글
   const gain = render(textVariant(run.w, EVENT_TEXT.traitGain), { name: c.name, trait: def.name })
-  note(run, 'trait', render(def.lines[0]!, runValues(run)), { sub: 'trait_gain', detail: `${gain}
-${def.effect_text}` })
+  note(run, 'trait', render(def.lines[0]!, runValues(run)), { sub: 'trait_gain', detail: `${gain}\n${def.effect_text}` })
 }
 
 function pushTempMod(run: EffectRun, e: Record<string, any>): void {

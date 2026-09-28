@@ -139,8 +139,7 @@ function restDetail(world: World, place: string, weather: string | null, hp: num
   const second = hp > 0 && fatigue > 0 ? line(content, 'rest_recover_detail', { hp, fatigue })
     : hp > 0 ? line(content, 'rest_recover_hp_detail', { hp })
       : fatigue > 0 ? line(content, 'rest_recover_fatigue_detail', { fatigue }) : null
-  return second ? `${first}
-${second}` : first
+  return second ? `${first}\n${second}` : first
 }
 
 // 방금 남긴 휴식 기록에 상세를 단다. 연속 휴식으로 앞 기록에 합쳐졌으면(묶음 상세) 그대로 둔다
