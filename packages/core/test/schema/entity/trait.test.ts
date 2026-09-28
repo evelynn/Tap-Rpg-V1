@@ -14,6 +14,7 @@ const TI06 = {
   },
   reason_phrase: '호기심을 참지 못하고',
   lines: ['{name:은/는} 처음 보는 길목에서 걸음을 멈췄다.', '낯선 발자국을 따라 조금 더 걸었다.'],
+  effect_text: '효과',
   birth_weight: 14,
 }
 
@@ -28,6 +29,7 @@ const TI07 = {
   ai_hooks: { retreat_hp_add: 0.10, choice_tag_bonus: { safe: 2, bold: -2 }, activity_weight_add: { dungeon: -5 } },
   reason_phrase: '겁이 많아',
   lines: ['겁이 많은 {name:은/는} 한 번 더 뒤를 돌아봤다.', '조심성 덕분에 매복을 한 걸음 먼저 피했다.'],
+  effect_text: '효과',
   birth_weight: 12,
 }
 
@@ -42,6 +44,7 @@ const TA02 = {
   ],
   ai_hooks: { activity_weight_add: { dungeon: 5 } },
   lines: ['등불이 흔들려도 {name:은/는} 걸음을 늦추지 않았다.', '이 어둠은 처음이 아니다. 숨을 고르고 내려갔다.'],
+  effect_text: '효과',
 }
 
 // acquire condition(5.6 예시) + replaces
@@ -56,6 +59,7 @@ const TA07 = {
   modifiers: [{ target: 'check.fear', op: 'add', value: 1 }],
   ai_hooks: { choice_tag_bonus: { bold: 1 } },
   lines: ['다섯 번째 어둠 앞에서 떨지 않았다.', '겁 많던 아이는 오늘 처음으로 앞장섰다.'],
+  effect_text: '효과',
 }
 
 // acquire event(표시 전용)
@@ -65,6 +69,7 @@ const TA01 = {
   acquire: { type: 'event', event_id: 'C01-3', choice: 'rescue' },
   modifiers: [{ target: 'price_mult', op: 'add', value: -0.10, when: { in_town: true } }],
   lines: ['대장간 보름이 값을 부르다 말고 고개를 저었다.', '다리의 은인이라며 광부촌 아이들이 뒤를 따랐다.'],
+  effect_text: '효과',
 }
 
 // 5.6 TM01 mutation 전체(09 §7)
@@ -74,6 +79,7 @@ const TM01 = {
   acquire: { type: 'event', event_id: 'F03', choice: 'accept' },
   modifiers: [],
   lines: ['{name:은/는} 잔을 비웠다. 달빛이 조금 달게 느껴졌다.', '해가 뜨자 {name:은/는} 망토 깃을 올렸다.'],
+  effect_text: '효과',
   mutation: {
     stat_add: { str: 1, dex: 1, wil: 1, soc: -1 }, stat_floor: 1,
     natural_cap_add: { str: 1, dex: 1 },

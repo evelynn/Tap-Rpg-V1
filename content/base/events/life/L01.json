@@ -32,9 +32,9 @@
             { "type": "skill_use", "skill": "search", "count": 1 },
             { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } },
             { "type": "set_flag", "key": "life.l01_marked_{place}", "when": { "has_trait": "TI03" } },
-            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "when": { "has_trait": "TI03" } },
+            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "detail": "길눈 밝은 {name:은/는} 한 번 지난 자리를 수첩 없이도 외웠다.", "when": { "has_trait": "TI03" } },
             { "type": "add_fatigue", "value": -2, "when": { "has_trait": "TI08" } },
-            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "detail": "먹성 좋은 {name:은/는} 쌉싸름한 잎을 몇 장 씹어 보았다. 배가 조금 찼다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "약초만 골라 담았다"
         },
@@ -43,9 +43,9 @@
             { "type": "add_coins", "units": 1 },
             { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } },
             { "type": "set_flag", "key": "life.l01_marked_{place}", "when": { "has_trait": "TI03" } },
-            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "when": { "has_trait": "TI03" } },
+            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "detail": "길눈 밝은 {name:은/는} 한 번 지난 자리를 수첩 없이도 외웠다.", "when": { "has_trait": "TI03" } },
             { "type": "add_fatigue", "value": -2, "when": { "has_trait": "TI08" } },
-            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "detail": "먹성 좋은 {name:은/는} 쌉싸름한 잎을 몇 장 씹어 보았다. 배가 조금 찼다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "독풀을 몇 포기 섞어 버렸다"
         },
@@ -55,9 +55,9 @@
             { "type": "add_fatigue", "value": 3 },
             { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } },
             { "type": "set_flag", "key": "life.l01_marked_{place}", "when": { "has_trait": "TI03" } },
-            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "when": { "has_trait": "TI03" } },
+            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "detail": "길눈 밝은 {name:은/는} 한 번 지난 자리를 수첩 없이도 외웠다.", "when": { "has_trait": "TI03" } },
             { "type": "add_fatigue", "value": -2, "when": { "has_trait": "TI08" } },
-            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "detail": "먹성 좋은 {name:은/는} 쌉싸름한 잎을 몇 장 씹어 보았다. 배가 조금 찼다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "헷갈려서 반은 버렸다"
         }
@@ -72,9 +72,9 @@
             { "type": "add_coins", "units": 1 },
             { "type": "clear_flag", "key": "life.l01_marked_{place}", "when": { "flag": "life.l01_marked_{place}" } },
             { "type": "set_flag", "key": "life.l01_marked_{place}", "when": { "has_trait": "TI03" } },
-            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "when": { "has_trait": "TI03" } },
+            { "type": "journal", "tag": "trait", "line": "길눈이 밝아 자리를 외웠다", "detail": "길눈 밝은 {name:은/는} 한 번 지난 자리를 수첩 없이도 외웠다.", "when": { "has_trait": "TI03" } },
             { "type": "add_fatigue", "value": -2, "when": { "has_trait": "TI08" } },
-            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "detail": "먹성 좋은 {name:은/는} 쌉싸름한 잎을 몇 장 씹어 보았다. 배가 조금 찼다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "한 아름 뜯었다. 반은 잡초였다"
         }
@@ -89,7 +89,7 @@
             { "type": "set_flag", "key": "life.l01_marked_{place}" },
             { "type": "on_town_return", "effects": [ { "type": "shop_discount", "ratio": 0.05, "uses": 1, "facility": "general_store" } ] },
             { "type": "add_fatigue", "value": -2, "when": { "has_trait": "TI08" } },
-            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "쌉싸름한 잎을 몇 장 씹었다", "detail": "먹성 좋은 {name:은/는} 쌉싸름한 잎을 몇 장 씹어 보았다. 배가 조금 찼다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "약초 자리에 돌탑을 쌓았다"
         }

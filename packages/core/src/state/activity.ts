@@ -1,6 +1,6 @@
 // 선택 대기와 진행 상태(16 §5.7) + C13·C26~C28·C31. 확정 결과(resolved_action)는 13 §8.3.
 import { z } from 'zod'
-import { ACTIVITIES, ACTIVITY_STATES, END_KINDS, LIFE_STAGES, ROOM_KINDS, STATS, TIME_OF_DAY, WEATHERS } from '../schema/index'
+import { ACTIVITIES, ACTIVITY_STATES, END_KINDS, LIFE_STAGES, ROOM_KINDS, SKILLS, STATS, TIME_OF_DAY, WEATHERS } from '../schema/index'
 import { defId, effMinV, flagValue, intV, nat, s, savedEffect, scopedFlagKey, tempModSchema, uid } from './common'
 import { candidateSchema, lifeRecordSchema } from './family'
 import { itemInstanceSchema } from './inventory'
@@ -48,6 +48,7 @@ export const sortieSchema = s({
   discovery_attempts: z.array(defId), // C27
   exclusive_used: z.array(z.string()), // C28
   fate_offered: z.boolean(),
+  start: s({ level: intV.min(1), xp: nat, coins: nat, jr: nat }).optional(), // 최근 요약(14 §1.1, D77, C33): 떠날 때 레벨·경험·소지금·일지 일련번호
   // C32: 아직 닫히지 않은 일지 묶음(14 §4 사냥 조우·던전 전투 방). 닫히면 기록 1개가 되고 칸을 지운다.
   // single = 1개로 닫힐 때 그대로 남길 개별 기록, rows = 펼침 내역(최대 10줄)
   journal_bundle: s({
@@ -108,6 +109,8 @@ export const lifeLoopSchema = s({
     timeJump: z.boolean(),
     firstPage: z.string(),
   }).nullable(),
+  // 마지막으로 [성장] 기록을 남긴 레벨·숙련 단계(05 §3.4·§5.1, D77, C33). 인물이 바뀌었거나 없으면 기록 없이 지금 값으로 맞춘다
+  growth_seen: s({ char_uid: uid, level: intV.min(1), ranks: z.record(z.enum(SKILLS), nat) }).nullable().optional(),
 })
 export type LifeLoopState = z.infer<typeof lifeLoopSchema>
 export const emptyLifeLoop = (): LifeLoopState => ({ age_ticks: [], pending_end: null, succession: null })

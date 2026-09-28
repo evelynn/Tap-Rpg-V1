@@ -55,13 +55,13 @@
         "success": {
           "effects": [
             { "type": "add_coins", "units": 2 },
-            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "when": { "has_trait": "TI07" } }
+            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "detail": "겁 많은 {name:은/는} 굴 입구에서 한참 숨을 골랐다. 그래도 발을 뗐다.", "when": { "has_trait": "TI07" } }
           ],
           "line": "막대기로 동전을 긁어냈다"
         },
         "failure": {
           "effects": [
-            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "when": { "has_trait": "TI07" } }
+            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "detail": "겁 많은 {name:은/는} 굴 입구에서 한참 숨을 골랐다. 그래도 발을 뗐다.", "when": { "has_trait": "TI07" } }
           ],
           "line": "굴이 무너져 버렸다"
         }
@@ -74,7 +74,7 @@
         "always": {
           "effects": [
             { "type": "set_trip_flag", "key": "trip.rat_luck" },
-            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "when": { "has_trait": "TI07" } }
+            { "type": "journal", "tag": "trait", "line": "굴 속은 무서웠다", "detail": "겁 많은 {name:은/는} 굴 입구에서 한참 숨을 골랐다. 그래도 발을 뗐다.", "when": { "has_trait": "TI07" } }
           ],
           "line": "들쥐가 고개를 내밀었다"
         }

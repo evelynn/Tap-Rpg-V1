@@ -13,8 +13,11 @@ export const NEW_NAME_DETAIL = 'journal.house.new_name_detail'
 export const DEPART_LINE = 'journal.succession.depart'
 export const RELIC_RETURN = 'journal.gear.relic_return'
 export const RELIC_RETURN_DETAIL = 'journal.gear.relic_return_detail'
+// 14 §5.1 잠재 개방 상세·유품 받음 상세(D77)
+export const DORMANT_DETAIL = 'journal.gear.dormant_detail'
+export const RELIC_INHERIT_DETAIL = 'journal.succession.relic_detail'
 
-for (const id of [AGE_DETAIL, CHILDHOOD_DETAIL, NEW_NAME_DETAIL, DEPART_LINE, RELIC_RETURN, RELIC_RETURN_DETAIL]) registerTextSlot(id, '생애·계승(T10)')
+for (const id of [AGE_DETAIL, CHILDHOOD_DETAIL, NEW_NAME_DETAIL, DEPART_LINE, RELIC_RETURN, RELIC_RETURN_DETAIL, DORMANT_DETAIL, RELIC_INHERIT_DETAIL]) registerTextSlot(id, '생애·계승(T10)')
 
 // 문형 하나를 렌더한다. variant는 번들 순서로 고른다(난수를 쓰지 않는다)
 export function textLine(content: Content, id: string, values: TemplateValues, fallback: string, variant = 0): string {

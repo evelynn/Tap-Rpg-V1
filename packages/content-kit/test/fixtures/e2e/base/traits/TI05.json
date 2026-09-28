@@ -1,4 +1,4 @@
 {
   "id": "TI05", "name": "튼튼함", "kind": "acquired", "subkind": "story", "acquired_class": "unique", "inheritable": false,
-  "acquire": { "type": "condition", "condition": true }, "modifiers": [], "lines": ["몸이 가벼웠다", "오래 걸어도 지치지 않았다"]
+  "acquire": { "type": "condition", "condition": true }, "modifiers": [], "lines": ["몸이 가벼웠다", "오래 걸어도 지치지 않았다"], "effect_text": "효과"
 }

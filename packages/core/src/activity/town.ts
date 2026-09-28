@@ -1,8 +1,8 @@
 // 귀환 후 마을 루틴(04 §8)과 이동·야영·휴식·치료 행동.
-import { dungeonTargets } from '../ai/index'
+import { dungeonTargets, isUnlocked, rankAllowed } from '../ai/index'
 import { acceptShopSuggestion, endGuildAidIfDue, isBankrupt, startGuildAid, townPrep, treatmentCost } from '../economy/index'
 import { fireScheduledEvents, runJudgment, runTownReturnEffects } from '../events/index'
-import { addJournal, closeBundle } from '../journal/index'
+import { addJournal, closeBundle, restDetailFirst } from '../journal/index'
 import { characterOf } from '../rules/context'
 import { applyBloodRest, cellarRestSec } from '../life/index'
 import { addFatigue } from '../rules/fatigue'
@@ -18,6 +18,7 @@ import { autoDrink, tickSortieBody } from './field'
 import { addPendingSec, fieldPoint, takePendingSec } from './judgment'
 import { line } from './lines'
 import { runtimeOf } from './runtime'
+import { STAY } from './summary'
 import { arrivePlace, arriveTown, beginReturn, closeSortie, COUNTERS, currentSortie, townId } from './sortie'
 import { generateRooms } from './dungeon'
 
@@ -69,8 +70,15 @@ export function updateGuildRank(world: World): boolean {
   let best = ch.guild_rank
   for (const r of ranks) if (world.test(r.condition)) best = r.id
   if (content.get('guild_rank', best).order <= content.get('guild_rank', ch.guild_rank).order) return false
+  // 상세(D77): 이 등급으로 새로 들어갈 수 있게 된 장소(해금된 곳만)
+  const closed = content.list('region').filter((r) => r.kind !== 'town' && !rankAllowed(world, r))
   ch.guild_rank = best
-  addJournal(world, { tag: 'growth', sub: 'rank', line: line(content, 'guild_rank', { rank: content.get('guild_rank', best).name }) })
+  const opened = closed.filter((r) => rankAllowed(world, r) && isUnlocked(world, r)).map((r) => r.name)
+  const rank = content.get('guild_rank', best).name
+  addJournal(world, {
+    tag: 'growth', sub: 'rank', line: line(content, 'guild_rank', { rank }),
+    detail: opened.length ? line(content, 'guild_rank_detail', { name: ch.name, rank, places: opened.join(', ') }) : line(content, 'guild_rank_plain_detail', { name: ch.name, rank }),
+  })
   return true
 }
 
@@ -120,6 +128,27 @@ export const travelResolver: ActionResolver = {
 
 // ── 야영 ──
 
+// 휴식 상세(14 §5.1 [휴식], D77): 첫 줄은 날씨(야영) 또는 쉬었다는 문장(마을), 둘째 줄은 되찾은 체력·풀린 피로
+function restDetail(world: World, place: string, weather: string | null, hp: number, fatigue: number): string {
+  const { content } = world
+  const ch = characterOf(world)
+  const placeName = content.get('region', place).name
+  const first = weather === null
+    ? restDetailFirst(content, placeName)
+    : line(content, weather === 'rain' ? 'rest_rain_detail' : 'rest_no_rain_detail', { name: ch.name, place: placeName })
+  const second = hp > 0 && fatigue > 0 ? line(content, 'rest_recover_detail', { hp, fatigue })
+    : hp > 0 ? line(content, 'rest_recover_hp_detail', { hp })
+      : fatigue > 0 ? line(content, 'rest_recover_fatigue_detail', { fatigue }) : null
+  return second ? `${first}
+${second}` : first
+}
+
+// 방금 남긴 휴식 기록에 상세를 단다. 연속 휴식으로 앞 기록에 합쳐졌으면(묶음 상세) 그대로 둔다
+function attachRestDetail(world: World, detail: string): void {
+  const e = world.state.journal.at(-1)
+  if (e && e.tag === 'rest' && e.char_uid === characterOf(world).uid && !(e.bundle_count && e.bundle_count > 1)) e.detail = detail
+}
+
 export const campResolver: ActionResolver = {
   resolve(world: World): ResolvedDraft {
     const sec = world.content.balance.recovery.camp.sec + takePendingSec(world)
@@ -132,7 +161,9 @@ export const campResolver: ActionResolver = {
   },
   apply(world: World, action): void {
     const s = currentSortie(world)
-    camp(world)
+    const before = characterOf(world).fatigue
+    const r = camp(world)
+    attachRestDetail(world, restDetail(world, s.location_id, s.weather, r.hp, Math.round(before - characterOf(world).fatigue)))
     s.camps += 1
     tickSortieBody(world, action.duration_sec / 60)
     world.state.current_activity.state = s.activity === 'dungeon' ? 'dungeon' : s.activity === 'adventure' ? 'adventure' : 'hunt'
@@ -161,12 +192,17 @@ export const innResolver: ActionResolver = {
   apply(world: World, action): void {
     // 한 행동 = 휴식 1회다. 더 쉬어야 하면 마을 루틴이 이 행동을 다시 잡는다(04 §8 "최대 2회")
     const kind = action.outcome === 'inn' ? 'inn' : 'lodging'
+    const fatigueBefore = characterOf(world).fatigue
     const first = townRest(world, kind, 1)
     const r = first.times === 0 && kind === 'inn' ? townRest(world, 'lodging', 1) : first
     // 문장 변형은 마을 귀환 수 + 여관 숙박 수로 고른다(같은 저장이면 같은 문장, 한 귀환에 두 번 묵어도 바뀐다)
     const ch = characterOf(world)
+    if (r.times > 0) ch.counters[STAY.rests] = (ch.counters[STAY.rests] ?? 0) + 1 // 마을 체류 요약(14 §1.1)
     const seq = (ch.counters[COUNTERS.sorties] ?? 0) + (ch.counters.inn_rests ?? 0)
-    addJournal(world, { tag: 'rest', line: line(world.content, 'rest_inn', {}, seq), refs: { location_id: ch.location } })
+    addJournal(world, {
+      tag: 'rest', line: line(world.content, 'rest_inn', {}, seq), refs: { location_id: ch.location },
+      detail: restDetail(world, ch.location, null, r.hp, Math.round(fatigueBefore - ch.fatigue)),
+    })
     tickInjuries(world, action.duration_sec / 60)
     if (r.hp === 0 || !needsRest(world)) setStep(world, TOWN_STEPS.prep)
   },

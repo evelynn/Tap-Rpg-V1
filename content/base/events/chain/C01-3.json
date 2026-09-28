@@ -99,7 +99,7 @@
             { "type": "add_coins", "units": 12 },
             { "type": "add_random_item", "tier": 3, "grade_weights": { "rare": 1 }, "exclude_cursed": true },
             { "type": "end_chain", "chain_id": "C01", "outcome": "treasure" },
-            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다" } ] },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다", "detail": "세나는 지도를 품에 넣고 한동안 아무 말도 하지 않았다." } ] },
             { "type": "animation", "action": "interact" },
             { "type": "animation", "action": "discover" }
           ],
@@ -110,7 +110,7 @@
             { "type": "add_coins", "units": 8 },
             { "type": "add_random_item", "tier": 3, "grade_weights": { "rare": 1 }, "exclude_cursed": true },
             { "type": "end_chain", "chain_id": "C01", "outcome": "treasure" },
-            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다" } ] },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다", "detail": "세나는 지도를 품에 넣고 한동안 아무 말도 하지 않았다." } ] },
             { "type": "animation", "action": "interact" },
             { "type": "animation", "action": "discover" }
           ],
@@ -121,7 +121,7 @@
             { "type": "add_coins", "units": 5 },
             { "type": "add_random_item", "tier": 3, "grade_weights": { "rare": 1 }, "exclude_cursed": true },
             { "type": "end_chain", "chain_id": "C01", "outcome": "treasure" },
-            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다" } ] },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "세나가 말없이 지도를 받아 갔다", "detail": "세나는 지도를 품에 넣고 한동안 아무 말도 하지 않았다." } ] },
             { "type": "animation", "action": "interact" },
             { "type": "animation", "action": "discover" }
           ],
@@ -138,7 +138,7 @@
             { "type": "add_coins", "units": 3 },
             { "type": "end_chain", "chain_id": "C01", "outcome": "guild" },
             { "type": "end_sortie", "reason": "event" },
-            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "\"사람들을 불러 주셔서 고마워요.\"" } ] },
+            { "type": "on_town_return", "effects": [ { "type": "journal", "tag": "bond", "line": "\"사람들을 불러 주셔서 고마워요.\"", "detail": "세나가 말했다. \"사람들을 불러 주셔서 고마워요.\"" } ] },
             { "type": "animation", "action": "walk" }
           ],
           "line": "길드 구조대를 이끌고 돌아왔다"

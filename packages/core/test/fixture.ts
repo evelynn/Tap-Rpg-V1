@@ -9,7 +9,7 @@ const lines = ['{name:이/가} 한 번 더 살폈다.', '오늘도 무사히 지
 const innate = (id: string, name: string, short: string, subkind: string, w: number, stats: string[], modifiers: unknown[] = []) => ({
   id, name, short_name: short, kind: 'innate', subkind, inheritable: true,
   inherit_class: subkind === 'negative' ? 'negative' : 'positive',
-  modifiers, lines, birth_weight: w, birth_stat_weights: stats,
+  modifiers, lines, birth_weight: w, birth_stat_weights: stats, effect_text: '효과',
 })
 
 // 06 §6.3 가중치, 05 §2.2 가중 능력치
@@ -38,7 +38,7 @@ export const TRAITS = {
   TX99: {
     id: 'TX99', name: '과장된 특성', kind: 'acquired', subkind: 'story', acquired_class: 'unique', inheritable: false,
     acquire: { type: 'condition', condition: true },
-    modifiers: [{ target: 'check.all', op: 'add', value: 4 }], lines,
+    modifiers: [{ target: 'check.all', op: 'add', value: 4 }], lines, effect_text: '효과',
   },
 }
 

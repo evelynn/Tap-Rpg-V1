@@ -26,7 +26,7 @@
       "outcomes": {
         "success": {
           "effects": [
-            { "type": "journal", "tag": "trait", "line": "파수꾼의 종소리가 귓가에 남아 있었다", "when": { "has_trait": "TA08" } }
+            { "type": "journal", "tag": "trait", "line": "파수꾼의 종소리가 귓가에 남아 있었다", "detail": "종지기에게 인정받은 뒤로 {name}의 귓가에는 파수꾼의 종소리가 남아 있었다.", "when": { "has_trait": "TA08" } }
           ],
           "line": "속삭임을 등지고 걸었다"
         },

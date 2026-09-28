@@ -7,8 +7,8 @@ import { issueJournalId } from '../state/uid'
 import { ageAt, seasonAt } from '../time/index'
 import { breaksBundle, pushBundle, restBundleDetail, takeBundle, type BundleItem } from './bundle'
 
-export { BUNDLE_LIMIT, bundleRow, journalGrade, type BundleItem } from './bundle'
-export { chronicleMajor, type ChronicleEntry, type ChronicleOptions } from './select'
+export { BUNDLE_LIMIT, bundleRow, journalGrade, restBundleDetail as restDetailFirst, type BundleItem } from './bundle'
+export { baseScore, chronicleMajor, type ChronicleEntry, type ChronicleOptions } from './select'
 
 type Tag = (typeof JOURNAL_TAGS)[number]
 type Importance = (typeof JOURNAL_IMPORTANCE)[number]

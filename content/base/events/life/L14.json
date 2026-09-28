@@ -36,7 +36,7 @@
           "effects": [
             { "type": "dungeon_mod", "op": "skip_rooms", "count": 1, "scope": "this_sortie" },
             { "type": "damage", "hp_ratio": 0.1, "when": { "not": { "has_trait": "TI03" } } },
-            { "type": "journal", "tag": "trait", "line": "갈림 레일을 먼저 알아봤다", "when": { "has_trait": "TI03" } },
+            { "type": "journal", "tag": "trait", "line": "갈림 레일을 먼저 알아봤다", "detail": "길눈 밝은 {name:은/는} 갈림 레일이 어느 쪽으로 이어지는지 먼저 알아봤다.", "when": { "has_trait": "TI03" } },
             { "type": "animation", "action": "sit_eat", "props": ["mine_cart"] }
           ],
           "line": "광차가 덜컹이며 멈췄다"

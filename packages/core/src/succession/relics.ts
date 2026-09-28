@@ -6,7 +6,7 @@ import type { ItemInstance } from '../state/inventory'
 import type { JournalDraft } from '../state/journal'
 import { itemName } from '../items/bag'
 import { isDormant } from '../items/stats'
-import { RELIC_RETURN, RELIC_RETURN_DETAIL, textLine } from '../life/text'
+import { DORMANT_DETAIL, RELIC_INHERIT_DETAIL, RELIC_RETURN, RELIC_RETURN_DETAIL, textLine } from '../life/text'
 import { renderTemplate } from '../text/index'
 import { ageAt } from '../time/index'
 
@@ -113,7 +113,12 @@ export function transferRelics(ctx: RuleContext, items: readonly ItemInstance[],
     })
     if (!inv.bag.includes(inst.uid)) inv.bag.push(inst.uid)
     uids.push(inst.uid)
-    journal.push({ tag: 'succession', line: renderTemplate('{item:을/를} 물려받았다', { item: itemName(ctx, inst) }), refs: { item_uid: inst.uid } })
+    journal.push({
+      tag: 'succession',
+      line: renderTemplate('{item:을/를} 물려받았다', { item: itemName(ctx, inst) }),
+      detail: textLine(ctx.content, RELIC_INHERIT_DETAIL, { parent_name: parentName, item: itemName(ctx, inst) }, '{parent_name:이/가} 남긴 {item:을/를} 가방에 넣었다.'),
+      refs: { item_uid: inst.uid },
+    })
   }
   return { uids, journal }
 }
@@ -130,7 +135,12 @@ export function dormantOpened(ctx: RuleContext, beforeLevel: number, afterLevel:
       kind: 'potential_opened',
       text: '손에 맞기 시작했다',
     })
-    out.push({ tag: 'gear', line: renderTemplate('{item:이/가} 손에 맞기 시작했다', { item: itemName(ctx, inst) }), refs: { item_uid: inst.uid } })
+    out.push({
+      tag: 'gear',
+      line: renderTemplate('{item:이/가} 손에 맞기 시작했다', { item: itemName(ctx, inst) }),
+      detail: textLine(ctx.content, DORMANT_DETAIL, { level: afterLevel, item: itemName(ctx, inst) }, '레벨 {level:이/가} 되자 {item:이/가} 제 힘을 내기 시작했다.'),
+      refs: { item_uid: inst.uid },
+    })
   }
   return out
 }

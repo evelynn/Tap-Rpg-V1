@@ -403,7 +403,9 @@ function applyRoom(world: World, payload: RoomPayload, place: string): void {
       for (const c of payload.checks) recordCheckUse(world, c)
       runSavedEffects(world, payload.effects, scope)
       const t = world.content.get('trap', payload.trap)
-      addJournal(world, { tag: 'dungeon', line: t.lines[payload.result === 'fail' ? 'fail' : payload.result], refs: { location_id: place } })
+      // 마지막 판정(감지·해제·회피)을 기록에 달아 세부 내역에 식이 보이게 한다(14 §5.1, D77)
+      const last = payload.checks.at(-1)
+      addJournal(world, { tag: 'dungeon', line: t.lines[payload.result === 'fail' ? 'fail' : payload.result], ...(last ? { check: last.record } : {}), refs: { location_id: place } })
       if (payload.parts) {
         const id = materialBySource(world, 'trap')
         if (id) s.loot.materials[id] = (s.loot.materials[id] ?? 0) + 1

@@ -28,7 +28,7 @@
           "effects": [
             { "type": "skill_use", "skill": "melee", "count": 5 },
             { "type": "add_xp", "units": 2 },
-            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "when": { "specialization": ["guardian"] } },
+            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "detail": "수호자가 된 {name}에게 하델은 일부러 방패 쪽만 노려 쳤다.", "when": { "specialization": ["guardian"] } },
             { "type": "animation", "action": "attack" },
             { "type": "animation", "action": "cheer" }
           ],
@@ -38,7 +38,7 @@
           "effects": [
             { "type": "skill_use", "skill": "melee", "count": 3 },
             { "type": "add_xp", "units": 1 },
-            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "when": { "specialization": ["guardian"] } },
+            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "detail": "수호자가 된 {name}에게 하델은 일부러 방패 쪽만 노려 쳤다.", "when": { "specialization": ["guardian"] } },
             { "type": "animation", "action": "attack" }
           ],
           "line": "한 번은 받아냈다"
@@ -47,7 +47,7 @@
           "effects": [
             { "type": "skill_use", "skill": "melee", "count": 2 },
             { "type": "add_fatigue", "value": 10 },
-            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "when": { "specialization": ["guardian"] } },
+            { "type": "journal", "tag": "town", "line": "하델이 방패 쪽만 노렸다", "detail": "수호자가 된 {name}에게 하델은 일부러 방패 쪽만 노려 쳤다.", "when": { "specialization": ["guardian"] } },
             { "type": "animation", "action": "attack" },
             { "type": "animation", "action": "hit" }
           ],

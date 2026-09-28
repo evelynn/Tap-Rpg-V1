@@ -1,6 +1,7 @@
 [
   {
     "id": "TI01", "name": "튼튼한 체질", "short_name": "튼튼함", "kind": "innate", "subkind": "constitution",
+    "effect_text": "최대 체력 +10%, 휴식 회복 +20%, 부상 판정 +2",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [
       { "target": "hp_max_mult", "op": "add", "value": 0.1 },
@@ -20,6 +21,7 @@
   },
   {
     "id": "TI02", "name": "예민한 귀", "short_name": "예민한 귀", "kind": "innate", "subkind": "constitution",
+    "effect_text": "함정·매복 감지 +2 / 시끄러운 곳(종소리 폐광 중층, 축제)에서 피로가 25% 더 쌓인다",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [
       { "target": "check.trap_detect", "op": "add", "value": 2 },
@@ -39,6 +41,7 @@
   },
   {
     "id": "TI03", "name": "길눈이 밝음", "short_name": "길눈", "kind": "innate", "subkind": "talent",
+    "effect_text": "이동 시간 −15%, 길찾기·지형 판정 +1",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [
       { "target": "travel_time_mult", "op": "mul", "value": 0.85 },
@@ -56,6 +59,7 @@
   },
   {
     "id": "TI04", "name": "손재주", "short_name": "손재주", "kind": "innate", "subkind": "talent",
+    "effect_text": "함정 해제·자물쇠 판정 +2, 정비비 −30%",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [
       { "target": "check.trap_disarm", "op": "add", "value": 2 },
@@ -71,6 +75,7 @@
   },
   {
     "id": "TI05", "name": "약한 폐", "short_name": "약한 폐", "kind": "innate", "subkind": "negative",
+    "effect_text": "폐광·먼지 낀 곳에서 피로가 30% 더 쌓인다, 질식·독 의지 판정 −1",
     "inheritable": true, "inherit_class": "negative",
     "modifiers": [
       { "target": "fatigue_gain_mult", "op": "mul", "value": 1.3, "when": { "location_match": { "tags": ["dusty"] } } }
@@ -89,6 +94,7 @@
   },
   {
     "id": "TI06", "name": "호기심 많음", "short_name": "호기심", "kind": "innate", "subkind": "temperament",
+    "effect_text": "모험을 더 자주 고른다, 비밀 통로·수상한 제안을 좋아한다, 함정을 10% 더 자주 만난다",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [ { "target": "trap_encounter_add", "op": "add", "value": 0.1 } ],
     "ai_hooks": {
@@ -107,6 +113,7 @@
   },
   {
     "id": "TI07", "name": "겁이 많음", "short_name": "겁", "kind": "innate", "subkind": "temperament",
+    "effect_text": "체력이 10%p 더 남았을 때 물러선다, 공포 판정 −2, 매복 대응 +1",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [
       { "target": "check.fear", "op": "add", "value": -2 },
@@ -127,6 +134,7 @@
   },
   {
     "id": "TI08", "name": "대식가", "short_name": "대식가", "kind": "innate", "subkind": "constitution",
+    "effect_text": "휴식 회복 +15%, 여관비·야영 식량이 50% 더 든다",
     "inheritable": true, "inherit_class": "positive",
     "modifiers": [
       { "target": "rest_recovery_mult", "op": "add", "value": 0.15 },
@@ -145,6 +153,7 @@
   },
   {
     "id": "TA01", "name": "다리의 은인", "short_name": "다리의 은인", "kind": "acquired", "subkind": "story",
+    "effect_text": "도토리 여울·광부 집안의 호의: 상점 가격 −10%, 관련 사건 선택지가 늘어난다",
     "acquired_class": "unique", "inheritable": false,
     "acquire": { "type": "event", "event_id": "C01-3", "choice": "rescue" },
     "modifiers": [ { "target": "price_mult", "op": "add", "value": -0.1 } ],
@@ -156,6 +165,7 @@
   },
   {
     "id": "TA02", "name": "어둠을 견딘 자", "short_name": "어둠 견딤", "kind": "acquired", "subkind": "story",
+    "effect_text": "공포 판정 +2, 어둠 불리함을 받지 않는다",
     "acquired_class": "cumulative", "inheritable": false,
     "acquire": { "type": "counter", "counter": "safe_returns", "where": { "dungeon_group": "bell_mine", "dungeon_depth_gte": 2 }, "threshold": 10 },
     "modifiers": [
@@ -170,6 +180,7 @@
   },
   {
     "id": "TA03", "name": "오래된 상처", "short_name": "옛 상처", "kind": "acquired", "subkind": "negative",
+    "effect_text": "최대 체력 −5%, 겨울에 피로가 20% 더 쌓인다, 부상 판정 +1",
     "acquired_class": "negative", "inheritable": false,
     "acquire": { "type": "counter", "counter": "serious_injuries", "threshold": 3 },
     "modifiers": [
@@ -186,6 +197,7 @@
   },
   {
     "id": "TA04", "name": "여울의 단골", "short_name": "단골", "kind": "acquired", "subkind": "story",
+    "effect_text": "여관비 −30%, 여관 소문 사건이 50% 더 자주 온다",
     "acquired_class": "cumulative", "inheritable": false,
     "acquire": { "type": "counter", "counter": "inn_rests", "threshold": 40 },
     "modifiers": [ { "target": "inn_cost_mult", "op": "mul", "value": 0.7 } ],
@@ -197,6 +209,7 @@
   },
   {
     "id": "TA05", "name": "백전의 감각", "short_name": "백전", "kind": "acquired", "subkind": "story",
+    "effect_text": "명중 +1",
     "acquired_class": "cumulative", "inheritable": false,
     "acquire": { "type": "counter", "counter": "wins", "threshold": 150 },
     "modifiers": [ { "target": "hit", "op": "add", "value": 1 } ],
@@ -207,6 +220,7 @@
   },
   {
     "id": "TA06", "name": "알뜰한 살림꾼", "short_name": "살림꾼", "kind": "acquired", "subkind": "story",
+    "effect_text": "구매 예약금 +10%p, 판매가 +10%",
     "acquired_class": "cumulative", "inheritable": false,
     "acquire": { "type": "condition", "condition": { "all": [
       { "num": { "key": "counter.guild_aids", "op": ">=", "value": 1 } },
@@ -227,6 +241,7 @@
   },
   {
     "id": "TA07", "name": "겁을 이긴 자", "short_name": "용기", "kind": "acquired", "subkind": "story",
+    "effect_text": "겁이 많음을 대신한다. 공포 판정 +1, 물러서는 기준이 원래대로",
     "acquired_class": "cumulative", "inheritable": false,
     "acquire": { "type": "condition", "condition": { "all": [
       { "has_trait": "TI07" },
@@ -242,6 +257,7 @@
   },
   {
     "id": "TA08", "name": "종지기의 인정", "short_name": "종지기", "kind": "acquired", "subkind": "story",
+    "effect_text": "의지 +1(상한을 한 번 넘는다), 폐광에서 공포를 느끼지 않는다",
     "acquired_class": "unique", "inheritable": false,
     "acquire": { "type": "condition", "condition": { "defeated": "EB03" } },
     "modifiers": [
@@ -257,6 +273,7 @@
   },
   {
     "id": "TM01", "name": "달의 갈증", "short_name": "달의 갈증", "kind": "mutation", "subkind": "story",
+    "effect_text": "밤: 명중 +1·피해 +10% / 낮: 모든 판정 −2·피로 +50% / 힘·민첩·의지 +1, 사교 −1, 갈증",
     "inheritable": false,
     "acquire": { "type": "event", "event_id": "F03", "choice": "accept" },
     "modifiers": [],

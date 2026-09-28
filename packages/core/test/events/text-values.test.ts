@@ -92,7 +92,7 @@ describe('기록 한 줄 문형(14 §5.1)', () => {
     assert.ok(bad.out.journal[0]!.check, '판정식은 check 기록이 펼친다')
   })
 
-  it('family_record: 도감은 [발견] 도감 문형, 연대기·인연 문장은 상세로', () => {
+  it('family_record: 도감은 [발견] 도감 문형(상세는 첫 발견 문형, D77), 연대기·인연 문장은 상세로', () => {
     const tw = makeWorld()
     const a = effectRun(tw, { place: 'A1', vars: {} })
     runEffects(a, [
@@ -100,7 +100,7 @@ describe('기록 한 줄 문형(14 §5.1)', () => {
       { type: 'family_record', kind: 'bond', key: 'k', text: '{name:이/가} {age}세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다.' },
     ], 't')
     const [codex, bond] = a.out.journal
-    assert.deepEqual([codex!.tag, codex!.line, codex!.detail], ['discovery', '이름 없는 무덤을 도감에 적었다', undefined])
+    assert.deepEqual([codex!.tag, codex!.line, codex!.detail], ['discovery', '이름 없는 무덤을 도감에 적었다', '모라가 이름 없는 무덤을 수첩에 적었다. 가문 최초의 발견이다.'])
     assert.deepEqual([bond!.tag, bond!.line, bond!.detail], ['bond', '가문 연대기에 새 장이 열렸다', '모라가 18세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다.'])
   })
 

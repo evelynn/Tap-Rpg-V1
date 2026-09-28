@@ -28,7 +28,7 @@
           "effects": [
             { "type": "add_time", "sec": 20 },
             { "type": "if", "cond": { "has_trait": "TI02" },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다", "detail": "귀가 밝은 {name:은/는} 울리는 소리에 한동안 귀가 먹먹했다." } ] },
             { "type": "animation", "action": "hit" }
           ],
           "line": "엎드려 날갯짓을 흘려보냈다"
@@ -37,7 +37,7 @@
           "effects": [
             { "type": "damage", "hp_ratio": 0.1 },
             { "type": "if", "cond": { "has_trait": "TI02" },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다", "detail": "귀가 밝은 {name:은/는} 울리는 소리에 한동안 귀가 먹먹했다." } ] },
             { "type": "animation", "action": "hit" }
           ],
           "line": "박쥐 발톱에 볼을 긁혔다"
@@ -54,7 +54,7 @@
             { "type": "add_coins", "units": 1 },
             { "type": "add_xp", "units": 1 },
             { "type": "if", "cond": { "has_trait": "TI02" },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다", "detail": "귀가 밝은 {name:은/는} 울리는 소리에 한동안 귀가 먹먹했다." } ] },
             { "type": "animation", "action": "attack" }
           ],
           "line": "등불에 놀란 박쥐가 흩어졌다"
@@ -63,7 +63,7 @@
           "effects": [
             { "type": "damage", "hp_ratio": 0.15 },
             { "type": "if", "cond": { "has_trait": "TI02" },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다", "detail": "귀가 밝은 {name:은/는} 울리는 소리에 한동안 귀가 먹먹했다." } ] },
             { "type": "animation", "action": "attack" }
           ],
           "line": "박쥐 떼에 휩싸였다"
@@ -79,7 +79,7 @@
           "effects": [
             { "type": "open_chest" },
             { "type": "if", "cond": { "has_trait": "TI02" },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다", "detail": "귀가 밝은 {name:은/는} 울리는 소리에 한동안 귀가 먹먹했다." } ] },
             { "type": "animation", "action": "discover" }
           ],
           "line": "박쥐 둥지 뒤에 상자가 있었다"
@@ -88,7 +88,7 @@
           "effects": [
             { "type": "add_fatigue", "value": 8 },
             { "type": "if", "cond": { "has_trait": "TI02" },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "귀가 먹먹했다", "detail": "귀가 밝은 {name:은/는} 울리는 소리에 한동안 귀가 먹먹했다." } ] },
             { "type": "animation", "action": "discover" }
           ],
           "line": "박쥐 똥 냄새에 머리가 아팠다"

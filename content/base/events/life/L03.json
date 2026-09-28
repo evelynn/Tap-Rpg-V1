@@ -32,7 +32,7 @@
               "then": [ { "type": "sortie_mod", "remaining_add": { "scenes": -1 } } ],
               "else": [ { "type": "sortie_mod", "remaining_add": { "encounters": -1 } } ] },
             { "type": "add_fatigue", "value": -5, "when": { "has_trait": "TI08" } },
-            { "type": "journal", "tag": "trait", "line": "버섯 끝을 조금 떼어 먹었다", "when": { "has_trait": "TI08" } },
+            { "type": "journal", "tag": "trait", "line": "버섯 끝을 조금 떼어 먹었다", "detail": "먹성 좋은 {name:은/는} 참지 못하고 버섯 끝을 조금 떼어 맛보았다.", "when": { "has_trait": "TI08" } },
             { "type": "animation", "action": "sit_eat", "props": ["mushroom_umbrella"] }
           ],
           "line": "버섯 아래서 비를 그었다"

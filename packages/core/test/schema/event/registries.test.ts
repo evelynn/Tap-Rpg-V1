@@ -49,7 +49,7 @@ const EFFECTS_16 = [
   'journal', 'animation',
 ]
 const EFFECTS_NEW = ['add_material', 'remove_consumable', 'roll_check', 'reveal_discovery', 'open_chest', 'create_partner']
-// 16 §1.4.3 변수 등록표 전부(78개)
+// 16 §1.4.3 변수 등록표 전부(83개, D77로 5개 추가)
 const TEMPLATE_VARS_16 = [
   'name', 'heir', 'parent_name', 'parent_call', 'partner', 'job', 'child', 'guardian', 'friend', 'family', 'generation', 'age',
   'level', 'attitude', 'spec', 'kind', 'rank', 'role', 'retire_age', 'retire_age_plus10', 'sleep_age', 'luck', 'luck_after',
@@ -57,6 +57,7 @@ const TEMPLATE_VARS_16 = [
   'place', 'feature', 'depth', 'rumor_place', 'target_place', 'item', 'old_item', 'weapon', 'relic', 'relic_name', 'relic_note',
   'loot', 'npc', 'enemy', 'enemy_kind', 'coins', 'count', 'n', 'm', 'first_page', 'memory', 'achievement', 'chain_name',
   'last_step_summary', 'binder', 'trait', 'old_trait', 'trait_name', 'trait_reason', 'trait_adj', 'skill', 'injury', 'change',
+  'hp', 'fatigue', 'use', 'xp', 'places',
   'dice', 'stat', 'stat_value', 'bonus_name', 'bonus', 'luck_half', 'total', 'dc', 'result', 'cost', 'reason', 'rule',
   'choice_short', 'offer', 'quote', 'risk_line', 'injury_line', 'final_check_line',
 ]
@@ -68,7 +69,7 @@ describe('기본 등록', () => {
   it('조건 57종·효과 56종·선택자 7종·템플릿 변수(16 §1.4.3 전부)의 이름이 문서 목록과 같다', () => {
     assert.equal(CONDITIONS_16.length, 42)
     assert.equal(EFFECTS_16.length, 50)
-    assert.equal(TEMPLATE_VARS_16.length, 78)
+    assert.equal(TEMPLATE_VARS_16.length, 83)
     assert.deepEqual(sorted(conditions.names()), sorted([...CONDITIONS_16, ...CONDITIONS_NEW]))
     assert.deepEqual(sorted(effects.names()), sorted([...EFFECTS_16, ...EFFECTS_NEW]))
     assert.deepEqual(contextSelectors.names(), ['rumor_place', 'best_hunting_ground', 'main_enemy_of', 'random_friend_name', 'offered_relic', 'offer_item', 'coin_amount'])

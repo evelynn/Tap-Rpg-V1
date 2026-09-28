@@ -412,7 +412,7 @@ describe('V12 연속 사건', () => {
 
 describe('V15·V4·V9·S01 효과 교차 검사', () => {
   const trait = (id: string, acquire: Obj) =>
-    def('trait', { id, name: id, kind: 'acquired', subkind: 'story', acquired_class: 'unique', inheritable: false, acquire, modifiers: [], lines: ['가', '나'] })
+    def('trait', { id, name: id, kind: 'acquired', subkind: 'story', acquired_class: 'unique', inheritable: false, acquire, modifiers: [], lines: ['가', '나'], effect_text: '효과' })
   it('acquire type event의 선택지 결과에 add_trait가 있어야 한다', () => {
     const giver = event('L02', { choices: [choice('go', effects({ type: 'if', cond: true, then: [{ type: 'add_trait', trait_id: 'TA01' }] })), choice('stay')] })
     const r = run([

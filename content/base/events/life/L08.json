@@ -28,7 +28,7 @@
           "effects": [
             { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 1.3 }, "scope": "scene" },
             { "type": "add_xp", "units": 1 },
-            { "type": "journal", "tag": "trait", "line": "다리 아래를 보지 않으려 애썼다", "when": { "has_trait": "TI07" } },
+            { "type": "journal", "tag": "trait", "line": "다리 아래를 보지 않으려 애썼다", "detail": "겁 많은 {name:은/는} 발끝만 보며 흔들리는 다리를 건넜다.", "when": { "has_trait": "TI07" } },
             { "type": "animation", "action": "cheer" }
           ],
           "line": "흔들리는 다리를 무사히 건넜다"
@@ -36,14 +36,14 @@
         "partial": {
           "effects": [
             { "type": "remove_coins", "units": 1 },
-            { "type": "journal", "tag": "trait", "line": "다리 아래를 보지 않으려 애썼다", "when": { "has_trait": "TI07" } }
+            { "type": "journal", "tag": "trait", "line": "다리 아래를 보지 않으려 애썼다", "detail": "겁 많은 {name:은/는} 발끝만 보며 흔들리는 다리를 건넜다.", "when": { "has_trait": "TI07" } }
           ],
           "line": "건넜지만 동전을 흘렸다"
         },
         "failure": {
           "effects": [
             { "type": "damage", "hp_ratio": 0.15 },
-            { "type": "journal", "tag": "trait", "line": "다리 아래를 보지 않으려 애썼다", "when": { "has_trait": "TI07" } },
+            { "type": "journal", "tag": "trait", "line": "다리 아래를 보지 않으려 애썼다", "detail": "겁 많은 {name:은/는} 발끝만 보며 흔들리는 다리를 건넜다.", "when": { "has_trait": "TI07" } },
             { "type": "animation", "action": "hit" }
           ],
           "line": "발판이 빠져 겨우 매달렸다"

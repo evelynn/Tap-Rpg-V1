@@ -173,6 +173,7 @@ export function createNewFamilyState(content: Content, input: NewFamilyInput, te
     children: [],
     heir_preferred: null,
     attitude_log: [{ eff_min: 0, attitude: policies.attitude }],
+    recent_summaries: [],
     last_trip_time: null,
     guild_aid: { active: false, started_eff_min: null, recovered: false },
     scheduled_events: [],

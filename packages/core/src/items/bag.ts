@@ -8,7 +8,8 @@ import { earnCoins } from '../economy/earn'
 import { fieldSellPrice, sellPrice } from '../economy/price'
 import { ageAt } from '../time/index'
 import type { Rng } from '../rules/random'
-import { improvement, worthSwapping, type EvalOptions, type Slot } from './eval'
+import { improvement, REASON_LINES, worthSwapping, type EvalOptions, type ReasonKey, type Slot } from './eval'
+import { registerTextSlot } from '../schema/index'
 import { materializeItem, NAMED_PREFIX, replaceUnique, rollEffects, rollGrade } from './roll'
 import type { Grade } from './stats'
 
@@ -18,6 +19,28 @@ const LINE_FIELD_SOLD = '가방이 차서 {count}개를 현장에서 팔았다.'
 const LINE_REPLACED = '대신 {item:을/를} 받았다.' // 08 §9.5
 const LINE_REPLACED_DETAIL = '같은 물건은 이미 집에 있었다.'
 const LINE_GAIN = '{item:을/를} 손에 넣었다' // 14 §5.1 희귀 이상 획득
+
+// 14 §5.1 [장비] 줍기·교체 상세(D77). 문형은 콘텐츠에 있고 없으면 이 문장으로 채운다
+const GEAR_TEXT = {
+  pickup: ['journal.gear.pickup_detail', '{name:은/는} 주운 {item:을/를} {old_item} 대신 찼다.'],
+  pickupEmpty: ['journal.gear.pickup_empty_detail', '{name:은/는} 주운 {item:을/를} 빈 자리에 찼다.'],
+  swapEmpty: ['journal.gear.swap_empty_detail', '{name:은/는} 빈 자리에 {item:을/를} 갖췄다.'],
+} as const
+for (const [id] of Object.values(GEAR_TEXT)) registerTextSlot(id, '장비 기록(08, D77)')
+const gearText = (ctx: RuleContext, [id, fallback]: readonly [string, string], v: Record<string, string>): string =>
+  renderTemplate(ctx.content.has('text', id) ? ctx.content.get('text', id).variants[0]! : fallback, v)
+
+// 교체 상세(14 §5.1, 08 §7.5 긴 형). 긴 형이 교체 전 장비·적 계열을 채울 수 없으면 빈 자리 문형을 쓴다
+export function swapDetail(ctx: RuleContext, reason: ReasonKey, uid: string, oldUid: string | null): string {
+  const inst = instOf(ctx, uid)
+  const item = itemName(ctx, inst)
+  const old = oldUid ? itemName(ctx, instOf(ctx, oldUid)) : null
+  const fam = (ctx.content.get('item', inst.def_id).modifiers ?? []).map((m) => /_vs\.(\w+)$/.exec(m.target)?.[1]).find((f) => f !== undefined)
+  const kind = fam && ctx.content.has('enemy_family', fam) ? ctx.content.get('enemy_family', fam).name : null
+  const t = REASON_LINES[reason].long
+  if ((t.includes('{old_item') && !old) || (t.includes('{enemy_kind') && !kind)) return gearText(ctx, GEAR_TEXT.swapEmpty, { name: characterOf(ctx).name, item })
+  return renderTemplate(t, { item, old_item: old ?? '', enemy_kind: kind ?? '' })
+}
 
 export const itemName = (ctx: RuleContext, inst: Pick<ItemInstance, 'def_id' | 'prefix'>) => {
   const name = ctx.content.get('item', inst.def_id).name
@@ -239,8 +262,11 @@ export function considerPickup(ctx: RuleContext, uid: string, opts: EvalOptions 
   inv.pending_box = inv.pending_box.filter((u) => u !== uid)
   const prev = inv.equipped[def.slot]
   inv.equipped[def.slot] = uid
+  const detail = prev
+    ? gearText(ctx, GEAR_TEXT.pickup, { name: characterOf(ctx).name, item: name, old_item: itemName(ctx, instOf(ctx, prev)) })
+    : gearText(ctx, GEAR_TEXT.pickupEmpty, { name: characterOf(ctx).name, item: name })
   const r = prev ? stowLoot(ctx, prev) : { fieldSold: 0 }
-  return { equipped: true, fieldSold: r.fieldSold, journal: [{ tag: 'gear', line: renderTemplate(LINE_PICKUP_EQUIP, { item: name }), refs: { item_uid: uid } }] }
+  return { equipped: true, fieldSold: r.fieldSold, journal: [{ tag: 'gear', line: renderTemplate(LINE_PICKUP_EQUIP, { item: name }), detail, refs: { item_uid: uid } }] }
 }
 
 

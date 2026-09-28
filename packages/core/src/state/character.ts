@@ -84,6 +84,8 @@ export const characterSchema = s({
   children: z.array(uid), // family.candidates의 uid(C10)
   heir_preferred: uid.nullable(),
   attitude_log: z.array(s({ eff_min: effMinV, attitude: defId })),
+  // 최근 요약(14 §1.1, D77): 렌더링 끝난 문장, 최신이 뒤, 최근 10개. 이 칸이 없던 저장은 빈 목록
+  recent_summaries: z.array(s({ kind: z.enum(['sortie', 'town']), eff_min: effMinV, age: intV, season: z.enum(SEASONS), lines: z.array(z.string()).min(1) })).default([]),
   last_trip_time: z.enum(TIME_OF_DAY).nullable(), // C3
   guild_aid: s({ active: z.boolean(), started_eff_min: effMinV.nullable(), recovered: z.boolean() }), // C4
   scheduled_events: z.array(s({

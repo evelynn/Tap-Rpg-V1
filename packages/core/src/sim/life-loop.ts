@@ -19,10 +19,10 @@ import {
   activityWorldOptions, configureActivity, runtimeOf, townId, COUNTERS, TOWN_STEPS, type ActivityOptions,
 } from '../activity/index'
 import {
-  ageNotices, ageTick, causeLines, deathNotice, familyChoice, fireLifeEnd, fireSystemEvent, letterChoice, letterState,
+  ageNotices, ageTick, causeLines, deathNotice, familyChoice, fireLifeEnd, fireSystemEvent, growthNotes, letterChoice, letterState,
   longSleepDue, missingCauseLines, pickRetireRole, registerRetiree, retireeHeirEvents, systemEvents, type SystemPhase,
 } from '../life/index'
-import { endLife, startHeir, successionPorts, type HeirChoice, type SuccessionPlan } from '../succession/index'
+import { dormantOpened, endLife, startHeir, successionPorts, type HeirChoice, type SuccessionPlan } from '../succession/index'
 import type { NewFamilyInput } from './create'
 import { World, type WorldOptions } from './world'
 
@@ -180,6 +180,11 @@ export function fireSystemPhase(world: World, phase: string): void {
 function onPoint(world: World): void {
   if (!world.state.character) return
   const st = lifeLoopOf(world)
+  // 0. 레벨업·숙련 상승 [성장] 기록(05 §3.4·§5.1, D77)과 잠재 유품 개방(12 §5.5): 마지막으로 알린 값과 비교한다
+  const g = growthNotes(world, st.growth_seen)
+  for (const d of g.drafts) addJournal(world, d)
+  if (g.levelFrom !== null) for (const d of dormantOpened(world, g.levelFrom, characterOf(world).level)) addJournal(world, d)
+  st.growth_seen = g.seen
   // 1. 나이 알림: 능력치는 나이가 오르는 순간 적용하고 알림만 여기로 미룬다(09 §2.1)
   for (const tick of st.age_ticks.splice(0)) for (const d of ageNotices(world, tick)) addJournal(world, d)
   // 2. 사망: 치명 활동의 최후 판정에 지면 귀환하지 않고 그 자리에서 끝난다(04 §2.2)

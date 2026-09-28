@@ -68,7 +68,7 @@
             { "type": "remove_consumable", "carry_groups": ["ration"], "count": 2, "when": { "has_trait": "TI08" } },
             { "type": "add_fatigue", "value": -10 },
             { "type": "add_xp", "units": 0.5 },
-            { "type": "journal", "tag": "trait", "line": "둘이서 세 사람 몫을 먹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "둘이서 세 사람 몫을 먹었다", "detail": "먹성 좋은 {name:은/는} 둘이 앉은 식탁에서 세 사람 몫을 비웠다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "둘이서 빵을 나눠 먹었다"
         }

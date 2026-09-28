@@ -12,6 +12,7 @@ export const ACTIVITY_TEXT = {
   adventure_scene: 'journal.adventure.scene',
   adventure_scene_detail: 'journal.adventure.scene_detail',
   adventure_map_detail: 'journal.adventure.map_detail',
+  adventure_map: 'journal.adventure.map',
   dungeon_room: 'journal.dungeon.room',
   dungeon_room_detail: 'journal.dungeon.room_detail',
   dungeon_gate: 'journal.dungeon.gate',
@@ -23,6 +24,11 @@ export const ACTIVITY_TEXT = {
   travel_depart_detail: 'journal.travel.depart_detail',
   rest_camp: 'journal.rest.camp',
   rest_inn: 'journal.rest.inn',
+  rest_no_rain_detail: 'journal.rest.no_rain_detail',
+  rest_rain_detail: 'journal.rest.rain_detail',
+  rest_recover_detail: 'journal.rest.recover_detail',
+  rest_recover_hp_detail: 'journal.rest.recover_hp_detail',
+  rest_recover_fatigue_detail: 'journal.rest.recover_fatigue_detail',
   potions_detail: 'journal.sortie.potions_detail',
   town_prep: 'journal.town.prep',
   town_prep_no_coins: 'journal.town.prep_no_coins',
@@ -34,6 +40,8 @@ export const ACTIVITY_TEXT = {
   discovery_place_detail: 'journal.discovery.place_detail',
   discovery_place_again_detail: 'journal.discovery.place_again_detail',
   guild_rank: 'journal.growth.guild_rank',
+  guild_rank_detail: 'journal.growth.guild_rank_detail',
+  guild_rank_plain_detail: 'journal.growth.guild_rank_plain_detail',
 } as const
 
 export type ActivityTextKey = keyof typeof ACTIVITY_TEXT

@@ -14,8 +14,8 @@ export interface ChronicleOptions {
 
 const QUOTE_PAIR = /"[^"]+"|“[^”]+”/
 
-// 18 §4.1 기본 점수: 여러 줄에 해당하면 가장 높은 값
-function baseScore(e: ChronicleEntry, category: string | undefined): number {
+// 18 §4.1 기본 점수: 여러 줄에 해당하면 가장 높은 값. 최근 요약(14 §1.1)도 이 점수로 가운데 문장을 고른다
+export function baseScore(e: ChronicleEntry, category: string | undefined): number {
   switch (e.tag) {
     case 'bond':
       return 7

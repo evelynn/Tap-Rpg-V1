@@ -37,7 +37,7 @@
           "effects": [
             { "type": "heal", "hp_ratio": 1 },
             { "type": "add_fatigue", "value": -100 },
-            { "type": "journal", "tag": "trait", "line": "빵 세 개를 먹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "빵 세 개를 먹었다", "detail": "먹성 좋은 {name:은/는} 앉은 자리에서 빵 세 개를 먹었다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "여관이 웃음소리로 가득했다"
         }
@@ -51,7 +51,7 @@
         "always": {
           "effects": [
             { "type": "add_fatigue", "value": -30 },
-            { "type": "journal", "tag": "trait", "line": "빵 세 개를 먹었다", "when": { "has_trait": "TI08" } }
+            { "type": "journal", "tag": "trait", "line": "빵 세 개를 먹었다", "detail": "먹성 좋은 {name:은/는} 앉은 자리에서 빵 세 개를 먹었다.", "when": { "has_trait": "TI08" } }
           ],
           "line": "빵 한 조각을 천천히 먹었다"
         }

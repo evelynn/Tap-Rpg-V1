@@ -13,6 +13,7 @@ import type { TempMod } from '../state/common'
 import { issueUid } from '../state/uid'
 import { renderTemplate } from '../text/index'
 import type { World } from '../sim/world'
+import { sortieStart, sortieSummary, townSummary } from './summary'
 
 // 저장 스키마에 자리가 없어 카운터로 세는 값(T11 후보)
 export const COUNTERS = {
@@ -84,6 +85,7 @@ export function startSortie(world: World, choice: SortieChoice): Sortie {
   const ch = characterOf(world)
   const ca = state.current_activity
   const plan = sortiePlan(world, choice)
+  townSummary(world) // 지난 마을 체류 요약(14 §1.1)
   const s: Sortie = {
     id: issueUid(state.family, 'sortie'),
     activity: choice.activity,
@@ -104,6 +106,7 @@ export function startSortie(world: World, choice: SortieChoice): Sortie {
     discovery_attempts: [],
     exclusive_used: [],
     fate_offered: false,
+    start: sortieStart(world),
   }
   // 낮 출정 1회 시작 갈증(09 §7.5)
   for (const d of thirstOnSortieStart(world, choice.time_of_day).journal) addJournal(world, d)
@@ -245,6 +248,7 @@ export function arriveTown(world: World): void {
   const { content, state } = world
   const ch = characterOf(world)
   const s = currentSortie(world)
+  const defeated = (ch.counters[COUNTERS.sortieDefeats] ?? 0) > 0
   ch.location = townId(world)
   state.family.codex.locations[ch.location] ??= { first_gen: ch.generation }
   ch.last_trip_time = s.time_of_day
@@ -263,6 +267,7 @@ export function arriveTown(world: World): void {
   applyEquipOrders(world) // 출정 중 예약한 장착·해제(03 §5.3.1)
   state.current_activity.state = 'town_idle'
   ch.counters[COUNTERS.townStep] = 1
+  sortieSummary(world, s, defeated) // 출정 요약(14 §1.1)
 }
 
 // 마을 정비까지 끝나면 출정 객체를 지운다(재료 판매가 loot를 읽는다)

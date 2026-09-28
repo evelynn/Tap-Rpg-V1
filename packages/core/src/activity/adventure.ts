@@ -128,7 +128,7 @@ function applyScene(world: World, payload: ScenePayload, place: string): void {
           detail: line(world.content, familyFirst ? 'discovery_place_detail' : 'discovery_place_again_detail', { name: ch.name, place: d.name }, s.progress),
           refs: { location_id: place },
         })
-        if (d.map_fragment) addJournal(world, { tag: 'discovery', line: line(world.content, 'adventure_map_detail', { name: ch.name }) })
+        if (d.map_fragment) addJournal(world, { tag: 'discovery', line: line(world.content, 'adventure_map'), detail: line(world.content, 'adventure_map_detail', { name: ch.name }) })
       } else {
         const cfg = b.adventure.discovery
         ch.discovery_fail_bonus[payload.discovery] = Math.min(cfg.fail_bonus_cap, (ch.discovery_fail_bonus[payload.discovery] ?? 0) + cfg.fail_bonus_step)

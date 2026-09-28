@@ -8,7 +8,7 @@ import { collectModSources, modValue } from '../rules/modifiers'
 import type { Rng } from '../rules/random'
 import { renderTemplate } from '../text/index'
 import { ageAt } from '../time/index'
-import { equipItem, isProtected, itemName, lockedSlots, movePendingToBag, removeSold, suggest } from '../items/bag'
+import { equipItem, isProtected, itemName, lockedSlots, movePendingToBag, removeSold, suggest, swapDetail } from '../items/bag'
 import { improvement, REASON_LINES, worthSwapping, type EvalItem, type EvalOptions, type Improvement, type Slot } from '../items/eval'
 import { materializeItem, onceKey } from '../items/roll'
 import { levelTier } from '../items/stats'
@@ -270,9 +270,9 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
     }
     const uid = c.offer ? buyOffer(ctx, shop, c.offer, c.price) : c.item.uid!
     budget -= c.price
-    equipItem(ctx, uid)
+    const prev = equipItem(ctx, uid)
     swaps.push({ slot: c.slot, item_uid: uid, price: c.price, improvement: c.imp })
-    journal.push({ tag: 'gear', line: renderTemplate(REASON_LINES[c.imp.reason].short, { item: name }), refs: { item_uid: uid } })
+    journal.push({ tag: 'gear', line: renderTemplate(REASON_LINES[c.imp.reason].short, { item: name }), detail: swapDetail(ctx, c.imp.reason, uid, prev), refs: { item_uid: uid } })
   }
 
   const gear = [...acceptedBuys, ...swaps].filter((w) => w.price > 0)
@@ -304,13 +304,15 @@ export function acceptShopSuggestion(ctx: RuleContext, shop: ShopState, slot: Sl
     return { bought: null, price: 0, journal: [{ tag: 'gear', line }] }
   }
   const uid = buyOffer(ctx, shop, offer, price)
-  equipItem(ctx, uid)
+  const prev = equipItem(ctx, uid)
   const inst = ctx.state.item_instances[uid]!
   inst.locked = true
   inst.lock_source = 'manual_equip'
   // 교체 기록은 자동 교체와 같은 짧은 형(08 §7.5)
   const reason = REASON_LINES[sg.reason as keyof typeof REASON_LINES]
-  const journal: JournalDraft[] = reason ? [{ tag: 'gear', line: renderTemplate(reason.short, { item: itemName(ctx, inst) }), refs: { item_uid: uid } }] : []
+  const journal: JournalDraft[] = reason
+    ? [{ tag: 'gear', line: renderTemplate(reason.short, { item: itemName(ctx, inst) }), detail: swapDetail(ctx, sg.reason as keyof typeof REASON_LINES, uid, prev), refs: { item_uid: uid } }]
+    : []
   return { bought: uid, price, journal }
 }
 

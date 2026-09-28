@@ -70,7 +70,7 @@
             { "type": "temp_mod", "modifier": { "target": "discovery_chance_mult", "op": "mul", "value": 2 }, "scope": "next_visit", "location": "{rumor_place}" },
             { "type": "temp_mod", "modifier": { "target": "location_score.{rumor_place}", "op": "add", "value": 15 }, "scope": "next_decision" },
             { "type": "remove_coins", "inn_costs": 1, "when": { "not": { "has_trait": "TA04" } } },
-            { "type": "journal", "tag": "trait", "line": "도담 아주머니가 잔을 공짜로 채웠다", "when": { "has_trait": "TA04" } }
+            { "type": "journal", "tag": "trait", "line": "도담 아주머니가 잔을 공짜로 채웠다", "detail": "단골인 {name}의 잔이 비자 도담 아주머니가 말없이 채워 주었다.", "when": { "has_trait": "TA04" } }
           ],
           "line": "한 잔 사고 소문을 들었다"
         }

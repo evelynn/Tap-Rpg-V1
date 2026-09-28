@@ -27,6 +27,8 @@ const CONTEXT_VARS = [
   'place', 'feature', 'depth', 'item', 'old_item', 'weapon', 'relic', 'loot', 'npc', 'enemy', 'enemy_kind',
   'coins', 'count', 'n', 'm', 'first_page', 'memory', 'achievement', 'chain_name', 'last_step_summary', 'binder',
   'trait', 'old_trait', 'trait_name', 'trait_reason', 'trait_adj', 'skill', 'injury', 'change',
+  // D77: 성장·휴식 상세와 최근 요약
+  'hp', 'fatigue', 'use', 'xp', 'places',
   // 판정·선택·사망 원인
   'dice', 'stat', 'stat_value', 'bonus_name', 'bonus', 'luck_half', 'total', 'dc', 'result', 'cost', 'reason',
   'rule', 'choice_short', 'offer', 'quote', 'risk_line', 'injury_line', 'final_check_line',

@@ -26,7 +26,7 @@
         "success": {
           "effects": [
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "walk" }
           ],
           "line": "돌무더기를 뒤로하고 빠져나왔다"
@@ -35,7 +35,7 @@
           "effects": [
             { "type": "damage", "hp_ratio": 0.1 },
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "walk" }
           ],
           "line": "어깨에 돌을 맞으며 빠져나왔다"
@@ -45,7 +45,7 @@
             { "type": "damage", "hp_ratio": 0.2 },
             { "type": "injury", "grade": "light", "stat": "dex" },
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "walk" }
           ],
           "line": "무너진 돌에 발이 걸렸다"
@@ -62,7 +62,7 @@
             { "type": "add_xp", "units": 1 },
             { "type": "set_trip_flag", "key": "trip.propped_ceiling", "remaining": { "rooms": 1 } },
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "interact" }
           ],
           "line": "받침목을 받쳐 길을 지켰다"
@@ -72,7 +72,7 @@
             { "type": "damage", "hp_ratio": 0.25 },
             { "type": "injury", "grade": "light", "stat": "str" },
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "interact" }
           ],
           "line": "받침목과 함께 주저앉았다"
@@ -88,9 +88,9 @@
           "effects": [
             { "type": "set_trip_flag", "key": "trip.extra_treasure_room" },
             { "type": "dungeon_mod", "op": "add_room", "room_kind": "treasure", "count": 1, "scope": "this_sortie" },
-            { "type": "journal", "tag": "trait", "line": "돌 갈라지는 소리를 먼저 들었다", "when": { "has_trait": "TI02" } },
+            { "type": "journal", "tag": "trait", "line": "돌 갈라지는 소리를 먼저 들었다", "detail": "귀가 밝은 {name:은/는} 돌이 갈라지는 작은 소리를 누구보다 먼저 들었다.", "when": { "has_trait": "TI02" } },
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "interact" },
             { "type": "animation", "action": "discover" }
           ],
@@ -100,9 +100,9 @@
           "_note": "원문 '이번 방 보상 없음'은 이미 끝난 방 보상을 되돌리는 효과가 없어 옮기지 못했다",
           "effects": [
             { "type": "add_fatigue", "value": 8 },
-            { "type": "journal", "tag": "trait", "line": "돌 갈라지는 소리를 먼저 들었다", "when": { "has_trait": "TI02" } },
+            { "type": "journal", "tag": "trait", "line": "돌 갈라지는 소리를 먼저 들었다", "detail": "귀가 밝은 {name:은/는} 돌이 갈라지는 작은 소리를 누구보다 먼저 들었다.", "when": { "has_trait": "TI02" } },
             { "type": "if", "cond": { "all": [ { "has_trait": "TI05" }, { "not": { "equipped": "A04" } } ] },
-              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다" } ] },
+              "then": [ { "type": "add_fatigue", "value": 5 }, { "type": "journal", "tag": "trait", "line": "돌가루에 기침이 났다", "detail": "숨이 약한 {name:은/는} 날리는 돌가루에 한참 기침을 했다." } ] },
             { "type": "animation", "action": "interact" }
           ],
           "line": "피한 쪽 길이 막혀 돌아갔다"

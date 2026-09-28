@@ -68,6 +68,7 @@ export {
   nextGenPolicies, nightRatio, pickFamilyForm, pickRetireRole, registerRetiree, relicOfferCandidates, retireAgeOf, retirePending,
   retireRoleScores, retireeHeirEvents, retireeModSources, showNoticeOnce, stageBoundaries, systemEvents, textLine, thirst,
   thirstConsumable, thirstFromProgress, thirstOnSortieStart, thirstOnWin, thirstStage, thirstStages, visibleChoiceIds,
+  type GrowthSeen, growthNotes, growthSeenOf, skillUseText, statUseText,
 } from './life/index'
 // 계승(12): 선천 특성 유전, 동반자·자녀 후보, 유품, 정산, 가문 기록, 5단계 계승
 export * from './succession/index'

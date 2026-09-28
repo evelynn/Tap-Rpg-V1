@@ -552,6 +552,7 @@ export const balanceSchema = obj({
     name_len: range,
     family_name_len: range,
     journal_keep: posInt,
+    recent_summary_keep: posInt, // 14 §1.1 최근 요약 보존 수(D77)
     last_chapter_keep: posInt,
   }),
   offline: obj({ cap_sec: posInt, min_sec: nonNegInt, autosave_sec: posInt, backups: nonNegInt }),

@@ -602,7 +602,7 @@ L08 금지 플래그는 `"condition": {"not": {"flag": "life.l08_repaired_{place
 
 ### 4.6 템플릿 변수 등록표 (`templateVars`, W4)
 
-16 §1.4.3의 78개 변수를 코드 등록부로 옮긴다(엔진이 값을 채우므로 코드 소유. 16 요약표의 76은 틀린 수다). 항목: `{name, source: "context"\|"event"}`. V5는 템플릿의 모든 변수가 등록돼 있는지, 조사 쌍이 16 §1.4.2 9종인지(렌더러 파서 `text/template.ts`가 단일 출처), `source: event` 변수는 그 사건의 `context_vars`에 있는지 본다. 16 §1.4.4의 옛 표기 10개는 등록하지 않는다 — 새로 쓰는 콘텐츠에 옛 표기를 받을 이유가 없으므로 V5 오류다(기반 팩을 옮길 때 정식 이름으로 바꾼다).
+16 §1.4.3의 83개 변수(D77로 `hp`·`fatigue`·`use`·`xp`·`places` 추가)를 코드 등록부로 옮긴다(엔진이 값을 채우므로 코드 소유. 16 요약표의 76은 틀린 수다). 항목: `{name, source: "context"\|"event"}`. V5는 템플릿의 모든 변수가 등록돼 있는지, 조사 쌍이 16 §1.4.2 9종인지(렌더러 파서 `text/template.ts`가 단일 출처), `source: event` 변수는 그 사건의 `context_vars`에 있는지 본다. 16 §1.4.4의 옛 표기 10개는 등록하지 않는다 — 새로 쓰는 콘텐츠에 옛 표기를 받을 이유가 없으므로 V5 오류다(기반 팩을 옮길 때 정식 이름으로 바꾼다).
 
 ### 4.7 `effect_path` 문법 (16 §5.7 `pre_chance`의 키)
 
@@ -1308,6 +1308,7 @@ refine(V15): `unique: true` → `grade_mode: "fixed"`, `sources` ≥ 1, 그리�
 - `type: counter`는 `counter`가 `counterNames`에 있어야 하고 `where?: regionFilter`로 장소별 합산을 한다(TA02: `{"type":"counter","counter":"safe_returns","where":{"dungeon_group":"bell_mine","dungeon_depth_gte":2},"threshold":10}`).
 - `type: event`의 `choice`는 그 사건 선택지 id(W1 교차 검사). **`type: event`는 표시 전용**(도감·획득 경로 안내)이고 실제 부여는 그 사건의 `add_trait` 효과가 한다. W1은 그 선택지 결과에 `add_trait`가 있는지 본다(두 경로로 두 번 얻지 않음). TA01은 11의 획득 시점(귀환 시)대로 C01-3 구조 결과의 `on_town_return` 안에서 준다.
 - `kind: innate`면 `acquire` 금지, `acquired`·`mutation`이면 필수(refine).
+- `effect_text` 신설(D77): string, 필수 — 인물 탭 특성 줄 아래와 `[특성]` 획득 상세 둘째 줄에 보이는 효과 글. 01 §11 `핵심 효과` 열을 옮긴다(80자 이내, 검사 W3).
 - `birth_weight` 신설: nonNegInt, `kind: innate` 필수 — 06 §6.3 신규 선천 특성 추첨 가중치(TI01 14, TI05 8 …).
 - `birth_stat_weights` 신설: stat[]? — 05 §2.2 출생 분배에서 이 특성이 가중하는 능력치(TI01 `["str","wil"]`). 가산값은 `balance.growth.trait_birth_add`.
 - `mutation?` 신설: `kind: mutation` 전용. **변이 수치의 단일 출처**(balance에 변이 섹션을 두지 않는다). 코어는 DS-30대로 변이 종류를 코드 열거로 알지만 수치는 이 키에서만 읽는다.
@@ -1542,6 +1543,7 @@ V19: 모든 `flag`·`set_*_flag`·`chain_stage`·`num flag.` 키가 등록표의
 | C30 | `family.discovery_points[discovery_id]` — 가문 수첩에 적힌 발견 지점. 첫 발견 때 `discovery.reveal`이 더한다. 없던 저장은 `[]`(zod default) | 07 §6.5 가문 수첩, 00 D59 다시 찾음 문형. 인물 발견(C17)은 생애 단위라 후손이 지우고 시작한다 |
 | C31 | `current_activity.life_loop {age_ticks[{from, to, changes[{age, stat, delta}], boundary, stage}], pending_end {kind, death}\|null, succession}` — `sim/life-loop`이 판단 지점까지 미룬 상태. `pending_end.death`는 09 §5.4 사망 기록(`combat/defeat` DeathRecord, 저장 검사는 `final_check`만 본다), `succession`은 `succession/succeed` SuccessionPlan 그대로(`record`·`candidates`·`defaultHeirUid`·`relicUids`·`settlement{…, keepsakes[]}`·`journal`·`timeJump`·`firstPage`, 코어 타입 키 이름을 그대로 쓴다). 없던 저장은 빈 값(zod default) | 행동 도중 저장(13 §8.1) 뒤 불러오면 나이 알림(09 §2.1)이 사라졌고, 계승 대기로 저장하면 3~5단계를 잇지 못했다(IMPL_DECISIONS I66) |
 | C32 | `sortie.journal_bundle? {tag: hunt\|dungeon, count, coins, depth, rows[], single}` — 아직 닫히지 않은 일지 묶음(14 §4). `single`은 1개로 닫힐 때 남길 개별 기록(journal_draft), `rows`는 펼침 내역(최대 10줄). 닫히면 칸을 지운다(`journal/bundle`). 없던 저장은 칸 없음(optional) | 묶는 동안 저장해도 묶음 내역을 잃지 않는다(00 D61, IMPL_DECISIONS I76) |
+| C33 | `current_activity.life_loop.growth_seen? {char_uid, level, ranks{skill: int}}\|null` — 마지막으로 `[성장]` 기록을 남긴 레벨·숙련 단계. 판단 지점 훅이 지금 값과 비교해 레벨업·숙련 상승 기록을 남기고(05 §3.4·§5.1), 인물이 바뀌었거나 칸이 없으면 기록 없이 지금 값으로 맞춘다. `character.recent_summaries[{kind: sortie\|town, eff_min, age, season, lines[]}]`(최근 10개, 14 §1.1), `sortie.start? {level, xp, coins, jr}`, 카운터 `stay_coins`·`stay_rests`·`stay_from_jr`, `balance.ui.recent_summary_keep`(10). 없던 저장은 빈 값(zod default·optional) | 레벨업·숙련 상승 `[성장]` 기록을 코어가 남기지 않았다(14 §5.1 문형은 있었다). 최근 요약(03 §5.2)은 저장 칸이 없었다(D77) |
 
 ---
 

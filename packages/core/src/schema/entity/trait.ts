@@ -73,6 +73,8 @@ export const traitSchema = def({
   ai_hooks: aiHooksSchema.optional(),
   reason_phrase: z.string().optional(),
   name_adj: z.string().optional(),
+  // 인물 탭 특성 줄 아래·[특성] 획득 상세 둘째 줄의 효과 글(16 §2.7, D77)
+  effect_text: z.string().min(1),
   lines: z.array(line).min(2),
   // 신규 선천 특성 추첨 가중치(06 §6.3)
   birth_weight: nonNegInt.optional(),

@@ -27,7 +27,7 @@
       "outcomes": {
         "success": {
           "effects": [
-            { "type": "journal", "tag": "trait", "line": "울음의 방향을 먼저 알아챘다", "when": { "has_trait": "TI02" } },
+            { "type": "journal", "tag": "trait", "line": "울음의 방향을 먼저 알아챘다", "detail": "귀가 밝은 {name:은/는} 울음이 들려오는 쪽을 먼저 알아챘다.", "when": { "has_trait": "TI02" } },
             { "type": "animation", "action": "walk" }
           ],
           "line": "조용한 바위 뒤로 옮겼다"
@@ -35,7 +35,7 @@
         "failure": {
           "effects": [
             { "type": "injury", "grade": "light", "stat": "dex" },
-            { "type": "journal", "tag": "trait", "line": "울음의 방향을 먼저 알아챘다", "when": { "has_trait": "TI02" } },
+            { "type": "journal", "tag": "trait", "line": "울음의 방향을 먼저 알아챘다", "detail": "귀가 밝은 {name:은/는} 울음이 들려오는 쪽을 먼저 알아챘다.", "when": { "has_trait": "TI02" } },
             { "type": "animation", "action": "walk" }
           ],
           "line": "어둠 속에서 발을 삐었다"

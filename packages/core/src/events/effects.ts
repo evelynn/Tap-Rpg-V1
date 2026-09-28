@@ -43,9 +43,11 @@ export const EVENT_TEXT = {
   noOffer: 'journal.town.no_offer', // 11 L02 구매 불발
   chronicle: 'journal.house.chronicle', // 14 §5.1 [가문] 한 줄
   codex: 'journal.discovery.codex', // 14 §5.1 [발견] 도감 한 줄
+  traitGain: 'journal.trait.gain_detail', // 14 §5.1 [특성] 획득 상세(D77)
+  codexDetail: 'journal.discovery.place_detail', // 도감 기록 상세는 [발견] 첫 발견 상세(D77)
   check: { success: 'journal.check.success', partial: 'journal.check.partial', failure: 'journal.check.failure' },
 } as const
-for (const id of [EVENT_TEXT.lootCoins, EVENT_TEXT.noOffer, EVENT_TEXT.chronicle, EVENT_TEXT.codex, ...Object.values(EVENT_TEXT.check)]) {
+for (const id of [EVENT_TEXT.lootCoins, EVENT_TEXT.noOffer, EVENT_TEXT.chronicle, EVENT_TEXT.codex, EVENT_TEXT.traitGain, ...Object.values(EVENT_TEXT.check)]) {
   registerTextSlot(id, '사건 효과(events)')
 }
 
@@ -143,7 +145,10 @@ function addTrait(run: EffectRun, id: string): void {
     const old = acquired.find((t) => content.get('trait', t.id).acquired_class === 'cumulative')
     if (old) old.inactive = 'displaced'
   }
-  note(run, 'trait', render(def.lines[0]!, runValues(run)), { sub: 'trait_gain' })
+  // 상세(14 §5.1 [특성] 획득, D77): 새 버릇 문장 + 효과 글
+  const gain = render(textVariant(run.w, EVENT_TEXT.traitGain), { name: c.name, trait: def.name })
+  note(run, 'trait', render(def.lines[0]!, runValues(run)), { sub: 'trait_gain', detail: `${gain}
+${def.effect_text}` })
 }
 
 function pushTempMod(run: EffectRun, e: Record<string, any>): void {
@@ -387,7 +392,11 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
   // 한 줄은 14 §5.1 문형([가문] 연대기 / [발견] 도감)이고, 연대기·인연 문장은 상세(편지는 줄마다 80자, D54)에 둔다
   family_record: (run, e) => {
     const text = render(e.text, runValues(run))
-    if (e.kind === 'codex') note(run, 'discovery', render(textVariant(run.w, EVENT_TEXT.codex), { item: text }), { importance: 'family' })
+    if (e.kind === 'codex') {
+      note(run, 'discovery', render(textVariant(run.w, EVENT_TEXT.codex), { item: text }), {
+        importance: 'family', detail: render(textVariant(run.w, EVENT_TEXT.codexDetail), { name: ch(run).name, place: text }),
+      })
+    }
     else note(run, e.kind === 'bond' ? 'bond' : 'house', textVariant(run.w, EVENT_TEXT.chronicle), { detail: text, importance: 'family' })
   },
   unlock_family: (run, e) => {

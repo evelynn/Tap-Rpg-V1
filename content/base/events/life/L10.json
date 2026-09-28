@@ -39,7 +39,7 @@
             { "type": "offer_purchase", "pool": { "facilities": ["smithy"], "slots": ["weapon", "armor"] }, "tier": "character",
               "grade_weights": { "common": 1 }, "price_mult": 0.4, "exempt_discount_cap": true, "respect_auto_buy": true,
               "when": { "has_trait": "TI04" } },
-            { "type": "journal", "tag": "trait", "line": "직접 숫돌에 날을 세웠다", "when": { "has_trait": "TI04" } }
+            { "type": "journal", "tag": "trait", "line": "직접 숫돌에 날을 세웠다", "detail": "손재주 좋은 {name:은/는} 대장간에 맡기지 않고 직접 숫돌에 날을 세웠다.", "when": { "has_trait": "TI04" } }
           ],
           "line": "휜 {item:을/를} 싸게 샀다"
         }

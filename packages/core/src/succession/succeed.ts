@@ -229,6 +229,7 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
     children: [],
     heir_preferred: null,
     attitude_log: [{ eff_min: 0, attitude: state.policies.attitude }],
+    recent_summaries: [],
     last_trip_time: null,
     guild_aid: { active: false, started_eff_min: null, recovered: false },
     scheduled_events: [],
