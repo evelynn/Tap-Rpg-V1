@@ -1,6 +1,6 @@
 // 행동 상태·확정 결과 → 풍경 연출(03 §15, 15 §4·§8.2). 세계에서 필요한 것만 뽑은 ActView를 받아 순수하게 정한다.
 import type { World } from '@tap/core'
-import type { EnemyMotion, Motion } from './sprites'
+import { ENEMY_SHEETS, type EnemyMotion, type Motion } from './sprites'
 
 export interface ActView {
   state: string // 행동 상태(ACTIVITY_STATES)
@@ -40,7 +40,8 @@ export function actViewOf(world: World): ActView {
     part: part?.kind ?? part?.type ?? null,
     progress,
     outcome: a?.outcome ?? null,
-    enemyFamily: enemyId && world.content.has('enemy', enemyId) ? world.content.get('enemy', enemyId).sprite_family : null,
+    // 적마다 따로 그린 시트가 있으면 그 시트, 없으면 계열(sprite_family)
+    enemyFamily: enemyId && world.content.has('enemy', enemyId) ? (ENEMY_SHEETS[enemyId] ?? world.content.get('enemy', enemyId).sprite_family) : null,
     endKind: ca.life_loop.succession?.record.end_kind ?? null,
   }
 }

@@ -12,6 +12,7 @@ import { HERO_CLIPS, STRIPS, enemyClips, spriteFamily, type EnemyMotion, type Mo
 import { pickBackground } from './background'
 import { icons, statusLine, statusViewOf } from './status'
 
+const GATE_SCENE = 'EB03_first'
 const SCROLL_PX_SEC = 20 // 층 나누기 전 합성 띠라 중간 층 속도 하나로 흘린다(15 §8.2)
 export const PAUSE_LINE = 'ⓘ 일시정지 중입니다. 나이와 진행이 멈췄습니다.'
 
@@ -27,12 +28,15 @@ export class App {
   width: number = WIN.w // 기본 창 전체 너비(D82, 글자 배율로 늘어난 글자 칸 포함). 인물 무리는 풍경 가운데
   colW = 272 // 글자 칸 폭(03 §14 글자 배율)
   readonly bubbles = new BubbleQueue()
+  // ES20: 부서진 종의 파수꾼(EB03)이 지키는 관문을 처음 넘은 기록에 장면을 단다
+  private readonly bellwardenGate: string | null
   lastTick: readonly JournalEntry[] = [] // 이번 프레임에 새로 생긴 기록(저장 시점 판단, 13 §8.1)
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
   // backgrounds: 불러온 장소 배경 띠(background.ts가 장소·계절·시간대로 고른다)
   constructor(readonly world: World, private readonly sceneFiles: Record<string, string>, private readonly backgrounds: ReadonlySet<string> = new Set(), autoChoices = false) {
     this.driver = new Driver(world, autoChoices)
+    this.bellwardenGate = world.content.list('region').find((r) => 'gate' in r && (r.gate as { enemy_id?: string } | undefined)?.enemy_id === 'EB03')?.id ?? null
     const ui = world.content.balance.ui
     this.lines = new LineQueue({ minSec: ui.line_min_sec, importantSec: ui.important_line_sec, queueMax: ui.line_queue_max })
     this.scenes = new SceneTracker(new Set(Object.keys(sceneFiles)))
@@ -51,7 +55,7 @@ export class App {
     for (const e of this.lastTick) {
       lines.push({
         id: e.id, text: e.line, grade: journalGrade(e),
-        ...(e.refs?.event_id ? { eventId: e.refs.event_id } : {}),
+        ...(e.refs?.event_id ? { eventId: e.refs.event_id } : e.sub === 'gate_first' && e.refs?.location_id === this.bellwardenGate ? { eventId: GATE_SCENE } : {}),
         ...(e.tag === 'gear' && e.sub === 'rare_gain' ? { long: true } : {}), // 드롭 순간(D76)
       })
       const ev = e.refs?.event_id

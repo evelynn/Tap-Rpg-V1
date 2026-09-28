@@ -31,6 +31,16 @@ export const SHEETS: Record<string, Sheet> = {
   wolf: enm('enm_wolf_48', 48, 32),
   bat: enm('enm_bat_48', 32, 32),
   kobold: enm('enm_kobold_48', 32, 48),
+  // v06 흡수 2차 적 변형(칸·행은 바탕 적과 같다)
+  rat_big: enm('enm_rat_big_48', 32, 24),
+  kobold_foreman: enm('enm_kobold_foreman_48', 32, 48),
+  kobold_rustyhelm: enm('enm_kobold_rustyhelm_48', 32, 48),
+  kobold_boss: enm('enm_kobold_boss_48', 32, 48),
+}
+
+// 적마다 따로 그린 시트(없으면 계열 시트). 15 §7 변형 표
+export const ENEMY_SHEETS: Record<string, string> = {
+  EN02: 'rat_big', EN09: 'kobold_foreman', EN10: 'kobold_rustyhelm', EB01: 'kobold_boss',
 }
 
 // 배경 띠·장면(흐르지 않는 한 장 또는 4프레임 가로 띠)
@@ -55,6 +65,7 @@ export const STRIPS = {
   ES17: 'es17_guild_support',
   ES18: 'es18_parent_letter',
   ES19: 'es19_long_sleep',
+  ES20: 'es20_bellwarden_first_defeat',
 } as const
 
 // 장소 배경 띠(15 §8.3). 고르는 규칙은 background.ts. v06 흡수(I87·2차): 야외 8곳 × 계절 4 × 시간대 4, 계절 없는 곳은 시간대만.
@@ -93,12 +104,14 @@ export type EnemyMotion = (typeof ENEMY_MOTIONS)[number]
 
 // 15 §7.1. 박쥐 퇴장 4번째 칸은 빠져 있다(README 알려진 한계)
 export function enemyClips(family: string): Record<EnemyMotion, Clip> {
+  // 변형 시트는 바탕 계열과 행이 같다(박쥐 퇴장 3칸 등)
+  const base = family.split('_')[0]!
   return {
     idle: { sheet: family, cells: range(0, 4), ms: [200, 200, 200, 200], loop: true },
     move: { sheet: family, cells: range(4, 4), ms: [120, 120, 120, 120], loop: true },
     attack: { sheet: family, cells: range(8, 4), ms: [100, 80, 100, 160], loop: false },
     hit: { sheet: family, cells: range(12, 2), ms: [70, 150], loop: false },
-    exit: family === 'bat'
+    exit: base === 'bat'
       ? { sheet: family, cells: range(16, 3), ms: [120, 120, 120], loop: false, hold: true }
       : { sheet: family, cells: range(16, 4), ms: [120, 120, 120, 120], loop: false, hold: true },
   }
@@ -110,7 +123,7 @@ const FAMILY_FALLBACK: Record<string, string> = {
 }
 
 export function spriteFamily(family: string): string {
-  if (['rat', 'wolf', 'bat', 'kobold'].includes(family)) return family
+  if (SHEETS[family] && !family.startsWith('chr') && family !== 'walk') return family
   return FAMILY_FALLBACK[family] ?? 'rat' // TODO 새 계열 시트
 }
 

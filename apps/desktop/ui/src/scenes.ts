@@ -33,7 +33,8 @@ export const SCENES: Record<string, SceneRow> = {
   S06: { scene: 'ES17', hero: { x: 32, motion: 'interact' }, hold: false },
   S07: { scene: 'ES18', hero: { x: 30, motion: 'interact' }, hold: false },
   S08: { scene: 'ES19', hero: { x: 34, motion: 'sleep' }, hold: true },
-  // ES20(EB03 관문 첫 격파)은 사건이 아니라 전투 기록이라 사건 id로 잇지 못한다. TODO 관문 첫 격파 기록에 장면 잇기
+  // ES20(EB03 부서진 종의 파수꾼 관문 첫 격파): 사건이 아니라 전투 기록이라 앱이 그 기록에 이 키를 단다(app.ts GATE_SCENE)
+  EB03_first: { scene: 'ES20', hero: { x: 30, motion: 'cheer' }, hold: false },
 }
 
 export function sceneFor(eventId: string | undefined, available: ReadonlySet<string>): SceneRow | null {

@@ -35,3 +35,16 @@ describe('이벤트 장면(15 §9.3)', () => {
     assert.equal(s.at(13000), null)
   })
 })
+
+describe('적 변형·ES20 연결(v06 흡수 2차)', () => {
+  it('변형 적은 자기 시트, 행은 바탕 계열 규칙(박쥐 퇴장 3칸)을 따른다', async () => {
+    const { ENEMY_SHEETS, SHEETS, STRIPS, enemyClips, spriteFamily } = await import('../src/sprites')
+    for (const [id, key] of Object.entries(ENEMY_SHEETS)) assert.ok(SHEETS[key], `${id} → ${key}`)
+    assert.equal(spriteFamily('kobold_boss'), 'kobold_boss')
+    assert.equal(spriteFamily('bellwarden'), 'kobold')
+    assert.equal(enemyClips('bat').exit.cells.length, 3)
+    assert.equal(enemyClips('rat_big').exit.cells.length, 4)
+    assert.equal(SCENES.EB03_first?.scene, 'ES20')
+    assert.ok(STRIPS.ES20)
+  })
+})
