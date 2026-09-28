@@ -2,7 +2,7 @@
 // 첫 조각: 일지·인물·방침·가문 연대기. 서가·책 보기(M3)·가계도·도감·목적지 고르기는 다음 조각이다.
 import {
   SKILL_LABELS, SPEC_LABELS, STAT_LABELS, activityOf, ageAt, chronicleMajor, effectiveStat, isInTown, isUnlocked, itemName, lifeStageOf, maxHp,
-  placeRiskCap, rankAllowed, renderTemplate, riskDiff, riskGrade, riskRank, skillUseText, statUseText, xpToNext,
+  placeRiskCap, rankAllowed, regionLevel, renderTemplate, riskDiff, riskGrade, riskRank, skillUseText, statUseText, xpToNext,
   type JournalEntry, type World,
 } from '@tap/core'
 
@@ -276,6 +276,21 @@ export const RISK_LABEL: Record<string, string> = { very_low: '매우 낮음', l
 
 export interface PlaceOption { id: string; name: string; grade: string; cap: string; ask: boolean; reckless: boolean }
 
+const ACTIVITY_LABEL: Record<string, string> = { hunt: '사냥', dungeon: '던전', adventure: '모험' }
+
+// 아직 갈 수 없는 곳과 그 까닭(해금 조건·길드 등급, 03 §5.4, D87)
+export function lockedPlaces(world: World): { name: string; why: string }[] {
+  const out: { name: string; why: string }[] = []
+  for (const r of world.content.list('region')) {
+    if (r.kind === 'town' || (isUnlocked(world, r) && rankAllowed(world, r))) continue
+    const why = !rankAllowed(world, r) && r.guild_rank_req
+      ? `${world.content.get('guild_rank', r.guild_rank_req).name} 필요`
+      : '아직 길을 모릅니다(발견·관문을 넘으면 열립니다)'
+    out.push({ name: r.name, why })
+  }
+  return out
+}
+
 export function destinationModel(world: World): { current: string; places: PlaceOption[] } {
   const places: PlaceOption[] = []
   for (const r of world.content.list('region')) {
@@ -283,7 +298,7 @@ export function destinationModel(world: World): { current: string; places: Place
     const grade = riskGrade(world.content, riskDiff(world, r.id, false))
     const reckless = grade === 'reckless'
     const cap = placeRiskCap(world, activityOf(r.kind)) // 모험적의 모험 예외를 반영한 상한(04 §10.1)
-    places.push({ id: r.id, name: r.name, grade: RISK_LABEL[grade] ?? grade, cap: RISK_LABEL[cap] ?? cap, reckless, ask: reckless || riskRank(grade) > riskRank(cap) })
+    places.push({ id: r.id, name: `${r.name} · ${ACTIVITY_LABEL[activityOf(r.kind)] ?? ''} · 권장 Lv${regionLevel(world, r.id)}`, grade: RISK_LABEL[grade] ?? grade, cap: RISK_LABEL[cap] ?? cap, reckless, ask: reckless || riskRank(grade) > riskRank(cap) })
   }
   const cur = world.state.policies.destination
   if (cur !== 'auto' && !places.some((p) => p.id === cur) && world.content.has('region', cur)) {
@@ -300,11 +315,11 @@ export interface ChronicleRow {
   lines: string[] // 펼침: 주요 기록(나이순), 남긴 유품
 }
 
-// ── 가문 탭 가계도(03 §5.5): 플레이 인물을 대수 순으로. 뽑히지 않은 후계 후보는 저장되지 않아 아직 그리지 않는다 ──
+// ── 가문 탭 가계도(03 §5.5, D87): 플레이 인물을 대수 순으로, 곁에 뽑히지 않은 후보(가는 테두리)와 동반자 ──
 
 const ROLE_LABEL: Record<string, string> = { founder: '가문을 세움', direct: '직계', collateral: '방계', adopted: '입양' }
 
-export interface TreeNode { gen: number; name: string; role: string; dashed: boolean; current: boolean; row: number }
+export interface TreeNode { gen: number; name: string; role: string; dashed: boolean; current: boolean; row: number; partner: string | null; passed: { name: string; role: string }[] }
 
 // row: 연대기 목록에서 이 인물 줄의 순번(누르면 그 줄로 간다)
 export function treeModel(world: World): TreeNode[] {
@@ -312,21 +327,28 @@ export function treeModel(world: World): TreeNode[] {
   const past = [...fam.chronicle].sort((a, b) => a.gen - b.gen)
   // 계승 대기 중이면 끝난 인물은 이미 연대기에 있다(현재 인물 줄을 두 번 그리지 않는다)
   const living = !!ch && !fam.chronicle.some((r) => r.char_uid === ch.uid)
+  // 동반자: 가문 인연 기록(npc_id partner, 12 §7.3)의 그 대 첫 이름
+  const partnerOf = (gen: number): string | null => {
+    const b = fam.bonds.find((x) => x.npc_id === 'partner' && x.gen === gen)
+    return b ? b.key : null
+  }
   const nodes: TreeNode[] = past.map((r) => ({
     gen: r.gen, name: r.name, role: ROLE_LABEL[r.family_role] ?? r.family_role,
     dashed: r.family_role === 'collateral' || r.family_role === 'adopted', current: false, row: (living ? 1 : 0) + (past.length - 1 - past.indexOf(r)),
+    partner: partnerOf(r.gen), passed: r.candidates_passed.map((c) => ({ name: c.name, role: ROLE_LABEL[c.relation] ?? c.relation })),
   }))
   if (ch && !fam.chronicle.some((r) => r.char_uid === ch.uid)) {
     const role = ch.family_role
-    nodes.push({ gen: ch.generation, name: ch.name, role: ROLE_LABEL[role] ?? role, dashed: role === 'collateral' || role === 'adopted', current: true, row: 0 })
+    nodes.push({ gen: ch.generation, name: ch.name, role: ROLE_LABEL[role] ?? role, dashed: role === 'collateral' || role === 'adopted', current: true, row: 0, partner: partnerOf(ch.generation), passed: [] })
   }
   return nodes
 }
 
-// ── 가문 탭 도감(03 §5.5, 12 §7.2): 장비·적·장소는 겪은 것만 이름을 보인다. 장비 격자 그림과 '본 적 있음'(상점 진열)
-// 단계는 아직 없다(그림은 아트 뒤, 본 적 기록은 저장 칸이 없다) ──
+// ── 가문 탭 도감(03 §5.5, 12 §7.2, D87): 장비는 본 적 없음 ??? / 본 적 있음(회색) / 가진 적 있음, 적·장소는 겪은 것만,
+// 사건은 겪은 사건 이름과 고른 선택지. 장비 격자 그림은 그림이 오면 ──
 
-export interface CodexSection { title: string; found: number; total: number; rows: string[]; notes?: string[][] } // notes: 줄마다 펼침 글(장비 주석, D80)
+export type CodexState = 'none' | 'seen' | 'owned'
+export interface CodexSection { title: string; found: number; total: number; rows: string[]; notes?: string[][]; states?: CodexState[] } // notes: 줄마다 펼침 글(장비 주석, D80)
 
 export function codexModel(world: World): { sections: CodexSection[]; unlocks: string[] } {
   const { content, state } = world
@@ -341,15 +363,37 @@ export function codexModel(world: World): { sections: CodexSection[]; unlocks: s
     rows: list.map((d) => (got[d.id] ? `${d.name}${detail(d)}` : '???')),
   })
   const u = state.family.unlocks
-  const itemSec = section('장비', items, cx.items, (d) => ` · ${grades(cx.items[d.id]!.grades_seen)} · ${cx.items[d.id]!.first_gen}대`)
+  const placeName = (id: string | undefined): string => (id && content.has('region', id) ? content.get('region', id).name : '')
+  const itemSec = section('장비', items, cx.items, (d) => {
+    const it = cx.items[d.id]!
+    return ` · ${grades(it.grades_seen)} · ${it.first_gen}대${it.first_place ? ` · ${placeName(it.first_place)}` : ''}`
+  })
+  itemSec.states = items.map((d) => (cx.items[d.id] ? 'owned' : cx.seen[d.id] ? 'seen' : 'none'))
+  itemSec.rows = items.map((d, i) => (itemSec.states![i] === 'seen' ? `${d.name} · 본 적 있음` : itemSec.rows[i]!))
   itemSec.notes = items.map((d) => (cx.items[d.id] ? loreLines(world, d.id) : []))
+  const enemySec = section('적', enemies, cx.enemies, (d) => {
+    const e = cx.enemies[d.id]!
+    return ` · 처치 ${num(e.defeats)}${e.first_name ? ` · 처음 만난 인물 ${e.first_name}` : ''}`
+  })
+  enemySec.notes = enemies.map((d) => {
+    const f = cx.enemies[d.id] && content.has('enemy_family', d.family) ? content.get('enemy_family', d.family).ecology : undefined
+    return f ? [f] : []
+  })
+  const placeSec = section('장소', places, cx.locations, (d) => {
+    const l = cx.locations[d.id]!
+    return ` · ${l.first_gen}대${l.first_name ? ` · ${l.first_name}${l.first_age !== undefined ? ` ${l.first_age}세` : ''} 발견` : ''}`
+  })
+  // 사건: 겪은 것만 이름과 고른 선택지(03 §5.5)
+  const seenEvents = events.filter((e) => cx.events[e.id])
+  const eventSec: CodexSection = {
+    title: '사건', found: seenEvents.length, total: events.length,
+    rows: seenEvents.map((e) => {
+      const picked = (cx.events[e.id]!.choices ?? []).map((id) => e.choices.find((c) => c.id === id)?.label ?? id)
+      return `${e.name}${picked.length ? ` · ${picked.join(', ')}` : ''}`
+    }),
+  }
   return {
-    sections: [
-      itemSec,
-      section('적', enemies, cx.enemies, (d) => ` · 처치 ${num(cx.enemies[d.id]!.defeats)}`),
-      section('장소', places, cx.locations, (d) => ` · ${cx.locations[d.id]!.first_gen}대`),
-      { title: '사건', found: events.filter((e) => cx.events[e.id]).length, total: events.length, rows: [] }, // 내용은 겪은 것만(03 §5.5), 목록은 수만
-    ],
+    sections: [itemSec, enemySec, placeSec, eventSec],
     unlocks: [
       ...u.backgrounds.map((id) => (content.has('background', id) ? content.get('background', id).name : id)),
       ...u.titles, ...u.appearances,

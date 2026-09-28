@@ -11,6 +11,7 @@ import { ageAt } from '../time/index'
 import { equipItem, isProtected, itemName, lockedSlots, movePendingToBag, removeSold, suggest, swapDetail } from '../items/bag'
 import { improvement, REASON_LINES, worthSwapping, type EvalItem, type EvalOptions, type Improvement, type Slot } from '../items/eval'
 import { materializeItem, onceKey } from '../items/roll'
+import { seeItem } from '../sim/create'
 import { levelTier } from '../items/stats'
 import { carryGroupCount } from '../recovery/rest'
 import { isBankrupt } from './aid'
@@ -197,6 +198,7 @@ export function townPrep(ctx: RuleContext, rng: Rng, shop: ShopState, opts: Town
   const journal: JournalDraft[] = []
   const breakdown: string[] = []
   restockIfNeeded(ctx, rng, shop)
+  for (const o of visibleOffers(ctx, shop)) seeItem(state, o.def_id) // 진열을 본다(도감 본 적 있음, D87)
 
   // 0. 판매(재료 주머니 먼저, 그다음 가방 정리)
   const materials = sellMaterials(ctx)

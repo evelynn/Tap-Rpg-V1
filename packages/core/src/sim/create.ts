@@ -37,7 +37,7 @@ export function newFamily(input: Pick<NewFamilyInput, 'familyName' | 'familySeed
     founded_utc: input.foundedUtc,
     next_uid: { ch: 1, it: 1, jr: 1, sortie: 1 },
     chronicle: [],
-    codex: { items: {}, enemies: {}, events: {}, locations: {} },
+    codex: { items: {}, seen: {}, enemies: {}, events: {}, locations: {} },
     discovered_locations: [],
     discovery_points: [],
     bonds: [],
@@ -75,9 +75,14 @@ export function createItemInstance(
   }
   state.item_instances[inst.uid] = inst
   // 가문 도감(12 §7.2): 처음 가진 인물과 본 등급
-  const seen = (state.family.codex.items[defId] ??= { first_gen: acquired.gen, first_char: acquired.char_uid, grades_seen: [] })
+  const seen = (state.family.codex.items[defId] ??= { first_gen: acquired.gen, first_char: acquired.char_uid, grades_seen: [], first_place: acquired.location })
   if (!seen.grades_seen.includes(inst.grade)) seen.grades_seen.push(inst.grade)
   return inst
+}
+
+// 도감 `본 적 있음`(12 §7.2, D87): 가문 인물이 상점 진열·사건 제안에서 본 장비
+export function seeItem(state: Pick<SaveBody, 'family'>, defId: string): void {
+  state.family.codex.seen[defId] ??= { first_gen: state.family.generation }
 }
 
 // 첫 가문의 첫 인물까지 만든 저장 본문. 난수는 life 흐름(선천 특성 → 출생 능력치 순서, 05 §2.1)

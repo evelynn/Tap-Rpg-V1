@@ -18,6 +18,7 @@ import { createItemInstance } from '../sim/create'
 import { fireSuccession } from '../life/events'
 import { DEPART_DETAIL, DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
 import { writeNote } from '../jobs/index'
+import { isUnlocked, rankAllowed } from '../ai/candidates'
 import { applyStartBlessing, refundArmedAtLifeEnd, repeatStartChoice, startBlock, successionGain, type BlessingSubject, type StartChoice } from '../blessing/index'
 import {
   candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
@@ -275,6 +276,9 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
     low_cap_streak: 0,
   }
 
+  // 뽑히지 않은 후보는 부모의 생애 기록에 남긴다(가계도 가는 테두리, D87)
+  const parentRec = fam.chronicle.find((r) => r.char_uid === parent.uid)
+  if (parentRec) parentRec.candidates_passed = plan.candidates.filter((c) => c.uid !== cand.uid).map((c) => ({ name: c.name, relation: c.relation, episodes: [...c.episodes] }))
   // 후보 목록을 비운다(12 §10: 계승 화면을 다시 열어도 후보가 다시 뽑히지 않는다)
   fam.candidates = {}
   state.character = heir
@@ -322,6 +326,15 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
   })
   if (ports) {
     fireSuccession(w, heir.location, ports, { heir: heir.name, parent_call: call, first_page: plan.firstPage })
+  }
+  // 04 X11(D87): 고정 목적지가 새 인물에게 잠겨 있으면 고정을 풀고 한 번 알린다
+  const dest = state.policies.destination
+  if (content.has('region', dest)) {
+    const r = content.get('region', dest)
+    if (!isUnlocked(w, r) || !rankAllowed(w, r)) {
+      state.policies.destination = 'auto'
+      addJournal(w, { tag: 'town', line: content.balance.activity_ai.lines.lost_destination })
+    }
   }
   // 5단계: 별빛 +1과 시작 축복(12 §1.1, 01 §19). 고르지 않았으면 방침 `시작 축복 자동`(지난번과 같게면 앞 세대 종류)
   successionGain(w)

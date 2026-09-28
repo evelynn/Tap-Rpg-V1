@@ -215,10 +215,14 @@ describe('상세 창 뷰 모델(03 §5)', () => {
     assert.deepEqual(cx.sections.map((s) => s.title), ['장비', '적', '장소', '사건'])
     for (const s of cx.sections.slice(0, 3)) {
       assert.ok(s.found > 0 && s.found <= s.total, s.title)
-      assert.equal(s.rows.filter((x) => x !== '???').length, s.found, s.title)
+      assert.equal(s.rows.filter((x, i) => x !== '???' && s.states?.[i] !== 'seen').length, s.found, s.title)
     }
     // 도감 장비 칸: 가진 적 있는 칸만 주석 글이 있다(D80)
     const it0 = cx.sections[0]!
-    it0.rows.forEach((r, i) => assert.equal(it0.notes![i]!.length > 0, r !== '???', r))
+    it0.rows.forEach((r, i) => assert.equal(it0.notes![i]!.length > 0, it0.states![i] === 'owned', r))
+    // D87: 본 적 있음은 회색 이름, 사건은 겪은 것만 이름과 고른 선택지
+    assert.ok(it0.states!.some((s) => s === 'seen'), '상점 진열로 본 장비')
+    const ev = cx.sections[3]!
+    assert.equal(ev.rows.length, ev.found)
   })
 })

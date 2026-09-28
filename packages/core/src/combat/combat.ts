@@ -352,7 +352,7 @@ export function applyCombat(ctx: RuleContext, r: CombatResult): RankUp[] {
   // 가문 도감(12 §7.2): 만난 적은 처음 만난 대수로 올리고 처치 수를 센다
   const codex = ctx.state.family.codex.enemies
   for (const w of r.rewards) {
-    const e = (codex[w.enemy_id] ??= { first_gen: ch.generation, defeats: 0 })
+    const e = (codex[w.enemy_id] ??= { first_gen: ch.generation, defeats: 0, first_name: ch.name })
     if (w.result === 'defeated') e.defeats++
   }
   return ups

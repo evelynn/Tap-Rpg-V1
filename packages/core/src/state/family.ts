@@ -54,6 +54,8 @@ export const lifeRecordSchema = s({
   received_relic_uids: z.array(uid),
   mutation_eff_min: effMinV.nullable(),
   book: z.record(z.string(), z.unknown()).nullable(),
+  // D87: 계승 때 뽑히지 않은 후계 후보(가계도 가는 테두리). 옛 기록은 빈 목록
+  candidates_passed: z.array(s({ name: z.string(), relation: z.enum(FAMILY_ROLES), episodes: z.array(z.string()) })).default([]),
 })
 export type LifeRecord = z.infer<typeof lifeRecordSchema>
 
@@ -69,10 +71,11 @@ export const familySchema = s({
   chronicle: z.array(lifeRecordSchema),
   // C14: 도감은 종류별 키
   codex: s({
-    items: z.record(defId, s({ first_gen: intV, first_char: uid, grades_seen: z.array(z.enum(GRADES)) })),
-    enemies: z.record(defId, s({ first_gen: intV, defeats: nat })),
-    events: z.record(defId, s({ first_gen: intV })),
-    locations: z.record(defId, s({ first_gen: intV })),
+    items: z.record(defId, s({ first_gen: intV, first_char: uid, grades_seen: z.array(z.enum(GRADES)), first_place: defId.optional() })),
+    seen: z.record(defId, s({ first_gen: intV })).default({}), // D87 본 적 있음(상점 진열·사건 제안)
+    enemies: z.record(defId, s({ first_gen: intV, defeats: nat, first_name: z.string().optional() })),
+    events: z.record(defId, s({ first_gen: intV, choices: z.array(z.string()).optional() })),
+    locations: z.record(defId, s({ first_gen: intV, first_name: z.string().optional(), first_age: intV.optional() })),
   }),
   discovered_locations: z.array(defId),
   // C30: 가문 수첩에 적힌 발견 지점(07 §6.5, 12 §7.4). 인물의 발견(C17)은 생애 단위라 따로 둔다. 이 칸이 없던 저장은 빈 목록

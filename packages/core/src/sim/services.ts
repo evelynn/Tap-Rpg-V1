@@ -13,6 +13,7 @@ import type { Stat } from '../rules/derived'
 import { addXp } from '../rules/growth'
 import { weightedPick, type Rng } from '../rules/random'
 import { ageAt } from '../time/index'
+import { seeItem } from './create'
 import {
   makeConditionTest, newEffectOutput, placeLevel, rewardUnits, ruleContext, runEffects,
   type CombatResult as EventCombatOutcome, type EffectRun, type EventCombatSpec, type EventPorts, type EventScope, type EventWorld,
@@ -351,6 +352,7 @@ export function createServices(world: EventWorld, opts: ServiceOptions = {}): Si
         const offered = typeof p0.item_id === 'string' ? p0.item_id : null
         const def = offered !== null ? cands.find((d) => d.id === offered) : cands.length ? cands[w.rng.loot.bounded(cands.length)] : undefined
         if (!def) return null
+        seeItem(w.state, def.id) // 사건이 보여 준 물건(도감 본 적 있음, D87)
         const { grade, named } = pickGradeWeighted(w.rng.loot, p.grade_weights)
         const effects = rollEffects(w.content, w.rng.loot, def, grade, named)
         const candidate = { def_id: def.id, grade, effects }

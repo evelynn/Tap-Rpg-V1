@@ -1211,7 +1211,7 @@ H2의 해금은 `{"any":[{"level_gte":3},{"discovered":"H2"}]}`이다. A1-2의 `
 
 ### 5.4 enemy_family, enemy, material, trap, guild_rank (W2)
 
-**enemy_family**: `id`(`rat` `wolf` `bat` `kobold` `unique`), `name`(`{enemy_kind}` 표시), `sprite_family`.
+**enemy_family**: `id`(`rat` `wolf` `bat` `kobold` `unique`), `name`(`{enemy_kind}` 표시), `sprite_family`, `ecology?`(도감 생태 한 줄, 02 §7, D87).
 
 **enemy** (16 §2.4 + 신설)
 
@@ -1547,6 +1547,7 @@ V19: 모든 `flag`·`set_*_flag`·`chain_stage`·`num flag.` 키가 등록표의
 | C34 | D79 직업·기술: balance `specializations.*.technique?`, `second_jobs{id: {name, parent, modifiers, activity_weight_add, growth, technique, effect_text}}`, `techniques{id: {name, effect_text, modifiers}}`, `job_rules`. 조건 `second_job_ready: true`, 효과 `set_job2 {job}`(defer 포함)·`learn_technique {technique}`. 저장 `character.job2`·`character.techniques[]`·`family.technique_note`·`life_record.job2`·`life_record.techniques[]` | 05 §8·§10, 12 §7.7(I90) |
 | C35 | D80 장비 주석 칸: 장비 필수 `lore {tale, owner?, found?, npc?, secret? {text, reveal: owned\|inherited}}`. `story_template`이 `{npc}`를 쓰면 `lore.npc` 필수, 각 글 120자 이내(item 스키마 검증). 인물 탭 장비 펼침·가문 탭 유품(`{npc}`에 `lore.npc`)·도감 장비 칸이 보인다 | 16 §2.5, 03 §5.3·§5.5. 상세 글이 설명 한 줄뿐이었다 |
 | C36 | 저장 `character.techniques[].charges? {target: int}` — 기술 출정 충전 남은 수(장비 `item_instance.charges`와 같은 뜻, 출정 시작에 비움). 기술 `shield_hold` 수정자에 `second_wind_ratio` 0.1. 없던 저장은 칸 없음(optional) | 독립 검증 D79-5(I91) |
+| C37 | D87 저장: `family.codex.seen{def_id:{first_gen}}`(기본 `{}`), 도감 칸 `items.*.first_place?`·`enemies.*.first_name?`·`locations.*.first_name?`·`first_age?`·`events.*.choices?[]`, 생애 기록 `candidates_passed[{name, relation, episodes[]}]`(기본 `[]`). 콘텐츠: 적 계열 `ecology?`. 옛 저장은 칸 없음·기본값 | 12 §7.2, 16 §5.2·§5.3(I93) |
 
 ---
 

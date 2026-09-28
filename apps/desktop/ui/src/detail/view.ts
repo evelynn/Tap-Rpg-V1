@@ -4,7 +4,7 @@ import {
   acceptEquipSuggestion, arm, armBlock, cancelEquipOrder, charges, healBlock, healNow, isArmed, unarm, designateRelic, dismissSuggestion, seasonKey as seasonKeyOf, type Slot, equipManual, orderEquip, renderTemplate, setAttitude, setLock, undesignateRelic, unequip, type Policies, type World,
 } from '@tap/core'
 import {
-  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, journalModel, policyModel, codexModel, recentModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
+  FILTERS, attitudeNote, characterModel, destinationModel, familyModel, lockedPlaces, journalModel, policyModel, codexModel, recentModel, relicsModel, suggestionsModel, treeModel, type Filter, type ItemRow,
 } from './model'
 
 export const TABS = ['일지', '인물', '방침', '가문'] as const
@@ -447,7 +447,9 @@ export class DetailWindow {
         this.render()
       } else fix(sel.value, false)
     }
-    const wrap = h('div', {}, h('div', { class: 'd-line', title: HELP.destination! }, h('span', { class: 'd-label' }, '목적지'), sel))
+    const locked = lockedPlaces(w)
+    const wrap = h('div', {}, h('div', { class: 'd-line', title: HELP.destination! }, h('span', { class: 'd-label' }, '목적지'), sel),
+      ...(locked.length ? [h('div', { class: 'd-note' }, `아직 갈 수 없는 곳: ${locked.map((l) => `${l.name}(${l.why})`).join(', ')}`)] : []))
     const o = m.places.find((x) => x.id === this.destAsk)
     if (o) {
       const name = w.state.character?.name ?? '인물'
@@ -480,7 +482,8 @@ export class DetailWindow {
     for (const n of treeModel(this.world)) {
       if (list.childElementCount) list.append(h('div', { class: 'd-tree-link', 'aria-hidden': 'true' }, '│'))
       const box = h('div', { class: `d-tree-node${n.dashed ? ' dashed' : ''}`, role: 'button', tabindex: '0' },
-        `${n.gen}대 ${n.name}`, h('span', { class: 'd-dim' }, ` · ${n.role}${n.current ? ' · 현재' : ''}`))
+        `${n.gen}대 ${n.name}`, h('span', { class: 'd-dim' }, ` · ${n.role}${n.current ? ' · 현재' : ''}`),
+        n.partner ? h('span', { class: 'd-dim' }, `  ♡ ${n.partner}`) : null)
       const go = (): void => {
         this.familySub = '연대기'
         this.folded.delete(`c${n.gen}`)
@@ -488,9 +491,11 @@ export class DetailWindow {
       }
       box.onclick = go
       box.onkeydown = (e) => { if (e.key === 'Enter') go() }
-      list.append(box)
+      // 뽑히지 않은 후계 후보는 그 대 곁에 가는 테두리로(03 §5.5, D87)
+      const row = h('div', { class: 'd-tree-row' }, box, ...n.passed.map((c) => h('div', { class: 'd-tree-node thin', title: '후계 후보였던 인물' }, c.name, h('span', { class: 'd-dim' }, ` · ${c.role}`))))
+      list.append(row)
     }
-    return [list, h('div', { class: 'd-dim' }, '후계 후보였던 인물은 아직 기록하지 않습니다.')]
+    return [list, h('div', { class: 'd-dim' }, '굵은 테두리는 가문을 이은 인물, 가는 테두리는 후계 후보였던 인물, 점선은 방계·입양입니다.')]
   }
 
   private codex(): Node[] {
@@ -503,7 +508,7 @@ export class DetailWindow {
       const sec = h('div', { class: 'd-sec' }, head)
       if (this.open.has(key)) {
         s.rows.forEach((r, i) => {
-          sec.append(h('div', { class: `d-sub${r === '???' ? ' d-dim' : ''}` }, r))
+          sec.append(h('div', { class: `d-sub${r === '???' || s.states?.[i] === 'seen' ? ' d-dim' : ''}` }, r))
           for (const l of s.notes?.[i] ?? []) sec.append(h('div', { class: 'd-note d-indent2' }, l))
         })
       }

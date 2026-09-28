@@ -246,6 +246,9 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
   const ch = characterOf(rule)
   const choice = ev.choices.find((c) => c.id === choiceId)
   if (!choice) throw new Error(`사건 ${ev.id}에 선택지 ${choiceId}가 없다`)
+  // 도감(12 §7.2, D87): 고른 선택지
+  const cx = w.state.family.codex.events[ev.id]
+  if (cx && !cx.choices?.includes(choice.id)) cx.choices = [...(cx.choices ?? []), choice.id]
 
   // 1 판정 확정(미리 굴린 주사위)
   let key = 'always'

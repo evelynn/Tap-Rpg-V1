@@ -1,9 +1,9 @@
 [
   { "_comment": "01 §5.2 계열, 15 §7.1 스프라이트 계열·§12 파일 이름(enm_rat_48). name은 {enemy_kind}(14 §5)",
-    "id": "rat", "name": "들쥐", "sprite_family": "rat" },
-  { "id": "wolf", "name": "늑대", "sprite_family": "wolf" },
-  { "id": "bat", "name": "박쥐", "sprite_family": "bat" },
-  { "id": "kobold", "name": "코볼트", "sprite_family": "kobold" },
+    "id": "rat", "name": "들쥐", "sprite_family": "rat", "ecology": "여울가 도토리와 곡물 창고를 노린다. 겁이 많고 무리 지어 다닌다." },
+  { "id": "wolf", "name": "늑대", "sprite_family": "wolf", "ecology": "언덕 바위 굴에 살며 영역을 지킨다. 울음으로 서로를 부른다." },
+  { "id": "bat", "name": "박쥐", "sprite_family": "bat", "ecology": "폐광의 어둠에 산다. 소리와 빛에 예민하다." },
+  { "id": "kobold", "name": "코볼트", "sprite_family": "kobold", "ecology": "광부들이 떠난 굴에 들어와 사는 작은 이웃. 반짝이는 것을 모으고 거래를 안다." },
   { "_note": "01 §5.2 계열 '고유'. 공유 스프라이트가 없어 sprite_family는 자리값이고, 고유 적은 적 정의의 sprite_family를 쓴다(EB03 bellwarden, 15 §7.3)",
-    "id": "unique", "name": "고유", "sprite_family": "unique" }
+    "id": "unique", "name": "고유", "sprite_family": "unique", "ecology": "종이 깨진 뒤에도 자리를 떠나지 않는 청동 파수꾼." }
 ]

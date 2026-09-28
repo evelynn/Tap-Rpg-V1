@@ -7,6 +7,7 @@ import { enemySpecialSchema } from './specials'
 export const enemyFamilySchema = def({
   name: z.string(),
   sprite_family: z.string(),
+  ecology: z.string().optional(), // 도감 생태 한 줄(02 §7, 12 §7.2, D87)
 })
 
 export const enemySchema = def({

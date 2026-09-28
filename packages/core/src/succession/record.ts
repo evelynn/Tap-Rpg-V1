@@ -145,6 +145,7 @@ export function buildLifeRecord(ctx: RuleContext, input: LifeRecordInput): LifeR
     received_relic_uids: input.receivedRelicUids,
     mutation_eff_min: ch.mutation ? (ch.mutation.since_age - content.balance.time.start_age) * content.balance.time.min_per_year : null,
     book: null,
+    candidates_passed: [],
   }
 }
 
