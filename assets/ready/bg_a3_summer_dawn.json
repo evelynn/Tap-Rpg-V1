@@ -1,0 +1,106 @@
+{
+  "name": "bg_a3_summer_dawn",
+  "source": "assets/_imagegen/v06/w11-a3-summer-dawn.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    450,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 10.67,
+    "prominence": 0.031,
+    "period": [
+      10.75,
+      10.8
+    ],
+    "phase": [
+      9,
+      1
+    ],
+    "blocks": [
+      142,
+      37
+    ],
+    "edge_fit": [
+      0.14,
+      0.15
+    ],
+    "blocks_per_pixel": [
+      0.55,
+      0.55
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      109,
+      28
+    ],
+    "clusters": 2244,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    314,
+    1536,
+    380
+  ],
+  "band": [
+    0,
+    314,
+    1520,
+    380
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    0,
+    16
+  ],
+  "seam": 171.2,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.938,
+    5.938
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 6080,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 679,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 0 · 오른쪽 16열을 잘랐다(이음 점수 171.2, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 6080개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 10.67화소인데 논리 화소는 5.94×5.94화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 137줄은 두 번 쓴다(가로 0/109 · 세로 0/28)"
+  ],
+  "native": {
+    "period": [
+      3.37,
+      3.37
+    ],
+    "phase": [
+      1.2,
+      1.4
+    ],
+    "dots": [
+      450,
+      112
+    ],
+    "crop_top": 42,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

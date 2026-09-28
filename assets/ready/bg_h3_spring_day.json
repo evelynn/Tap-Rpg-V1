@@ -1,0 +1,106 @@
+{
+  "name": "bg_h3_spring_day",
+  "source": "assets/_imagegen/v06/w11-h3-spring-day.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    511,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 12.81,
+    "prominence": 0.027,
+    "period": [
+      12.81,
+      12.59
+    ],
+    "phase": [
+      6,
+      18
+    ],
+    "blocks": [
+      120,
+      31
+    ],
+    "edge_fit": [
+      0.12,
+      0.13
+    ],
+    "blocks_per_pixel": [
+      0.47,
+      0.48
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      115,
+      27
+    ],
+    "clusters": 2124,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    313,
+    1536,
+    397
+  ],
+  "band": [
+    0,
+    326,
+    1536,
+    384
+  ],
+  "crop_top": 13,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 19968,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 528,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 13행을 잘라 비율 4에 맞췄다(바닥 행 709 유지)",
+    "뽑은 띠 밖 그림 화소 19968개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 12.81화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 142줄은 두 번 쓴다(가로 0/115 · 세로 0/27)"
+  ],
+  "native": {
+    "period": [
+      3,
+      3
+    ],
+    "phase": [
+      0.5,
+      1.5
+    ],
+    "dots": [
+      511,
+      127
+    ],
+    "crop_top": 55,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

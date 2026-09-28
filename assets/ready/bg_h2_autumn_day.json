@@ -1,0 +1,106 @@
+{
+  "name": "bg_h2_autumn_day",
+  "source": "assets/_imagegen/v06/w11-h2-autumn-day.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    468,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 11,
+    "prominence": 0.046,
+    "period": [
+      10.95,
+      10.91
+    ],
+    "phase": [
+      6,
+      2
+    ],
+    "blocks": [
+      130,
+      34
+    ],
+    "edge_fit": [
+      0.15,
+      0.15
+    ],
+    "blocks_per_pixel": [
+      0.5,
+      0.5
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      114,
+      26
+    ],
+    "clusters": 1558,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    316,
+    1536,
+    352
+  ],
+  "band": [
+    86,
+    316,
+    1408,
+    352
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    86,
+    42
+  ],
+  "seam": 124.9,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.5,
+    5.5
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 45056,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 556,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 86 · 오른쪽 42열을 잘랐다(이음 점수 124.9, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 45056개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 11화소인데 논리 화소는 5.5×5.5화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 140줄은 두 번 쓴다(가로 0/114 · 세로 0/26)"
+  ],
+  "native": {
+    "period": [
+      3,
+      3
+    ],
+    "phase": [
+      1.5,
+      1
+    ],
+    "dots": [
+      468,
+      117
+    ],
+    "crop_top": 46,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

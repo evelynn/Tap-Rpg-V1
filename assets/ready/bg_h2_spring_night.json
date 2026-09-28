@@ -1,0 +1,106 @@
+{
+  "name": "bg_h2_spring_night",
+  "source": "assets/_imagegen/v06/w11-h2-spring-night.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    419,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 8.01,
+    "prominence": 0.02,
+    "period": [
+      8.03,
+      8
+    ],
+    "phase": [
+      5,
+      1
+    ],
+    "blocks": [
+      177,
+      46
+    ],
+    "edge_fit": [
+      0.18,
+      0.2
+    ],
+    "blocks_per_pixel": [
+      0.69,
+      0.69
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      79,
+      20
+    ],
+    "clusters": 2055,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    315,
+    1536,
+    354
+  ],
+  "band": [
+    78,
+    315,
+    1416,
+    354
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    78,
+    42
+  ],
+  "seam": 102.2,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.531,
+    5.531
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 42480,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 590,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 78 · 오른쪽 42열을 잘랐다(이음 점수 102.2, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 42480개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 8.01화소인데 논리 화소는 5.53×5.53화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 99줄은 두 번 쓴다(가로 0/79 · 세로 0/20)"
+  ],
+  "native": {
+    "period": [
+      3.37,
+      3.37
+    ],
+    "phase": [
+      1.4,
+      1.8
+    ],
+    "dots": [
+      419,
+      104
+    ],
+    "crop_top": 35,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

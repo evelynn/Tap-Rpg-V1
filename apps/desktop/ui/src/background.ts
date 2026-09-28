@@ -1,5 +1,5 @@
 // 배경 띠 고르기(15 §8.3, 01 §1.2 배경 시간대 표, D72). 그림이 아직 없으면 가까운 것으로 내려간다(I87):
-// 장소·계절·시간대 → 장소·계절 낮 → 장소 여름·시간대 → 장소 여름 낮 → 장소 한 벌(지하) → H1 여름 낮
+// 장소·계절·시간대 → 장소·계절 낮 → 장소 여름·시간대 → 장소 여름 낮 → 장소·시간대(계절 없는 곳, H5) → 장소 한 벌(지하) → H1 여름 낮
 import { seasonAt, type World } from '@tap/core'
 
 export type BgTime = 'dawn' | 'day' | 'dusk' | 'night'
@@ -42,7 +42,7 @@ export function bgCandidates(world: World): string[] {
   const p = bgPlace(world).toLowerCase()
   const season = ch ? seasonAt(ch.eff_min, ch.birth_season, world.content.balance.time) : 'summer'
   const t = bgTime(world)
-  return [`bg_${p}_${season}_${t}`, `bg_${p}_${season}_day`, `bg_${p}_summer_${t}`, `bg_${p}_summer_day`, `bg_${p}`, 'bg_h1_summer_day']
+  return [`bg_${p}_${season}_${t}`, `bg_${p}_${season}_day`, `bg_${p}_summer_${t}`, `bg_${p}_summer_day`, `bg_${p}_${t}`, `bg_${p}`, 'bg_h1_summer_day']
 }
 
 export function pickBackground(world: World, available: ReadonlySet<string>): string {

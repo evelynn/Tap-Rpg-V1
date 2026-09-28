@@ -1,0 +1,106 @@
+{
+  "name": "bg_a1_summer_dawn",
+  "source": "assets/_imagegen/v06/w11-a1-summer-dawn.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    477,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 12.81,
+    "prominence": 0.028,
+    "period": [
+      12.84,
+      12.62
+    ],
+    "phase": [
+      18,
+      17
+    ],
+    "blocks": [
+      119,
+      31
+    ],
+    "edge_fit": [
+      0.13,
+      0.12
+    ],
+    "blocks_per_pixel": [
+      0.47,
+      0.48
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      112,
+      27
+    ],
+    "clusters": 2502,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    317,
+    1536,
+    390
+  ],
+  "band": [
+    0,
+    323,
+    1536,
+    384
+  ],
+  "crop_top": 6,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 9216,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 624,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 6행을 잘라 비율 4에 맞췄다(바닥 행 706 유지)",
+    "뽑은 띠 밖 그림 화소 9216개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 12.81화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 139줄은 두 번 쓴다(가로 0/112 · 세로 0/27)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      2.7,
+      0.09
+    ],
+    "dots": [
+      477,
+      119
+    ],
+    "crop_top": 48,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "name": "bg_h4_autumn_dusk",
+  "source": "assets/_imagegen/v06/w11-h4-autumn-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    503,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 11.25,
+    "prominence": 0.04,
+    "period": [
+      11.25,
+      11.22
+    ],
+    "phase": [
+      8,
+      16
+    ],
+    "blocks": [
+      137,
+      34
+    ],
+    "edge_fit": [
+      0.14,
+      0.13
+    ],
+    "blocks_per_pixel": [
+      0.53,
+      0.53
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      111,
+      24
+    ],
+    "clusters": 1165,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    314,
+    1536,
+    394
+  ],
+  "band": [
+    0,
+    324,
+    1536,
+    384
+  ],
+  "crop_top": 10,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 15722,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 437,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 10행을 잘라 비율 4에 맞췄다(바닥 행 707 유지)",
+    "뽑은 띠 밖 그림 화소 15722개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 11.25화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 135줄은 두 번 쓴다(가로 0/111 · 세로 0/24)"
+  ],
+  "native": {
+    "period": [
+      3.05,
+      3.05
+    ],
+    "phase": [
+      1.6,
+      1
+    ],
+    "dots": [
+      503,
+      125
+    ],
+    "crop_top": 53,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

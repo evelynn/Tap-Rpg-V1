@@ -1,0 +1,106 @@
+{
+  "name": "bg_a3_spring_dawn",
+  "source": "assets/_imagegen/v06/w11-a3-spring-dawn.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    474,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 13.75,
+    "prominence": 0.045,
+    "period": [
+      13.68,
+      13.92
+    ],
+    "phase": [
+      16,
+      1
+    ],
+    "blocks": [
+      112,
+      28
+    ],
+    "edge_fit": [
+      0.12,
+      0.11
+    ],
+    "blocks_per_pixel": [
+      0.44,
+      0.43
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      104,
+      26
+    ],
+    "clusters": 2081,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    313,
+    1536,
+    381
+  ],
+  "band": [
+    3,
+    313,
+    1524,
+    381
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    3,
+    9
+  ],
+  "seam": 188.2,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.953,
+    5.953
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 4575,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 591,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 3 · 오른쪽 9열을 잘랐다(이음 점수 188.2, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 4575개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 13.75화소인데 논리 화소는 5.95×5.95화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 130줄은 두 번 쓴다(가로 0/104 · 세로 0/26)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      1.5,
+      3.1
+    ],
+    "dots": [
+      474,
+      117
+    ],
+    "crop_top": 46,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

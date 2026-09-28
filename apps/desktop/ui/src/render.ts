@@ -66,10 +66,11 @@ export class Renderer {
     if (this.grid) this.drawGrid()
   }
 
-  // 가로 이음 띠를 offset만큼 밀어 [x0, x1) 구간에 채운다
+  // 가로 이음 띠를 offset만큼 밀어 [x0, x1) 구간에 채운다. 띠 폭은 그림 폭 그대로(원본 도트 수, D83). 모르면 256
   private strip(file: string, offset: number, x0: number, x1: number): void {
-    const o = ((Math.floor(offset) % STRIP_W) + STRIP_W) % STRIP_W
-    for (let x = x0 - ((x0 + o) % STRIP_W); x < x1; x += STRIP_W) this.image(file, 0, 0, STRIP_W, WIN.h, x, 0)
+    const w = (this.images[file] as { width?: number } | undefined)?.width || STRIP_W
+    const o = ((Math.floor(offset) % w) + w) % w
+    for (let x = x0 - ((x0 + o) % w); x < x1; x += w) this.image(file, 0, 0, w, WIN.h, x, 0)
   }
 
   private image(file: string, sx: number, sy: number, w: number, h: number, dx: number, dy: number): void {

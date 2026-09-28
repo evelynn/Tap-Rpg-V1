@@ -1,0 +1,106 @@
+{
+  "name": "bg_d1_bats",
+  "source": "assets/_imagegen/v06/w13-d1-bats.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    466,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 3,
+    "prominence": 0.063,
+    "period": [
+      3.02,
+      3
+    ],
+    "phase": [
+      1,
+      1
+    ],
+    "blocks": [
+      465,
+      118
+    ],
+    "edge_fit": [
+      0.45,
+      0.52
+    ],
+    "blocks_per_pixel": [
+      1.81,
+      1.82
+    ],
+    "skipped": [
+      207,
+      52
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 727,
+    "islands_folded": 39
+  },
+  "band_found": [
+    0,
+    338,
+    1536,
+    350
+  ],
+  "band": [
+    102,
+    338,
+    1400,
+    350
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    102,
+    34
+  ],
+  "seam": 96,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.469,
+    5.469
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 47600,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 357,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 102 · 오른쪽 34열을 잘랐다(이음 점수 96, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 47600개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 3화소인데 논리 화소는 5.47×5.47화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 259줄은 건너뛰고 0줄은 두 번 쓴다(가로 207/0 · 세로 52/0)"
+  ],
+  "native": {
+    "period": [
+      3,
+      3
+    ],
+    "phase": [
+      2,
+      2.5
+    ],
+    "dots": [
+      466,
+      115
+    ],
+    "crop_top": 45,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

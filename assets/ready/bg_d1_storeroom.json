@@ -1,0 +1,106 @@
+{
+  "name": "bg_d1_storeroom",
+  "source": "assets/_imagegen/v06/w13-d1-storeroom.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    425,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 3.28,
+    "prominence": 0.094,
+    "period": [
+      3.31,
+      3.25
+    ],
+    "phase": [
+      4,
+      1
+    ],
+    "blocks": [
+      423,
+      109
+    ],
+    "edge_fit": [
+      0.45,
+      0.5
+    ],
+    "blocks_per_pixel": [
+      1.65,
+      1.68
+    ],
+    "skipped": [
+      167,
+      43
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 586,
+    "islands_folded": 49
+  },
+  "band_found": [
+    0,
+    338,
+    1536,
+    350
+  ],
+  "band": [
+    97,
+    338,
+    1400,
+    350
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    97,
+    39
+  ],
+  "seam": 100.2,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.469,
+    5.469
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 47599,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 273,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 97 · 오른쪽 39열을 잘랐다(이음 점수 100.2, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 47599개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 3.28화소인데 논리 화소는 5.47×5.47화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 210줄은 건너뛰고 0줄은 두 번 쓴다(가로 167/0 · 세로 43/0)"
+  ],
+  "native": {
+    "period": [
+      3.29,
+      3.29
+    ],
+    "phase": [
+      0.41,
+      0.71
+    ],
+    "dots": [
+      425,
+      106
+    ],
+    "crop_top": 37,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

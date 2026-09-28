@@ -1,0 +1,106 @@
+{
+  "name": "bg_h2_winter_dusk",
+  "source": "assets/_imagegen/v06/w11-h2-winter-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    439,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": null,
+    "prominence": 0,
+    "period": [
+      5.52,
+      5.52
+    ],
+    "phase": [
+      5.52,
+      5.52
+    ],
+    "blocks": [
+      256,
+      64
+    ],
+    "edge_fit": [
+      0,
+      0
+    ],
+    "blocks_per_pixel": [
+      1,
+      1
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 1478,
+    "islands_folded": 10
+  },
+  "band_found": [
+    0,
+    316,
+    1536,
+    353
+  ],
+  "band": [
+    26,
+    316,
+    1412,
+    353
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    26,
+    98
+  ],
+  "seam": 149.2,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.516,
+    5.516
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 43750,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 707,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 26 · 오른쪽 98열을 잘랐다(이음 점수 149.2, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 43750개를 버렸다(자른 행·열 포함)",
+    "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      2.5,
+      1.1
+    ],
+    "dots": [
+      439,
+      109
+    ],
+    "crop_top": 39,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

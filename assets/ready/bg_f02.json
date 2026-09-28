@@ -1,0 +1,106 @@
+{
+  "name": "bg_f02",
+  "source": "assets/_imagegen/v06/w15-f02-star-spring-r2.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    382,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 3.21,
+    "prominence": 0.036,
+    "period": [
+      3.21,
+      3.22
+    ],
+    "phase": [
+      3,
+      4
+    ],
+    "blocks": [
+      479,
+      119
+    ],
+    "edge_fit": [
+      0.45,
+      0.47
+    ],
+    "blocks_per_pixel": [
+      1.87,
+      1.86
+    ],
+    "skipped": [
+      222,
+      55
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 1711,
+    "islands_folded": 31
+  },
+  "band_found": [
+    0,
+    291,
+    1536,
+    437
+  ],
+  "band": [
+    0,
+    344,
+    1536,
+    384
+  ],
+  "crop_top": 53,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 82139,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 796,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 53행을 잘라 비율 4에 맞췄다(바닥 행 727 유지)",
+    "뽑은 띠 밖 그림 화소 82139개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 3.21화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 277줄은 건너뛰고 0줄은 두 번 쓴다(가로 222/0 · 세로 55/0)"
+  ],
+  "native": {
+    "period": [
+      4.01,
+      4.01
+    ],
+    "phase": [
+      2.4,
+      2.8
+    ],
+    "dots": [
+      382,
+      95
+    ],
+    "crop_top": 27,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

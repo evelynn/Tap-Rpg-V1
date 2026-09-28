@@ -57,13 +57,13 @@ export const STRIPS = {
   ES19: 'es19_long_sleep',
 } as const
 
-// 장소 배경 띠(15 §8.3). 고르는 규칙은 background.ts. v06 흡수분(I87) — 변형이 더 들어오면 여기에 더한다
+// 장소 배경 띠(15 §8.3). 고르는 규칙은 background.ts. v06 흡수(I87·2차): 야외 8곳 × 계절 4 × 시간대 4, 계절 없는 곳은 시간대만.
+// 없는 파일은 불러오기에서 건너뛴다. 띠 폭은 원본 도트 수 그대로(D83)
 const SEASONS4 = ['spring', 'summer', 'autumn', 'winter'] as const
 const TIMES4 = ['dawn', 'day', 'dusk', 'night'] as const
 export const BACKGROUNDS: readonly string[] = [
-  ...SEASONS4.flatMap((s) => TIMES4.map((t) => `bg_h1_${s}_${t}`)),
-  ...['t00', 'h2', 'h3', 'h4', 'a1', 'a2', 'a3'].map((p) => `bg_${p}_summer_day`),
-  'bg_t00_spring_day', 'bg_h5', 'bg_d1', 'bg_d2', 'bg_d3', 'bg_a4', 'bg_f03',
+  ...['h1', 't00', 'h2', 'h3', 'h4', 'a1', 'a2', 'a3'].flatMap((p) => SEASONS4.flatMap((s) => TIMES4.map((t) => `bg_${p}_${s}_${t}`))),
+  'bg_h5', ...['dawn', 'dusk', 'night'].map((t) => `bg_h5_${t}`), 'bg_d1', 'bg_d2', 'bg_d3', 'bg_a4', 'bg_f02', 'bg_f03',
 ]
 
 export const MOTIONS = ['idle', 'walk', 'attack', 'hit', 'discover', 'sit_eat', 'sleep', 'interact', 'cheer', 'collapse', 'wait_book'] as const

@@ -1,0 +1,106 @@
+{
+  "name": "bg_d2_flood",
+  "source": "assets/_imagegen/v06/w13-d2-flood.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    503,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 8.67,
+    "prominence": 0.042,
+    "period": [
+      8.66,
+      8.67
+    ],
+    "phase": [
+      9,
+      10
+    ],
+    "blocks": [
+      177,
+      45
+    ],
+    "edge_fit": [
+      0.22,
+      0.24
+    ],
+    "blocks_per_pixel": [
+      0.69,
+      0.69
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      78,
+      19
+    ],
+    "clusters": 665,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    319,
+    1536,
+    386
+  ],
+  "band": [
+    0,
+    321,
+    1536,
+    384
+  ],
+  "crop_top": 2,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 3051,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 275,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 2행을 잘라 비율 4에 맞췄다(바닥 행 704 유지)",
+    "뽑은 띠 밖 그림 화소 3051개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 8.67화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 97줄은 두 번 쓴다(가로 0/78 · 세로 0/19)"
+  ],
+  "native": {
+    "period": [
+      3.05,
+      3.05
+    ],
+    "phase": [
+      0.85,
+      1.5
+    ],
+    "dots": [
+      503,
+      125
+    ],
+    "crop_top": 53,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

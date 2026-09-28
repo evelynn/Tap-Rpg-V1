@@ -1,0 +1,107 @@
+{
+  "name": "bg_t00_lit_dusk",
+  "source": "assets/_imagegen/v06/w12-t00-lit-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    447,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 9.15,
+    "prominence": 0.066,
+    "period": [
+      9.23,
+      9.08
+    ],
+    "phase": [
+      4,
+      13
+    ],
+    "blocks": [
+      156,
+      40
+    ],
+    "edge_fit": [
+      0.2,
+      0.18
+    ],
+    "blocks_per_pixel": [
+      0.61,
+      0.62
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      98,
+      22
+    ],
+    "clusters": 2198,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    314,
+    1536,
+    359
+  ],
+  "band": [
+    92,
+    314,
+    1436,
+    359
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    92,
+    8
+  ],
+  "seam": 83.7,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.609,
+    5.609
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 35852,
+  "opaque": 16376,
+  "transparent": 8,
+  "color_count": 624,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 92 · 오른쪽 8열을 잘랐다(이음 점수 83.7, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 35852개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 9.15화소인데 논리 화소는 5.61×5.61화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 120줄은 두 번 쓴다(가로 0/98 · 세로 0/22)",
+    "불투명 띠인데 투명 칸 8개(그림 화소가 절반 미만)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      0.39,
+      1.5
+    ],
+    "dots": [
+      447,
+      111
+    ],
+    "crop_top": 41,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

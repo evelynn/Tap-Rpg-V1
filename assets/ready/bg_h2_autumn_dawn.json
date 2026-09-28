@@ -1,0 +1,106 @@
+{
+  "name": "bg_h2_autumn_dawn",
+  "source": "assets/_imagegen/v06/w11-h2-autumn-dawn.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    442,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 8.01,
+    "prominence": 0.029,
+    "period": [
+      8.01,
+      8.02
+    ],
+    "phase": [
+      8,
+      1
+    ],
+    "blocks": [
+      178,
+      46
+    ],
+    "edge_fit": [
+      0.18,
+      0.19
+    ],
+    "blocks_per_pixel": [
+      0.69,
+      0.69
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      78,
+      20
+    ],
+    "clusters": 1762,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    314,
+    1536,
+    355
+  ],
+  "band": [
+    76,
+    314,
+    1420,
+    355
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    76,
+    40
+  ],
+  "seam": 108.5,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.547,
+    5.547
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 41162,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 744,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 76 · 오른쪽 40열을 잘랐다(이음 점수 108.5, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 41162개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 8.01화소인데 논리 화소는 5.55×5.55화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 98줄은 두 번 쓴다(가로 0/78 · 세로 0/20)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      0.19,
+      3.1
+    ],
+    "dots": [
+      442,
+      109
+    ],
+    "crop_top": 39,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

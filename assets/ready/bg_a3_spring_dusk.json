@@ -1,0 +1,107 @@
+{
+  "name": "bg_a3_spring_dusk",
+  "source": "assets/_imagegen/v06/w11-a3-spring-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    472,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 13.75,
+    "prominence": 0.036,
+    "period": [
+      13.84,
+      13.81
+    ],
+    "phase": [
+      12,
+      5
+    ],
+    "blocks": [
+      110,
+      29
+    ],
+    "edge_fit": [
+      0.12,
+      0.12
+    ],
+    "blocks_per_pixel": [
+      0.43,
+      0.43
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      105,
+      26
+    ],
+    "clusters": 1664,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    315,
+    1536,
+    379
+  ],
+  "band": [
+    2,
+    315,
+    1516,
+    379
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    2,
+    18
+  ],
+  "seam": 147.9,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.922,
+    5.922
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 7584,
+  "opaque": 16377,
+  "transparent": 7,
+  "color_count": 420,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 2 · 오른쪽 18열을 잘랐다(이음 점수 147.9, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 7584개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 13.75화소인데 논리 화소는 5.92×5.92화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 131줄은 두 번 쓴다(가로 0/105 · 세로 0/26)",
+    "불투명 띠인데 투명 칸 7개(그림 화소가 절반 미만)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      0.49,
+      1.3
+    ],
+    "dots": [
+      472,
+      117
+    ],
+    "crop_top": 46,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

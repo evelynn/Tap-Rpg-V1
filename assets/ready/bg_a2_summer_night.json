@@ -1,0 +1,106 @@
+{
+  "name": "bg_a2_summer_night",
+  "source": "assets/_imagegen/v06/w11-a2-summer-night.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    382,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": null,
+    "prominence": 0,
+    "period": [
+      6,
+      6
+    ],
+    "phase": [
+      6,
+      6
+    ],
+    "blocks": [
+      256,
+      64
+    ],
+    "edge_fit": [
+      0.17,
+      0.16
+    ],
+    "blocks_per_pixel": [
+      1,
+      1
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 1212,
+    "islands_folded": 34
+  },
+  "band_found": [
+    0,
+    289,
+    1536,
+    443
+  ],
+  "band": [
+    0,
+    348,
+    1536,
+    384
+  ],
+  "crop_top": 59,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 90624,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 392,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 59행을 잘라 비율 4에 맞췄다(바닥 행 731 유지)",
+    "뽑은 띠 밖 그림 화소 90624개를 버렸다(자른 행·열 포함)",
+    "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다"
+  ],
+  "native": {
+    "period": [
+      4.01,
+      4.01
+    ],
+    "phase": [
+      0.29,
+      3.2
+    ],
+    "dots": [
+      382,
+      94
+    ],
+    "crop_top": 26,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

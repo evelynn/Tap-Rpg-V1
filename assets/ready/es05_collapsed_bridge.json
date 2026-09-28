@@ -1,6 +1,6 @@
 {
   "name": "es05_collapsed_bridge",
-  "source": "assets/_imagegen/v06/es05-collapsed-bridge-48-k-r4.png",
+  "source": "assets/_imagegen/v06/es05-collapsed-bridge-48.png",
   "role": "strip",
   "cols": 4,
   "palette": null,
@@ -33,8 +33,8 @@
       64
     ],
     "edge_fit": [
-      0.32,
-      0.33
+      0.33,
+      0.34
     ],
     "blocks_per_pixel": [
       1,
@@ -48,8 +48,8 @@
       0,
       0
     ],
-    "clusters": 706,
-    "islands_folded": 20
+    "clusters": 737,
+    "islands_folded": 25
   },
   "band_found": [
     0,
@@ -79,13 +79,13 @@
   "outside_pixels": 245760,
   "opaque": 32768,
   "transparent": 0,
-  "color_count": 422,
+  "color_count": 465,
   "colors": null,
   "palette_snapped": false,
   "notes": [
     "위에서 160행을 잘라 비율 8에 맞췄다(바닥 행 671 유지)",
     "뽑은 띠 밖 그림 화소 245760개를 버렸다(자른 행·열 포함)",
-    "원본 블록 추정 8.01화소가 논리 화소 3의 2.5배를 넘어 가짜 주기로 보고 논리 격자로 뽑았다",
+    "원본 블록 추정 9.4화소가 논리 화소 3의 2.5배를 넘어 가짜 주기로 보고 논리 격자로 뽑았다",
     "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다"
   ]
 }

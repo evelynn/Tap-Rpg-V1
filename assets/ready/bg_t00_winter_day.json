@@ -1,0 +1,107 @@
+{
+  "name": "bg_t00_winter_day",
+  "source": "assets/_imagegen/v06/w11-t00-winter-day.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    448,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 11.25,
+    "prominence": 0.021,
+    "period": [
+      11.28,
+      11.19
+    ],
+    "phase": [
+      5,
+      1
+    ],
+    "blocks": [
+      128,
+      34
+    ],
+    "edge_fit": [
+      0.17,
+      0.15
+    ],
+    "blocks_per_pixel": [
+      0.5,
+      0.5
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      109,
+      27
+    ],
+    "clusters": 1811,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    313,
+    1536,
+    360
+  ],
+  "band": [
+    91,
+    313,
+    1440,
+    360
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    91,
+    5
+  ],
+  "seam": 110.1,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.625,
+    5.625
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 34550,
+  "opaque": 16378,
+  "transparent": 6,
+  "color_count": 363,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 91 · 오른쪽 5열을 잘랐다(이음 점수 110.1, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 34550개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 11.25화소인데 논리 화소는 5.63×5.63화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 136줄은 두 번 쓴다(가로 0/109 · 세로 0/27)",
+    "불투명 띠인데 투명 칸 6개(그림 화소가 절반 미만)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      0.39,
+      0.69
+    ],
+    "dots": [
+      448,
+      111
+    ],
+    "crop_top": 41,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

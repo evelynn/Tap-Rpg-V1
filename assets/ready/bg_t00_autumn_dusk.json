@@ -1,0 +1,107 @@
+{
+  "name": "bg_t00_autumn_dusk",
+  "source": "assets/_imagegen/v06/w11-t00-autumn-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    448,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 10.67,
+    "prominence": 0.072,
+    "period": [
+      10.77,
+      10.53
+    ],
+    "phase": [
+      8,
+      1
+    ],
+    "blocks": [
+      134,
+      36
+    ],
+    "edge_fit": [
+      0.17,
+      0.16
+    ],
+    "blocks_per_pixel": [
+      0.52,
+      0.53
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      110,
+      25
+    ],
+    "clusters": 2088,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    313,
+    1536,
+    360
+  ],
+  "band": [
+    88,
+    313,
+    1440,
+    360
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    88,
+    8
+  ],
+  "seam": 82.9,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.625,
+    5.625
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 34487,
+  "opaque": 16378,
+  "transparent": 6,
+  "color_count": 488,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 88 · 오른쪽 8열을 잘랐다(이음 점수 82.9, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 34487개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 10.67화소인데 논리 화소는 5.63×5.63화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 135줄은 두 번 쓴다(가로 0/110 · 세로 0/25)",
+    "불투명 띠인데 투명 칸 6개(그림 화소가 절반 미만)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      1.2,
+      2.7
+    ],
+    "dots": [
+      448,
+      111
+    ],
+    "crop_top": 41,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

@@ -1,0 +1,106 @@
+{
+  "name": "bg_h4_spring_dawn",
+  "source": "assets/_imagegen/v06/w11-h4-spring-dawn.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    477,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 11.4,
+    "prominence": 0.031,
+    "period": [
+      11.45,
+      11.5
+    ],
+    "phase": [
+      15,
+      15
+    ],
+    "blocks": [
+      134,
+      34
+    ],
+    "edge_fit": [
+      0.13,
+      0.14
+    ],
+    "blocks_per_pixel": [
+      0.52,
+      0.52
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      108,
+      27
+    ],
+    "clusters": 1925,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    313,
+    1536,
+    396
+  ],
+  "band": [
+    0,
+    325,
+    1536,
+    384
+  ],
+  "crop_top": 12,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 18432,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 588,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 12행을 잘라 비율 4에 맞췄다(바닥 행 708 유지)",
+    "뽑은 띠 밖 그림 화소 18432개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 11.4화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 135줄은 두 번 쓴다(가로 0/108 · 세로 0/27)"
+  ],
+  "native": {
+    "period": [
+      3.21,
+      3.21
+    ],
+    "phase": [
+      1.9,
+      1.4
+    ],
+    "dots": [
+      477,
+      119
+    ],
+    "crop_top": 48,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

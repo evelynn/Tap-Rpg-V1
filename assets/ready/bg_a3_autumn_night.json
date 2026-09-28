@@ -1,0 +1,106 @@
+{
+  "name": "bg_a3_autumn_night",
+  "source": "assets/_imagegen/v06/w11-a3-autumn-night.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    496,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 13.75,
+    "prominence": 0.052,
+    "period": [
+      13.64,
+      13.96
+    ],
+    "phase": [
+      4,
+      1
+    ],
+    "blocks": [
+      112,
+      29
+    ],
+    "edge_fit": [
+      0.13,
+      0.12
+    ],
+    "blocks_per_pixel": [
+      0.43,
+      0.42
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      105,
+      25
+    ],
+    "clusters": 1315,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    315,
+    1536,
+    379
+  ],
+  "band": [
+    20,
+    315,
+    1516,
+    379
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    20,
+    0
+  ],
+  "seam": 136.1,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.922,
+    5.922
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 7580,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 260,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 20 · 오른쪽 0열을 잘랐다(이음 점수 136.1, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 7580개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 13.75화소인데 논리 화소는 5.92×5.92화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 130줄은 두 번 쓴다(가로 0/105 · 세로 0/25)"
+  ],
+  "native": {
+    "period": [
+      3.05,
+      3.05
+    ],
+    "phase": [
+      1.9,
+      2.8
+    ],
+    "dots": [
+      496,
+      123
+    ],
+    "crop_top": 52,
+    "note": "원본 도트 한 칸 = 게임 화소 한 칸(D83). 가로는 원본 도트 수 그대로 이어 그린다"
+  }
+}

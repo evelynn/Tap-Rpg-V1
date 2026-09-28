@@ -503,7 +503,7 @@
   },
   {
    "name": "es15_end_of_life",
-   "source": "v05/es15-end-of-life-48.png",
+   "source": "v06/es15-end-of-life-48-floor-r2.png",
    "role": "strip",
    "size": [
     512,
@@ -1049,7 +1049,7 @@
   },
   {
    "name": "es04_miner_family",
-   "source": "v06/es04-miner-family-48-k-r3.png",
+   "source": "v06/es04-miner-family-48.png",
    "role": "strip",
    "size": [
     512,
@@ -1062,7 +1062,7 @@
   },
   {
    "name": "es05_collapsed_bridge",
-   "source": "v06/es05-collapsed-bridge-48-k-r4.png",
+   "source": "v06/es05-collapsed-bridge-48.png",
    "role": "strip",
    "size": [
     512,
@@ -1075,7 +1075,7 @@
   },
   {
    "name": "es09_specialisation",
-   "source": "v06/es09-specialisation-48-k-r3.png",
+   "source": "v06/es09-specialisation-48.png",
    "role": "strip",
    "size": [
     512,
@@ -1101,7 +1101,7 @@
   },
   {
    "name": "es19_long_sleep",
-   "source": "v06/es19-long-sleep-48-k-r3.png",
+   "source": "v06/es19-long-sleep-48.png",
    "role": "strip",
    "size": [
     512,
@@ -1111,6 +1111,1820 @@
    "fill": "opaque",
    "palette": null,
    "_note": "움직임 띠가 아직 없어 정지 열쇠 띠(네 칸 같은 1프레임)를 쓴다(I87)"
+  },
+  {
+   "name": "bg_t00_spring_dawn",
+   "source": "v06/w11-t00-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_spring_dusk",
+   "source": "v06/w11-t00-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_spring_night",
+   "source": "v06/w11-t00-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_summer_dawn",
+   "source": "v06/w11-t00-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_summer_dusk",
+   "source": "v06/w11-t00-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_summer_night",
+   "source": "v06/w11-t00-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_autumn_dawn",
+   "source": "v06/w11-t00-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_autumn_day",
+   "source": "v06/w11-t00-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_autumn_dusk",
+   "source": "v06/w11-t00-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_autumn_night",
+   "source": "v06/w11-t00-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_winter_dawn",
+   "source": "v06/w11-t00-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_winter_day",
+   "source": "v06/w11-t00-winter-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_winter_dusk",
+   "source": "v06/w11-t00-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_winter_night",
+   "source": "v06/w11-t00-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_spring_dawn",
+   "source": "v06/w11-h2-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_spring_day",
+   "source": "v06/w11-h2-spring-day-r4.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_spring_dusk",
+   "source": "v06/w11-h2-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_spring_night",
+   "source": "v06/w11-h2-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_summer_dawn",
+   "source": "v06/w11-h2-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_summer_dusk",
+   "source": "v06/w11-h2-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_summer_night",
+   "source": "v06/w11-h2-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_autumn_dawn",
+   "source": "v06/w11-h2-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_autumn_day",
+   "source": "v06/w11-h2-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_autumn_dusk",
+   "source": "v06/w11-h2-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_autumn_night",
+   "source": "v06/w11-h2-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_winter_dawn",
+   "source": "v06/w11-h2-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_winter_day",
+   "source": "v06/w11-h2-winter-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_winter_dusk",
+   "source": "v06/w11-h2-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_winter_night",
+   "source": "v06/w11-h2-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_spring_dawn",
+   "source": "v06/w11-h3-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_spring_day",
+   "source": "v06/w11-h3-spring-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_spring_dusk",
+   "source": "v06/w11-h3-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_spring_night",
+   "source": "v06/w11-h3-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_summer_dawn",
+   "source": "v06/w11-h3-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_summer_dusk",
+   "source": "v06/w11-h3-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_summer_night",
+   "source": "v06/w11-h3-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_autumn_dawn",
+   "source": "v06/w11-h3-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_autumn_day",
+   "source": "v06/w11-h3-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_autumn_dusk",
+   "source": "v06/w11-h3-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_autumn_night",
+   "source": "v06/w11-h3-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_winter_dawn",
+   "source": "v06/w11-h3-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_winter_day",
+   "source": "v06/w11-h3-winter-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_winter_dusk",
+   "source": "v06/w11-h3-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_winter_night",
+   "source": "v06/w11-h3-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_spring_dawn",
+   "source": "v06/w11-h4-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_spring_day",
+   "source": "v06/w11-h4-spring-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_spring_dusk",
+   "source": "v06/w11-h4-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_spring_night",
+   "source": "v06/w11-h4-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_summer_dawn",
+   "source": "v06/w11-h4-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_summer_dusk",
+   "source": "v06/w11-h4-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_summer_night",
+   "source": "v06/w11-h4-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_autumn_dawn",
+   "source": "v06/w11-h4-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_autumn_day",
+   "source": "v06/w11-h4-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_autumn_dusk",
+   "source": "v06/w11-h4-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_autumn_night",
+   "source": "v06/w11-h4-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_winter_dawn",
+   "source": "v06/w11-h4-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_winter_day",
+   "source": "v06/w11-h4-winter-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_winter_dusk",
+   "source": "v06/w11-h4-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_winter_night",
+   "source": "v06/w11-h4-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_spring_dawn",
+   "source": "v06/w11-a1-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_spring_day",
+   "source": "v06/w11-a1-spring-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_spring_dusk",
+   "source": "v06/w11-a1-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_spring_night",
+   "source": "v06/w11-a1-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_summer_dawn",
+   "source": "v06/w11-a1-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_summer_dusk",
+   "source": "v06/w11-a1-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_summer_night",
+   "source": "v06/w11-a1-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_autumn_dawn",
+   "source": "v06/w11-a1-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_autumn_day",
+   "source": "v06/w11-a1-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_autumn_dusk",
+   "source": "v06/w11-a1-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_autumn_night",
+   "source": "v06/w11-a1-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_winter_dawn",
+   "source": "v06/w11-a1-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_winter_day",
+   "source": "v06/w11-a1-winter-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_winter_dusk",
+   "source": "v06/w11-a1-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_winter_night",
+   "source": "v06/w11-a1-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_spring_dawn",
+   "source": "v06/w11-a2-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_spring_day",
+   "source": "v06/w11-a2-spring-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_spring_dusk",
+   "source": "v06/w11-a2-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_spring_night",
+   "source": "v06/w11-a2-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_summer_dawn",
+   "source": "v06/w11-a2-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_summer_dusk",
+   "source": "v06/w11-a2-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_summer_night",
+   "source": "v06/w11-a2-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_autumn_dawn",
+   "source": "v06/w11-a2-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_autumn_day",
+   "source": "v06/w11-a2-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_autumn_dusk",
+   "source": "v06/w11-a2-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_autumn_night",
+   "source": "v06/w11-a2-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_winter_dawn",
+   "source": "v06/w11-a2-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_winter_day",
+   "source": "v06/w11-a2-winter-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_winter_dusk",
+   "source": "v06/w11-a2-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_winter_night",
+   "source": "v06/w11-a2-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_spring_dawn",
+   "source": "v06/w11-a3-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_spring_day",
+   "source": "v06/w11-a3-spring-day-r4.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_spring_dusk",
+   "source": "v06/w11-a3-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_spring_night",
+   "source": "v06/w11-a3-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_summer_dawn",
+   "source": "v06/w11-a3-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_summer_dusk",
+   "source": "v06/w11-a3-summer-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_summer_night",
+   "source": "v06/w11-a3-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_autumn_dawn",
+   "source": "v06/w11-a3-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_autumn_day",
+   "source": "v06/w11-a3-autumn-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_autumn_dusk",
+   "source": "v06/w11-a3-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_autumn_night",
+   "source": "v06/w11-a3-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_winter_dawn",
+   "source": "v06/w11-a3-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_winter_day",
+   "source": "v06/w11-a3-winter-day-r4.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_winter_dusk",
+   "source": "v06/w11-a3-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_winter_night",
+   "source": "v06/w11-a3-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h5_dawn",
+   "source": "v06/w13-h5-mine-gate-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h5_dusk",
+   "source": "v06/w13-h5-mine-gate-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h5_night",
+   "source": "v06/w13-h5-mine-gate-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d1_bats",
+   "source": "v06/w13-d1-bats.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d1_storeroom",
+   "source": "v06/w13-d1-storeroom.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d1_ladder",
+   "source": "v06/w13-d1-ladder.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d2_flood",
+   "source": "v06/w13-d2-flood.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d2_restroom",
+   "source": "v06/w13-d2-restroom.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d2_clang",
+   "source": "v06/w13-d2-clang.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d3_crystal",
+   "source": "v06/w13-d3-crystal.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d3_shadow",
+   "source": "v06/w13-d3-shadow.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d3_toll",
+   "source": "v06/w13-d3-toll.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a4_tint2",
+   "source": "v06/w15-a4-rift-tint2-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a4_tint3",
+   "source": "v06/w15-a4-rift-tint3.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_f02",
+   "source": "v06/w15-f02-star-spring-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_lit_dawn",
+   "source": "v06/w12-t00-lit-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_lit_dusk",
+   "source": "v06/w12-t00-lit-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_lit_night",
+   "source": "v06/w12-t00-lit-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "es20_bellwarden_first_defeat",
+   "source": "v06/es20-bellwarden-first-defeat-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "enm_rat_big_48",
+   "source": "v06/w05-rat-big18-48-r2.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    24
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 19,
+    "center_x": 15
+   },
+   "scale": 10.71
+  },
+  {
+   "name": "enm_kobold_foreman_48",
+   "source": "v06/w07-kobold-foreman18-48.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 15
+   },
+   "scale": 6.97
+  },
+  {
+   "name": "enm_kobold_rustyhelm_48",
+   "source": "v06/w07-kobold-rustyhelm18-48.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 15
+   },
+   "scale": 6.97
+  },
+  {
+   "name": "enm_kobold_boss_48",
+   "source": "v06/w08-kobold-boss18-48.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 15
+   },
+   "scale": 6.97
   }
  ],
  "preview": {
