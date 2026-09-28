@@ -186,7 +186,7 @@
     },
     {
       "id": "F6",
-      "subject": "v06 흡수 — 1차 완료(배경 29·장면 16, 7dd7e73). 남음: 층(mid/near/far)·캐릭터 장비 파생·적 변형·보스, codex 배치18~34 납품 뒤 변형 흡수",
+      "subject": "v06 흡수 — 2차 완료(6da9cfa: 배경 122·ES20·적 변형 4, 460/467장 도착). 남음: 층·등불·보스·장비 파생, UI에 적 변형·ES20 연결",
       "status": "in_progress",
       "priority": "medium"
     },
@@ -219,10 +219,22 @@
       "subject": "데스크톱 exe 1차(ace7dd4, 테두리 있는 창에 시제품). 다음: 테두리 없는 기본 창 768×64 + 상세 창 분리·트레이. 작업 표시줄에 딱 맞는 창은 베타 이후(00 O07)",
       "status": "in_progress",
       "priority": "medium"
+    },
+    {
+      "id": "D82",
+      "subject": "기본 창 채우기: 기록 띠·말풍선·창 너비 528~1536·인물 풍경 가운데·exe 창 내용 맞춤(7ec0bc6)",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "D83",
+      "subject": "원본 도트 그대로: art:native 배경 152장(6da9cfa). 남음: 장면 띠(원본이 규격보다 작음 85×42)·캐릭터·적(원본 도트 4.5·7 vs 규격 5.25·10.7)",
+      "status": "in_progress",
+      "priority": "high"
     }
   ],
   "current_task": "F2",
-  "next_action": "F2 도감 본 적 있음 + 12 §7.2 칸 → F4 가계도 → F5 목적지 → F6 나머지(codex 납품 뒤) → M3 생애의 책",
+  "next_action": "D83 장면·캐릭터 원본 도트 결정 → 적 변형·ES20 UI 연결 → F2 도감 → F4 → F5 → M3",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
