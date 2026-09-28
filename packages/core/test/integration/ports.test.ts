@@ -19,7 +19,7 @@ function at(tw: TestWorld, place: string, level: number) {
 // 보류 중인 선택 창의 상태(선택을 넣기 전에 찍어 둔다)
 const heldState = (tw: TestWorld) => ({
   kind: tw.w.state.pending_choice?.kind ?? null,
-  choices: Object.keys(tw.w.state.pending_choice?.preview_rendered.choices ?? {}),
+  choices: tw.w.state.pending_choice?.choices_visible ?? [], // 고를 수 있는 선택지(별빛 길은 비추기 전에는 없다, D78)
   activity: tw.w.state.current_activity.state,
   clockRunning: tw.w.clockRunning,
 })
