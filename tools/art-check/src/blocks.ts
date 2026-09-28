@@ -33,6 +33,8 @@ export const CRISP = {
   maxLag: 64,
   /** 격자선 간격 벌점 */
   lambda: 4,
+  /** 띠: 추정 블록이 논리 화소의 이 배수를 넘으면 가짜 주기로 보고 논리 격자로 뽑는다(I87) */
+  maxBlockRatio: 2.5,
 } as const
 
 /** 묶음 번호 격자. -1 = 제외(배경·다른 칸) */

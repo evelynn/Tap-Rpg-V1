@@ -1,0 +1,90 @@
+{
+  "name": "bg_h1_autumn_night",
+  "source": "assets/_imagegen/v06/w11-h1-autumn-night.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1983,
+    793
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 10.67,
+    "prominence": 0.032,
+    "period": [
+      10.58,
+      10.54
+    ],
+    "phase": [
+      11,
+      1
+    ],
+    "blocks": [
+      149,
+      39
+    ],
+    "edge_fit": [
+      0.15,
+      0.18
+    ],
+    "blocks_per_pixel": [
+      0.58,
+      0.58
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      104,
+      25
+    ],
+    "clusters": 1581,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    203,
+    1983,
+    392
+  ],
+  "band": [
+    335,
+    203,
+    1568,
+    392
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    335,
+    80
+  ],
+  "seam": 104.8,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6.125,
+    6.125
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 162462,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 419,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 335 · 오른쪽 80열을 잘랐다(이음 점수 104.8, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 162462개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 10.67화소인데 논리 화소는 6.13×6.13화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 129줄은 두 번 쓴다(가로 0/104 · 세로 0/25)"
+  ]
+}

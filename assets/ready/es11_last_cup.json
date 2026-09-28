@@ -1,0 +1,91 @@
+{
+  "name": "es11_last_cup",
+  "source": "assets/_imagegen/v06/es11-last-cup-48.png",
+  "role": "strip",
+  "cols": 4,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    512,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": false,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": null,
+    "prominence": 0,
+    "period": [
+      3,
+      3
+    ],
+    "phase": [
+      3,
+      3
+    ],
+    "blocks": [
+      512,
+      64
+    ],
+    "edge_fit": [
+      0.32,
+      0.31
+    ],
+    "blocks_per_pixel": [
+      1,
+      1
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 1220,
+    "islands_folded": 19
+  },
+  "band_found": [
+    0,
+    320,
+    1536,
+    319
+  ],
+  "band": [
+    0,
+    447,
+    1536,
+    192
+  ],
+  "crop_top": 127,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 8,
+  "aspect_expected": 8,
+  "scale": [
+    3,
+    3
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 195089,
+  "opaque": 32759,
+  "transparent": 9,
+  "color_count": 776,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 127행을 잘라 비율 8에 맞췄다(바닥 행 638 유지)",
+    "뽑은 띠 밖 그림 화소 195089개를 버렸다(자른 행·열 포함)",
+    "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다",
+    "불투명 띠인데 투명 칸 9개(그림 화소가 절반 미만)"
+  ]
+}

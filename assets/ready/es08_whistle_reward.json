@@ -1,0 +1,91 @@
+{
+  "name": "es08_whistle_reward",
+  "source": "assets/_imagegen/v06/es08-whistle-reward-48-r2.png",
+  "role": "strip",
+  "cols": 4,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    512,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": false,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": null,
+    "prominence": 0,
+    "period": [
+      3,
+      3
+    ],
+    "phase": [
+      3,
+      3
+    ],
+    "blocks": [
+      512,
+      64
+    ],
+    "edge_fit": [
+      0.33,
+      0.29
+    ],
+    "blocks_per_pixel": [
+      1,
+      1
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 1404,
+    "islands_folded": 19
+  },
+  "band_found": [
+    0,
+    365,
+    1536,
+    291
+  ],
+  "band": [
+    0,
+    464,
+    1536,
+    192
+  ],
+  "crop_top": 99,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 8,
+  "aspect_expected": 8,
+  "scale": [
+    3,
+    3
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 152064,
+  "opaque": 32768,
+  "transparent": 0,
+  "color_count": 903,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 99행을 잘라 비율 8에 맞췄다(바닥 행 655 유지)",
+    "뽑은 띠 밖 그림 화소 152064개를 버렸다(자른 행·열 포함)",
+    "원본 블록 추정 9.33화소가 논리 화소 3의 2.5배를 넘어 가짜 주기로 보고 논리 격자로 뽑았다",
+    "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다"
+  ]
+}

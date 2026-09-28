@@ -1,0 +1,90 @@
+{
+  "name": "es12_family",
+  "source": "assets/_imagegen/v06/es12-family-48-r2.png",
+  "role": "strip",
+  "cols": 4,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    512,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": false,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 6.43,
+    "prominence": 0.029,
+    "period": [
+      6.48,
+      6.5
+    ],
+    "phase": [
+      8,
+      9
+    ],
+    "blocks": [
+      237,
+      30
+    ],
+    "edge_fit": [
+      0.27,
+      0.35
+    ],
+    "blocks_per_pixel": [
+      0.46,
+      0.46
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      215,
+      26
+    ],
+    "clusters": 1599,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    383,
+    1536,
+    243
+  ],
+  "band": [
+    0,
+    434,
+    1536,
+    192
+  ],
+  "crop_top": 51,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 8,
+  "aspect_expected": 8,
+  "scale": [
+    3,
+    3
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 79025,
+  "opaque": 32768,
+  "transparent": 0,
+  "color_count": 496,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 51행을 잘라 비율 8에 맞췄다(바닥 행 625 유지)",
+    "뽑은 띠 밖 그림 화소 79025개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 6.43화소인데 논리 화소는 3×3화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 241줄은 두 번 쓴다(가로 0/215 · 세로 0/26)"
+  ]
+}

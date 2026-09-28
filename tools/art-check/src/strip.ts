@@ -420,10 +420,15 @@ function sampleMode(img: SourceImage, fg: Uint8Array, band: BandRect, size: [num
   const cl = clusterColors(img, pixels, CRISP.clusterTol)
   const li = labelImage(img, cl, band.x, band.y, band.w, band.h, include)
   const [gx, gy] = gradients(img, band.x, band.y, band.w, band.h, include, CRISP.clusterTol)
-  const est = blockSize(gradientAcf(gx, gy, band.w, band.h, CRISP.maxLag))
+  const found = blockSize(gradientAcf(gx, gy, band.w, band.h, CRISP.maxLag))
+  // 추정 블록이 논리 화소의 MAX_BLOCK_RATIO배를 넘으면 부드러운 그림에서 잡힌 가짜 주기로 본다(v06 ES02 20.5 ↔ 논리 3).
+  // 그대로 쓰면 블록 하나가 논리 화소 여러 개가 되어 그림이 뭉개지므로 논리 격자로 뽑는다(I87)
+  const coarse = found !== null && found.period > CRISP.maxBlockRatio * Math.min(sx, sy)
+  const est = coarse ? null : found
   const [ex, ey] = edgeProfiles(gx, gy, band.w, band.h)
   let cutsX: number[]
   let cutsY: number[]
+  if (coarse) notes.push(`원본 블록 추정 ${found!.period}화소가 논리 화소 ${round2(Math.min(sx, sy))}의 ${CRISP.maxBlockRatio}배를 넘어 가짜 주기로 보고 논리 격자로 뽑았다`)
   if (est !== null) {
     cutsX = fitCuts(ex, band.w, est.period, { lambda: CRISP.lambda })
     cutsY = fitCuts(ey, band.h, est.period, { lambda: CRISP.lambda })

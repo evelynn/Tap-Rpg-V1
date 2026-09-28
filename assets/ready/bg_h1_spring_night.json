@@ -1,0 +1,91 @@
+{
+  "name": "bg_h1_spring_night",
+  "source": "assets/_imagegen/v06/w11-h1-spring-night.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1983,
+    793
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": null,
+    "prominence": 0,
+    "period": [
+      6.11,
+      6.11
+    ],
+    "phase": [
+      6.11,
+      6.11
+    ],
+    "blocks": [
+      256,
+      64
+    ],
+    "edge_fit": [
+      0,
+      0
+    ],
+    "blocks_per_pixel": [
+      1,
+      1
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 1325,
+    "islands_folded": 65
+  },
+  "band_found": [
+    0,
+    204,
+    1983,
+    391
+  ],
+  "band": [
+    419,
+    204,
+    1564,
+    391
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    419,
+    0
+  ],
+  "seam": 99,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6.109,
+    6.109
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 163737,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 562,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 419 · 오른쪽 0열을 잘랐다(이음 점수 99, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 163737개를 버렸다(자른 행·열 포함)",
+    "원본 블록 추정 16.01화소가 논리 화소 6.11의 2.5배를 넘어 가짜 주기로 보고 논리 격자로 뽑았다",
+    "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다"
+  ]
+}

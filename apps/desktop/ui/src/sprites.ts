@@ -37,9 +37,34 @@ export const SHEETS: Record<string, Sheet> = {
 export const STRIPS = {
   bg: 'bg_h1_summer_day',
   ES01: 'es01_stranger_campfire',
+  ES02: 'es02_birthday_feast',
+  ES03: 'es03_torn_map',
+  ES04: 'es04_miner_family',
+  ES05: 'es05_collapsed_bridge',
+  ES06: 'es06_crying_child',
+  ES07: 'es07_hill_whistle',
+  ES08: 'es08_whistle_reward',
+  ES09: 'es09_specialisation',
+  ES10: 'es10_starsleep_spring',
+  ES11: 'es11_last_cup',
+  ES12: 'es12_family',
+  ES13: 'es13_child_news',
+  ES14: 'es14_retirement',
   ES15: 'es15_end_of_life',
+  ES16: 'es16_succession',
+  ES17: 'es17_guild_support',
   ES18: 'es18_parent_letter',
+  ES19: 'es19_long_sleep',
 } as const
+
+// 장소 배경 띠(15 §8.3). 고르는 규칙은 background.ts. v06 흡수분(I87) — 변형이 더 들어오면 여기에 더한다
+const SEASONS4 = ['spring', 'summer', 'autumn', 'winter'] as const
+const TIMES4 = ['dawn', 'day', 'dusk', 'night'] as const
+export const BACKGROUNDS: readonly string[] = [
+  ...SEASONS4.flatMap((s) => TIMES4.map((t) => `bg_h1_${s}_${t}`)),
+  ...['t00', 'h2', 'h3', 'h4', 'a1', 'a2', 'a3'].map((p) => `bg_${p}_summer_day`),
+  'bg_t00_spring_day', 'bg_h5', 'bg_d1', 'bg_d2', 'bg_d3', 'bg_a4', 'bg_f03',
+]
 
 export const MOTIONS = ['idle', 'walk', 'attack', 'hit', 'discover', 'sit_eat', 'sleep', 'interact', 'cheer', 'collapse', 'wait_book'] as const
 export type Motion = (typeof MOTIONS)[number]

@@ -1,0 +1,90 @@
+{
+  "name": "bg_d1",
+  "source": "assets/_imagegen/v06/w13-d1-mine-upper-r2.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 3.37,
+    "prominence": 0.122,
+    "period": [
+      3.4,
+      3.37
+    ],
+    "phase": [
+      4,
+      1
+    ],
+    "blocks": [
+      411,
+      104
+    ],
+    "edge_fit": [
+      0.45,
+      0.55
+    ],
+    "blocks_per_pixel": [
+      1.6,
+      1.62
+    ],
+    "skipped": [
+      154,
+      39
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 506,
+    "islands_folded": 57
+  },
+  "band_found": [
+    0,
+    338,
+    1536,
+    349
+  ],
+  "band": [
+    97,
+    338,
+    1396,
+    349
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    97,
+    43
+  ],
+  "seam": 91.7,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.453,
+    5.453
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 49007,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 258,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 97 · 오른쪽 43열을 잘랐다(이음 점수 91.7, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 49007개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 3.37화소인데 논리 화소는 5.45×5.45화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 193줄은 건너뛰고 0줄은 두 번 쓴다(가로 154/0 · 세로 39/0)"
+  ]
+}

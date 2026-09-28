@@ -8,7 +8,7 @@ import { drawDue, surface } from './layout'
 import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
-import { SHEETS, STRIPS } from './sprites'
+import { BACKGROUNDS, SHEETS, STRIPS } from './sprites'
 
 // 외형 ID는 화면 몫이다(tools/demo와 같은 임시 외형)
 const APPEARANCE = { body: 'body_base', hair: 'HR03', hair_color: 'hair_chestnut', skin_tone: 'skin_02', decor: [], age_stage_override: null }
@@ -45,11 +45,11 @@ async function start(): Promise<void> {
   const grid = q.get('grid') === '1'
   const content = Content.fromBundle(await (await fetch('content.json')).json())
 
-  const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS)])]
+  const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS])]
   const loaded = await Promise.all(files.map((f) => loadImage(`sprites/${f}.png`)))
   const images: Images = Object.fromEntries(files.map((f, i) => [f, loaded[i]]))
   const sceneFiles = Object.fromEntries(Object.entries(STRIPS).filter(([k, f]) => k !== 'bg' && images[f]))
-  const app = new App(newWorld(content, q), sceneFiles)
+  const app = new App(newWorld(content, q), sceneFiles, new Set(BACKGROUNDS.filter((f) => images[f])))
   ;(globalThis as { tapApp?: App }).tapApp = app // 개발용: 콘솔에서 세계·대기열을 들여다본다
 
   const win = document.getElementById('win')!

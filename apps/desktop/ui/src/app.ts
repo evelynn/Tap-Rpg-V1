@@ -8,6 +8,7 @@ import { LineQueue } from './records'
 import type { FrameView } from './render'
 import { SceneTracker } from './scenes'
 import { HERO_CLIPS, STRIPS, enemyClips, spriteFamily, type EnemyMotion, type Motion } from './sprites'
+import { pickBackground } from './background'
 import { icons, statusLine, statusViewOf } from './status'
 
 const SCROLL_PX_SEC = 20 // 층 나누기 전 합성 띠라 중간 층 속도 하나로 흘린다(15 §8.2)
@@ -24,7 +25,8 @@ export class App {
   private notes = 0
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
-  constructor(readonly world: World, private readonly sceneFiles: Record<string, string>) {
+  // backgrounds: 불러온 장소 배경 띠(background.ts가 장소·계절·시간대로 고른다)
+  constructor(readonly world: World, private readonly sceneFiles: Record<string, string>, private readonly backgrounds: ReadonlySet<string> = new Set()) {
     this.driver = new Driver(world)
     const ui = world.content.balance.ui
     this.lines = new LineQueue({ minSec: ui.line_min_sec, importantSec: ui.important_line_sec, queueMax: ui.line_queue_max })
@@ -58,7 +60,7 @@ export class App {
     const hero = this.hero
     const foe = this.enemy?.anim
     return {
-      bg: { file: STRIPS.bg, offset: this.offset },
+      bg: { file: this.backgrounds.size ? pickBackground(world, this.backgrounds) : STRIPS.bg, offset: this.offset },
       scene: scene ? { file: this.sceneFiles[scene.row.scene]!, frame: scene.frame } : null,
       paused,
       hero: heroShown ? {

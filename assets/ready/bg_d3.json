@@ -1,0 +1,89 @@
+{
+  "name": "bg_d3",
+  "source": "assets/_imagegen/v06/w13-d3-mine-deep.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 6.41,
+    "prominence": 0.026,
+    "period": [
+      6.42,
+      6.45
+    ],
+    "phase": [
+      6,
+      9
+    ],
+    "blocks": [
+      239,
+      60
+    ],
+    "edge_fit": [
+      0.25,
+      0.3
+    ],
+    "blocks_per_pixel": [
+      0.93,
+      0.93
+    ],
+    "skipped": [
+      2,
+      1
+    ],
+    "doubled": [
+      18,
+      6
+    ],
+    "clusters": 780,
+    "islands_folded": 35
+  },
+  "band_found": [
+    0,
+    318,
+    1536,
+    389
+  ],
+  "band": [
+    0,
+    323,
+    1536,
+    384
+  ],
+  "crop_top": 5,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 7519,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 311,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 5행을 잘라 비율 4에 맞췄다(바닥 행 706 유지)",
+    "뽑은 띠 밖 그림 화소 7519개를 버렸다(자른 행·열 포함)"
+  ]
+}

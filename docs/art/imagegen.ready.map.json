@@ -537,6 +537,580 @@
    "cols": 4,
    "fill": "opaque",
    "palette": null
+  },
+  {
+   "name": "bg_t00_summer_day",
+   "source": "v06/w10-t00-town-summer-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h2_summer_day",
+   "source": "v06/w10-h2-willow-bank-summer-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h3_summer_day",
+   "source": "v06/w10-h3-wolf-hill-summer-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h4_summer_day",
+   "source": "v06/w10-h4-slag-valley-summer-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a1_summer_day",
+   "source": "v06/w10-a1-river-path-summer-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a2_summer_day",
+   "source": "v06/w10-a2-mist-trail-summer-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a3_summer_day",
+   "source": "v06/w10-a3-miner-village-summer-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h5",
+   "source": "v06/w13-h5-mine-gate-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d1",
+   "source": "v06/w13-d1-mine-upper-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d2",
+   "source": "v06/w13-d2-mine-mid-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_d3",
+   "source": "v06/w13-d3-mine-deep.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_a4",
+   "source": "v06/w15-a4-rift.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_f03",
+   "source": "v06/w15-f03-moonshade-cellar-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_spring_dawn",
+   "source": "v06/w11-h1-spring-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_spring_day",
+   "source": "v06/w11-h1-spring-day.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_spring_dusk",
+   "source": "v06/w11-h1-spring-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_spring_night",
+   "source": "v06/w11-h1-spring-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_summer_dawn",
+   "source": "v06/w11-h1-summer-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_summer_dusk",
+   "source": "v06/w11-h1-summer-dusk-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_summer_night",
+   "source": "v06/w11-h1-summer-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_autumn_dawn",
+   "source": "v06/w11-h1-autumn-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_autumn_day",
+   "source": "v06/w11-h1-autumn-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_autumn_dusk",
+   "source": "v06/w11-h1-autumn-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_autumn_night",
+   "source": "v06/w11-h1-autumn-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_winter_dawn",
+   "source": "v06/w11-h1-winter-dawn.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_winter_day",
+   "source": "v06/w11-h1-winter-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_winter_dusk",
+   "source": "v06/w11-h1-winter-dusk.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_h1_winter_night",
+   "source": "v06/w11-h1-winter-night.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "bg_t00_spring_day",
+   "source": "v06/w11-t00-spring-day-r2.png",
+   "role": "strip",
+   "size": [
+    256,
+    64
+   ],
+   "cols": 1,
+   "fill": "opaque",
+   "palette": null,
+   "tile": true
+  },
+  {
+   "name": "es02_birthday_feast",
+   "source": "v06/es02-birthday-feast-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es03_torn_map",
+   "source": "v06/es03-torn-map-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es06_crying_child",
+   "source": "v06/es06-crying-child-48-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es07_hill_whistle",
+   "source": "v06/es07-hill-whistle-48-r3.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es08_whistle_reward",
+   "source": "v06/es08-whistle-reward-48-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es10_starsleep_spring",
+   "source": "v06/es10-starsleep-spring-48-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es11_last_cup",
+   "source": "v06/es11-last-cup-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es12_family",
+   "source": "v06/es12-family-48-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es13_child_news",
+   "source": "v06/es13-child-news-48.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es14_retirement",
+   "source": "v06/es14-retirement-48-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es16_succession",
+   "source": "v06/es16-succession-48-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "es04_miner_family",
+   "source": "v06/es04-miner-family-48-k-r3.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null,
+   "_note": "움직임 띠가 아직 없어 정지 열쇠 띠(네 칸 같은 1프레임)를 쓴다(I87)"
+  },
+  {
+   "name": "es05_collapsed_bridge",
+   "source": "v06/es05-collapsed-bridge-48-k-r4.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null,
+   "_note": "움직임 띠가 아직 없어 정지 열쇠 띠(네 칸 같은 1프레임)를 쓴다(I87)"
+  },
+  {
+   "name": "es09_specialisation",
+   "source": "v06/es09-specialisation-48-k-r3.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null,
+   "_note": "움직임 띠가 아직 없어 정지 열쇠 띠(네 칸 같은 1프레임)를 쓴다(I87)"
+  },
+  {
+   "name": "es17_guild_support",
+   "source": "v06/es17-guild-support-48-k-r3.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null,
+   "_note": "움직임 띠가 아직 없어 정지 열쇠 띠(네 칸 같은 1프레임)를 쓴다(I87)"
+  },
+  {
+   "name": "es19_long_sleep",
+   "source": "v06/es19-long-sleep-48-k-r3.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null,
+   "_note": "움직임 띠가 아직 없어 정지 열쇠 띠(네 칸 같은 1프레임)를 쓴다(I87)"
   }
  ],
  "preview": {

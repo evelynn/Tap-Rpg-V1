@@ -1,0 +1,90 @@
+{
+  "name": "bg_h1_autumn_dusk",
+  "source": "assets/_imagegen/v06/w11-h1-autumn-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1983,
+    793
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 11,
+    "prominence": 0.031,
+    "period": [
+      10.96,
+      11.06
+    ],
+    "phase": [
+      9,
+      15
+    ],
+    "blocks": [
+      144,
+      36
+    ],
+    "edge_fit": [
+      0.14,
+      0.16
+    ],
+    "blocks_per_pixel": [
+      0.56,
+      0.55
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      111,
+      27
+    ],
+    "clusters": 1416,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    203,
+    1983,
+    392
+  ],
+  "band": [
+    336,
+    203,
+    1568,
+    392
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    336,
+    79
+  ],
+  "seam": 115.8,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6.125,
+    6.125
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 162666,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 449,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 336 · 오른쪽 79열을 잘랐다(이음 점수 115.8, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 162666개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 11화소인데 논리 화소는 6.13×6.13화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 138줄은 두 번 쓴다(가로 0/111 · 세로 0/27)"
+  ]
+}

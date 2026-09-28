@@ -1,0 +1,90 @@
+{
+  "name": "bg_h3_summer_day",
+  "source": "assets/_imagegen/v06/w10-h3-wolf-hill-summer-day.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 9.15,
+    "prominence": 0.029,
+    "period": [
+      9.14,
+      9.21
+    ],
+    "phase": [
+      6,
+      13
+    ],
+    "blocks": [
+      168,
+      41
+    ],
+    "edge_fit": [
+      0.16,
+      0.17
+    ],
+    "blocks_per_pixel": [
+      0.66,
+      0.65
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      87,
+      21
+    ],
+    "clusters": 1904,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    316,
+    1536,
+    392
+  ],
+  "band": [
+    0,
+    324,
+    1536,
+    384
+  ],
+  "crop_top": 8,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 12288,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 717,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 8행을 잘라 비율 4에 맞췄다(바닥 행 707 유지)",
+    "뽑은 띠 밖 그림 화소 12288개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 9.15화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 108줄은 두 번 쓴다(가로 0/87 · 세로 0/21)"
+  ]
+}

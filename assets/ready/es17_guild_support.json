@@ -1,0 +1,92 @@
+{
+  "name": "es17_guild_support",
+  "source": "assets/_imagegen/v06/es17-guild-support-48-k-r3.png",
+  "role": "strip",
+  "cols": 4,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    512,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": false,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": null,
+    "prominence": 0,
+    "period": [
+      3,
+      3
+    ],
+    "phase": [
+      3,
+      3
+    ],
+    "blocks": [
+      512,
+      64
+    ],
+    "edge_fit": [
+      0,
+      0.35
+    ],
+    "blocks_per_pixel": [
+      1,
+      1
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 687,
+    "islands_folded": 21
+  },
+  "band_found": [
+    2,
+    384,
+    1534,
+    255
+  ],
+  "band": [
+    2,
+    447,
+    1534,
+    192
+  ],
+  "crop_top": 63,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 7.99,
+  "aspect_expected": 8,
+  "scale": [
+    2.996,
+    3
+  ],
+  "anisotropy": 0.999,
+  "outside_pixels": 96833,
+  "opaque": 32767,
+  "transparent": 1,
+  "color_count": 445,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 63행을 잘라 비율 8에 맞췄다(바닥 행 638 유지)",
+    "뽑은 띠 밖 그림 화소 96833개를 버렸다(자른 행·열 포함)",
+    "원본 블록 추정 10화소가 논리 화소 3의 2.5배를 넘어 가짜 주기로 보고 논리 격자로 뽑았다",
+    "원본 블록 격자를 찾지 못해(자기상관 봉우리 없음) 논리 격자 칸의 가운데 최빈색으로 뽑았다",
+    "불투명 띠인데 투명 칸 1개(그림 화소가 절반 미만)"
+  ]
+}

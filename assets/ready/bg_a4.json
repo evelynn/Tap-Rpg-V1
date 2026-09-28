@@ -1,0 +1,91 @@
+{
+  "name": "bg_a4",
+  "source": "assets/_imagegen/v06/w15-a4-rift.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 3.2,
+    "prominence": 0.053,
+    "period": [
+      3.22,
+      3.21
+    ],
+    "phase": [
+      3,
+      4
+    ],
+    "blocks": [
+      477,
+      120
+    ],
+    "edge_fit": [
+      0.49,
+      0.56
+    ],
+    "blocks_per_pixel": [
+      1.86,
+      1.87
+    ],
+    "skipped": [
+      220,
+      55
+    ],
+    "doubled": [
+      0,
+      0
+    ],
+    "clusters": 839,
+    "islands_folded": 48
+  },
+  "band_found": [
+    0,
+    316,
+    1536,
+    392
+  ],
+  "band": [
+    0,
+    324,
+    1536,
+    384
+  ],
+  "crop_top": 8,
+  "crop_x": [
+    0,
+    0
+  ],
+  "seam": null,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6,
+    6
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 11927,
+  "opaque": 16294,
+  "transparent": 90,
+  "color_count": 368,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "위에서 8행을 잘라 비율 4에 맞췄다(바닥 행 707 유지)",
+    "뽑은 띠 밖 그림 화소 11927개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 3.2화소인데 논리 화소는 6×6화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 275줄은 건너뛰고 0줄은 두 번 쓴다(가로 220/0 · 세로 55/0)",
+    "불투명 띠인데 투명 칸 90개(그림 화소가 절반 미만)"
+  ]
+}

@@ -1,0 +1,90 @@
+{
+  "name": "bg_t00_summer_day",
+  "source": "assets/_imagegen/v06/w10-t00-town-summer-day-r2.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1536,
+    1024
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 10.67,
+    "prominence": 0.053,
+    "period": [
+      10.71,
+      10.55
+    ],
+    "phase": [
+      6,
+      1
+    ],
+    "blocks": [
+      134,
+      35
+    ],
+    "edge_fit": [
+      0.17,
+      0.16
+    ],
+    "blocks_per_pixel": [
+      0.52,
+      0.53
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      107,
+      25
+    ],
+    "clusters": 2415,
+    "islands_folded": 1
+  },
+  "band_found": [
+    0,
+    314,
+    1536,
+    358
+  ],
+  "band": [
+    90,
+    314,
+    1432,
+    358
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    90,
+    14
+  ],
+  "seam": 81.2,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    5.594,
+    5.594
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 38111,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 535,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 90 · 오른쪽 14열을 잘랐다(이음 점수 81.2, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 38111개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 10.67화소인데 논리 화소는 5.59×5.59화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 132줄은 두 번 쓴다(가로 0/107 · 세로 0/25)"
+  ]
+}

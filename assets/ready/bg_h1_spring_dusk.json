@@ -1,0 +1,90 @@
+{
+  "name": "bg_h1_spring_dusk",
+  "source": "assets/_imagegen/v06/w11-h1-spring-dusk.png",
+  "role": "strip",
+  "cols": 1,
+  "palette": null,
+  "png": "rgba",
+  "source_size": [
+    1983,
+    793
+  ],
+  "size": [
+    256,
+    64
+  ],
+  "fill": "opaque",
+  "fit": "crop",
+  "tile": true,
+  "sample": "mode",
+  "source_grid": {
+    "estimate": 10.8,
+    "prominence": 0.021,
+    "period": [
+      10.89,
+      10.86
+    ],
+    "phase": [
+      15,
+      1
+    ],
+    "blocks": [
+      144,
+      37
+    ],
+    "edge_fit": [
+      0.14,
+      0.17
+    ],
+    "blocks_per_pixel": [
+      0.56,
+      0.56
+    ],
+    "skipped": [
+      0,
+      0
+    ],
+    "doubled": [
+      110,
+      26
+    ],
+    "clusters": 1814,
+    "islands_folded": 0
+  },
+  "band_found": [
+    0,
+    203,
+    1983,
+    391
+  ],
+  "band": [
+    260,
+    203,
+    1564,
+    391
+  ],
+  "crop_top": 0,
+  "crop_x": [
+    260,
+    159
+  ],
+  "seam": 145.6,
+  "aspect": 4,
+  "aspect_expected": 4,
+  "scale": [
+    6.109,
+    6.109
+  ],
+  "anisotropy": 1,
+  "outside_pixels": 163734,
+  "opaque": 16384,
+  "transparent": 0,
+  "color_count": 553,
+  "colors": null,
+  "palette_snapped": false,
+  "notes": [
+    "가로로 왼쪽 260 · 오른쪽 159열을 잘랐다(이음 점수 145.6, 창 양 끝 4열의 평균 색 거리)",
+    "뽑은 띠 밖 그림 화소 163734개를 버렸다(자른 행·열 포함)",
+    "원본 블록 약 10.8화소인데 논리 화소는 6.11×6.11화소다 — 블록을 섞지 않고 가장 가까운 블록을 뽑아 블록 0줄은 건너뛰고 136줄은 두 번 쓴다(가로 0/110 · 세로 0/26)"
+  ]
+}
