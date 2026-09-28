@@ -1,6 +1,6 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, artScale, drawDue, surface } from '../src/layout'
+import { COL, ENEMY_CX, HERO_CX, LAND, SCENE, TEXT, WIN, WINDOW_SCALES, artScale, drawDue, surface, windowScale } from '../src/layout'
 import { SCENES } from '../src/scenes'
 import { measure11 } from './measure'
 
@@ -85,6 +85,20 @@ describe('픽셀 그림 정수 배율(03 §14)', () => {
 
   it('200%: 그림 ×2, 빈자리 없음', () => {
     assert.deepEqual(surface(2), { k: 2, devW: 1536, devH: 128, cssW: 768, cssH: 64, artY: 0, logicalW: 768 })
+  })
+
+  it('화면 배율(D81): 100·200·300%만, 창 전체가 s배이고 그림은 정수배 k = 내림(표시 배율 × s)', () => {
+    assert.deepEqual([...WINDOW_SCALES], [1, 2, 3])
+    assert.deepEqual([1, 2, 3, '2', 1.5, 4, 0, undefined, null, 'x'].map(windowScale), [1, 2, 3, 2, 1, 1, 1, 1, 1, 1])
+    assert.deepEqual(surface(1, 2), { k: 2, devW: 1536, devH: 128, cssW: 1536, cssH: 128, artY: 0, logicalW: 768 })
+    assert.deepEqual(surface(1, 3), { k: 3, devW: 2304, devH: 192, cssW: 2304, cssH: 192, artY: 0, logicalW: 768 })
+    // 표시 배율 150% 모니터에서 200%: k = 3, 그림 1:1 정수배로 빈자리 없음
+    assert.deepEqual(surface(1.5, 2), { k: 3, devW: 2304, devH: 192, cssW: 1536, cssH: 128, artY: 0, logicalW: 768 })
+    // 125%에서 200%: k = 2(2.5 내림), 남는 폭은 배경을 더 잇고 남는 높이는 하늘
+    const s = surface(1.25, 2)
+    assert.equal(s.k, 2)
+    assert.equal(s.artY, 160 - 128)
+    assert.equal(s.logicalW, 960)
   })
 })
 

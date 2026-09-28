@@ -31,7 +31,15 @@ export function drawDue(now: number, lastDraw: number): boolean {
   return now - lastDraw >= DRAW_MIN_MS
 }
 
-// 그림 정수 배율 k: 표시 배율 × 개발용 확대를 아래로 내린 정수. 1 미만은 1
+// 화면 배율(03 §7·§14, D81): 기본 창 전체(그림·글자 칸)를 정수배로 키운다. 그 밖의 값은 100%
+export const WINDOW_SCALES = [1, 2, 3] as const
+export type WindowScale = (typeof WINDOW_SCALES)[number]
+export function windowScale(v: unknown): WindowScale {
+  const n = Number(v)
+  return (WINDOW_SCALES as readonly number[]).includes(n) ? (n as WindowScale) : 1
+}
+
+// 그림 정수 배율 k: 표시 배율 × 화면 배율을 아래로 내린 정수. 1 미만은 1
 export function artScale(dpr: number, userScale = 1): number {
   return Math.max(1, Math.floor(dpr * userScale + 1e-9))
 }

@@ -6,7 +6,7 @@ import { DetailWindow } from './detail/view'
 import { ChoiceWindow } from './choice'
 import { SuccessionWindow } from './succession'
 import { SPEEDS } from './driver'
-import { drawDue, surface } from './layout'
+import { WINDOW_SCALES, drawDue, surface, windowScale, type WindowScale } from './layout'
 import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
@@ -28,7 +28,22 @@ function loadImage(src: string): Promise<HTMLImageElement | undefined> {
   })
 }
 
-// 주소 인자: ?name=모라&family=모래&seed=16진16자리&scale=1(개발용 정수 확대, 기본 1 = 100%)&grid=1(선명도 확인 격자)
+// 주소 인자: ?name=모라&family=모래&seed=16진16자리&scale=1|2|3(화면 배율을 이번만 덮어씀)&grid=1(선명도 확인 격자)
+
+// 화면 배율은 설치별 설정(13 §9 settings.json `window_scale`). 시제품은 브라우저 저장소에 둔다
+const SETTINGS_KEY = 'tap.settings'
+function loadSettings(): { window_scale?: unknown } {
+  try {
+    return JSON.parse(localStorage.getItem(SETTINGS_KEY) ?? '{}') as { window_scale?: unknown }
+  } catch {
+    return {}
+  }
+}
+function saveSettings(v: { window_scale: number }): void {
+  try {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify({ ...loadSettings(), ...v }))
+  } catch { /* 저장소를 못 쓰면 이번 실행만 */ }
+}
 function newWorld(content: Content, q: URLSearchParams): World {
   const bg = content.list('background').find((b) => b.unlock === null)
   if (!bg) throw new Error('해금 없이 쓸 출신 배경이 없다')
@@ -43,7 +58,7 @@ function newWorld(content: Content, q: URLSearchParams): World {
 
 async function start(): Promise<void> {
   const q = new URLSearchParams(location.search)
-  const u = Math.max(1, Math.floor(Number(q.get('scale') ?? 1)) || 1) // 개발용 확대는 정수배만. 기본 1 = 100%(D75)
+  let u: WindowScale = windowScale(q.get('scale') ?? loadSettings().window_scale) // 화면 배율 100/200/300%(D81). 기본 1 = 100%(D75)
   const grid = q.get('grid') === '1'
   const content = Content.fromBundle(await (await fetch('content.json')).json())
 
@@ -90,6 +105,15 @@ async function start(): Promise<void> {
   }
   fit()
   watchDpr()
+  // 화면 배율을 바꾸면 창·글자 칸·캔버스를 그 자리에서 다시 맞추고 기억한다(03 §14, D81)
+  const setScale = (s: WindowScale): void => {
+    if (s === u) return
+    u = s
+    win.style.setProperty('--u', String(u))
+    panel.setScale(u)
+    fit()
+    saveSettings({ window_scale: u })
+  }
   const dark = matchMedia('(prefers-color-scheme: dark)')
 
   // 개발용 조작(배속·멈춤)
@@ -113,6 +137,17 @@ async function start(): Promise<void> {
   const succession = new SuccessionWindow(document.getElementById('succession')!, app.world, () => detail.render())
   detail.onSuccession = () => succession.show()
   canvas.onclick = () => detail.show('일지')
+  // 우클릭 메뉴(03 §2.6). 시제품은 창 조작(축소 창·위치 잠금·설정·숨기기)이 없어 그 항목은 뺀다
+  win.addEventListener('contextmenu', (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    menu.openAt(e.clientX, e.clientY, [
+      { label: '상세 창 열기', run: () => detail.show('일지') },
+      { label: app.driver.paused ? '다시 진행' : '일시정지', run: () => app.driver.setPaused(!app.driver.paused) },
+      'sep',
+      ...WINDOW_SCALES.map((s) => ({ label: `화면 배율 ${s * 100}%`, checked: s === u, run: () => setScale(s) })),
+    ])
+  })
   const col = document.getElementById('col')!
   col.addEventListener('click', (e) => {
     const t = e.target as HTMLElement

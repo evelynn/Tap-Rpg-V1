@@ -33,13 +33,18 @@ export class Panel {
   private readonly measure: CanvasRenderingContext2D
   private last = { status: '', icons: '', line: '\u0000', dark: false }
 
-  // u: 개발용 확대(?scale=, CSS 변수 --u와 같은 값). 글자 폭을 잴 때 곱한다(글자는 늘 장치 픽셀로 그린다)
-  constructor(private readonly root: HTMLElement, private readonly u: number) {
+  // u: 화면 배율(D81, CSS 변수 --u와 같은 값). 글자 폭을 잴 때 곱한다(글자는 늘 장치 픽셀로 그린다)
+  constructor(private readonly root: HTMLElement, private u: number) {
     root.innerHTML = '<div class="plate"></div><div class="status"></div><div class="icons"></div><div class="record" aria-live="off"></div>'
     this.status = root.querySelector('.status')!
     this.icons = root.querySelector('.icons')!
     this.record = root.querySelector('.record')!
     this.measure = document.createElement('canvas').getContext('2d')!
+    this.measure.font = `${TEXT.font * u}px ${FONT_FAMILY}`
+  }
+
+  setScale(u: number): void {
+    this.u = u
     this.measure.font = `${TEXT.font * u}px ${FONT_FAMILY}`
   }
 

@@ -6,7 +6,7 @@
   <style>
     body { margin: 16px; background: #d9d4cc; color: #2b2233; font: 13px system-ui, "Malgun Gothic", sans-serif; }
     @media (prefers-color-scheme: dark) { body { background: #15121a; color: #f4efe6; } }
-    /* 기본 창 768 × 64(100% 기준, D75). --u는 개발용 확대(?scale=, 기본 1) */
+    /* 기본 창 768 × 64(100% 기준, D75). --u는 화면 배율 1·2·3(D81, main.ts가 넣는다) */
     #win { position: relative; width: calc(768px * var(--u, 1)); height: calc(64px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
     /* 캔버스 CSS 크기 = 장치 크기 / dpr(main.ts가 넣는다). 브라우저가 다시 늘이지 않게 pixelated도 둔다 */
     #art { position: absolute; left: 0; bottom: 0; display: block; image-rendering: pixelated; }
