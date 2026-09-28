@@ -1,0 +1,1119 @@
+{
+  "name": "enm_kobold_body_48",
+  "source": "assets/_imagegen/v06/w04-kobold-body18-48-r5.png",
+  "role": "reference",
+  "ref": null,
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+  ],
+  "rows": [
+    {
+      "action": "idle",
+      "frames": 4
+    },
+    {
+      "action": "move",
+      "frames": 4
+    },
+    {
+      "action": "attack",
+      "frames": 4
+    },
+    {
+      "action": "hit",
+      "frames": 2
+    },
+    {
+      "action": "exit",
+      "frames": 4
+    }
+  ],
+  "source_size": [
+    1024,
+    1536
+  ],
+  "grid": [
+    4,
+    5
+  ],
+  "cell": [
+    32,
+    48
+  ],
+  "cell_ratio": [
+    8,
+    6.4
+  ],
+  "scale": 6.97,
+  "scale_origin": "map",
+  "art_period": 5,
+  "notes": [
+    "원본 칸이 정사각 비율이 아니다(가로 8 · 세로 6.4). 축척은 한 값이어야 해 지정값 6.97을 쓴다",
+    "원본 그림의 화소 블록은 약 5인데 축척은 6.97이다 — 원본 화소 1.39개가 논리 화소 1개로 합쳐져 가는 선·세부가 빠질 수 있다"
+  ],
+  "totals": {
+    "opaque": 5846,
+    "dropped_outside": 0,
+    "specks_removed": 0,
+    "colors_merged": 269,
+    "islands_folded": 0,
+    "colors": [
+      "#2B2233",
+      "#2F2420",
+      "#4A3A32",
+      "#4C4A52",
+      "#4D6A3E",
+      "#553420",
+      "#5E3C24",
+      "#6D8F5A",
+      "#6E442C",
+      "#6E5A48",
+      "#6E7A5A",
+      "#743426",
+      "#7A4E24",
+      "#7A4E30",
+      "#8E5E38",
+      "#9A8A78",
+      "#9A948C",
+      "#9AA85A",
+      "#A4523A",
+      "#A8883E",
+      "#B0603A",
+      "#B07A3A",
+      "#C98E72",
+      "#D8B868",
+      "#E8B89A",
+      "#F6D9C2"
+    ],
+    "palette_error_mean": 62.95,
+    "palette_error_max": 113.04
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        72,
+        117,
+        201,
+        305
+      ],
+      "anchor": [
+        76.25,
+        123.5
+      ],
+      "shift": [
+        7,
+        18
+      ],
+      "opaque": 325,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        17,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#553420",
+        "#743426",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 63.4,
+        "max": 113.04
+      },
+      "block_purity": 0.63,
+      "colors_merged": 14,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        317,
+        114,
+        444,
+        305
+      ],
+      "anchor": [
+        321.25,
+        119.5
+      ],
+      "shift": [
+        7,
+        17
+      ],
+      "opaque": 335,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        16,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 64.12,
+        "max": 113.04
+      },
+      "block_purity": 0.61,
+      "colors_merged": 15,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        560,
+        117,
+        689,
+        305
+      ],
+      "anchor": [
+        564.25,
+        118.5
+      ],
+      "shift": [
+        7,
+        17
+      ],
+      "opaque": 332,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        17,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#4D6A3E",
+        "#553420",
+        "#6D8F5A",
+        "#6E5A48",
+        "#7A4E24",
+        "#8E5E38",
+        "#9A8A78",
+        "#9AA85A",
+        "#A4523A",
+        "#A8883E",
+        "#B07A3A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 62.32,
+        "max": 113.04
+      },
+      "block_purity": 0.65,
+      "colors_merged": 21,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        792,
+        116,
+        931,
+        305
+      ],
+      "anchor": [
+        794.25,
+        118.5
+      ],
+      "shift": [
+        6,
+        17
+      ],
+      "opaque": 335,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        17,
+        25,
+        43
+      ],
+      "bbox_center_x": 15.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 61.77,
+        "max": 113.04
+      },
+      "block_purity": 0.66,
+      "colors_merged": 14,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        72,
+        406,
+        201,
+        594
+      ],
+      "anchor": [
+        78.25,
+        407.5
+      ],
+      "shift": [
+        7,
+        17
+      ],
+      "opaque": 330,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        17,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A4523A",
+        "#A8883E",
+        "#B0603A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 63.37,
+        "max": 113.04
+      },
+      "block_purity": 0.65,
+      "colors_merged": 20,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        318,
+        406,
+        446,
+        594
+      ],
+      "anchor": [
+        323.25,
+        407.5
+      ],
+      "shift": [
+        8,
+        17
+      ],
+      "opaque": 322,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        7,
+        17,
+        25,
+        43
+      ],
+      "bbox_center_x": 16,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B07A3A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 62.68,
+        "max": 113.04
+      },
+      "block_purity": 0.66,
+      "colors_merged": 16,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        560,
+        406,
+        689,
+        594
+      ],
+      "anchor": [
+        564.25,
+        410.5
+      ],
+      "shift": [
+        7,
+        18
+      ],
+      "opaque": 326,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        17,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#553420",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9A8A78",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#B07A3A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 63.24,
+        "max": 113.04
+      },
+      "block_purity": 0.65,
+      "colors_merged": 17,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        805,
+        403,
+        932,
+        594
+      ],
+      "anchor": [
+        809.25,
+        409.5
+      ],
+      "shift": [
+        7,
+        18
+      ],
+      "opaque": 323,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        17,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#4D6A3E",
+        "#6D8F5A",
+        "#6E7A5A",
+        "#7A4E30",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 62.09,
+        "max": 113.04
+      },
+      "block_purity": 0.66,
+      "colors_merged": 19,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        56,
+        686,
+        205,
+        883
+      ],
+      "anchor": [
+        56.25,
+        689.5
+      ],
+      "shift": [
+        5,
+        16
+      ],
+      "opaque": 380,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        15,
+        25,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#4D6A3E",
+        "#5E3C24",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#B07A3A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 63.4,
+        "max": 113.04
+      },
+      "block_purity": 0.67,
+      "colors_merged": 13,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        323,
+        686,
+        452,
+        883
+      ],
+      "anchor": [
+        323.25,
+        688.5
+      ],
+      "shift": [
+        7,
+        16
+      ],
+      "opaque": 327,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        7,
+        16,
+        25,
+        43
+      ],
+      "bbox_center_x": 16,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6D8F5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 62.21,
+        "max": 113.04
+      },
+      "block_purity": 0.69,
+      "colors_merged": 8,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        561,
+        722,
+        715,
+        883
+      ],
+      "anchor": [
+        566.25,
+        723.5
+      ],
+      "shift": [
+        6,
+        21
+      ],
+      "opaque": 314,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        21,
+        26,
+        43
+      ],
+      "bbox_center_x": 15.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#6D8F5A",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 64.51,
+        "max": 113.04
+      },
+      "block_purity": 0.64,
+      "colors_merged": 15,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        805,
+        689,
+        935,
+        883
+      ],
+      "anchor": [
+        810.25,
+        689.5
+      ],
+      "shift": [
+        7,
+        16
+      ],
+      "opaque": 333,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        16,
+        24,
+        43
+      ],
+      "bbox_center_x": 15,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 62.86,
+        "max": 113.04
+      },
+      "block_purity": 0.67,
+      "colors_merged": 17,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 3,
+      "action": "hit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        72,
+        976,
+        205,
+        1165
+      ],
+      "anchor": [
+        76.25,
+        978.5
+      ],
+      "shift": [
+        7,
+        17
+      ],
+      "opaque": 339,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        16,
+        25,
+        43
+      ],
+      "bbox_center_x": 15.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4D6A3E",
+        "#5E3C24",
+        "#6D8F5A",
+        "#6E5A48",
+        "#7A4E24",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A4523A",
+        "#A8883E",
+        "#B0603A",
+        "#B07A3A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 63.12,
+        "max": 113.04
+      },
+      "block_purity": 0.65,
+      "colors_merged": 14,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 3,
+      "action": "hit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        301,
+        979,
+        449,
+        1165
+      ],
+      "anchor": [
+        306.25,
+        981.5
+      ],
+      "shift": [
+        6,
+        18
+      ],
+      "opaque": 324,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        17,
+        26,
+        43
+      ],
+      "bbox_center_x": 15.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#6E7A5A",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 61.14,
+        "max": 113.04
+      },
+      "block_purity": 0.65,
+      "colors_merged": 13,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 3,
+      "action": "hit",
+      "expected": "empty",
+      "status": "empty",
+      "source_box": null,
+      "anchor": null,
+      "shift": null,
+      "opaque": 0,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": null,
+      "bbox_center_x": null,
+      "colors": [],
+      "palette_error": {
+        "mean": 0,
+        "max": 0
+      },
+      "block_purity": 0,
+      "colors_merged": 0,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 3,
+      "action": "hit",
+      "expected": "empty",
+      "status": "empty",
+      "source_box": null,
+      "anchor": null,
+      "shift": null,
+      "opaque": 0,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": null,
+      "bbox_center_x": null,
+      "colors": [],
+      "palette_error": {
+        "mean": 0,
+        "max": 0
+      },
+      "block_purity": 0,
+      "colors_merged": 0,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        81,
+        1307,
+        235,
+        1446
+      ],
+      "anchor": [
+        84.25,
+        1312.5
+      ],
+      "shift": [
+        6,
+        25
+      ],
+      "opaque": 267,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        24,
+        27,
+        43
+      ],
+      "bbox_center_x": 16,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#553420",
+        "#6D8F5A",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 65.09,
+        "max": 113.04
+      },
+      "block_purity": 0.67,
+      "colors_merged": 13,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        301,
+        1298,
+        464,
+        1446
+      ],
+      "anchor": [
+        307.25,
+        1301.5
+      ],
+      "shift": [
+        3,
+        23
+      ],
+      "opaque": 320,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        2,
+        22,
+        24,
+        43
+      ],
+      "bbox_center_x": 13,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#7A4E24",
+        "#8E5E38",
+        "#9A8A78",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 64.04,
+        "max": 113.04
+      },
+      "block_purity": 0.68,
+      "colors_merged": 12,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        573,
+        1272,
+        717,
+        1446
+      ],
+      "anchor": [
+        579.25,
+        1277.25
+      ],
+      "shift": [
+        5,
+        20
+      ],
+      "opaque": 302,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        19,
+        24,
+        43
+      ],
+      "bbox_center_x": 14,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#4D6A3E",
+        "#5E3C24",
+        "#6E442C",
+        "#6E7A5A",
+        "#7A4E30",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 63.19,
+        "max": 113.04
+      },
+      "block_purity": 0.67,
+      "colors_merged": 16,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 4,
+      "action": "exit",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        810,
+        1272,
+        976,
+        1446
+      ],
+      "anchor": [
+        812.5,
+        1276.5
+      ],
+      "shift": [
+        2,
+        20
+      ],
+      "opaque": 312,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        2,
+        19,
+        24,
+        43
+      ],
+      "bbox_center_x": 13,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#7A4E24",
+        "#8E5E38",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#D8B868",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 60.83,
+        "max": 113.04
+      },
+      "block_purity": 0.66,
+      "colors_merged": 12,
+      "islands_folded": 0
+    }
+  ]
+}

@@ -515,7 +515,7 @@
   },
   {
    "name": "bg_h1_summer_day",
-   "source": "v05/w10-h1-river-meadow-summer-day-r3.png",
+   "source": "v06/w10-h1-river-meadow-summer-day-seam-r3.png",
    "role": "strip",
    "size": [
     256,
@@ -524,7 +524,8 @@
    "cols": 1,
    "fill": "opaque",
    "palette": null,
-   "tile": true
+   "tile": true,
+   "fit": "stretch"
   },
   {
    "name": "es01_stranger_campfire",
@@ -2875,6 +2876,60 @@
   {
    "name": "enm_kobold_boss_48",
    "source": "v06/w08-kobold-boss18-48.png",
+   "role": "reference",
+   "grid": [
+    4,
+    5
+   ],
+   "cell": [
+    32,
+    48
+   ],
+   "rows": [
+    {
+     "action": "idle",
+     "frames": 4
+    },
+    {
+     "action": "move",
+     "frames": 4
+    },
+    {
+     "action": "attack",
+     "frames": 4
+    },
+    {
+     "action": "hit",
+     "frames": 2
+    },
+    {
+     "action": "exit",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers",
+    "ext_enemy"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 15
+   },
+   "scale": 6.97
+  },
+  {
+   "name": "enm_kobold_body_48",
+   "source": "v06/w04-kobold-body18-48-r5.png",
    "role": "reference",
    "grid": [
     4,
