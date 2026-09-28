@@ -1,17 +1,21 @@
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { COL, LAND, SCENE_W, TEXT, WIDTH, WIN, WINDOW_SCALES, artScale, drawDue, stageOf, surface, windowScale, windowWidth } from '../src/layout'
+import { COL, LAND, SCENE_W, TEXT, WIDTH, WIN, WINDOW_SCALES, artScale, drawDue, groundOf, stageOf, surface, windowScale, windowWidth } from '../src/layout'
 import { SCENES } from '../src/scenes'
 import { measure11 } from './measure'
 
-describe('기본 창 768 × 64 배치(D75)', () => {
+describe('기본 창 768 × 128 배치(D75·D84)', () => {
   it('풍경 496 + 글자 칸 272. 인물 무리·장면 판은 풍경 가운데: 판 184~311, 주인공 208, 적 304(D82)', () => {
-    assert.deepEqual(WIN, { w: 768, h: 64 })
+    assert.deepEqual(WIN, { w: 768, h: 128 })
     assert.equal(LAND.x + LAND.w, COL.x)
     assert.equal(COL.x + COL.w, WIN.w)
     assert.equal(COL.w, 272)
     assert.deepEqual(stageOf(768), { landW: 496, sceneX: 184, heroCx: 208, enemyCx: 304 })
     assert.equal(stageOf(768).sceneX + SCENE_W / 2, 496 / 2, '장면 판 가운데 = 풍경 가운데')
+  })
+
+  it('지면(D84): 띠를 창 아래에 붙이고 띠 높이의 56/64 지점 — 128 − round(띠 높이 / 8)', () => {
+    assert.deepEqual([64, 71, 94, 119, 128].map(groundOf), [120, 119, 116, 113, 112])
   })
 
   it('창 너비 528~1536(D82): 어느 너비에서도 장면 판과 인물 셀(48)이 풍경 안에 든다', () => {
@@ -22,7 +26,7 @@ describe('기본 창 768 × 64 배치(D75)', () => {
     }
     assert.deepEqual(stageOf(WIDTH.min), { landW: 256, sceneX: 64, heroCx: 88, enemyCx: 184 })
     assert.deepEqual([400, 528, 900.4, 2000, '1200', 'x', undefined, null].map(windowWidth), [528, 528, 900, 1536, 1200, 768, 768, 768])
-    assert.deepEqual(surface(1, 1, 1000), { k: 1, devW: 1000, devH: 64, cssW: 1000, cssH: 64, artY: 0, logicalW: 1000 })
+    assert.deepEqual(surface(1, 1, 1000), { k: 1, devW: 1000, devH: 128, cssW: 1000, cssH: 128, artY: 0, logicalW: 1000 })
   })
 
   it('장면 표의 주인공 x(장면 판 기준)가 창에서 주인공 자리 근처에 온다(L09 x 24 → 주인공 자리)', () => {
@@ -41,7 +45,7 @@ describe('기본 창 768 × 64 배치(D75)', () => {
     const { size, gap, markGap, w } = TEXT.icons
     assert.equal(4 * size + 3 * gap + markGap + size + 2 + size, w, '아이콘 4칸 + 중요 표식 + 태도 표식')
     assert.ok(TEXT.statusW + 3 + w <= TEXT.w)
-    assert.equal(TEXT.row1.y + TEXT.lineH, 30)
+    assert.equal(TEXT.row1.y + TEXT.lineH, 62)
     assert.ok(TEXT.row1.y + TEXT.lineH < TEXT.row2.y)
     assert.equal(TEXT.row1.y, WIN.h - (TEXT.row2.y + TEXT.lineH), '위아래 여백이 같다')
   })
@@ -84,30 +88,30 @@ describe('픽셀 그림 정수 배율(03 §14)', () => {
     assert.equal(artScale(1.1 * 3), 3) // 3.3000000000000003
   })
 
-  it('100%: 캔버스 = 768 × 64 장치 픽셀, 그림 1:1, CSS 크기 = 장치 크기', () => {
-    assert.deepEqual(surface(1), { k: 1, devW: 768, devH: 64, cssW: 768, cssH: 64, artY: 0, logicalW: 768 })
+  it('100%: 캔버스 = 768 × 128 장치 픽셀, 그림 1:1, CSS 크기 = 장치 크기', () => {
+    assert.deepEqual(surface(1), { k: 1, devW: 768, devH: 128, cssW: 768, cssH: 128, artY: 0, logicalW: 768 })
   })
 
   it('125·150%: 그림은 ×1 그대로, 남는 폭은 배경을 더 이어 그리고 남는 높이는 위쪽 하늘', () => {
-    assert.deepEqual(surface(1.25), { k: 1, devW: 960, devH: 80, cssW: 768, cssH: 64, artY: 16, logicalW: 960 })
-    assert.deepEqual(surface(1.5), { k: 1, devW: 1152, devH: 96, cssW: 768, cssH: 64, artY: 32, logicalW: 1152 })
+    assert.deepEqual(surface(1.25), { k: 1, devW: 960, devH: 160, cssW: 768, cssH: 128, artY: 32, logicalW: 960 })
+    assert.deepEqual(surface(1.5), { k: 1, devW: 1152, devH: 192, cssW: 768, cssH: 128, artY: 64, logicalW: 1152 })
   })
 
   it('200%: 그림 ×2, 빈자리 없음', () => {
-    assert.deepEqual(surface(2), { k: 2, devW: 1536, devH: 128, cssW: 768, cssH: 64, artY: 0, logicalW: 768 })
+    assert.deepEqual(surface(2), { k: 2, devW: 1536, devH: 256, cssW: 768, cssH: 128, artY: 0, logicalW: 768 })
   })
 
   it('화면 배율(D81): 100·200·300%만, 창 전체가 s배이고 그림은 정수배 k = 내림(표시 배율 × s)', () => {
     assert.deepEqual([...WINDOW_SCALES], [1, 2, 3])
     assert.deepEqual([1, 2, 3, '2', 1.5, 4, 0, undefined, null, 'x'].map(windowScale), [1, 2, 3, 2, 1, 1, 1, 1, 1, 1])
-    assert.deepEqual(surface(1, 2), { k: 2, devW: 1536, devH: 128, cssW: 1536, cssH: 128, artY: 0, logicalW: 768 })
-    assert.deepEqual(surface(1, 3), { k: 3, devW: 2304, devH: 192, cssW: 2304, cssH: 192, artY: 0, logicalW: 768 })
+    assert.deepEqual(surface(1, 2), { k: 2, devW: 1536, devH: 256, cssW: 1536, cssH: 256, artY: 0, logicalW: 768 })
+    assert.deepEqual(surface(1, 3), { k: 3, devW: 2304, devH: 384, cssW: 2304, cssH: 384, artY: 0, logicalW: 768 })
     // 표시 배율 150% 모니터에서 200%: k = 3, 그림 1:1 정수배로 빈자리 없음
-    assert.deepEqual(surface(1.5, 2), { k: 3, devW: 2304, devH: 192, cssW: 1536, cssH: 128, artY: 0, logicalW: 768 })
+    assert.deepEqual(surface(1.5, 2), { k: 3, devW: 2304, devH: 384, cssW: 1536, cssH: 256, artY: 0, logicalW: 768 })
     // 125%에서 200%: k = 2(2.5 내림), 남는 폭은 배경을 더 잇고 남는 높이는 하늘
     const s = surface(1.25, 2)
     assert.equal(s.k, 2)
-    assert.equal(s.artY, 160 - 128)
+    assert.equal(s.artY, 320 - 256)
     assert.equal(s.logicalW, 960)
   })
 })

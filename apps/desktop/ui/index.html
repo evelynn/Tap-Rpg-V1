@@ -6,7 +6,7 @@
   <style>
     body { margin: 16px; background: #d9d4cc; color: #2b2233; font: 13px system-ui, "Malgun Gothic", sans-serif; }
     @media (prefers-color-scheme: dark) { body { background: #15121a; color: #f4efe6; } }
-    /* 기본 창 768 × 64(100% 기준, D75). --u는 화면 배율 1·2·3(D81, main.ts가 넣는다) */
+    /* 기본 창 768 × 128(100% 기준, D75·D84). --u는 화면 배율 1·2·3(D81, main.ts가 넣는다) */
     /* 기본 창 너비 --w는 528~1536(D82, main.ts가 넣는다). 기록 띠·말풍선은 기본 창 바로 위(03 §2.7) */
     #app { display: inline-block; }
     #stack { position: relative; width: calc(var(--w, 768) * 1px * var(--u, 1)); --paper: 244, 239, 230; color: #2b2233;
@@ -17,7 +17,7 @@
     #strip[hidden] { display: none; }
     #strip .row { white-space: nowrap; }
     #strip .detail { opacity: .7; }
-    #bubble { position: absolute; z-index: 6; bottom: calc(70px * var(--u, 1)); left: calc((var(--cx, 208) - 20) * 1px * var(--u, 1));
+    #bubble { position: absolute; z-index: 6; bottom: calc(134px * var(--u, 1)); left: calc((var(--cx, 208) - 20) * 1px * var(--u, 1));
       max-width: calc(300px * var(--u, 1)); box-sizing: border-box; padding: calc(4px * var(--u, 1)) calc(7px * var(--u, 1));
       background: rgb(var(--paper)); border: 1px solid rgba(0, 0, 0, .35); border-radius: calc(6px * var(--u, 1));
       box-shadow: 0 2px 6px rgba(0, 0, 0, .3); line-height: calc(14px * var(--u, 1)); cursor: pointer; word-break: keep-all; overflow-wrap: anywhere; }
@@ -27,7 +27,7 @@
     #bubble::after { content: ''; position: absolute; left: calc(16px * var(--u, 1)); bottom: calc(-6px * var(--u, 1)); border: calc(6px * var(--u, 1)) solid transparent;
       border-bottom: 0; border-top-color: rgb(var(--paper)); }
     @media (prefers-color-scheme: dark) { #stack { --paper: 42, 37, 48; color: #f4efe6; } }
-    #win { position: relative; width: 100%; height: calc(64px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
+    #win { position: relative; width: 100%; height: calc(128px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
     #grip { position: absolute; z-index: 5; top: 0; right: -3px; width: 6px; height: 100%; cursor: ew-resize; }
     /* 캔버스 CSS 크기 = 장치 크기 / dpr(main.ts가 넣는다). 브라우저가 다시 늘이지 않게 pixelated도 둔다 */
     #art { position: absolute; left: 0; bottom: 0; display: block; image-rendering: pixelated; }
@@ -39,8 +39,8 @@
     /* 판: 불투명도 88%, 왼쪽 5는 풍경에서 넘어오는 그라데이션 */
     #col .plate { position: absolute; inset: 0; background: linear-gradient(to right, rgba(var(--paper), 0), rgba(var(--paper), .88) calc(5px * var(--u))); }
     #col .status, #col .icons, #col .record { position: absolute; height: calc(13px * var(--u)); white-space: nowrap; }
-    #col .status { left: calc(5px * var(--u)); width: calc(175px * var(--u)); top: calc(17px * var(--u)); font-weight: bold; }
-    #col .icons { right: calc(5px * var(--u)); width: calc(84px * var(--u)); top: calc(17px * var(--u)); display: flex; align-items: center; gap: calc(2px * var(--u)); }
+    #col .status { left: calc(5px * var(--u)); width: calc(175px * var(--u)); top: calc(49px * var(--u)); font-weight: bold; }
+    #col .icons { right: calc(5px * var(--u)); width: calc(84px * var(--u)); top: calc(49px * var(--u)); display: flex; align-items: center; gap: calc(2px * var(--u)); }
     #col .ico { width: calc(12px * var(--u)); height: calc(12px * var(--u)); flex: none; }
     #col .mark, #col .attitude { flex: none; width: calc(12px * var(--u)); height: calc(12px * var(--u)); box-sizing: border-box; border-radius: calc(2px * var(--u));
       font-size: calc(9px * var(--u)); line-height: calc(12px * var(--u)); font-weight: bold; text-align: center; }
@@ -49,7 +49,7 @@
     #col .mark.choice { background: #7b5cc4; color: #fff; }
     #col .mark.succession { background: #a8894a; color: #fff; }
     #col .attitude { border: 1px solid currentColor; line-height: calc(12px * var(--u) - 2px); font-weight: normal; }
-    #col .record { left: calc(5px * var(--u)); right: calc(5px * var(--u)); top: calc(34px * var(--u)); }
+    #col .record { left: calc(5px * var(--u)); right: calc(5px * var(--u)); top: calc(66px * var(--u)); }
     #win canvas, #col .status, #col .icons, #col .record { cursor: pointer; }
     /* 상세 창 480 × 560(03 §5). 시제품에서는 개발용 단추 아래에 둔다. 본문 13, 최소 12, 소제목 15 굵게, 안쪽 여백 16 */
     #menu { position: absolute; z-index: 20; min-width: 132px; padding: 4px 0; background: #fbf8f2; color: #2b2233; border: 1px solid #8a8a8a; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); font: 12px system-ui, sans-serif; }

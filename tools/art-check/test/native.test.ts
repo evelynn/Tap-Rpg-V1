@@ -1,7 +1,7 @@
 // 원본 도트 그대로(D83): 소수 주기로 그려지고 경계가 번진 도트 그림에서 도트를 그대로 되찾는다
 import { describe, it } from 'node:test'
 import assert from 'node:assert/strict'
-import { extractNative, fitHeight, type Raster } from '../src/native'
+import { extractNative, type Raster } from '../src/native'
 
 // 도트 nx × ny(무작위 색 8가지)를 주기 P로 그리고, 경계 한 화소를 양쪽 색 평균으로 번지게 한다
 function synth(nx: number, ny: number, P: number, seed = 7): { dots: number[][]; img: Raster } {
@@ -42,16 +42,5 @@ describe('원본 도트 그대로 옮기기(D83)', () => {
     const { img } = synth(60, 20, 4.5)
     const r = extractNative(img, [4.5, 4.5])
     assert.deepEqual([r.image.width, r.image.height], [60, 20])
-  })
-
-  it('창 높이 64: 길면 지면(56/64)을 y 56에 맞춰 위를 자르고, 짧으면 윗줄 색으로 위를 채운다', () => {
-    const tall: Raster = { width: 2, height: 96, rgba: new Uint8Array(2 * 96 * 4).map((_, i) => Math.floor(i / 8)) }
-    const t = fitHeight(tall)
-    assert.equal(t.image.height, 64)
-    assert.equal(t.cropTop, 84 - 56)
-    const short: Raster = { width: 1, height: 40, rgba: new Uint8Array(40 * 4).fill(9) }
-    const f = fitHeight(short)
-    assert.equal(f.image.height, 64)
-    assert.ok(f.cropTop < 0)
   })
 })

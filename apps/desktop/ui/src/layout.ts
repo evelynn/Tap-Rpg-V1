@@ -1,10 +1,11 @@
-// 기본 창 768 × 64 배치(03 §2.2, D75)와 픽셀 그림 정수 배율(03 §14). DOM 없이 계산만 한다.
+// 기본 창 768 × 128 배치(03 §2.2, D75·D84)와 픽셀 그림 정수 배율(03 §14). DOM 없이 계산만 한다.
 // 기준은 Windows 표시 배율 100%(devicePixelRatio 1): 논리 1픽셀 = 화면 1픽셀, 그림은 배율 없이 1:1로 그린다.
 
-export const WIN = { w: 768, h: 64 } // 기본 너비·높이(너비는 D82로 조절)
+export const WIN = { w: 768, h: 128 } // 기본 너비·높이(너비는 D82로 조절, 높이는 원본 도트 배경이 잘리지 않게 128, D84)
 export const LAND = { x: 0, w: 496 } // 풍경(배경·캐릭터·적·장면)
 export const COL = { x: 496, w: 272 } // 글자 칸(88% 판 위 DOM 글자)
-export const GROUND_Y = 56
+// 지면 기준선(D84): 띠를 창 아래에 붙이고, 지면은 띠 높이의 56/64 지점 → 창 y = 128 − round(띠 높이 / 8)
+export const groundOf = (stripH: number): number => WIN.h - Math.round(stripH / 8)
 export const STRIP_W = 256 // 배경 띠 한 장 폭. 풍경 496을 가로로 이어 채운다
 export const SCENE_W = 128 // 이벤트 장면·패널 자리 폭. 장면 표의 x는 이 판 기준(24 → 주인공 자리)
 
@@ -23,14 +24,14 @@ export function stageOf(width: number): Stage {
   return { landW, sceneX, heroCx: sceneX + 24, enemyCx: sceneX + 120 }
 }
 
-// 글자 칸 안쪽: 왼쪽 5는 풍경에서 판으로 넘어가는 그라데이션, 오른쪽 5는 여백. 작은 글자 2줄을 세로 가운데(위아래 17)에 둔다
+// 글자 칸 안쪽: 왼쪽 5는 풍경에서 판으로 넘어가는 그라데이션, 오른쪽 5는 여백. 작은 글자 2줄을 세로 가운데(위아래 49)에 둔다
 export const TEXT = {
   x: COL.x + 5, // 501
   w: COL.w - 10, // 262
   font: 11, // 글자 크기(px, 100%)
   lineH: 13,
-  row1: { y: 17 }, // 1줄: 이름·나이·상태·조건어(굵게, 왼쪽) + 아이콘·표식(오른쪽 끝)
-  row2: { y: 34 }, // 2줄: 한 줄 기록 한 줄(접지 않는다)
+  row1: { y: 49 }, // 1줄: 이름·나이·상태·조건어(굵게, 왼쪽) + 아이콘·표식(오른쪽 끝)
+  row2: { y: 66 }, // 2줄: 한 줄 기록 한 줄(접지 않는다)
   icons: { size: 12, gap: 2, markGap: 4, w: 84 }, // 아이콘 4칸(간격 2) + 4 + 중요 표식 + 2 + 태도 표식
   statusW: 175, // 1줄 글자 자리 = 262 − 아이콘·표식 84 − 사이 3
 }

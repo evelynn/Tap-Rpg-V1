@@ -1,6 +1,6 @@
 // 기본 창 풍경 그리기(03 §2.2, D75). 캔버스에는 픽셀 그림만 그리고 글자 칸은 DOM(panel.ts)이 맡는다.
 // 캔버스 기억 크기는 장치 픽셀이고, 그림은 정수 배율 k로만 키운다(가장 가까운 이웃). 좌표는 모두 논리 픽셀이다.
-import { GROUND_Y, SCENE_W, STRIP_W, WIN, type Surface } from './layout'
+import { SCENE_W, STRIP_W, WIN, groundOf, type Surface } from './layout'
 import { SHEETS, cellRect } from './sprites'
 import type { Icon } from './status'
 import type { BubbleItem, StripView } from './overlay'
@@ -53,24 +53,39 @@ export class Renderer {
     c.fillRect(0, 0, this.s.devW, this.s.devH)
     c.setTransform(k, 0, 0, k, 0, artY)
     this.strip(v.bg.file, v.bg.offset, 0, logicalW)
+    const ground = groundOf((this.images[v.bg.file] as { height?: number } | undefined)?.height || 64)
     if (v.scene) {
       c.fillStyle = SCENE_DIM
       const x = v.scene.x
+      // 장면 띠(높이 64)는 원본 도트로 옮기기 전까지 창 아래에 붙이고, 판 밖(위 포함)은 어둡게(D84)
+      const sy = WIN.h - 64
       c.fillRect(0, 0, x, WIN.h)
       c.fillRect(x + SCENE_W, 0, logicalW - x - SCENE_W, WIN.h)
-      this.image(v.scene.file, v.scene.frame * SCENE_W, 0, SCENE_W, WIN.h, x, 0)
+      c.fillRect(x, 0, SCENE_W, sy)
+      this.image(v.scene.file, v.scene.frame * SCENE_W, 0, SCENE_W, 64, x, sy)
     }
-    if (v.enemy) this.sprite(v.enemy)
-    if (v.hero) this.sprite(v.hero)
+    const feet = v.scene ? groundOf(64) : ground
+    if (v.enemy) this.sprite(v.enemy, feet)
+    if (v.hero) this.sprite(v.hero, feet)
     c.filter = 'none'
     if (this.grid) this.drawGrid()
   }
 
-  // 가로 이음 띠를 offset만큼 밀어 [x0, x1) 구간에 채운다. 띠 폭은 그림 폭 그대로(원본 도트 수, D83). 모르면 256
+  // 가로 이음 띠를 offset만큼 밀어 [x0, x1) 구간에 채운다. 띠 폭·높이는 그림 그대로(원본 도트, D83).
+  // 띠는 창 아래에 붙이고(D84), 띠보다 위는 띠 맨 윗줄 색을 그대로 위로 이어 채운다(열마다 한 색, 번지지 않는다)
   private strip(file: string, offset: number, x0: number, x1: number): void {
-    const w = (this.images[file] as { width?: number } | undefined)?.width || STRIP_W
+    const img = this.images[file] as { width?: number; height?: number } | undefined
+    const w = img?.width || STRIP_W
+    const h = img?.height || 64
+    const top = WIN.h - h
     const o = ((Math.floor(offset) % w) + w) % w
-    for (let x = x0 - ((x0 + o) % w); x < x1; x += w) this.image(file, 0, 0, w, WIN.h, x, 0)
+    for (let x = x0 - ((x0 + o) % w); x < x1; x += w) {
+      this.image(file, 0, 0, w, h, x, top)
+      if (top > 0) {
+        const src = this.images[file]
+        if (src) this.ctx.drawImage(src, 0, 0, w, 1, x, 0, w, top)
+      }
+    }
   }
 
   private image(file: string, sx: number, sy: number, w: number, h: number, dx: number, dy: number): void {
@@ -78,15 +93,15 @@ export class Renderer {
     if (img) this.ctx.drawImage(img, sx, sy, w, h, dx, dy, w, h)
   }
 
-  // 발바닥이 지면선 y 56, 가로 중심이 cx에 오게 놓는다
-  private sprite(s: SpriteDraw): void {
+  // 발바닥이 지면선(지금 배경의 지면, D84), 가로 중심이 cx에 오게 놓는다
+  private sprite(s: SpriteDraw, ground: number): void {
     const sheet = SHEETS[s.sheet]!
     const img = this.images[sheet.file]
     if (!img) return
     const r = cellRect(sheet, s.cell)
     const c = this.ctx
     const x = Math.round(s.cx - sheet.centerX)
-    const y = GROUND_Y - sheet.footY
+    const y = ground - sheet.footY
     let src: CanvasImageSource = img
     let sx = r.sx
     let sy = r.sy

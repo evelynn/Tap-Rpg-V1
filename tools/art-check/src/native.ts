@@ -140,19 +140,6 @@ export function extractNative(img: Raster, period?: [number, number]): NativeRes
   return { period: [r(px), r(py)], phase: [r(ox), r(oy)], image: { width: nx, height: ny, rgba: out } }
 }
 
-// 창 높이(64)에 맞춘다: 지면 줄(띠 높이의 56/64)이 y 56에 오도록 위를 자른다. 모자라면 맨 윗줄 색으로 위를 채운다(늘이지 않는다)
-export function fitHeight(img: Raster, height = 64, ground = 56): { image: Raster; cropTop: number } {
-  const g = Math.round((img.height * ground) / height)
-  let top = g - ground
-  top = Math.max(Math.min(top, img.height - height), img.height < height ? img.height - height : 0)
-  const out = new Uint8Array(img.width * height * 4)
-  for (let y = 0; y < height; y++) {
-    const sy = Math.min(img.height - 1, Math.max(0, y + top))
-    out.set(img.rgba.subarray(sy * img.width * 4, (sy + 1) * img.width * 4), y * img.width * 4)
-  }
-  return { image: { width: img.width, height, rgba: out }, cropTop: top }
-}
-
 export function crop(img: Raster, x: number, y: number, w: number, h: number): Raster {
   const out = new Uint8Array(w * h * 4)
   for (let j = 0; j < h; j++) out.set(img.rgba.subarray(((y + j) * img.width + x) * 4, ((y + j) * img.width + x + w) * 4), j * w * 4)
