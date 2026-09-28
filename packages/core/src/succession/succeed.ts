@@ -23,6 +23,7 @@ import { applyStartBlessing, refundArmedAtLifeEnd, repeatStartChoice, startBlock
 import {
   candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
 } from './candidates'
+import { bindBook, bookJournal, bookOf, setBookReceivedBy } from '../book/index'
 import { buildLifeRecord, checkAchievements, closeJournal, pickEpithet } from './record'
 import { ownedItems, relicsToPass, transferRelics } from './relics'
 import { settle, storeKeepsakes, type Settlement } from './settlement'
@@ -100,7 +101,7 @@ export function endLife(w: LifeWorld, input: LifeEndInput): SuccessionPlan {
   const relicUids = relics.map((i) => i.uid)
   const settlement = settle(ctx, input.kind, relicUids)
 
-  // 2단계(12 §1.1, 18 §2.1): 별칭·업적 → 마지막 장 지정 → 책 → 일상 기록 정리.
+  // 2단계(12 §1.1, 18 §2.1): 별칭·업적 → 마지막 장 지정 → 책 → 책 기록 → 일상 기록 정리.
   // 업적·미완 기록을 먼저 남겨야 마지막 장과 연대기 주요 기록에 들어간다
   const scope = { ...emptyScope(input.place), lifeEnd: { kind: input.kind, place: input.place } }
   const epithet = pickEpithet(w, scope)
@@ -119,6 +120,11 @@ export function endLife(w: LifeWorld, input: LifeEndInput): SuccessionPlan {
     longSleep: input.longSleep ?? null,
     receivedRelicUids: received,
   })
+  // 18 §2.1 3~4번: 책을 엮어 봉인하고(예외면 최소 책, 계승은 멈추지 않는다) 책 기록 BK33·BK34를 쓴다
+  record.book = bindBook(ctx, record, settlement.keepsakes)
+  const sealed = bookOf(record)
+  const bookNote = sealed ? bookJournal(ctx, sealed) : null
+  if (bookNote) addJournal(w, bookNote)
   w.state.family.chronicle.push(record)
 
   const candidates = heirCandidates(w.state.family, ch)
@@ -279,6 +285,12 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
   // 뽑히지 않은 후보는 부모의 생애 기록에 남긴다(가계도 가는 테두리, D87)
   const parentRec = fam.chronicle.find((r) => r.char_uid === parent.uid)
   if (parentRec) parentRec.candidates_passed = plan.candidates.filter((c) => c.uid !== cand.uid).map((c) => ({ name: c.name, relation: c.relation, episodes: [...c.episodes] }))
+  // 생애의 책 `받은 사람`(18 §7.2): 출발 때 1회. 자녀 후보의 이름이 봉인 때와 다르면 옛 이름을 함께 둔다
+  const parentBook = parentRec ? bookOf(parentRec) : null
+  if (parentBook) {
+    const renamed = heir.name !== cand.name && parentBook.appendix.people.some((p) => p.startsWith(`${cand.name} · `))
+    setBookReceivedBy(parentBook, { gen: heir.generation, char_uid: heir.uid, name: heir.name, old_name: renamed ? cand.name : null })
+  }
   // 후보 목록을 비운다(12 §10: 계승 화면을 다시 열어도 후보가 다시 뽑히지 않는다)
   fam.candidates = {}
   state.character = heir

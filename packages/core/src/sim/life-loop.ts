@@ -24,6 +24,7 @@ import {
   longSleepDue, missingCauseLines, pickRetireRole, registerRetiree, retireeHeirEvents, systemEvents, type SystemPhase,
 } from '../life/index'
 import { dormantOpened, endLife, startHeir, successionPorts, type HeirChoice, type SuccessionPlan } from '../succession/index'
+import { bookOf, setBookAfterword } from '../book/index'
 import type { NewFamilyInput } from './create'
 import { World, type WorldOptions } from './world'
 
@@ -169,11 +170,22 @@ export function fireSystemPhase(world: World, phase: string): void {
       const pick = letterChoice(world, ev, place, ls.kind)
       if (pick === null) continue
       fireSystemEvent(world, ev.id, place, world.ports, { choiceId: pick })
+      if (ls.kind === 'final' && ls.retiree) closingLetterAfterword(world, ev.id, ls.retiree.char_uid)
       continue
     }
     if (!systemDue(world, ev)) continue
     fireSystemEvent(world, ev.id, place, world.ports, { choiceId: familyChoice(world, ev, place) })
   }
+}
+
+// 은퇴 책의 후기(18 §3.6): 후계자 생애에 온 마무리 편지(11 S07) 기록의 원문(편지 + 역할별 끝 문장)을 붙인다. 1회만
+function closingLetterAfterword(world: World, eventId: string, retireeUid: string): void {
+  const heir = characterOf(world)
+  const rec = world.state.family.chronicle.find((r) => r.char_uid === retireeUid)
+  const book = rec ? bookOf(rec) : null
+  const note = world.state.journal.filter((e) => e.char_uid === heir.uid && e.refs?.event_id === eventId).at(-1)
+  if (!book || !note?.detail) return
+  setBookAfterword(book, { kind: 'closing_letter', heir_name: heir.name, age: note.age, season: note.season, text: note.detail })
 }
 
 // ── 판단 지점 훅 ──

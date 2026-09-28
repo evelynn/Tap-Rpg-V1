@@ -3,11 +3,17 @@
 import type { Content } from '../content/index'
 import { derivedChainFlags, SLOTS, STATS, type FlagDef } from '../schema/index'
 import type { SaveBody } from '../state/save'
+import { isBook } from '../state/book'
+import { utf8 } from '../rng/sha256'
+import { canonicalJson } from './canonical'
 import { statCap } from '../rules/derived'
 import { constantConditionTest } from '../rules/context'
 import { xpToNext } from '../rules/growth'
 import { familyHeldItems } from '../items/roll'
 import { dropItemRefs } from '../items/bag'
+
+// 생애의 책 직렬화 상한(18 §3.7, B15)
+const BOOK_BYTES_MAX = 20 * 1024
 
 // 시계 이상 기록 보관 수(16 §7.1 B12)
 const CLOCK_ANOMALY_KEEP = 20
@@ -216,9 +222,12 @@ export function repairSave(content: Content, state: SaveBody): SaveDiagnostic[] 
     for (const key of Object.keys(bag).sort()) if (!known(key)) log('B13', `${where} 플래그 '${key}'가 등록표에 없다(보존)`)
   }
 
-  // B15 생애의 책 형식. 원본 일상 기록이 지워졌으므로 다시 엮지 않고 그대로 보여 준다
+  // B15 생애의 책 형식(18 §6.3). 원본 일상 기록이 지워졌으므로 다시 엮지 않고 저장값을 그대로 둔다.
+  // 필수 필드가 없거나 종류를 알 수 없으면 화면은 읽을 수 있는 부분만 보인다(bookOf가 null). 상한(18 §3.7) 초과도 그대로 보인다
   for (const rec of state.family.chronicle) {
-    if (rec.book !== null && typeof rec.book !== 'object') log('B15', `${rec.gen}대 생애의 책 형식이 객체가 아니다(그대로 둔다)`)
+    if (rec.book === null) continue
+    if (!isBook(rec.book)) log('B15', `${rec.gen}대 생애의 책 형식이 18 §7.1과 다르다(그대로 둔다)`)
+    else if (utf8(canonicalJson(rec.book)).length > BOOK_BYTES_MAX) log('B15', `${rec.gen}대 생애의 책이 20KB를 넘는다(그대로 둔다)`)
   }
 
   return out

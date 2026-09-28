@@ -339,6 +339,9 @@ const DEF_NAME_VARS: Record<string, ContentKind[]> = {
   trait_name: ['trait'], achievement: ['achievement'], chain_name: ['chain'],
 }
 
+// 18 §6.3 V22: 가장 긴 고유어 나이(118세)
+const LONGEST_AGE_WORD = '백열여덟 살'
+
 function longestValues(index: DefIndex, balance: Balance): TemplateValues {
   const longestName = (kinds: ContentKind[]) => {
     let best = '가'
@@ -357,6 +360,7 @@ function longestValues(index: DefIndex, balance: Balance): TemplateValues {
       : name === 'family' ? '각'.repeat(balance.ui.family_name_len[1])
       : NUMBER_VARS.includes(name) ? '00000'
       : DEF_NAME_VARS[name] ? longestName(DEF_NAME_VARS[name])
+      : name === 'age_word' ? LONGEST_AGE_WORD
       : '각'
   }
   return values

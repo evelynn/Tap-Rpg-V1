@@ -1,7 +1,7 @@
 // 생애의 책 보기(03 §5.5 서가, §5.6 책 보기, 18 §3·§8). 책은 코어가 엮어 life_record.book에 봉인한다(18 §7).
 // 쪽 나누기는 DOM 없이 계산한다(bookPages): 한 쪽은 약 18줄 × 34자(100%), 블록은 쪽 사이에서 나누지 않고
 // 장과 부분(표지·속표지·차례·맺는 장·부록·후기)은 새 쪽에서 시작한다. 한 쪽보다 긴 블록만 줄 단위로 잇는다.
-import type { LifeRecord } from '@tap/core'
+import { bookOf, type LifeRecord } from '@tap/core'
 import { button, h } from './detail/view'
 
 // 18 §7.1 저장 모양 중 화면이 읽는 칸(코어 Book과 같은 모양, 모르는 칸은 무시)
@@ -73,10 +73,10 @@ export function bookPages(book: BookLike, page: { lines: number; chars: number }
   if (book.received_by) ep.push([{ text: `받은 사람 · ${book.received_by.name}${book.received_by.old_name ? `(${book.received_by.old_name})` : ''}`, cls: 'dim' }])
   if (book.binder) ep.push([{ text: `엮은 사람 · ${book.binder}`, cls: 'dim' }])
   part('속표지', ep)
-  part('차례', [book.chapters.map((ch) => ({ text: `${ch.head}${ch.subtitle ? ` — ${ch.subtitle}` : ''} · ${ch.age_from}~${ch.age_to}세` })),
+  part('차례', [book.chapters.map((ch) => ({ text: `${ch.head}${ch.subtitle ? ` — ${ch.subtitle}` : ''} · ${ages(ch.age_from, ch.age_to)}` })),
     [{ text: '부록 · 함께 걸은 사람들 · 남긴 것 · 걸어온 길', cls: 'dim' }, ...(book.afterword ? [{ text: '후기', cls: 'dim' }] : [])]])
   for (const ch of book.chapters) {
-    part(ch.head, [[{ text: ch.head, cls: 'head' }, ...(ch.subtitle ? [{ text: ch.subtitle, cls: 'dim' }] : []), { text: `${ch.age_from}~${ch.age_to}세`, cls: 'dim' }],
+    part(ch.head, [[{ text: ch.head, cls: 'head' }, ...(ch.subtitle ? [{ text: ch.subtitle, cls: 'dim' }] : []), { text: ages(ch.age_from, ch.age_to), cls: 'dim' }],
       ...ch.blocks.map((b) => blockLines(b, page.chars))])
   }
   const a = book.appendix
@@ -89,10 +89,10 @@ export function bookPages(book: BookLike, page: { lines: number; chars: number }
   return pages
 }
 
-export const asBook = (r: LifeRecord): BookLike | null => {
-  const b = r.book as unknown as BookLike | null
-  return b && b.cover && Array.isArray(b.chapters) ? b : null
-}
+// 형식이 어긋난 옛 책은 null(코어 bookOf, 16 B15)
+export const asBook = (r: LifeRecord): BookLike | null => bookOf(r) as BookLike | null
+
+const ages = (a: number, b: number): string => (a === b ? `${a}세` : `${a}~${b}세`)
 
 // 서가 머리줄(18 §3.1): 1대 「제목」 · 18~68세 · 은퇴 · 새 책
 export const shelfHead = (r: LifeRecord, b: BookLike): string =>

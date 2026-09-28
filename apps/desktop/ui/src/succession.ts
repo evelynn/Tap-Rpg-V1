@@ -135,8 +135,8 @@ export class SuccessionWindow {
     const open = (): void => {
       if (!b) return
       this.reader = new BookViewer(r.gen, b, () => { this.reader = null; this.render() }, () => {
-        const api = core as unknown as { markBookOpened?: (w: World, gen: number) => void }
-        api.markBookOpened?.(this.world, r.gen)
+        const bk = core.bookOf(r)
+        if (bk) core.markBookOpened(bk)
       }, () => this.render(), '계승으로 돌아가기')
       this.reader.go(0)
     }

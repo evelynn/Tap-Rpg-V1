@@ -72,6 +72,8 @@ export {
 } from './life/index'
 // 계승(12): 선천 특성 유전, 동반자·자녀 후보, 유품, 정산, 가문 기록, 5단계 계승
 export * from './succession/index'
+// 생애의 책(18): 엮기·검사·봉인과 덧붙임 3칸(opened·received_by·afterword)
+export * from './book/index'
 // 시뮬레이션 세계와 행동 골격, 사건 포트 조립, 생애 루프
 export * from './sim/index'
 // 저장·불러오기(13 §8, 16 §7.1): 정규 JSON·체크섬·스키마 버전과 이전·로드 검사 K1~K7·보정 B1~B15

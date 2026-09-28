@@ -124,6 +124,7 @@ function applyScene(world: World, payload: ScenePayload, place: string): void {
         const d = routeOf(world, place).discoveries.find((x) => x.id === payload.discovery)!
         addJournal(world, {
           tag: 'discovery',
+          ...(familyFirst ? { sub: 'family_first' as const } : {}), // 18 §4.1 점수 6, §3.2 장 부제 3순위
           line: line(world.content, 'discovery_place', { place: d.name }, s.progress),
           detail: line(world.content, familyFirst ? 'discovery_place_detail' : 'discovery_place_again_detail', { name: ch.name, place: d.name }, s.progress),
           refs: { location_id: place },

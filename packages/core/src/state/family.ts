@@ -1,6 +1,7 @@
 // 가문(16 §5.3) + CONTENT_SCHEMA §6의 C2·C10·C12·C14·C25와 가문 누적 카운터.
 import { z } from 'zod'
 import { END_KINDS, FAMILY_ROLES, GRADES, MUTATIONS, SEASONS, SPECIALIZATIONS } from '../schema/index'
+import { storedBookSchema } from './book'
 import { appearanceSchema } from './character'
 import { defId, effMinV, flagValue, intV, nat, s, scopedFlagKey, statRecord, uid, utcMs } from './common'
 
@@ -18,7 +19,7 @@ export const candidateSchema = s({
 })
 export type Candidate = z.infer<typeof candidateSchema>
 
-// 끝난 생애(16 §5.3 life_record). book의 모양은 T10(생애의 책, 18 §7.1)이 정한다
+// 끝난 생애(16 §5.3 life_record). book의 모양은 18 §7.1(state/book.ts)이 정한다
 export const lifeRecordSchema = s({
   gen: intV.min(1),
   char_uid: uid,
@@ -53,7 +54,7 @@ export const lifeRecordSchema = s({
   long_sleep: s({ cause: z.string(), sleep_age: intV }).nullable(),
   received_relic_uids: z.array(uid),
   mutation_eff_min: effMinV.nullable(),
-  book: z.record(z.string(), z.unknown()).nullable(),
+  book: storedBookSchema, // 18 §7.1(state/book.ts). 옛 저장은 null
   // D87: 계승 때 뽑히지 않은 후계 후보(가계도 가는 테두리). 옛 기록은 빈 목록
   candidates_passed: z.array(s({ name: z.string(), relation: z.enum(FAMILY_ROLES), episodes: z.array(z.string()) })).default([]),
 })

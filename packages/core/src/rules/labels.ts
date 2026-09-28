@@ -1,6 +1,6 @@
 // 판정 기록 항 이름(05 §6.6). 코드 열거(능력치·숙련·전문화·날씨)와 데이터에 이름이 없는 출처만 여기 둔다.
 // 특성·장비·판정 종류 이름은 콘텐츠에서 읽는다.
-import type { SKILLS, SPECIALIZATIONS, STATS, WEATHERS } from '../schema/index'
+import type { GRADES, SKILLS, SPECIALIZATIONS, STATS, WEATHERS } from '../schema/index'
 
 export const STAT_LABELS: Record<(typeof STATS)[number], string> = {
   str: '힘', dex: '민첩', kno: '지식', wil: '의지', soc: '사교', luk: '행운',
@@ -10,6 +10,10 @@ export const SKILL_LABELS: Record<(typeof SKILLS)[number], string> = {
 }
 export const SPEC_LABELS: Record<Exclude<(typeof SPECIALIZATIONS)[number], 'none'>, string> = {
   guardian: '수호자', pathfinder: '길잡이', herbalist: '약초꾼', merchant: '행상',
+}
+// 장비 등급 글자(03 §5.3). 생애의 책 부록 `남긴 것`의 `{item}({grade})`가 쓴다(18 §3.5)
+export const GRADE_LABELS: Record<(typeof GRADES)[number], string> = {
+  common: '일반', good: '좋은', rare: '희귀', legendary: '전설',
 }
 export const WEATHER_LABELS: Record<(typeof WEATHERS)[number], string> = {
   clear: '맑음', rain: '비', fog: '안개', snow: '눈',

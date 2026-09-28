@@ -3,7 +3,7 @@
 import { OUTCOME_KEYS, type Choice, type Effect, type Event, type Modifier } from '../schema/index'
 import type { PendingChoice } from '../state/activity'
 import type { CheckRecord } from '../state/journal'
-import { addJournal } from '../journal/index'
+import { addJournal, defaultImportance } from '../journal/index'
 import { miracleReroll, recordCheckUse } from '../rules/check'
 import { consumeArmed, miracleJournal } from '../blessing/index'
 import { characterOf, type ConditionTest } from '../rules/context'
@@ -72,6 +72,9 @@ function rollPaths(c: Choice): { path: string; type: string }[] {
 function scopeOf(w: EventWorld, occ: Pick<EventOccurrence, 'event_id' | 'place' | 'vars'>): EventScope {
   return { place: occ.place, vars: occ.vars, eventId: occ.event_id }
 }
+
+// 선택지 이름 끝의 괄호 설명(예: `(탐색형)`)은 뺀다(18 §7.1 not_taken)
+const stripChoiceNote = (label: string): string => label.replace(/\s*\([^()]*\)\s*$/u, '')
 
 const visibleChoices = (ev: Event, test: ConditionTest, excluded: readonly string[] = []) =>
   ev.choices.filter((c) => !c.starlight && !excluded.includes(c.id) && (c.requires === undefined || test(c.requires)))
@@ -246,6 +249,9 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
   const ch = characterOf(rule)
   const choice = ev.choices.find((c) => c.id === choiceId)
   if (!choice) throw new Error(`사건 ${ev.id}에 선택지 ${choiceId}가 없다`)
+  // 확정 때 보이던 선택지(18 §7.1 not_taken). 효과를 적용하기 전에 잡는다
+  const pending = opts.fromPending ? w.state.pending_choice : null
+  const shown = pending ? ev.choices.filter((c) => pending.choices_visible.includes(c.id) && !pending.excluded.includes(c.id)) : visibleChoices(ev, test, opts.excluded)
   // 도감(12 §7.2, D87): 고른 선택지
   const cx = w.state.family.codex.events[ev.id]
   if (cx && !cx.choices?.includes(choice.id)) cx.choices = [...(cx.choices ?? []), choice.id]
@@ -295,20 +301,29 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
   const missed = run.out.offerMissed && !run.out.lastItemName
   const lines = missed ? content.get('text', EVENT_TEXT.noOffer).variants
     : outcome.line !== undefined ? [outcome.line, ...(outcome.line_variants ?? [])] : [ev.intro.lines[introIdx]!]
+  // 선택 대기 사건(hold ≠ none)의 도입 상세는 대기 문장이라 제시·대기 기록([중요])에만 둔다(14 §2, 18 §6.3 원문 시제 검사)
   const detail = [
-    ev.intro.detail,
+    ev.hold === 'none' ? ev.intro.detail : undefined,
     ...(ev.intro.family_variants ?? []).filter((v) => test(v.when)).map((v) => v.detail_append),
   ].filter((x): x is string => !!x).map((t) => render(t, vals))
   if (occ.reason) detail.push(occ.reason)
   if (outcome.detail) detail.push(render(outcome.detail, vals))
+  // 사건을 닫는 확정 기록(운명·연속 사건, 선택 창을 다시 여는 확정은 빼고)에 고르지 않은 선택지 이름을 남긴다(18 §7.1).
+  // 운명 사건 결과는 전문화·중요 기록이라 주요로 보존한다(14 §2: 생애의 책 갈림길 상자 BM2가 읽는다)
+  const closing = !run.out.reopen && (ev.category === 'fate' || ev.category === 'chain')
+  const tag = outcome.tag ?? ev.intro.tag
+  const notTaken = closing
+    ? shown.filter((c) => c.id !== choice.id).map((c) => stripChoiceNote(render(c.label, vals)))
+    : null
   addJournal(w, {
-    tag: outcome.tag ?? ev.intro.tag,
+    tag,
+    ...(closing && ev.category === 'fate' && defaultImportance(tag) === 'daily' ? { importance: 'major' as const } : {}),
     line: render(lines[(ch.event_counts[ev.id] ?? 0) % lines.length]!, vals),
     ...(detail.length ? { detail: detail.join(' ') } : {}),
     ...(check ? { check } : {}),
     ...(occ.reason ? { reason: occ.reason } : {}),
     ...(choice.starlight ? { sub: 'blessing' as const } : {}), // 별빛 길의 결과(14 §5.1 가호 기록)
-    refs: { event_id: ev.id, location_id: occ.place, ...(occ.by_policy ? { by_policy: true } : {}) },
+    refs: { event_id: ev.id, location_id: occ.place, ...(notTaken ? { not_taken: notTaken } : {}), ...(occ.by_policy ? { by_policy: true } : {}) },
   })
   for (const d of run.out.journal) addJournal(w, d)
 

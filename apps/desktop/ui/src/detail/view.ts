@@ -25,8 +25,9 @@ export function h(tag: string, attrs: Record<string, string> = {}, ...kids: Kids
 
 // 책을 처음 펼치면 opened(18 §7.2 덧붙임 전용). 코어 API가 있으면 그것으로
 function markOpened(world: World, gen: number): void {
-  const api = core as unknown as { markBookOpened?: (w: World, gen: number) => void }
-  if (api.markBookOpened) api.markBookOpened(world, gen)
+  const r = world.state.family.chronicle.find((x) => x.gen === gen)
+  const b = r ? core.bookOf(r) : null
+  if (b) core.markBookOpened(b)
 }
 
 export function button(label: string, onClick: () => void, opts: { on?: boolean; disabled?: boolean; title?: string } = {}): HTMLElement {

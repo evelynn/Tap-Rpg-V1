@@ -14,8 +14,14 @@ export interface ChronicleOptions {
 
 const QUOTE_PAIR = /"[^"]+"|“[^”]+”/
 
-// 18 §4.1 기본 점수: 여러 줄에 해당하면 가장 높은 값. 최근 요약(14 §1.1)도 이 점수로 가운데 문장을 고른다
+// 18 §4.1 기본 점수: 여러 줄에 해당하면 가장 높은 값. 최근 요약(14 §1.1)도 이 점수로 가운데 문장을 고른다.
+// 가호 기록(sub blessing, D78)은 태그와 무관하게 4 이상이다
 export function baseScore(e: ChronicleEntry, category: string | undefined): number {
+  const tagScore = tagBaseScore(e, category)
+  return e.sub === 'blessing' ? Math.max(4, tagScore) : tagScore
+}
+
+function tagBaseScore(e: ChronicleEntry, category: string | undefined): number {
   switch (e.tag) {
     case 'bond':
       return 7
@@ -24,7 +30,7 @@ export function baseScore(e: ChronicleEntry, category: string | undefined): numb
     case 'family':
       return 5
     case 'growth':
-      return e.sub === 'rank' || e.sub === 'spec' ? 5 : e.sub === 'age' ? 3 : 1
+      return e.sub === 'rank' || e.sub === 'spec' || e.sub === 'tech' ? 5 : e.sub === 'age' ? 3 : 1
     case 'trait':
       return e.sub === 'trait_gain' ? 5 : e.sub === 'trait_react' ? 2 : 1
     case 'gear':
@@ -41,15 +47,16 @@ export function baseScore(e: ChronicleEntry, category: string | undefined): numb
   }
 }
 
-// 18 §2.3 후보에서 빼는 기록. all = 이 인물의 기록 전부(일상 포함, id 순)
-function excluded(e: ChronicleEntry, all: readonly ChronicleEntry[]): boolean {
+// 18 §2.3 후보에서 빼는 기록. all = 이 인물의 기록 전부(id 순). 생애의 책(book/select.ts)도 쓴다
+export function isExcludedRecord(e: ChronicleEntry, all: readonly ChronicleEntry[]): boolean {
   if ((e.bundle_count ?? 1) >= 2) return true
   if (e.tag === 'house' || e.tag === 'retire' || e.tag === 'death') return true
   if (e.tag === 'check' && e.sub === 'final_check') return true
   if (e.tag === 'important') {
     const ev = e.refs?.event_id
     if (!ev) return true // 사건이 아닌 [중요]는 안내(12 §5.1 유품 안내 등)다
-    if (all.some((x) => x.id > e.id && x.refs?.event_id === ev)) return true // 결과 기록이 제시·대기 장면을 대신한다
+    // 결과 기록이 제시·대기 장면을 대신한다. 사건을 닫는 결과 기록(not_taken이 있는 [중요], 18 §7.1)은 빼지 않는다
+    if (e.refs?.not_taken === undefined && all.some((x) => x.id > e.id && x.refs?.event_id === ev)) return true
   }
   return false
 }
@@ -76,7 +83,7 @@ export function chronicleMajor<T extends ChronicleEntry>(entries: readonly T[], 
   for (const e of mine) if (!e.bundle_count && !firstOfTag.has(e.tag)) firstOfTag.set(e.tag, e.id)
   const categoryOf = (e: ChronicleEntry): string | undefined => (e.refs?.event_id ? opts.eventCategory(e.refs.event_id) : undefined)
   const candidate = (e: T): boolean => {
-    if (excluded(e, all)) return false
+    if (isExcludedRecord(e, all)) return false
     const relic = e.refs?.item_uid !== undefined && relics.has(e.refs.item_uid)
     return e.tag === 'important' || e.tag === 'bond'
       || (e.tag === 'discovery' && (e.sub === 'family_first' || firstOfTag.get(e.tag) === e.id))
