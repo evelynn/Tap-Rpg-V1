@@ -213,6 +213,12 @@
       "subject": "D78·D79 독립 검증 10건 반영(ef3ec00, I91)",
       "status": "completed",
       "priority": "high"
+    },
+    {
+      "id": "W1",
+      "subject": "데스크톱 exe 1차(ace7dd4, 테두리 있는 창에 시제품). 다음: 테두리 없는 기본 창 768×64 + 상세 창 분리·트레이. 작업 표시줄에 딱 맞는 창은 베타 이후(00 O07)",
+      "status": "in_progress",
+      "priority": "medium"
     }
   ],
   "current_task": "F2",
