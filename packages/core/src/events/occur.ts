@@ -4,7 +4,8 @@ import { OUTCOME_KEYS, type Choice, type Effect, type Event, type Modifier } fro
 import type { PendingChoice } from '../state/activity'
 import type { CheckRecord } from '../state/journal'
 import { addJournal } from '../journal/index'
-import { recordCheckUse } from '../rules/check'
+import { miracleReroll, recordCheckUse } from '../rules/check'
+import { consumeArmed, miracleJournal } from '../blessing/index'
 import { characterOf, type ConditionTest } from '../rules/context'
 import type { LevelUp } from '../rules/growth'
 import { autoChoose } from './choice'
@@ -73,7 +74,7 @@ function scopeOf(w: EventWorld, occ: Pick<EventOccurrence, 'event_id' | 'place' 
 }
 
 const visibleChoices = (ev: Event, test: ConditionTest, excluded: readonly string[] = []) =>
-  ev.choices.filter((c) => !excluded.includes(c.id) && (c.requires === undefined || test(c.requires)))
+  ev.choices.filter((c) => !c.starlight && !excluded.includes(c.id) && (c.requires === undefined || test(c.requires)))
 
 // 사전 방침(10 §8.4): 자동 전문화가 거절보다 우선. 중대 분기(branch)에는 방침을 적용하지 않는다
 function policyChoice(w: EventWorld, ev: Event): string | null {
@@ -247,7 +248,12 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
   const o = choice.outcomes
   if (choice.check) {
     const spec = opts.situational.length ? { ...choice.check, situational: [...(choice.check.situational ?? []), ...opts.situational] } : choice.check
-    const roll = rollEventCheck(w, rule, spec, scope, occ.dice[choice.id] ?? w.rng.event.d20())
+    let roll = rollEventCheck(w, rule, spec, scope, occ.dice[choice.id] ?? w.rng.event.d20())
+    // 기적의 주사위(04 §10.3 6번): 연속·운명 사건 판정만
+    if (b.blessing.miracle_event_categories.includes(ev.category)) {
+      roll = miracleReroll(rule, w.rng.event, roll, roll.record.result === 'partial')
+      if (roll.record.reroll && consumeArmed(rule, 'miracle')) addJournal(w, miracleJournal(rule, roll.record.reroll.first, roll.record.reroll.second))
+    }
     recordCheckUse(rule, roll, { event: true }) // 판정 있는 선택지는 결과와 무관하게 숙련 사용(10 §6.2)
     check = roll.record
     const r = roll.result
@@ -291,6 +297,7 @@ function resolveChoice(w: EventWorld, occ: EventOccurrence, choiceId: string, po
     ...(detail.length ? { detail: detail.join(' ') } : {}),
     ...(check ? { check } : {}),
     ...(occ.reason ? { reason: occ.reason } : {}),
+    ...(choice.starlight ? { sub: 'blessing' as const } : {}), // 별빛 길의 결과(14 §5.1 가호 기록)
     refs: { event_id: ev.id, location_id: occ.place, ...(occ.by_policy ? { by_policy: true } : {}) },
   })
   for (const d of run.out.journal) addJournal(w, d)

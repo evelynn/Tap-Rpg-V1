@@ -144,6 +144,7 @@
           "line": "길드 구조대를 이끌고 돌아왔다"
         }
       }
-    }
+    },
+    {"id": "starlight", "label": "벽 틈의 별빛을 따라간다", "risk": "none", "starlight": true, "preview": {"benefit": "다치지 않고 벽 너머 사람을 구한다. 무너지기 전 광맥 한 줌도 챙긴다", "cost": "받침돌을 빼면 광맥 대부분은 무너진다", "reversible": false}, "outcomes": {"always": {"effects": [{"type": "add_xp", "units": 4}, {"type": "add_xp", "units": 1, "when": {"flag": "life.c01_promise"}}, {"type": "add_coins", "units": 4}, {"type": "end_chain", "chain_id": "C01", "outcome": "rescue"}, {"type": "npc_relation", "npc_id": "N05", "delta": 40}, {"type": "family_record", "kind": "bond", "key": "sena_family", "text": "{name:이/가} {age}세에 아버지의 흔적을 찾아 주었다. 가문을 기억한다."}, {"type": "on_town_return", "effects": [{"type": "journal", "tag": "bond", "line": "세나가 아버지의 검을 건넸다", "detail": "세나가 말했다. \"아버지가 집에 두고 간 검이에요. 종소리가 나면 무섭지 않대요.\""}, {"type": "add_item", "item_id": "W07", "to": "bag_or_pending"}, {"type": "add_trait", "trait_id": "TA01"}]}, {"type": "animation", "action": "interact"}, {"type": "animation", "action": "cheer"}], "line": "별빛을 따라가 광부 둘을 데리고 나왔다", "detail": "벽 틈으로 가느다란 별빛이 새어 나왔다. 그 빛을 따라가자 무너지지 않은 길이 이상하게도 하나 남아 있었다."}}}
   ]
 }

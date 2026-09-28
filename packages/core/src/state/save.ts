@@ -52,6 +52,9 @@ export const policiesSchema = s({
   offline_progress: z.boolean(),
   stage_boundary_stop: z.boolean(),
   lethal_warning_dismissed: z.boolean(),
+  // 01 §18.2 가호 방침(D78). 이 칸이 없던 저장은 기본값
+  blessing_auto: z.enum(['off', 'final_only']).default('off'),
+  start_blessing_auto: z.enum(['none', 'repeat']).default('none'),
 })
 export type Policies = z.infer<typeof policiesSchema>
 
@@ -75,6 +78,8 @@ export function defaultPolicies(content: Content): Policies {
     offline_progress: true,
     stage_boundary_stop: true,
     lethal_warning_dismissed: false,
+    blessing_auto: 'off',
+    start_blessing_auto: 'none',
   }
 }
 

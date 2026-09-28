@@ -102,6 +102,7 @@
         }
       }
     },
+    {"id": "star", "label": "잔에 비친 별을 가리킨다", "risk": "none", "starlight": true, "preview": {"benefit": "성주가 사연을 들려준다(묻기의 성공과 같다)", "cost": "없음. 듣고 난 뒤 받는다·내려놓는다 가운데 다시 고른다", "reversible": true}, "outcomes": {"always": {"effects": [{"type": "set_flag", "key": "life.f03_clue"}, {"type": "animation", "action": "idle", "props": ["cup"]}, {"type": "reopen_choices", "exclude": ["ask", "star"]}], "line": "잔 속 별을 본 성주가 사연을 들려주었다", "detail": "성주가 한참 잔을 들여다보았다. \"이상하군. 이 잔에 별이 뜬 건 처음이야.\" 그리고 삼백 년 전 이야기를 시작했다."}}},
     {
       "id": "ask_sleep", "label": "{parent_call}의 잠에 대해 묻는다", "tags": ["info"], "risk": "none",
       "requires": { "reaction_active": "dr_f03_accepted" },

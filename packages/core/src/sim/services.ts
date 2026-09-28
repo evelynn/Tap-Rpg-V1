@@ -6,6 +6,7 @@ import { SLOTS } from '../schema/index'
 import type { TempMod } from '../state/common'
 import type { ItemInstance } from '../state/inventory'
 import { addJournal } from '../journal/index'
+import { softenEventInjury } from '../blessing/index'
 import { checkDc, recordCheckUse, rollCheck } from '../rules/check'
 import { characterOf, type RuleContext } from '../rules/context'
 import type { Stat } from '../rules/derived'
@@ -376,7 +377,9 @@ export function createServices(world: EventWorld, opts: ServiceOptions = {}): Si
     injury: {
       injure(w, p, scope) {
         const rule = ctxOf(w, scope)
-        addInjury(rule, p.grade, (p.stat as Stat | undefined) ?? injuryStat(w.rng.life, 'combat'), scope.eventId ?? 'event')
+        const soft = softenEventInjury(rule, p.grade)
+        if (soft.journal) addJournal(w, soft.journal)
+        if (soft.grade) addInjury(rule, soft.grade, (p.stat as Stat | undefined) ?? injuryStat(w.rng.life, 'combat'), scope.eventId ?? 'event')
       },
       cure(w, p, scope) {
         const ch = characterOf(ctxOf(w, scope))

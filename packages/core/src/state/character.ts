@@ -8,6 +8,13 @@ import {
   defId, effMinV, flagValue, intV, nat, s, savedEffect, scopedFlagKey, statRecord, tempModSchema, uid,
 } from './common'
 
+// 가호 종류(01 §19, D78)
+export const BLESSING_ARMED = ['final_save', 'miracle', 'mitigate'] as const
+export const BLESSING_STARTS = ['talent', 'tilt', 'first_step', 'seed', 'handful'] as const
+export const emptyBlessing = () => ({
+  start: null, armed: [], uses: 0, final_used: false, crisis_gains: 0, novice_guard: false, had_serious: false, serious_recovered: false,
+})
+
 export const appearanceSchema = s({
   body: z.string(),
   hair: z.string(),
@@ -23,7 +30,7 @@ export type Appearance = z.infer<typeof appearanceSchema>
 export const characterTraitSchema = s({
   id: defId,
   since_age: intV,
-  source: z.enum(['parent', 'other_parent', 'new', 'acquired']),
+  source: z.enum(['parent', 'other_parent', 'new', 'acquired', 'blessing']), // blessing: 시작 축복(유전 안 함, D78)
   inactive: z.enum(['replaced', 'displaced']).optional(),
 })
 export type CharacterTrait = z.infer<typeof characterTraitSchema>
@@ -84,6 +91,17 @@ export const characterSchema = s({
   children: z.array(uid), // family.candidates의 uid(C10)
   heir_preferred: uid.nullable(),
   attitude_log: z.array(s({ eff_min: effMinV, attitude: defId })),
+  // 가호(04 §10.3, D78): 시작 축복, 걸어 둔 가호, 이번 생애 사용 수, 극복 순간 별빛 수, 첫걸음의 보호, 중상 추적. 이 칸이 없던 저장은 빈 값
+  blessing: s({
+    start: z.enum(BLESSING_STARTS).nullable(),
+    armed: z.array(s({ kind: z.enum(BLESSING_ARMED), eff_min: effMinV })),
+    uses: nat,
+    final_used: z.boolean(),
+    crisis_gains: nat,
+    novice_guard: z.boolean(),
+    had_serious: z.boolean(),
+    serious_recovered: z.boolean(),
+  }).default(emptyBlessing),
   // 최근 요약(14 §1.1, D77): 렌더링 끝난 문장, 최신이 뒤, 최근 10개. 이 칸이 없던 저장은 빈 목록
   recent_summaries: z.array(s({ kind: z.enum(['sortie', 'town']), eff_min: effMinV, age: intV, season: z.enum(SEASONS), lines: z.array(z.string()).min(1) })).default([]),
   last_trip_time: z.enum(TIME_OF_DAY).nullable(), // C3

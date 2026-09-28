@@ -3,6 +3,7 @@ import { effectiveLevel, gateCleared, gateRiskOk } from '../ai/index'
 import { retreatHpRatio } from '../combat/index'
 import { earnCoins } from '../economy/earn'
 import { addJournal, addToBundle, bundleRow } from '../journal/index'
+import { arm, charges, crisisMoment, isArmed, usesLeft } from '../blessing/index'
 import { relicReturn } from '../succession/relics'
 import { materializeItem, rollDrop } from '../items/roll'
 import { checkBonus, checkDc, evaluateCheck, recordCheckUse, regionDc, rollCheck, successChance, type CheckRoll } from '../rules/check'
@@ -211,6 +212,14 @@ export function gatePrep(world: World): number {
   if (s) s.potions_used += used
   addPendingSec(world, used * world.content.balance.actions.potion_sec) // 한 병에 3초(04 §7.6)
   return used
+}
+
+// 방침 `가호 자동 사용 = 최후의 순간만`(01 §18.2, 04 §10.3 8번): 치명 관문 앞에서 별빛 2개 이상이면 스스로 걸어 둔다
+function autoArmFinal(world: World): void {
+  if (world.state.policies.blessing_auto !== 'final_only') return
+  const r = world.content.get('region', currentSortie(world).location_id)
+  if (r.kind !== 'dungeon_floor' || !r.gate.lethal || isArmed(world, 'final_save')) return
+  if (charges(world) >= world.content.balance.blessing.costs.final_save && usesLeft(world) > 0) arm(world, 'final_save')
 }
 
 export function gateAllowed(world: World): boolean {
@@ -481,6 +490,7 @@ export const roomResolver: ActionResolver = {
     if (d !== 'continue' || world.state.pending_choice) return
     if (!hasNext) {
       gatePrep(world)
+      autoArmFinal(world)
       if (!gateAllowed(world)) {
         addJournal(world, gateTurnBackJournal(world))
         beginReturn(world)
@@ -536,6 +546,7 @@ export const gateResolver: ActionResolver = {
     tickSortieBody(world, action.duration_sec / 60)
     // 관문 첫 격파 보상(07 §5.6)과 유품 귀환(12 §5.6). 관문 기록은 apply 전에 남아 유품 기록이 그 뒤에 온다
     if (!payload.cleared && payload.enc.combat.outcome === 'win') {
+      crisisMoment(world) // 극복 순간 2: 이 인물의 관문 첫 격파(01 §19)
       if (r.kind === 'dungeon_floor' && r.gate.first_clear) runSavedEffects(world, r.gate.first_clear, emptyScope(s.location_id))
       const back = relicReturn(world, s.location_id)
       if (back) addJournal(world, back)

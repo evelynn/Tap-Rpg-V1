@@ -4,7 +4,7 @@ import type { Content } from '../content/index'
 import { createRngStreams, RNG_STREAMS, type Pcg32 } from '../rng/index'
 import { SEASONS, SKILLS, STATS, type GRADES } from '../schema/index'
 import { emptyLifeLoop } from '../state/activity'
-import type { Appearance, Character } from '../state/character'
+import { emptyBlessing, type Appearance, type Character } from '../state/character'
 import type { Family } from '../state/family'
 import type { ItemInstance } from '../state/inventory'
 import { defaultPolicies, type SaveBody } from '../state/save'
@@ -48,6 +48,7 @@ export function newFamily(input: Pick<NewFamilyInput, 'familyName' | 'familySeed
     unlocks: { backgrounds: [], appearances: [], titles: [] },
     achievements: {},
     notices_shown: {},
+    blessing: { charges: 0, total_used: 0 },
     keepsakes: [],
     retirees: [],
     candidates: {},
@@ -83,6 +84,7 @@ export function createNewFamilyState(content: Content, input: NewFamilyInput, te
   const b = content.balance
   const rng = createRngStreams(input.familySeed)
   const family = newFamily(input)
+  family.blessing.charges = content.balance.blessing.start // 첫 가문 별빛(01 §19)
   const bg = content.get('background', input.character.background)
   if (bg.unlock !== null && !family.unlocks.backgrounds.includes(bg.id)) throw new Error(`출신 배경 '${bg.id}'이 해금되지 않았다`)
 
@@ -174,6 +176,7 @@ export function createNewFamilyState(content: Content, input: NewFamilyInput, te
     heir_preferred: null,
     attitude_log: [{ eff_min: 0, attitude: policies.attitude }],
     recent_summaries: [],
+    blessing: emptyBlessing(),
     last_trip_time: null,
     guild_aid: { active: false, started_eff_min: null, recovered: false },
     scheduled_events: [],

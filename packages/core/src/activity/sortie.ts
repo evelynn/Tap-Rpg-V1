@@ -15,6 +15,7 @@ import { renderTemplate } from '../text/index'
 import type { World } from '../sim/world'
 import { sortieStart, sortieSummary, townSummary } from './summary'
 import { line } from './lines'
+import { safeReturn } from '../blessing/index'
 
 // 저장 스키마에 자리가 없어 카운터로 세는 값(T11 후보)
 export const COUNTERS = {
@@ -265,6 +266,7 @@ export function arriveTown(world: World): void {
     const at = (ch.counters_at[COUNTERS.safeReturns] ??= {})
     at[s.location_id] = (at[s.location_id] ?? 0) + 1
     addSkillUses(world, 'survival', content.balance.skills.use_counts.safe_return)
+    safeReturn(world) // 극복 순간 1: 중상에서 나은 뒤 첫 무사 귀환(01 §19)
   }
   settleQuest(world, s)
   recordDeficit(world, s)

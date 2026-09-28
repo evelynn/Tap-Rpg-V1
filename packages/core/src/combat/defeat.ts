@@ -2,7 +2,9 @@
 // 흐름: 구조자·부상 판정·최후 판정 = combat, 부상 능력치 = life, 손실할 재료·장비 선택 = loot(I07).
 import type { Rng } from '../rules/random'
 import { characterOf, type RuleContext } from '../rules/context'
-import { checkDc, recordCheckUse, rollCheck, type CheckRoll } from '../rules/check'
+import { checkDc, miracleReroll, recordCheckUse, rollCheck, type CheckRoll } from '../rules/check'
+import { addJournal } from '../journal/index'
+import { consumeArmed, finalSaveJournal, isArmed, miracleJournal, mitigateJournal, noviceGuardActive } from '../blessing/index'
 import { maxHp, type Stat } from '../rules/derived'
 import type { RankUp } from '../rules/growth'
 import { collectModSources, modValue } from '../rules/modifiers'
@@ -68,6 +70,8 @@ export interface DefeatResult {
   arrive_hp: number
   return_travel_mult: number
   death: DeathRecord | null
+  place: string
+  blessing: 'final_save' | 'first_step' | 'mitigate' | null // 발동한 가호(04 §10.3). 소비는 applyDefeat
 }
 
 export function resolveDefeat(world: RuleContext & { rng: { combat: Rng; life: Rng; loot: Rng } }, spec: DefeatSpec): DefeatResult {
@@ -82,6 +86,7 @@ export function resolveDefeat(world: RuleContext & { rng: { combat: Rng; life: R
     outcome: 'rescued', charm_uid: charm?.uid ?? null, rescuer: null, check: null, injury: null,
     losses: { coins: 0, materials: {}, items: [] }, used_items: [],
     arrive_hp: Math.max(1, Math.floor(maxHp(world, sources) * d.arrive_hp_ratio)), return_travel_mult: d.return_travel_mult, death: null,
+    place: spec.regionId, blessing: null,
   }
   let lossless = false
 
@@ -93,6 +98,10 @@ export function resolveDefeat(world: RuleContext & { rng: { combat: Rng; life: R
       out.check = rollFinalCheck(world, world.rng.combat)
       out.used_items = finalCheckItems(world)
       if (out.check.result === 'success' || out.check.result === 'crit_success') {
+        out.injury = { grade: 'serious', stat: injuryStat(world.rng.life, spec.cause ?? 'combat') }
+      } else if (isArmed(world, 'final_save') && !ch.blessing.final_used) {
+        // 걸어 둔 가호 `최후의 순간을 지킨다`: 실패를 성공으로(01 §6.3, 04 §10.3 5번). 방울·판정이 먼저 막으면 여기 오지 않는다
+        out.blessing = 'final_save'
         out.injury = { grade: 'serious', stat: injuryStat(world.rng.life, spec.cause ?? 'combat') }
       } else {
         out.outcome = 'died'
@@ -108,7 +117,15 @@ export function resolveDefeat(world: RuleContext & { rng: { combat: Rng; life: R
       ? [{ target: `check.${COMBAT_CHECKS.injury}`, op: 'add' as const, value: d.escape_injury_add }]
       : []
     out.check = rollInjuryCheck(world, world.rng.combat, regionLevel, add)
+    if (content.balance.blessing.miracle_checks.includes(COMBAT_CHECKS.injury)) out.check = miracleReroll(world, world.rng.combat, out.check)
     out.injury = { grade: injuryGradeOf(out.check), stat: injuryStat(world.rng.life, spec.cause ?? 'combat') }
+    // 첫걸음의 보호(중상일 때만) → 궂은일을 누그러뜨린다(04 §10.3 7번): 손실 없음 + 중상은 경상
+    if (out.injury.grade === 'serious' && noviceGuardActive(world)) out.blessing = 'first_step'
+    else if (isArmed(world, 'mitigate')) out.blessing = 'mitigate'
+    if (out.blessing) {
+      lossless = true
+      out.injury = { ...out.injury, grade: 'light' }
+    }
   }
   out.rescuer = pickRescuer(world, world.rng.combat, 'rescuers' in region ? region.rescuers : null)
   if (!lossless) out.losses = defeatLosses(world, world.rng.loot)
@@ -224,6 +241,15 @@ export function applyDefeat(ctx: RuleContext, r: DefeatResult): { injury: Injury
   const { content, state } = ctx
   const ch = characterOf(ctx)
   const rankUps = r.check ? recordCheckUse(ctx, r.check, { statPoints: content.balance.growth.use_points.injury_or_final }) : []
+  // 가호 발동(04 §10.3): 걸어 둔 가호를 쓰고 인물이 모르는 흔적을 남긴다
+  const reroll = r.check?.record.reroll
+  if (reroll && consumeArmed(ctx, 'miracle')) addJournal(ctx, miracleJournal(ctx, reroll.first, reroll.second))
+  if (r.blessing === 'final_save' && consumeArmed(ctx, 'final_save')) addJournal(ctx, finalSaveJournal(ctx, r.place))
+  if (r.blessing === 'mitigate' && consumeArmed(ctx, 'mitigate')) addJournal(ctx, mitigateJournal(ctx, r.place))
+  if (r.blessing === 'first_step' && ch.blessing.novice_guard) {
+    ch.blessing.novice_guard = false
+    addJournal(ctx, mitigateJournal(ctx, r.place))
+  }
   if (r.charm_uid) useCharge(ctx, r.charm_uid, 'escape_on_defeat')
   for (const uid of r.used_items) state.item_instances[uid]!.used = true
   ch.counters.defeats = (ch.counters.defeats ?? 0) + 1

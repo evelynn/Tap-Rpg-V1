@@ -9,7 +9,7 @@ import { characterOf, type RuleContext } from '../rules/context'
 import { maxHp } from '../rules/derived'
 import { skillRank } from '../rules/growth'
 import { SEASONS, SKILLS, SLOTS, STATS, registerTextSlot, type END_KINDS } from '../schema/index'
-import type { Appearance, Character } from '../state/character'
+import { emptyBlessing, type Appearance, type Character } from '../state/character'
 import type { Candidate, LifeRecord } from '../state/family'
 import type { JournalDraft } from '../state/journal'
 import { issueUid } from '../state/uid'
@@ -17,6 +17,7 @@ import { ageAt, seasonAt } from '../time/index'
 import { createItemInstance } from '../sim/create'
 import { fireSuccession } from '../life/events'
 import { DEPART_DETAIL, DEPART_LINE, NEW_NAME_DETAIL, textLine } from '../life/text'
+import { applyStartBlessing, refundArmedAtLifeEnd, repeatStartChoice, successionGain, type StartChoice } from '../blessing/index'
 import {
   candidateStats, createFallbackCandidates, defaultBackground, defaultHeir, heirCandidates, parentBestStats, parentCall,
 } from './candidates'
@@ -88,7 +89,8 @@ export function endLife(w: LifeWorld, input: LifeEndInput): SuccessionPlan {
   const ch = characterOf(ctx)
   const journal: JournalDraft[] = []
 
-  // 1단계: 미완 연속 사건 → 후보층 → 넘길 유품 → 정산
+  // 1단계: 미완 연속 사건 → 후보층 → 넘길 유품 → 정산. 걸어 둔 가호의 별빛은 가문에 돌려준다(04 §10.3 2번)
+  refundArmedAtLifeEnd(ctx)
   const unfinished = closeLifeChains(w)
   if (!heirCandidates(w.state.family, ch).length) createFallbackCandidates(ctx, w.rng.life)
   const relics = relicsToPass(ctx, input.kind)
@@ -143,6 +145,7 @@ export interface HeirChoice {
   background?: string
   appearance?: Appearance
   attitude?: string
+  blessing?: StartChoice | null // 시작 축복(01 §19). null = 내리지 않는다, 없으면 방침 `시작 축복 자동`
 }
 
 // 3~5단계: 후계자 확정 → 유전·유품·돈 이전 → 새 인물 출발. 5단계 사건(S05)은 ports를 주면 함께 발화한다
@@ -230,6 +233,7 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
     heir_preferred: null,
     attitude_log: [{ eff_min: 0, attitude: state.policies.attitude }],
     recent_summaries: [],
+    blessing: emptyBlessing(),
     last_trip_time: null,
     guild_aid: { active: false, started_eff_min: null, recovered: false },
     scheduled_events: [],
@@ -295,6 +299,11 @@ export function startHeir(w: LifeWorld, plan: SuccessionPlan, choice: HeirChoice
   if (ports) {
     fireSuccession(w, heir.location, ports, { heir: heir.name, parent_call: call, first_page: plan.firstPage })
   }
+  // 5단계: 별빛 +1과 시작 축복(12 §1.1, 01 §19). 고르지 않았으면 방침 `시작 축복 자동`(지난번과 같게면 앞 세대 종류)
+  successionGain(w)
+  const start = choice.blessing !== undefined ? choice.blessing
+    : state.policies.start_blessing_auto === 'repeat' && parent.blessing.start ? repeatStartChoice(w, parent.blessing.start) : null
+  if (start) applyStartBlessing(w, start)
   // 출발 풍경 한 줄(12 §1.3, D76). 기본 창은 이 기록이 보이는 동안 계승 출발 장면 ES21을 그린다
   addJournal(w, {
     tag: 'succession', importance: 'family', line: textLine(content, DEPART_LINE, { heir: heir.name }, '{heir:은/는} 마을 어귀를 나섰다.'),

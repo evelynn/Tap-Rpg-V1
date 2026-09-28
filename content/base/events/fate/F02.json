@@ -131,6 +131,7 @@
         }
       }
     },
+    {"id": "share", "label": "샘물을 나누어 마신다", "risk": "none", "starlight": true, "preview": {"benefit": "은퇴 나이가 5년 늦춰지고 유안의 다리도 낫는다. 유물을 바치지 않는다", "cost": "샘물은 반만 효험을 낸다(10년이 아니라 5년)", "reversible": false}, "outcomes": {"always": {"effects": [{"type": "extend_lifespan", "years": 5}, {"type": "set_family_flag", "key": "fam.f02_drank"}, {"type": "set_family_flag", "key": "fam.f02_gave_yuan"}, {"type": "family_record", "kind": "chronicle", "key": "f02_shared", "text": "샘물을 나누어 마신 이"}, {"type": "animation", "action": "sit_eat", "props": ["star_spring"]}, {"type": "animation", "action": "cheer"}], "line": "샘물을 유안과 나누어 마셨다", "detail": "물이 이상하게도 두 사람 몫만큼 솟았다. 유안이 웃었다. \"이런 샘이었다니.\""}}},
     {
       "id": "ask_yuan", "label": "유안에게 묻는다", "tags": ["info"], "risk": "none",
       "requires": { "reaction_active": "dr_f02_gave_yuan" },

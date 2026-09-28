@@ -74,6 +74,7 @@ export const choiceSchema = obj({
   check: checkSchema.optional(),
   combat: combatSchema.optional(),
   decline: z.boolean().optional(),
+  starlight: z.boolean().optional(), // 별빛 길(10 §8.3, D78)
   preview: obj({ benefit: z.string(), cost: z.string(), reversible: z.boolean() }).optional(), // hold≠none이면 필수(V8)
   outcomes: z.partialRecord(z.enum(OUTCOME_KEYS), outcomeSchema),
 }).superRefine((c, ctx) => {

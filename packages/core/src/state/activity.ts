@@ -17,6 +17,7 @@ export const pendingChoiceSchema = s({
   pre_chance: z.record(z.string(), z.number().min(0).max(1)), // {effect_path: 0~1}
   context: z.record(z.string(), z.unknown()),
   preview_rendered: z.record(z.string(), z.unknown()),
+  illuminated: z.boolean().optional(), // 가호 숨은 길로 별빛 길을 드러냄(10 §8.3, D78)
 })
 export type PendingChoice = z.infer<typeof pendingChoiceSchema>
 

@@ -362,6 +362,13 @@
     "name_len": [1, 6], "family_name_len": [2, 8],
     "journal_keep": 300, "last_chapter_keep": 50, "recent_summary_keep": 10
   },
+  "blessing": {
+    "cap": 3, "start": 1, "succession_gain": 1, "crisis_gain": 1, "crisis_per_life": 2, "life_uses": 3,
+    "costs": { "final_save": 2, "heal": 1, "miracle": 1, "illuminate": 1, "mitigate": 1 },
+    "crisis_traits": ["TA02", "TA06", "TA07"],
+    "miracle_checks": ["injury", "fear"], "miracle_event_categories": ["chain", "fate"],
+    "novice_until_age": 30, "seed_uses": 15, "talent_offers": 3
+  },
   "offline": { "cap_sec": 28800, "min_sec": 60, "autosave_sec": 30, "backups": 3 },  "_note": "생애 단계 경계 정지의 경계는 aging.life_stages",
   "specializations": {                                  "_comment": "05 §5.2, §8.2, 04 §5.2, 08 §7.4. 키는 코드 열거 SPECIALIZATIONS(DS-30)",
     "guardian": {

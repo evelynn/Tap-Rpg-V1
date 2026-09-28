@@ -14,6 +14,7 @@ import { maxHp, roundHalfUp } from '../rules/derived'
 import { addFatigue } from '../rules/fatigue'
 import { addSkillUses, addXp, type LevelUp } from '../rules/growth'
 import { recordCheckUse } from '../rules/check'
+import { crisisMoment, isCrisisTrait } from '../blessing/index'
 import { ageAt } from '../time/index'
 import { chainDoneKey, chainOutcomeKey, chainStageKey, chainUnfinishedKey } from '../schema/index'
 import { rollEventCheck, type EventCheck } from './check'
@@ -140,6 +141,7 @@ function addTrait(run: EffectRun, id: string): void {
   const age = ageAt(c.eff_min, content.balance.time)
   if (def.replaces) for (const t of c.traits) if (t.id === def.replaces && !t.inactive) t.inactive = 'replaced'
   c.traits.push({ id, since_age: age, source: 'acquired' })
+  if (isCrisisTrait(run.rule, id)) crisisMoment(run.rule) // 극복 순간 4: 극복형 후천 특성(01 §19)
   // 후천 상한 초과: 가장 오래된 누적형이 활성 목록에서 빠진다(06 §1.1)
   const acquired = c.traits.filter((t) => !t.inactive && content.get('trait', t.id).kind === 'acquired')
   if (acquired.length > content.balance.stats.trait_caps.acquired) {
@@ -288,6 +290,7 @@ export const EFFECT_HANDLERS: Record<string, Handler> = {
     const chain = run.w.content.get('chain', e.chain_id)
     ch(run).flags[chainStageKey(chain.id)] = chain.stages
     setFamilyFlag(run, chainDoneKey(chain.id), true)
+    crisisMoment(run.rule) // 극복 순간 3: 연속 사건 줄기 완결(01 §19)
     if (e.outcome !== 'done') setFamilyFlag(run, chainOutcomeKey(chain.id, e.outcome), true)
     delete run.w.state.family.flags[chainUnfinishedKey(chain.id)]
   },

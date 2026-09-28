@@ -8,6 +8,7 @@
 import type { Content } from '../content/index'
 import type { EventPorts } from '../events/index'
 import { addJournal } from '../journal/index'
+import { trackSerious } from '../blessing/index'
 import { characterOf } from '../rules/context'
 import { emptyLifeLoop, type LifeLoopState, type ResolvedAction } from '../state/activity'
 import type { Character } from '../state/character'
@@ -185,6 +186,7 @@ function onPoint(world: World): void {
   for (const d of g.drafts) addJournal(world, d)
   if (g.levelFrom !== null) for (const d of dormantOpened(world, g.levelFrom, characterOf(world).level)) addJournal(world, d)
   st.growth_seen = g.seen
+  trackSerious(world) // 극복 순간 1의 준비: 중상이 모두 나았는가
   // 1. 나이 알림: 능력치는 나이가 오르는 순간 적용하고 알림만 여기로 미룬다(09 §2.1)
   for (const tick of st.age_ticks.splice(0)) for (const d of ageNotices(world, tick)) addJournal(world, d)
   // 2. 사망: 치명 활동의 최후 판정에 지면 귀환하지 않고 그 자리에서 끝난다(04 §2.2)

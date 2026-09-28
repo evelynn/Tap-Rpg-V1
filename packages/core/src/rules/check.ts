@@ -230,6 +230,19 @@ export function rollCheck(ctx: RuleContext, rng: Rng, spec: CheckSpec): CheckRol
   return { kind: bonus.kind, dice, result, bonus, record: { dice, parts: bonus.parts, total, dc, result, kind: bonus.kind } }
 }
 
+// 기적의 주사위(05 §6.2, 04 §10.3 6번, D78): 걸어 둔 가호가 있고 판정이 실패·대실패면 같은 흐름으로 한 번 더 굴려
+// 합계가 높은 쪽을 쓴다. 기록에 두 주사위를 남긴다(check.reroll). 상태는 바꾸지 않는다 — 가호 소비는 결과를 적용하는 쪽이 한다
+export function miracleReroll(ctx: RuleContext, rng: Rng, roll: CheckRoll, partial = false): CheckRoll {
+  if (!ctx.state.character?.blessing.armed.some((a) => a.kind === 'miracle')) return roll
+  if (roll.result !== 'failure' && roll.result !== 'crit_failure') return roll
+  const second = rng.d20()
+  const total = second + roll.bonus.bonus
+  const reroll = { first: roll.dice, second }
+  if (total <= roll.record.total) return { ...roll, record: { ...roll.record, reroll } }
+  const result = evaluateCheck(ctx, second, total, roll.record.dc, partial)
+  return { ...roll, dice: second, result, record: { ...roll.record, dice: second, total, result, reroll } }
+}
+
 // 판정 1회의 성장 누적(05 §4.1 사용 점수, §5.1 숙련 횟수). 사건 선택지 판정은 event.
 // 부상·최후 판정은 statPoints로 use_points.injury_or_final을 넘긴다. 전투 명중 굴림마다 부르지 않는다(전투는 1회 단위로 센다)
 export function recordCheckUse(

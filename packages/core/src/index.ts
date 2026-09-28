@@ -78,3 +78,5 @@ export * from './sim/index'
 export * from './save/index'
 // 오프라인 진행(13 §2·§3·§6). 세계를 쓰므로 sim 다음에 둔다
 export * from './offline/index'
+// 가호(01 §19, 04 §10.3, D78)
+export * from './blessing/index'

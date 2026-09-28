@@ -556,6 +556,22 @@ export const balanceSchema = obj({
     last_chapter_keep: posInt,
   }),
   offline: obj({ cap_sec: posInt, min_sec: nonNegInt, autosave_sec: posInt, backups: nonNegInt }),
+  // 01 §19 가호(D78). 절차는 04 §10.3
+  blessing: obj({
+    cap: posInt,
+    start: nonNegInt,
+    succession_gain: nonNegInt,
+    crisis_gain: nonNegInt,
+    crisis_per_life: nonNegInt,
+    life_uses: posInt,
+    costs: obj({ final_save: posInt, heal: posInt, miracle: posInt, illuminate: posInt, mitigate: posInt }),
+    crisis_traits: z.array(z.string()),
+    miracle_checks: z.array(z.string()), // 기적의 주사위 대상 판정 종류(부상·공포). 연속·운명 사건 판정은 사건 분류로 본다
+    miracle_event_categories: z.array(z.string()),
+    novice_until_age: posInt, // 첫걸음의 보호가 남는 나이(새내기, 09 §1)
+    seed_uses: posInt, // 길의 씨앗 숙련 누적(1단계 문턱)
+    talent_offers: posInt, // 타고난 재능 후보 수
+  }),
   // 키는 코드 열거 SPECIALIZATIONS(none 제외, DS-30)
   specializations: noted(z.record(z.enum(SPECIALIZATIONS).exclude(['none']), specialization)),
   policy_defaults: obj({

@@ -83,6 +83,8 @@ export const familySchema = s({
   unlocks: s({ backgrounds: z.array(defId), appearances: z.array(z.string()), titles: z.array(z.string()) }),
   achievements: z.record(defId, s({ gen: intV, char_uid: uid })),
   notices_shown: z.record(z.string(), intV), // C25
+  // 가호 별빛(01 §19, D78). 이 칸이 없던 저장은 별빛 1
+  blessing: s({ charges: nat, total_used: nat }).default({ charges: 1, total_used: 0 }),
   keepsakes: z.array(s({ name: z.string(), from_def_id: defId, gen: intV, text: z.string() })),
   retirees: z.array(s({ char_uid: uid, name: z.string(), retired_age: intV, role: defId, visible_until_heir_age: intV })),
   candidates: z.record(uid, candidateSchema), // C10: 후보 단일 저장
