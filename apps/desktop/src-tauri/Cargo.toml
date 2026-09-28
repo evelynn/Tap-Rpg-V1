@@ -1,0 +1,22 @@
+[package]
+name = "tap"
+version = "0.1.0"
+description = "텝 — 작업 표시줄 곁의 가문 연대기"
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "2.5", features = [] }
+
+[dependencies]
+tauri = { version = "2.10", features = [] }
+
+[features]
+# tauri CLI 없이 cargo로 빌드하므로 화면 파일(../ui/dist)을 exe에 넣는 기능을 기본으로 켠다
+default = ["custom-protocol"]
+custom-protocol = ["tauri/custom-protocol"]
+
+[profile.release]
+opt-level = "s"
+lto = true
+codegen-units = 1
+strip = true

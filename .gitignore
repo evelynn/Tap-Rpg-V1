@@ -100,3 +100,7 @@ assets/ready/_preview/
 !assets/_imagegen/v06/w15-a4-rift.png
 !assets/_imagegen/v06/w15-f03-moonshade-cellar-r2.png
 .gstack/
+
+# 데스크톱 창(Tauri) 빌드 산출물
+apps/desktop/src-tauri/target/
+apps/desktop/src-tauri/gen/

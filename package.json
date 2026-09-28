@@ -18,6 +18,7 @@
     "demo": "tsx tools/demo/src/cli.ts",
     "ui:build": "tsx apps/desktop/ui/scripts/build.ts",
     "ui:dev": "pnpm ui:build && tsx apps/desktop/ui/scripts/serve.ts",
+    "desktop:build": "pnpm ui:build && cargo build --release --manifest-path apps/desktop/src-tauri/Cargo.toml",
     "art:check": "tsx tools/art-check/src/cli.ts check",
     "art:normalize": "tsx tools/art-check/src/cli.ts normalize",
     "art:preview": "tsx tools/art-check/src/cli.ts preview",
