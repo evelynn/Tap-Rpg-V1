@@ -47,8 +47,9 @@ export class GuideScheduler {
       this.lastId = j.at(-1)?.id ?? 0
       if (!this.started) { this.started = true; this.enqueue('start') }
     }
-    for (let i = j.length - 1; i >= 0 && j[i]!.id > this.lastId; i--) {
-      const e = j[i]!
+    let from = j.length
+    while (from > 0 && j[from - 1]!.id > this.lastId) from--
+    for (const e of j.slice(from)) { // 일어난 차례대로
       for (const g of GUIDES) if (typeof g.when === 'function' && g.when(e)) this.enqueue(g.id)
     }
     this.lastId = j.at(-1)?.id ?? this.lastId
