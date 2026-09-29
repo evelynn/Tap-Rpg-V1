@@ -24,7 +24,8 @@
     "art:preview": "tsx tools/art-check/src/cli.ts preview",
     "art:template": "tsx tools/art-check/src/cli.ts template",
     "art:gate": "tsx tools/art-check/src/cli.ts gate",
-    "art:native": "tsx tools/art-check/src/native-cli.ts"
+    "art:native": "tsx tools/art-check/src/native-cli.ts",
+    "art:hairfit": "tsx tools/art-check/src/hair-cli.ts"
   },
   "pnpm": {
     "overrides": {

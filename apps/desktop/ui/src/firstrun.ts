@@ -38,7 +38,9 @@ export class FirstRunWindow {
     return { body: 'body_base', hair: 'HR03', hair_color: 'hair_chestnut', skin_tone: 'skin_02', decor: [], age_stage_override: null }
   }
 
-  constructor(private readonly root: HTMLElement, private readonly content: Content, private readonly failNote: string | null, private readonly openFolder: () => void) {
+  // preview: 고른 머리 모양·색의 주인공 대기 1칸(D88 머리 합성). 없으면 기본 모습 그림
+  constructor(private readonly root: HTMLElement, private readonly content: Content, private readonly failNote: string | null, private readonly openFolder: () => void,
+    private readonly preview: (style: string, color: string) => HTMLCanvasElement | null = () => null) {
     const pool = content.list('name_pool')[0]
     this.family = pool ? pick(pool.family_names) : '모래'
     this.name = pool ? pick(pool.given_names) : '모라'
@@ -93,8 +95,7 @@ export class FirstRunWindow {
             b.style.borderLeft = `8px solid ${hex}`
             return b
           }))),
-        h('div', { class: 'd-preview' }, h('div', { class: 'd-hero', 'data-hair': this.hair, 'data-color': this.color })),
-        h('div', { class: 'd-note' }, '미리보기는 기본 모습입니다. 고른 머리 모양·색은 기록되고, 머리 그림이 준비되면 게임에 반영됩니다.'))
+        h('div', { class: 'd-preview' }, this.preview(this.hair, this.color) ?? h('div', { class: 'd-hero' })))
     } else if (this.step === 2) {
       body.append(h('div', { class: 'd-strong' }, '어떤 태도로 모험할까요?'), h('div', { class: 'd-note' }, '언제든 바꿀 수 있습니다.'),
         ...[...this.content.list('attitude')].sort((a, b) => a.order - b.order).map((a) => {

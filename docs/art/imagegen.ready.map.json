@@ -3031,6 +3031,337 @@
     1440,
     720
    ]
+  },
+  {
+   "name": "chr_actions18_48_hairmask",
+   "source": "v03/18-hair-actions18-48-r3.png",
+   "role": "layer",
+   "ref": "chr_actions18_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "chr_actions11_48_hairmask",
+   "source": "v06/c01-ref-d-hit-discover-interact11-48-teal-hair-mask.png",
+   "role": "layer",
+   "ref": "chr_actions11_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "chr_actions9_48_hairmask",
+   "source": "v06/c02-ref-e-cheer-collapse9-48-teal-hair-mask-r4.png",
+   "role": "layer",
+   "ref": "chr_actions9_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "chr_walk12_48_hairmask",
+   "source": "v06/01-ref-a-walk12-48-r3-hair-mask.png",
+   "role": "layer",
+   "ref": "chr_walk12_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "chr_headposes_48",
+   "source": "v06/c04-ref-h-headposes3-48.png",
+   "role": "reference",
+   "grid": [
+    3,
+    1
+   ],
+   "cell": [
+    48,
+    48
+   ],
+   "rows": [
+    {
+     "action": "pose",
+     "frames": 3
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ],
+   "align": {
+    "mode": "ground",
+    "bottom": 43,
+    "center_x": 23
+   },
+   "scale": 9.975,
+   "area": [
+    48,
+    272,
+    1440,
+    480
+   ]
+  },
+  {
+   "name": "hair_hr01_48",
+   "source": "v07/c05-hr01-hair3-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr01_occluded_48",
+   "source": "v07/c05-hr01-hair3-occluded-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr02_48",
+   "source": "v07/c06-hr02-hair3-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr02_occluded_48",
+   "source": "v07/c06-hr02-hair3-occluded-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr03_48",
+   "source": "v07/c06-hr03-hair3-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr03_occluded_48",
+   "source": "v07/c06-hr03-hair3-occluded-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr04_48",
+   "source": "v07/c06-hr04-hair3-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr04_occluded_48",
+   "source": "v07/c06-hr04-hair3-occluded-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr05_48",
+   "source": "v07/c06-hr05-hair3-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr05_occluded_48",
+   "source": "v07/c06-hr05-hair3-occluded-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr06_48",
+   "source": "v07/c06-hr06-hair3-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
+  },
+  {
+   "name": "hair_hr06_occluded_48",
+   "source": "v07/c06-hr06-hair3-occluded-48.png",
+   "role": "layer",
+   "ref": "chr_headposes_48",
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+   ]
   }
  ],
  "preview": {

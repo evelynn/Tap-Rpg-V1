@@ -6,6 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { build } from 'esbuild'
 import { formatIssue, validateContent } from '@tap/content-kit'
 import { BACKGROUNDS, SHEETS, STRIPS, PROPS } from '../src/sprites'
+import { HAIR_FILES } from '../src/look'
 
 export const UI_DIR = fileURLToPath(new URL('..', import.meta.url))
 export const DIST = join(UI_DIR, 'dist')
@@ -24,11 +25,15 @@ function copySprites(): string[] {
   const dir = join(DIST, 'sprites')
   mkdirSync(dir, { recursive: true })
   const missing: string[] = []
-  for (const f of new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS, ...Object.values(PROPS).map((p) => p.file)])) {
+  for (const f of new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS, ...Object.values(PROPS).map((p) => p.file), ...HAIR_FILES])) {
     const src = join(READY, `${f}.png`)
     if (existsSync(src)) copyFileSync(src, join(dir, `${f}.png`))
     else missing.push(f)
   }
+  // 머리 자리(art:hairfit, D88)
+  const fit = join(READY, 'chr_hair_fit.json')
+  if (existsSync(fit)) copyFileSync(fit, join(dir, 'chr_hair_fit.json'))
+  else missing.push('chr_hair_fit')
   return missing
 }
 

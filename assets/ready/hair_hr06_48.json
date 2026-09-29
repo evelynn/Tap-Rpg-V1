@@ -1,0 +1,208 @@
+{
+  "name": "hair_hr06_48",
+  "source": "assets/_imagegen/v07/c06-hr06-hair3-48.png",
+  "role": "layer",
+  "ref": "chr_headposes_48",
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+  ],
+  "rows": [
+    {
+      "action": "pose",
+      "frames": 3
+    }
+  ],
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    3,
+    1
+  ],
+  "cell": [
+    48,
+    48
+  ],
+  "cell_ratio": [
+    10,
+    10
+  ],
+  "scale": 9.98,
+  "scale_origin": "reference",
+  "art_period": 10,
+  "notes": [],
+  "totals": {
+    "opaque": 866,
+    "dropped_outside": 0,
+    "specks_removed": 0,
+    "colors_merged": 146,
+    "islands_folded": 1,
+    "colors": [
+      "#2F2420",
+      "#5E3C24",
+      "#6E442C",
+      "#743426",
+      "#7A4E24",
+      "#8E5E38",
+      "#93603F",
+      "#A8883E",
+      "#B07A3A",
+      "#C08A58"
+    ],
+    "palette_error_mean": 28.3,
+    "palette_error_max": 69.51
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "pose",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        149,
+        308,
+        407,
+        503
+      ],
+      "anchor": [
+        168.25,
+        322
+      ],
+      "shift": [
+        12,
+        5
+      ],
+      "opaque": 295,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        10,
+        3,
+        35,
+        22
+      ],
+      "bbox_center_x": 22.5,
+      "colors": [
+        "#2F2420",
+        "#5E3C24",
+        "#6E442C",
+        "#7A4E24",
+        "#8E5E38",
+        "#A8883E",
+        "#B07A3A",
+        "#C08A58"
+      ],
+      "palette_error": {
+        "mean": 27.57,
+        "max": 63.46
+      },
+      "block_purity": 0.54,
+      "colors_merged": 44,
+      "islands_folded": 1
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "pose",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        645,
+        327,
+        905,
+        534
+      ],
+      "anchor": [
+        654.25,
+        352.5
+      ],
+      "shift": [
+        14,
+        8
+      ],
+      "opaque": 312,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        13,
+        6,
+        38,
+        25
+      ],
+      "bbox_center_x": 25.5,
+      "colors": [
+        "#2F2420",
+        "#5E3C24",
+        "#6E442C",
+        "#7A4E24",
+        "#93603F",
+        "#B07A3A"
+      ],
+      "palette_error": {
+        "mean": 28.86,
+        "max": 69.51
+      },
+      "block_purity": 0.51,
+      "colors_merged": 48,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "pose",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1215,
+        491,
+        1452,
+        709
+      ],
+      "anchor": [
+        1042.75,
+        511.25
+      ],
+      "shift": [
+        1,
+        23
+      ],
+      "opaque": 259,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        18,
+        21,
+        41,
+        42
+      ],
+      "bbox_center_x": 29.5,
+      "colors": [
+        "#2F2420",
+        "#5E3C24",
+        "#6E442C",
+        "#743426",
+        "#7A4E24",
+        "#93603F",
+        "#B07A3A"
+      ],
+      "palette_error": {
+        "mean": 28.47,
+        "max": 63.46
+      },
+      "block_purity": 0.5,
+      "colors_merged": 54,
+      "islands_folded": 0
+    }
+  ]
+}

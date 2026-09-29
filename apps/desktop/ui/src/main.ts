@@ -19,6 +19,8 @@ import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
 import { BACKGROUNDS, PROPS, SHEETS, STRIPS } from './sprites'
+import { HAIR_FILES, HeroLook } from './look'
+import type { HairFitFile } from './hair'
 
 const APP_VERSION = '0.1.0'
 
@@ -69,9 +71,12 @@ async function start(): Promise<void> {
   const bundle = (await (await fetch('content.json')).json()) as { content_hash: string; packs: { id: string; version: string }[] }
   const content = Content.fromBundle(bundle as never)
   const meta = (): SaveMeta => ({ app_version: APP_VERSION, saved_at_utc: Date.now(), content_packs: bundle.packs, content_hash: bundle.content_hash })
-  const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS, ...Object.values(PROPS).map((p) => p.file)])]
+  const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS, ...Object.values(PROPS).map((p) => p.file), ...HAIR_FILES])]
   const pics = await Promise.all(files.map((f) => loadImage(`sprites/${f}.png`)))
   const images: Images = Object.fromEntries(files.map((f, i) => [f, pics[i]]))
+  // 주인공 머리 합성(D88): 머리 자리가 없거나 그림이 없으면 기본 머리 그대로
+  const fits = await fetch('sprites/chr_hair_fit.json').then((r) => (r.ok ? r.json() as Promise<HairFitFile> : null)).catch(() => null)
+  const look = new HeroLook(images, fits)
 
   // 저장에서 이어 간다(13 §2·§8). 저장이 없으면(또는 ?new=1) 첫 실행 창(03 §12). ?seed= 이면 개발용 새 가문 바로 시작
   const direct = q.has('seed') || q.has('name')
@@ -93,12 +98,12 @@ async function start(): Promise<void> {
       await w.show()
       await w.setFocus()
     }
-    const r = await new FirstRunWindow(document.getElementById('firstrun')!, content, loaded.kind === 'fail' ? loaded.message : null, () => void backend.openFolder()).ask()
+    const r = await new FirstRunWindow(document.getElementById('firstrun')!, content, loaded.kind === 'fail' ? loaded.message : null, () => void backend.openFolder(), (s, c) => look.preview(s, c)).ask()
     world = newFamily(content, r)
     isNew = true
     html.classList.remove('booting')
   }
-  boot({ q, tauri, desktop, backend, settings, saveSettings, content, meta, images, world, loaded, isNew })
+  boot({ q, tauri, desktop, backend, settings, saveSettings, content, meta, images, look, world, loaded, isNew })
 }
 
 // 열 수 없는 새 버전 기록(13 §8.7): 새 가문을 만들지 않고(덮어쓰지 않게) 안내와 폴더 열기·종료만 둔다
@@ -130,6 +135,7 @@ interface Boot {
   content: Content
   meta: () => SaveMeta
   images: Images
+  look: HeroLook
   world: World
   loaded: Loaded
   isNew: boolean
@@ -151,7 +157,10 @@ function boot(b: Boot): void {
   }
 
   const sceneFiles = Object.fromEntries(Object.entries(STRIPS).filter(([k, f]) => k !== 'bg' && images[f]))
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)')
   const app = new App(b.world, sceneFiles, new Set(BACKGROUNDS.filter((f) => images[f])), q.get('auto') === '1') // ?auto=1: 선택·계승 자동(개발용)
+  app.reducedMotion = reduced.matches // 움직임 줄이기(03 §14): 판정 주사위는 결과 면만
+  reduced.addEventListener('change', () => { app.reducedMotion = reduced.matches })
   ;(globalThis as { tapApp?: App }).tapApp = app // 개발용: 콘솔에서 세계·대기열을 들여다본다
   ;(globalThis as { tapDev?: unknown }).tapDev = {
     event: (id: string, place: string) => runEvent(app.world, id, { place, force: true }, app.world.ports),
@@ -277,7 +286,7 @@ function boot(b: Boot): void {
   if (b.isNew) void saver.request({ backup: true }) // 새 가문은 바로 한 번 남긴다
 
   // 안내(03 §11.2·§12.2): 첫 가문 첫 인물만, 8초·60초 간격
-  const guide = new GuideScheduler(content, (t) => app.note(t), () => b.settings.guides_done, () => set({ guides_done: true }), b.settings.guides_seen, (ids) => b.saveSettings({ guides_seen: ids }))
+  const guide = new GuideScheduler(content, (t) => app.guide(t, b.settings.speech_bubble), () => b.settings.guides_done, () => set({ guides_done: true }), b.settings.guides_seen, (ids) => b.saveSettings({ guides_seen: ids }))
 
   const settingsWin = new SettingsWindow(document.getElementById('settings')!, get, {
     change: (patch) => {
@@ -421,10 +430,11 @@ function boot(b: Boot): void {
       return
     }
     lastDraw = now
+    const ch = app.world.state.character
+    if (ch) b.look.apply(ch.appearance.hair, ch.appearance.hair_color) // 머리가 바뀐 때만 다시 합성(D88)
     renderer.draw(view)
     panel.update(view)
     overlay.update(view.strip, view.bubble, view.heroCx, b.settings.record_strip, b.settings.speech_bubble)
-    const ch = app.world.state.character
     pause.textContent = app.driver.paused ? '다시 진행' : '일시정지'
     info.textContent = ch
       ? `${ch.generation}대 · 유효 진행 ${ch.eff_min.toFixed(1)}분 · ${ageAt(ch.eff_min, content.balance.time)}세 · ${app.world.state.current_activity.state} · ×${app.driver.speed} · 대기열 ${app.lines.pending.length} · dpr ${devicePixelRatio} · 그림 ×${canvas.dataset.k}`

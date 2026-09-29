@@ -48,9 +48,15 @@ export class App {
     this.stage = direct(actViewOf(world), 0)
   }
 
-  // 안내(03 §11.2): 한 줄 기록 자리에 8초, 일지에는 남기지 않는다. id는 기록 id와 겹치지 않게 아주 큰 수에서 센다
+  // 짧은 알림(일시정지·정산): 한 줄 기록 자리에 8초, 일지에는 남기지 않는다. id는 기록 id와 겹치지 않게 아주 큰 수에서 센다
   note(text: string): void {
     this.lines.push({ id: Number.MAX_SAFE_INTEGER - this.notes++, text, grade: 'A' })
+  }
+
+  // 첫 실행 안내(03 §11.2, D90): 한 줄 기록 폭 262보다 길어 말풍선에 8초. 말풍선을 끄면 한 줄 기록 자리(넘치면 …)
+  guide(text: string, bubble: boolean): void {
+    if (bubble) this.bubbles.push({ id: Number.MAX_SAFE_INTEGER - this.notes++, line: text, detail: '' })
+    else this.note(text)
   }
 
   // now: 실시간 밀리초, dt: 지난 프레임부터 흐른 실시간

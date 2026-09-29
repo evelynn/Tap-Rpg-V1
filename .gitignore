@@ -254,3 +254,16 @@ assets/ready/_preview/
 # 데스크톱 창(Tauri) 빌드 산출물
 apps/desktop/src-tauri/target/
 apps/desktop/src-tauri/gen/
+!assets/_imagegen/v07/c05-hr01-hair3-48.png
+!assets/_imagegen/v07/c05-hr01-hair3-occluded-48.png
+!assets/_imagegen/v06/c04-ref-h-headposes3-48.png
+!assets/_imagegen/v07/c06-hr02-hair3-48.png
+!assets/_imagegen/v07/c06-hr02-hair3-occluded-48.png
+!assets/_imagegen/v07/c06-hr03-hair3-48.png
+!assets/_imagegen/v07/c06-hr03-hair3-occluded-48.png
+!assets/_imagegen/v07/c06-hr04-hair3-48.png
+!assets/_imagegen/v07/c06-hr04-hair3-occluded-48.png
+!assets/_imagegen/v07/c06-hr05-hair3-48.png
+!assets/_imagegen/v07/c06-hr05-hair3-occluded-48.png
+!assets/_imagegen/v07/c06-hr06-hair3-48.png
+!assets/_imagegen/v07/c06-hr06-hair3-occluded-48.png

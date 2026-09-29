@@ -52,7 +52,7 @@
     #col .sico { display: inline-block; vertical-align: calc(-2px * var(--s)); margin-right: calc(3px * var(--s)); }
     #col .sico[hidden] { display: none; }
     #col .attitude { border: 1px solid currentColor; line-height: calc(12px * var(--s) - 2px); font-weight: normal; }
-    #col .record { left: calc(5px * var(--s)); right: calc(5px * var(--s)); top: calc((64px + 2px * var(--t, 1)) * var(--u, 1)); }
+    #col .record { left: calc(5px * var(--s)); right: calc(5px * var(--s)); top: calc((64px + 2px * var(--t, 1)) * var(--u, 1)); overflow: hidden; text-overflow: ellipsis; }
     #win canvas, #col .status, #col .icons, #col .record { cursor: pointer; }
     /* 상세 창 480 × 560(03 §5). 시제품에서는 개발용 단추 아래에 둔다. 본문 13, 최소 12, 소제목 15 굵게, 안쪽 여백 16 */
     #menu { position: absolute; z-index: 20; min-width: 132px; padding: 4px 0; background: #fbf8f2; color: #2b2233; border: 1px solid #8a8a8a; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); font: 12px system-ui, sans-serif; }
@@ -138,6 +138,7 @@
     #settings .d-foot, #firstrun .d-foot, #summary .d-foot { height: auto; min-height: 32px; padding: 6px 16px; }
     #firstrun { width: 480px; height: 560px; }
     .dwin .d-preview { height: 110px; display: flex; align-items: center; justify-content: center; }
+    .dwin .d-preview canvas { image-rendering: pixelated; }
     .dwin .d-hero { width: 48px; height: 48px; background: url(sprites/chr_actions18_48.png) 0 0; image-rendering: pixelated; transform: scale(2); animation: tap-idle .88s steps(4) infinite; }
     @keyframes tap-idle { to { background-position: -192px 0; } }
     .dwin .d-place { position: relative; height: 120px; margin: 8px 0; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; background: rgba(128,128,128,.12); }
@@ -193,7 +194,7 @@
   <div id="settings" class="dwin" hidden role="dialog" aria-label="설정"></div>
   <div id="firstrun" class="dwin" role="dialog" aria-label="처음 시작" hidden></div>
   </div>
-  <div id="menu"></div>
+  <div id="menu" hidden></div>
   <script type="module" src="main.js"></script>
 </body>
 </html>

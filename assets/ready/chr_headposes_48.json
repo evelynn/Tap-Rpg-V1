@@ -1,0 +1,258 @@
+{
+  "name": "chr_headposes_48",
+  "source": "assets/_imagegen/v06/c04-ref-h-headposes3-48.png",
+  "role": "reference",
+  "ref": null,
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "underlayer",
+    "trousers"
+  ],
+  "rows": [
+    {
+      "action": "pose",
+      "frames": 3
+    }
+  ],
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    3,
+    1
+  ],
+  "cell": [
+    48,
+    48
+  ],
+  "cell_ratio": [
+    10,
+    10
+  ],
+  "scale": 9.98,
+  "scale_origin": "map",
+  "art_period": 10,
+  "notes": [],
+  "totals": {
+    "opaque": 1745,
+    "dropped_outside": 0,
+    "specks_removed": 0,
+    "colors_merged": 81,
+    "islands_folded": 5,
+    "colors": [
+      "#00766D",
+      "#262E3E",
+      "#27978D",
+      "#2B2233",
+      "#2F2420",
+      "#3A4458",
+      "#4A3A32",
+      "#4C4A52",
+      "#5E3C24",
+      "#6E442C",
+      "#7A4E30",
+      "#8E5E38",
+      "#93603F",
+      "#9A948C",
+      "#A0664A",
+      "#B07A3A",
+      "#B97F5A",
+      "#C08A58",
+      "#C88E68",
+      "#C98E72",
+      "#E0B06A",
+      "#E8B89A",
+      "#E8E6E0",
+      "#F0E6CC",
+      "#F6D9C2"
+    ],
+    "palette_error_mean": 19.23,
+    "palette_error_max": 69.41
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "pose",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        159,
+        314,
+        398,
+        711
+      ],
+      "anchor": [
+        168.25,
+        322
+      ],
+      "shift": [
+        12,
+        5
+      ],
+      "opaque": 622,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        11,
+        4,
+        34,
+        43
+      ],
+      "bbox_center_x": 22.5,
+      "colors": [
+        "#00766D",
+        "#262E3E",
+        "#27978D",
+        "#2B2233",
+        "#2F2420",
+        "#4A3A32",
+        "#5E3C24",
+        "#6E442C",
+        "#7A4E30",
+        "#93603F",
+        "#9A948C",
+        "#A0664A",
+        "#B07A3A",
+        "#B97F5A",
+        "#C98E72",
+        "#E0B06A",
+        "#E8B89A",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 17.96,
+        "max": 60.94
+      },
+      "block_purity": 0.86,
+      "colors_merged": 12,
+      "islands_folded": 3
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "pose",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        646,
+        352,
+        896,
+        711
+      ],
+      "anchor": [
+        654.25,
+        352.5
+      ],
+      "shift": [
+        14,
+        8
+      ],
+      "opaque": 556,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        13,
+        8,
+        37,
+        43
+      ],
+      "bbox_center_x": 25,
+      "colors": [
+        "#00766D",
+        "#262E3E",
+        "#27978D",
+        "#2B2233",
+        "#2F2420",
+        "#3A4458",
+        "#4A3A32",
+        "#5E3C24",
+        "#6E442C",
+        "#7A4E30",
+        "#93603F",
+        "#A0664A",
+        "#B07A3A",
+        "#B97F5A",
+        "#C88E68",
+        "#E0B06A",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 19.34,
+        "max": 53.46
+      },
+      "block_purity": 0.67,
+      "colors_merged": 29,
+      "islands_folded": 2
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "pose",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1036,
+        507,
+        1441,
+        724
+      ],
+      "anchor": [
+        1042.75,
+        511.25
+      ],
+      "shift": [
+        1,
+        23
+      ],
+      "opaque": 567,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        0,
+        22,
+        40,
+        43
+      ],
+      "bbox_center_x": 20,
+      "colors": [
+        "#00766D",
+        "#262E3E",
+        "#27978D",
+        "#2B2233",
+        "#2F2420",
+        "#4C4A52",
+        "#5E3C24",
+        "#6E442C",
+        "#7A4E30",
+        "#8E5E38",
+        "#A0664A",
+        "#B07A3A",
+        "#C08A58",
+        "#C98E72",
+        "#E0B06A",
+        "#E8B89A",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 20.51,
+        "max": 69.41
+      },
+      "block_purity": 0.71,
+      "colors_merged": 40,
+      "islands_folded": 0
+    }
+  ]
+}
