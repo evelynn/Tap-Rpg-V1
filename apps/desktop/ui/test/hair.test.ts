@@ -4,7 +4,7 @@ import assert from 'node:assert/strict'
 import { readFileSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { decodePng } from '../../../../tools/art-check/src/png'
-import { HAIR_STYLES, HAIR_TONES, composeHair, hairFile, toneOf, type HairFitFile, type Rgba } from '../src/hair'
+import { HAIR_STYLES, HAIR_TONES, WHITE_TONES, composeHair, desaturate, hairFile, hairTones, toneOf, type HairFitFile, type Rgba } from '../src/hair'
 import { SHEETS } from '../src/sprites'
 
 const READY = fileURLToPath(new URL('../../../../assets/ready/', import.meta.url))
@@ -70,5 +70,17 @@ describe('머리 합성(D88)', () => {
 
   it('톤 나누기: 가장 어두운 쪽 윤곽, 나머지는 중앙값으로 밝음·그늘', () => {
     assert.deepEqual(toneOf([[20, 20, 20], [200, 180, 100], [120, 80, 50], [210, 190, 110], [110, 70, 40], [215, 195, 115], [115, 75, 45], [205, 185, 105], [118, 78, 48]]), [0, 1, 2, 1, 2, 1, 2, 1, 2])
+  })
+
+  it('나이 단계 머리색(15 §5.1): 49까지 그대로, 50~64 채도 −35%, 65 이상 흰머리, 흡혈귀는 그대로', () => {
+    assert.deepEqual(hairTones('hair_auburn', 49), HAIR_TONES.hair_auburn)
+    assert.deepEqual(hairTones('hair_auburn', 65), WHITE_TONES)
+    assert.deepEqual(hairTones('hair_auburn', 80, true), HAIR_TONES.hair_auburn)
+    const mid = hairTones('hair_auburn', 55)
+    assert.notDeepEqual(mid, HAIR_TONES.hair_auburn)
+    assert.equal(desaturate('#808080', 0.65), '#808080', '무채색은 그대로')
+    // 채도가 줄면 가장 큰 채널과 작은 채널의 차가 준다
+    const spread = (h: string) => { const v = [1, 3, 5].map((i) => Number.parseInt(h.slice(i, i + 2), 16)); return Math.max(...v) - Math.min(...v) }
+    assert.ok(spread(mid[0]) < spread(HAIR_TONES.hair_auburn![0]))
   })
 })

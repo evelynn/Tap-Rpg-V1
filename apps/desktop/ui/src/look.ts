@@ -1,7 +1,7 @@
 // 주인공 모습(D88): 고른 머리 모양·색으로 주인공 시트 4장을 합성해 그림 표(images)의 같은 이름 자리에 넣는다.
 // 원본 시트는 따로 들고 있어 머리가 바뀌면(첫 실행·계승) 원본에서 다시 합성한다.
 import { SHEETS } from './sprites'
-import { HAIR_STYLES, composeHair, hairFile, type HairFitFile, type Rgba } from './hair'
+import { HAIR_STYLES, composeHair, hairFile, hairTones, type HairFitFile, type Rgba } from './hair'
 import type { Images } from './render'
 
 export const HERO_SHEETS = ['chr18', 'chr11', 'chr9', 'walk'].map((k) => SHEETS[k]!.file)
@@ -45,7 +45,7 @@ export class HeroLook {
   }
 
   /** 합성한 시트(없으면 null). style HR01~06, color 15 §2.2 계열 id */
-  sheet(file: string, style: string, color: string): Rgba | null {
+  sheet(file: string, style: string, color: string | [string, string]): Rgba | null {
     if (!this.base.has(file)) { const b = this.rgba(file); if (b) this.base.set(file, b) }
     const base = this.base.get(file)
     const mask = this.rgba(`${file}_hairmask`)
@@ -54,13 +54,14 @@ export class HeroLook {
     return base && mask && hair && fits ? composeHair(base, mask, hair, fits, color) : null
   }
 
-  /** 그림 표의 주인공 시트를 이 머리로 바꾼다. 같은 머리면 아무것도 하지 않는다 */
-  apply(style: string, color: string): void {
-    const key = `${style}|${color}`
+  /** 그림 표의 주인공 시트를 이 머리로 바꾼다(나이·흡혈귀에 따른 색, 15 §5.1·§5.2). 같은 머리면 아무것도 하지 않는다 */
+  apply(style: string, color: string, age = 18, vampire = false): void {
+    const tones = hairTones(color, age, vampire)
+    const key = `${style}|${tones.join(',')}`
     if (key === this.key) return
     this.key = key
     for (const f of HERO_SHEETS) {
-      const r = this.sheet(f, style, color)
+      const r = this.sheet(f, style, tones)
       if (r) this.images[f] = canvasOf(r)
     }
   }

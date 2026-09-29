@@ -17,7 +17,37 @@ export const HAIR_TONES: Record<string, [string, string]> = {
   hair_ash: ['#9A948C', '#6E6862'],
   hair_blueblack: ['#3A4458', '#262E3E'],
 }
+// 15 §5.1 노년 흰머리 팔레트
+export const WHITE_TONES: [string, string] = ['#E8E4DC', '#C8C2B8']
 export const HAIR_STYLES = ['HR01', 'HR02', 'HR03', 'HR04', 'HR05', 'HR06'] as const
+
+// 채도만 k배(HSL). 15 §5.1 숙련기 `머리색 채도 −35%`
+export function desaturate(hex: string, k: number): string {
+  const [r, g, b] = rgb(hex).map((v) => v / 255) as [number, number, number]
+  const max = Math.max(r, g, b)
+  const min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  const d = max - min
+  if (d === 0) return hex
+  const s = d / (1 - Math.abs(2 * l - 1))
+  let h = max === r ? ((g - b) / d) % 6 : max === g ? (b - r) / d + 2 : (r - g) / d + 4
+  h *= 60
+  const s2 = s * k
+  const c = (1 - Math.abs(2 * l - 1)) * s2
+  const x = c * (1 - Math.abs(((h / 60) % 2) - 1))
+  const m = l - c / 2
+  const [r1, g1, b1] = h < 60 ? [c, x, 0] : h < 120 ? [x, c, 0] : h < 180 ? [0, c, x] : h < 240 ? [0, x, c] : h < 300 ? [x, 0, c] : [c, 0, x]
+  return `#${[r1, g1, b1].map((v) => Math.round(Math.min(1, Math.max(0, v + m)) * 255).toString(16).padStart(2, '0')).join('').toUpperCase()}`
+}
+
+/** 나이에 따른 머리 2톤(15 §5.1): 50~64 채도 −35%, 65 이상 흰머리. 흡혈귀는 변이 때 색을 지킨다(§5.2) */
+export function hairTones(color: string, age: number, vampire = false): [string, string] {
+  const t = HAIR_TONES[color] ?? HAIR_TONES.hair_chestnut!
+  if (vampire) return t
+  if (age >= 65) return WHITE_TONES
+  if (age >= 50) return [desaturate(t[0], 0.65), desaturate(t[1], 0.65)]
+  return t
+}
 export const hairFile = (style: string): string => `hair_${style.toLowerCase()}_48`
 export const OUTLINE = '#2B2233'
 
@@ -44,11 +74,11 @@ export function toneOf(pixels: [number, number, number][]): number[] {
  * base·mask: 같은 크기의 주인공 시트와 그 머리 가림막. hair: 머리 레이어(48 × 48 자세 3칸 가로).
  * 반환: 새 시트(base는 바꾸지 않는다). 자리가 없는 칸(가림막이 빈 칸)은 그대로다.
  */
-export function composeHair(base: Rgba, mask: Rgba, hair: Rgba, fits: readonly HairFit[], color: string, cellSize = 48): Rgba {
+export function composeHair(base: Rgba, mask: Rgba, hair: Rgba, fits: readonly HairFit[], color: string | [string, string], cellSize = 48): Rgba {
   const out = new Uint8ClampedArray(base.data)
   const W = base.width
   const cols = Math.floor(W / cellSize)
-  const tones = HAIR_TONES[color] ?? HAIR_TONES.hair_chestnut!
+  const tones = Array.isArray(color) ? color : HAIR_TONES[color] ?? HAIR_TONES.hair_chestnut!
   const pal = [rgb(OUTLINE), rgb(tones[0]), rgb(tones[1])]
   // 자세별 머리 화소와 톤(한 번만)
   const poses = [0, 1, 2].map((p) => {

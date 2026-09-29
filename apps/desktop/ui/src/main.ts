@@ -435,7 +435,7 @@ function boot(b: Boot): void {
     }
     lastDraw = now
     const ch = app.world.state.character
-    if (ch) b.look.apply(ch.appearance.hair, ch.appearance.hair_color) // 머리가 바뀐 때만 다시 합성(D88)
+    if (ch) b.look.apply(ch.appearance.hair, ch.appearance.hair_color, ageAt(ch.eff_min, content.balance.time), ch.mutation !== null) // 머리·나이 단계가 바뀐 때만 다시 합성(D88)
     renderer.draw(view)
     panel.update(view)
     overlay.update(view.strip, view.bubble, view.heroCx, b.settings.record_strip, b.settings.speech_bubble)
