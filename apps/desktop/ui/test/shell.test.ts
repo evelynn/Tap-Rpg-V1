@@ -75,6 +75,16 @@ describe('첫 실행 안내(03 §11.2·§12.2)', () => {
     assert.match(shown[0]!, /판정/)
     assert.ok(saved.includes('check'))
   })
+  it('대기열에만 있는 안내는 본 것으로 저장하지 않는다(독립 재검증 반례 6)', () => {
+    let saved: string[] = []
+    const g = new GuideScheduler({} as Content, () => {}, () => false, () => {}, [], (ids) => { saved = ids })
+    const j: Partial<JournalEntry>[] = [{ id: 1, tag: 'travel' }]
+    g.tick(mkWorld(j), 0)
+    assert.deepEqual(saved, ['start'])
+    j.push({ id: 2, tag: 'hunt' }, { id: 3, tag: 'check' })
+    g.tick(mkWorld(j), 1000)
+    assert.deepEqual(saved, ['start'], '60초 안에 대기 중인 안내는 아직 저장하지 않는다')
+  })
   it('두 번째 인물(연대기 있음)·안내를 다 본 뒤에는 뜨지 않는다', () => {
     const shown: string[] = []
     const g = new GuideScheduler({} as Content, (t) => shown.push(t), () => false, () => {})

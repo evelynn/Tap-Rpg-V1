@@ -68,6 +68,7 @@ function safeStorage(): Storage | null {
 export type Loaded =
   | { kind: 'none' } // 저장 없음 → 첫 실행
   | { kind: 'fail'; message: string } // 모두 읽을 수 없음(13 §8.5)
+  | { kind: 'blocked'; message: string } // 더 새로운 버전의 기록인데 이 버전이 열지 못함: 새 가문도 만들지 않는다(덮어쓰지 않게, 13 §8.7)
   | { kind: 'ok'; world: World; savedAt: number; recovered: boolean; readOnly: boolean; summary: ReturnSummary | null; offlineFailed: boolean }
 
 // 시작: 파일 고르기 → 세계 → 부재 정산(13 §2). 정산 중 예외면 같은 저장으로 다시 읽어 정산 없이 시작한다(13 §2.3)
@@ -89,7 +90,9 @@ export async function loadGame(backend: SaveBackend, content: Content, now: numb
     world = loadGameWorld(content, body)
   } catch (e) {
     console.error('[텝] 저장으로 세계를 만들지 못했다', e)
-    return { kind: 'fail', message: r.result.read_only ? '더 새로운 버전에서 만든 기록이라 이 버전에서 열 수 없습니다.' : '저장 기록을 열 수 없습니다.' }
+    if (r.result.read_only) return { kind: 'blocked', message: '더 새로운 버전에서 만든 기록이라 이 버전에서는 열 수 없습니다. 기록은 그대로 두었습니다. 새 버전으로 실행해 주세요.' }
+    await backend.quarantine(files.map((f) => f.file), new Date(now).toISOString().replace(/[:.]/g, ''))
+    return { kind: 'fail', message: '저장 기록을 열 수 없습니다. 손상된 파일은 따로 옮겨 두었습니다.' }
   }
   let summary: ReturnSummary | null = null
   let offlineFailed = false

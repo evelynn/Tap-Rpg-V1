@@ -38,9 +38,12 @@ export function pickSave(files: readonly SaveFile[], content: Content): PickResu
   const tmpWins = tmp?.ok && (!save?.ok || tmp.ok.root.header.saved_at_utc > save.ok.root.header.saved_at_utc)
   const chosen = tmpWins ? tmp : save?.ok ? save : cands.find((c) => c.ok !== null)
   if (!chosen?.ok) return { ok: false, failed, files: cands.map((c) => c.file) }
-  // 백업으로 복구한 뒤에도 같은 구간을 두 번 정산하지 않게, 읽을 수 있었던 파일 중 가장 늦은 high_water를 쓴다
-  const hw = Math.max(...cands.filter((c) => c.ok).map((c) => c.ok!.root.body.offline_state.high_water_utc))
-  if (hw > chosen.ok.root.body.offline_state.high_water_utc) chosen.ok.root.body.offline_state.high_water_utc = hw
+  // 백업으로 복구한 뒤에도 같은 구간을 두 번 정산하지 않게, 읽을 수 있었던 파일 중 가장 늦은 high_water를 쓴다.
+  // 더 새로운 버전(읽기 전용)은 이 버전의 스키마로 검사하지 않았으므로 칸이 없을 수 있다 — 건드리지 않는다
+  if (!chosen.ok.read_only) {
+    const hw = Math.max(...cands.filter((c) => c.ok && !c.ok.read_only).map((c) => c.ok!.root.body.offline_state.high_water_utc))
+    if (hw > chosen.ok.root.body.offline_state.high_water_utc) chosen.ok.root.body.offline_state.high_water_utc = hw
+  }
   return {
     ok: true, file: chosen.file, recovered: chosen.file.startsWith('backup_'), result: chosen.ok, failed,
     preMigration: chosen.ok.migrated.map((v) => ({ file: preMigrationFile(v), text: chosen.text })),

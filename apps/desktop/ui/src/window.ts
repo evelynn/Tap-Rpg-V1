@@ -140,15 +140,18 @@ export class DesktopShell {
     setTimeout(() => { this.moving = false }, 200)
   }
 
-  // 열린 판이 화면 위로 넘치지 않게 판 최대 높이를 고정점 위 남은 공간으로(글자 배율 zoom으로 나눈다)
+  // 열린 판이 화면 위로 넘치지 않게 판 최대 높이 = 고정점 위 남은 공간(메뉴·판 사이 간격을 빼고) ÷ 열린 판 수(글자 배율 zoom으로 나눈다)
   private async limitPanels(anchor: Pos): Promise<void> {
     const ms = await this.monitors()
     const m = ms.find((x) => { const a = area(x); return anchor.x >= a.x - 1 && anchor.x < a.x + a.w && anchor.y > a.y && anchor.y <= a.y + a.h + 1 }) ?? ms[0]
     const wa = m ? area(m) : await this.primaryArea()
     const stack = document.getElementById('stack')!.getBoundingClientRect().height
     const t = Number(getComputedStyle(document.documentElement).getPropertyValue('--t')) || 1
-    const room = anchor.y - wa.y - stack - 24
-    document.documentElement.style.setProperty('--panel-max', `${Math.max(200, Math.floor(room / t))}px`)
+    const open = Array.from(this.h.root.querySelectorAll<HTMLElement>('.dwin')).filter((e) => !e.hidden).length
+    const menu = document.getElementById('menu')
+    const menuH = menu && !menu.hidden && this.h.root.contains(menu) ? menu.getBoundingClientRect().height + 10 : 0
+    const room = anchor.y - wa.y - stack - menuH - 24 - (12 + 6) * open
+    document.documentElement.style.setProperty('--panel-max', `${Math.max(160, Math.floor(room / Math.max(1, open) / t))}px`)
   }
 
   private async monitors(): Promise<Monitor[]> {

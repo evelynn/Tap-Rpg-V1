@@ -3,7 +3,7 @@
 import { Content, ageAt, createGameWorld, runOffline, runEvent, setAttitude, submitPendingAuto, summaryView, type SaveMeta, type World } from '@tap/core'
 import { App } from './app'
 import { attitudeNote } from './detail/model'
-import { DetailWindow } from './detail/view'
+import { DetailWindow, button, h } from './detail/view'
 import { ChoiceWindow } from './choice'
 import { SuccessionWindow } from './succession'
 import { SPEEDS } from './driver'
@@ -76,6 +76,7 @@ async function start(): Promise<void> {
   // 저장에서 이어 간다(13 §2·§8). 저장이 없으면(또는 ?new=1) 첫 실행 창(03 §12). ?seed= 이면 개발용 새 가문 바로 시작
   const direct = q.has('seed') || q.has('name')
   const loaded: Loaded = q.get('new') === '1' || direct ? { kind: 'none' } : await loadGame(backend, content, Date.now())
+  if (loaded.kind === 'blocked') return blocked(loaded.message, tauri, backend)
   let world: World
   let isNew = false
   if (loaded.kind === 'ok') world = loaded.world
@@ -98,6 +99,25 @@ async function start(): Promise<void> {
     html.classList.remove('booting')
   }
   boot({ q, tauri, desktop, backend, settings, saveSettings, content, meta, images, world, loaded, isNew })
+}
+
+// 열 수 없는 새 버전 기록(13 §8.7): 새 가문을 만들지 않고(덮어쓰지 않게) 안내와 폴더 열기·종료만 둔다
+async function blocked(message: string, tauri: ReturnType<typeof tauriApi>, backend: SaveBackend): Promise<void> {
+  const root = document.getElementById('firstrun')!
+  document.documentElement.classList.add('booting')
+  if (tauri) {
+    const w = tauri.window.getCurrentWindow() as unknown as { setSize(s: unknown): Promise<void>; center(): Promise<void>; show(): Promise<void> }
+    await w.setSize(new tauri.dpi.LogicalSize(480 + 24, 560 + 24))
+    await w.center()
+    await w.show()
+  }
+  root.hidden = false
+  root.replaceChildren(
+    h('div', { class: 'd-head' }, h('div', {}, '텝')),
+    h('div', { class: 'd-body' }, h('div', {}, message)),
+    h('div', { class: 'd-foot' }, h('div', { class: 'd-acts' },
+      button('폴더 열기', () => void backend.openFolder()),
+      tauri ? button('종료', () => void tauri.core.invoke('app_exit')) : null)))
 }
 
 interface Boot {
@@ -229,7 +249,7 @@ function boot(b: Boot): void {
   // 상세 창(03 §5)·운명 선택(03 §6)·계승(03 §8)·설정(03 §7)·복귀 요약(03 §9): 투명 창 안의 떠 있는 판(D85)
   const detail = new DetailWindow(document.getElementById('detail')!, app.world, (t) => app.note(t), () => app.driver.setPaused(!app.driver.paused))
   const menuEl = document.getElementById('menu')!
-  if (desktop) document.getElementById('app')!.append(menuEl) // 투명 창은 #app 크기만 감싸므로 메뉴도 판으로(D85)
+  if (desktop) document.getElementById('stack')!.after(menuEl) // 투명 창은 #app 크기만 감싸므로 메뉴도 판으로, 기본 창 바로 위(D85)
   const menu = new QuickMenu(menuEl)
   const choice = new ChoiceWindow(document.getElementById('choice')!, app.world, () => detail.render())
   const succession = new SuccessionWindow(document.getElementById('succession')!, app.world, () => detail.render())
@@ -241,7 +261,7 @@ function boot(b: Boot): void {
   saver.readOnly = loaded.kind === 'ok' && loaded.readOnly
   setInterval(() => void saver.request(), content.balance.offline.autosave_sec * 1000)
   let lastState = app.world.state.current_activity.state
-  const afterStep = (now: number): void => {
+  const afterStep = (): void => {
     const st = app.world.state.current_activity.state
     const lifeTurn = app.lastTick.some((e) => e.tag === 'retire' || e.tag === 'death' || e.tag === 'succession')
     if (lifeTurn) void saver.request({ backup: true, force: true })
@@ -388,7 +408,7 @@ function boot(b: Boot): void {
     const dt = Math.min(cap, Math.max(0, gap))
     last = now
     const view = app.step(now, dt, isDark())
-    afterStep(now)
+    afterStep()
     guide.tick(app.world, now)
     return view
   }

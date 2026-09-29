@@ -65,14 +65,14 @@ export class GuideScheduler {
       const id = this.queue.shift()!
       this.note(GUIDES.find((g) => g.id === id)!.text(w))
       this.lastShown = now
+      this.seen.add(id)
+      this.onSeen([...this.seen]) // 실제로 띄운 안내만 기억한다(대기열에 남은 채 끄면 다음에 다시 뜬다)
       if (this.seen.size === GUIDES.length && !this.queue.length) this.markDone()
     }
   }
 
   private enqueue(id: string): void {
-    if (this.seen.has(id)) return
-    this.seen.add(id)
+    if (this.seen.has(id) || this.queue.includes(id)) return
     this.queue.push(id)
-    this.onSeen([...this.seen])
   }
 }

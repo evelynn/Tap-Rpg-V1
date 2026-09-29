@@ -3,7 +3,7 @@ import { before, describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
-import { Content, createGameWorld, makeSaveRoot, serializeSave, summaryView, type World } from '@tap/core'
+import { Content, bodyChecksum, createGameWorld, makeSaveRoot, serializeSave, summaryView, type World } from '@tap/core'
 import { Saver, loadGame, localBackend } from '../src/persist'
 
 let content: Content
@@ -103,5 +103,15 @@ describe('저장·이어하기', () => {
     saver.requestThrottled(Date.now() + 2500)
     await new Promise((r) => setTimeout(r, 10))
     assert.equal(writes, 2)
+  })
+
+  it('열 수 없는 새 버전 기록은 blocked이고 어떤 파일도 옮기거나 덮지 않는다(독립 재검증 반례 9)', async () => {
+    const store = new MemStorage() as unknown as Storage
+    const body = { future_field: 1 }
+    const text = JSON.stringify({ header: { schema_version: 99, checksum: bodyChecksum(body), saved_at_utc: 0 }, body })
+    store.setItem('tap.save/save.json', text)
+    const r = await loadGame(localBackend(store), content, Date.now())
+    assert.equal(r.kind, 'blocked')
+    assert.equal(store.getItem('tap.save/save.json'), text)
   })
 })

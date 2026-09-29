@@ -83,6 +83,16 @@ export class SettingsWindow {
     this.root.hidden = true
   }
 
+  // 03 §7 소리: 음량 0~100 밀대. 끌 때마다 저장한다(다시 그리면 끌기가 끊기므로 여기서는 다시 그리지 않는다)
+  private volume(s: Settings): HTMLElement {
+    const input = h('input', { type: 'range', min: '0', max: '100', step: '5', 'aria-label': '음량' }) as HTMLInputElement
+    input.value = String(s.sound_volume)
+    input.disabled = !s.sound_enabled
+    const out = h('span', { class: 'd-dim' }, `${s.sound_volume}`)
+    input.oninput = () => { out.textContent = input.value; this.act.change({ sound_volume: Number(input.value) }) }
+    return h('div', { class: 'd-item' }, h('div', { class: 'd-line' }, h('span', { class: 'd-label' }, '음량'), input, out))
+  }
+
   render(): void {
     if (!this.visible) return
     const s = this.get()
@@ -107,6 +117,7 @@ export class SettingsWindow {
         toggle('클릭 통과', 'click_through', '켜면 기본 창이 마우스를 받지 않습니다. 끄려면 알림 영역 아이콘 메뉴의 `클릭 통과 해제`를 누르세요.', d),
         toggle('전체화면 앱 실행 시 숨기기', 'hide_on_fullscreen', '게임이나 영상을 전체화면으로 보면 잠시 숨습니다.', d),
         toggle('소리', 'sound_enabled', '켜도 전투 소리는 20초에 한 번까지만 냅니다. (첫 데스크톱판에는 음원이 아직 없습니다.)'),
+        this.volume(s),
         toggle('기록 띠', 'record_strip', '기본 창 위에 최근 기록 세 줄과 상세 문장을 보여 줍니다.'),
         toggle('말풍선', 'speech_bubble', '중요한 일이 생기면 기본 창 위에 8초 동안 말풍선을 띄웁니다. 포커스를 가져가지 않습니다.'),
         seg('화면 배율', WINDOW_SCALES.map((v) => [v, `${v * 100}%`] as const), s.window_scale, (v) => this.act.change({ window_scale: v }), '기본 창을 그림과 글자까지 통째로 두 배, 세 배로 키웁니다. 그림은 번지지 않습니다.'),
