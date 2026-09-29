@@ -23,6 +23,7 @@ import { HAIR_FILES, HeroLook } from './look'
 import type { HairFitFile } from './hair'
 
 const APP_VERSION = '0.1.0'
+const SETTLED_NOTE = 'ⓘ 자리를 비운 동안의 일을 정리했습니다' // 실행 중 정산 한 줄(03 §9), 누르면 요약 창
 
 function randomSeed(): string {
   return [...crypto.getRandomValues(new Uint8Array(8))].map((b) => b.toString(16).padStart(2, '0')).join('')
@@ -299,12 +300,13 @@ function boot(b: Boot): void {
     desktop,
   })
 
+  let settled: ReturnType<typeof runOffline>['summary'] = null // 마지막 정산 요약(한 줄을 누르면 연다)
   const summaryWin = new SummaryWindow(document.getElementById('summary')!, {
     journal: () => detail.show('일지'), book: () => detail.openBook(), choice: () => choice.show(), succession: () => succession.show(),
   })
   const sum = loaded.kind === 'ok' ? loaded.summary : null
   if ((sum && sum.settled_sec >= SUMMARY_MIN_SEC) || startNotes.length) summaryWin.show(sum ? summaryView(app.world, sum) : null, startNotes)
-  else if (sum && sum.settled_sec > 0) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
+  else if (sum && sum.settled_sec > 0) { app.note(SETTLED_NOTE); settled = sum }
 
   // 데스크톱 투명 창(D85): 판 크기에 창을 맞추고 기본 창 자리를 지킨다. 트레이 메뉴(03 §10)
   let shell: DesktopShell | null = null
@@ -390,6 +392,8 @@ function boot(b: Boot): void {
       ])
     }
     else if (t.closest('.status, .icons')) detail.show('인물')
+    // 정산 한 줄이 보이는 동안 누르면 그 정산의 요약 창(03 §9)
+    else if (t.closest('.record') && settled && app.lines.current?.text === SETTLED_NOTE) summaryWin.show(summaryView(app.world, settled), [])
     else if (t.closest('.record')) detail.show('일지')
   })
   setInterval(() => { detail.render(); choice.render() }, 1000) // 열려 있을 때만 다시 그린다
@@ -410,7 +414,7 @@ function boot(b: Boot): void {
     if (gap >= 30000 && !app.driver.paused && app.world.state.current_activity.state !== 'paused') {
       try {
         const r = runOffline(app.world, { now_utc: Date.now(), saved_at_utc: Date.now() - gap })
-        if (r.summary && r.summary.settled_sec > 0) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
+        if (r.summary && r.summary.settled_sec > 0) { app.note(SETTLED_NOTE); settled = r.summary }
       } catch (e) { console.error('[텝] 실행 중 정산 실패', e) }
       void saver.request({ backup: true })
     }

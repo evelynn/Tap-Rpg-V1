@@ -89,6 +89,7 @@ export class DesktopShell {
   private size: Size = { width: 0, height: 0 }
   private moving = false // 우리가 setPosition 중이면 onMoved를 끌기로 보지 않는다
   private moveTimer = 0
+  private noMagnet = false // 이번 끌기는 Alt와 함께 시작했다
   private ignoring: boolean | null = null
   private userHidden = false
   private fullscreenHidden = false
@@ -192,7 +193,8 @@ export class DesktopShell {
       return anchor.x >= a.x - 1 && anchor.x < a.x + a.w && anchor.y > a.y && anchor.y <= a.y + a.h + 1
     }) ?? ms[0]
     const wa = m ? area(m) : await this.primaryArea()
-    const snapped = magnet(anchor, this.basicSize(), wa)
+    const snapped = this.noMagnet ? anchor : magnet(anchor, this.basicSize(), wa)
+    this.noMagnet = false
     if (snapped.x !== anchor.x || snapped.y !== anchor.y) await this.place(snapped)
     else this.anchor = anchor
     this.h.savePos({ monitor: m?.name ?? null, rx: (this.anchor.x - wa.x) / wa.w, rb: (this.anchor.y - wa.y) / wa.h })
@@ -212,6 +214,7 @@ export class DesktopShell {
       if (Math.abs(e.clientX - start.x) + Math.abs(e.clientY - start.y) > 4) {
         start = null
         dragged = true
+        this.noMagnet = e.altKey // Alt를 누르고 끌면 자석을 끈다(03 §10)
         void this.win.startDragging()
       }
     })
