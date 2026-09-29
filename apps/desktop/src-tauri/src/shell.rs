@@ -3,6 +3,7 @@
 use std::time::Duration;
 use tauri::menu::{Menu, MenuItem, PredefinedMenuItem};
 use tauri::tray::TrayIconBuilder;
+use tauri::image::Image;
 use tauri::{AppHandle, Emitter, Manager};
 
 pub const TRAY_ITEMS: &[(&str, &str)] = &[
@@ -29,10 +30,7 @@ pub fn build_tray(app: &AppHandle) -> tauri::Result<()> {
             menu.append(&MenuItem::with_id(app, *id, *label, true, None::<&str>)?)?;
         }
     }
-    let mut tray = TrayIconBuilder::with_id("tap").menu(&menu).tooltip("텝").show_menu_on_left_click(false);
-    if let Some(icon) = app.default_window_icon() {
-        tray = tray.icon(icon.clone());
-    }
+    let tray = TrayIconBuilder::with_id("tap").menu(&menu).tooltip("텝").show_menu_on_left_click(false).icon(crest(false));
     tray.on_menu_event(|app, e| {
         let _ = app.emit("tap://tray", e.id().as_ref().to_string());
     })
@@ -46,11 +44,18 @@ pub fn build_tray(app: &AppHandle) -> tauri::Result<()> {
     Ok(())
 }
 
-/// 트레이 아이콘 설명 글(선택 대기 알림, 03 §10)
+// 가문 문장 32 × 32 RGBA(icons/make_icon.py). news = 선택·계승 대기 점이 있는 칸(03 §10, 점멸 없음)
+fn crest(news: bool) -> Image<'static> {
+    let bytes: &'static [u8] = if news { include_bytes!("../icons/tray_news.rgba") } else { include_bytes!("../icons/tray.rgba") };
+    Image::new(bytes, 32, 32)
+}
+
+/// 트레이 아이콘 설명 글과 새 소식 점(선택 대기 알림, 03 §10)
 #[tauri::command]
-pub fn tray_tooltip(app: AppHandle, text: String) {
+pub fn tray_tooltip(app: AppHandle, text: String, news: Option<bool>) {
     if let Some(t) = app.tray_by_id("tap") {
         let _ = t.set_tooltip(Some(text));
+        let _ = t.set_icon(Some(crest(news.unwrap_or(false))));
     }
 }
 

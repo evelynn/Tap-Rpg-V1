@@ -194,6 +194,18 @@ describe('정규화', () => {
     assert.equal(bounds(readCell(r.raster, 0, 0, 12, 12)).y1 - bounds(readCell(r.raster, 0, 0, 12, 12)).y0 + 1, FIGURE.length)
   })
 
+  it('area가 있으면 그 영역만 나눠 칸을 배정한다(틀 격자 둘레 여백, v07 박쥐)', () => {
+    // 높이 120 원본의 격자는 y 30~119(행 높이 45, 행 경계 y 75). 전체를 나누면 행 경계가 y 60이라
+    // 무게중심 y ≈ 67인 두 번째 그림이 아랫칸으로 잘못 간다
+    const src = source(60, 120)
+    src.stamp(['cc', 'cc'], COLORS, 5, 20, 38) // 무게중심 y ≈ 43 → area 행 0
+    src.stamp(['cc', 'cc'], COLORS, 5, 20, 62) // 무게중심 y ≈ 67 → 전체 나누기면 행 1, area면 행 0
+    const whole = assignCells(src, KEY, 1, 2)
+    const inArea = assignCells(src, KEY, 1, 2, [0, 30, 60, 90])
+    assert.notEqual(whole.boxes[1], null, '전체를 나누면 두 번째 그림이 아랫칸으로 간다')
+    assert.equal(inArea.boxes[1], null, 'area로 나누면 두 그림 모두 윗칸(격자 y 30~74)이다')
+  })
+
   it('빈 칸이어야 할 곳에 내용이 있으면 보고하고 출력에서 뺀다', () => {
     const src = source(120, 60)
     src.stamp(FIGURE, COLORS, 5, 12, 11)

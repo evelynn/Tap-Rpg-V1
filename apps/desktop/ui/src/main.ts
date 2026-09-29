@@ -18,7 +18,7 @@ import { GuideScheduler } from './guide'
 import { QuickMenu } from './menu'
 import { Panel } from './panel'
 import { Renderer, type Images } from './render'
-import { BACKGROUNDS, SHEETS, STRIPS } from './sprites'
+import { BACKGROUNDS, PROPS, SHEETS, STRIPS } from './sprites'
 
 const APP_VERSION = '0.1.0'
 
@@ -69,7 +69,7 @@ async function start(): Promise<void> {
   const bundle = (await (await fetch('content.json')).json()) as { content_hash: string; packs: { id: string; version: string }[] }
   const content = Content.fromBundle(bundle as never)
   const meta = (): SaveMeta => ({ app_version: APP_VERSION, saved_at_utc: Date.now(), content_packs: bundle.packs, content_hash: bundle.content_hash })
-  const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS])]
+  const files = [...new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS, ...Object.values(PROPS).map((p) => p.file)])]
   const pics = await Promise.all(files.map((f) => loadImage(`sprites/${f}.png`)))
   const images: Images = Object.fromEntries(files.map((f, i) => [f, pics[i]]))
 
@@ -384,11 +384,11 @@ function boot(b: Boot): void {
     else if (t.closest('.record')) detail.show('일지')
   })
   setInterval(() => { detail.render(); choice.render() }, 1000) // 열려 있을 때만 다시 그린다
-  // 선택 대기는 트레이 설명 글로도 알린다(03 §10, 점 그림은 그림 요청 뒤)
+  // 선택·계승 대기는 트레이 설명 글과 문장의 새 소식 점으로 알린다(03 §10, 점멸 없음)
   let tip = ''
   setInterval(() => {
     const t = app.world.state.pending_choice ? '텝 · 중요한 선택 1건이 기다리고 있습니다' : app.world.state.current_activity.state === 'awaiting_succession' ? '텝 · 계승을 기다리고 있습니다' : '텝'
-    if (t !== tip && tauri) { tip = t; void tauri.core.invoke('tray_tooltip', { text: t }) }
+    if (t !== tip && tauri) { tip = t; void tauri.core.invoke('tray_tooltip', { text: t, news: t !== '텝' }) }
   }, 2000)
 
   // 진행은 매 프레임, 그리기는 초당 최대 30번(drawDue). 숨어 있거나 프레임이 멈추면 1초마다 진행만 한다(그리기 0, 03 §10)

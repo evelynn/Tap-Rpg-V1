@@ -255,14 +255,14 @@
   },
   {
    "name": "enm_rat_48",
-   "source": "v03/08-rat18-48-r3.png",
+   "source": "v07/08-rat18-48-r2.png",
    "role": "reference",
    "grid": [
     4,
     5
    ],
    "cell": [
-    32,
+    40,
     24
    ],
    "rows": [
@@ -303,14 +303,15 @@
    "align": {
     "mode": "ground",
     "bottom": 19,
-    "center_x": 15
+    "center_x": 19
    },
-   "scale_to_spec": {
-    "rows": [
-     0
-    ],
-    "height": 14
-   }
+   "area": [
+    256,
+    32,
+    1024,
+    960
+   ],
+   "scale": 7.12
   },
   {
    "name": "enm_wolf_48",
@@ -373,7 +374,7 @@
   },
   {
    "name": "enm_bat_48",
-   "source": "v05/w02-bat18-48-r3.png",
+   "source": "v07/w02-bat18-48-r2.png",
    "role": "reference",
    "grid": [
     4,
@@ -381,7 +382,7 @@
    ],
    "cell": [
     32,
-    32
+    40
    ],
    "rows": [
     {
@@ -420,26 +421,27 @@
    ],
    "align": {
     "mode": "ground",
-    "bottom": 15,
+    "bottom": 23,
     "center_x": 15
    },
-   "scale_to_spec": {
-    "rows": [
-     0
-    ],
-    "height": 14
-   }
+   "area": [
+    64,
+    208,
+    896,
+    1120
+   ],
+   "scale": 6.75
   },
   {
    "name": "enm_kobold_48",
-   "source": "v05/w03-kobold-composite18-48-r2.png",
+   "source": "v07/w03-kobold-composite18-48-r2.png",
    "role": "reference",
    "grid": [
     4,
     5
    ],
    "cell": [
-    32,
+    40,
     48
    ],
    "rows": [
@@ -480,14 +482,15 @@
    "align": {
     "mode": "ground",
     "bottom": 43,
-    "center_x": 15
+    "center_x": 19
    },
-   "scale_to_spec": {
-    "rows": [
-     0
-    ],
-    "height": 30
-   }
+   "area": [
+    128,
+    48,
+    768,
+    1440
+   ],
+   "scale": 5.84
   },
   {
    "name": "es18_parent_letter",
@@ -2713,38 +2716,9 @@
   },
   {
    "name": "enm_rat_big_48",
-   "source": "v06/w05-rat-big18-48-r2.png",
-   "role": "reference",
-   "grid": [
-    4,
-    5
-   ],
-   "cell": [
-    32,
-    24
-   ],
-   "rows": [
-    {
-     "action": "idle",
-     "frames": 4
-    },
-    {
-     "action": "move",
-     "frames": 4
-    },
-    {
-     "action": "attack",
-     "frames": 4
-    },
-    {
-     "action": "hit",
-     "frames": 2
-    },
-    {
-     "action": "exit",
-     "frames": 4
-    }
-   ],
+   "source": "v07/w05-rat-big18-48.png",
+   "role": "layer",
+   "ref": "enm_rat_48",
    "palette": [
     "outline",
     "skin",
@@ -2757,48 +2731,13 @@
     "underlayer",
     "trousers",
     "ext_enemy"
-   ],
-   "align": {
-    "mode": "ground",
-    "bottom": 19,
-    "center_x": 15
-   },
-   "scale": 10.71
+   ]
   },
   {
    "name": "enm_kobold_foreman_48",
-   "source": "v06/w07-kobold-foreman18-48.png",
-   "role": "reference",
-   "grid": [
-    4,
-    5
-   ],
-   "cell": [
-    32,
-    48
-   ],
-   "rows": [
-    {
-     "action": "idle",
-     "frames": 4
-    },
-    {
-     "action": "move",
-     "frames": 4
-    },
-    {
-     "action": "attack",
-     "frames": 4
-    },
-    {
-     "action": "hit",
-     "frames": 2
-    },
-    {
-     "action": "exit",
-     "frames": 4
-    }
-   ],
+   "source": "v07/w07-kobold-foreman18-48.png",
+   "role": "layer",
+   "ref": "enm_kobold_48",
    "palette": [
     "outline",
     "skin",
@@ -2811,48 +2750,13 @@
     "underlayer",
     "trousers",
     "ext_enemy"
-   ],
-   "align": {
-    "mode": "ground",
-    "bottom": 43,
-    "center_x": 15
-   },
-   "scale": 6.97
+   ]
   },
   {
    "name": "enm_kobold_rustyhelm_48",
-   "source": "v06/w07-kobold-rustyhelm18-48.png",
-   "role": "reference",
-   "grid": [
-    4,
-    5
-   ],
-   "cell": [
-    32,
-    48
-   ],
-   "rows": [
-    {
-     "action": "idle",
-     "frames": 4
-    },
-    {
-     "action": "move",
-     "frames": 4
-    },
-    {
-     "action": "attack",
-     "frames": 4
-    },
-    {
-     "action": "hit",
-     "frames": 2
-    },
-    {
-     "action": "exit",
-     "frames": 4
-    }
-   ],
+   "source": "v07/w07-kobold-rustyhelm18-48.png",
+   "role": "layer",
+   "ref": "enm_kobold_48",
    "palette": [
     "outline",
     "skin",
@@ -2865,48 +2769,13 @@
     "underlayer",
     "trousers",
     "ext_enemy"
-   ],
-   "align": {
-    "mode": "ground",
-    "bottom": 43,
-    "center_x": 15
-   },
-   "scale": 6.97
+   ]
   },
   {
    "name": "enm_kobold_boss_48",
-   "source": "v06/w08-kobold-boss18-48.png",
-   "role": "reference",
-   "grid": [
-    4,
-    5
-   ],
-   "cell": [
-    32,
-    48
-   ],
-   "rows": [
-    {
-     "action": "idle",
-     "frames": 4
-    },
-    {
-     "action": "move",
-     "frames": 4
-    },
-    {
-     "action": "attack",
-     "frames": 4
-    },
-    {
-     "action": "hit",
-     "frames": 2
-    },
-    {
-     "action": "exit",
-     "frames": 4
-    }
-   ],
+   "source": "v07/w08-kobold-boss18-48.png",
+   "role": "layer",
+   "ref": "enm_kobold_48",
    "palette": [
     "outline",
     "skin",
@@ -2919,13 +2788,7 @@
     "underlayer",
     "trousers",
     "ext_enemy"
-   ],
-   "align": {
-    "mode": "ground",
-    "bottom": 43,
-    "center_x": 15
-   },
-   "scale": 6.97
+   ]
   },
   {
    "name": "enm_kobold_body_48",
@@ -2980,6 +2843,194 @@
     "center_x": 15
    },
    "scale": 6.97
+  },
+  {
+   "name": "es21_heir_departure",
+   "source": "v07/es21-heir-departure-48-k-r2.png",
+   "role": "strip",
+   "size": [
+    512,
+    64
+   ],
+   "cols": 4,
+   "fill": "opaque",
+   "palette": null
+  },
+  {
+   "name": "prop_judgement_dice_16",
+   "source": "v07/prop-judgement-dice16-4.png",
+   "role": "reference",
+   "grid": [
+    4,
+    1
+   ],
+   "cell": [
+    24,
+    24
+   ],
+   "rows": [
+    {
+     "action": "roll",
+     "frames": 4
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+   ],
+   "align": {
+    "mode": "center"
+   },
+   "scale": 13.75,
+   "area": [
+    0,
+    384,
+    1536,
+    256
+   ]
+  },
+  {
+   "name": "prop_drop_bundle_16",
+   "source": "v07/prop-drop-bundle16-2.png",
+   "role": "reference",
+   "grid": [
+    2,
+    1
+   ],
+   "cell": [
+    24,
+    24
+   ],
+   "rows": [
+    {
+     "action": "drop",
+     "frames": 2
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+   ],
+   "align": {
+    "mode": "center"
+   },
+   "scale": 17,
+   "area": [
+    0,
+    384,
+    1536,
+    256
+   ]
+  },
+  {
+   "name": "ui_family_crest_16",
+   "source": "v07/ui-family-crest16-2.png",
+   "role": "reference",
+   "grid": [
+    2,
+    1
+   ],
+   "cell": [
+    24,
+    24
+   ],
+   "rows": [
+    {
+     "action": "crest",
+     "frames": 2
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+   ],
+   "align": {
+    "mode": "center"
+   },
+   "scale": 15,
+   "area": [
+    192,
+    384,
+    1152,
+    256
+   ]
+  },
+  {
+   "name": "ui_icons_12",
+   "source": "v07/w25-ui-icons12-15-r3.png",
+   "role": "reference",
+   "grid": [
+    6,
+    3
+   ],
+   "cell": [
+    12,
+    12
+   ],
+   "rows": [
+    {
+     "action": "r1",
+     "frames": 6
+    },
+    {
+     "action": "r2",
+     "frames": 6
+    },
+    {
+     "action": "r3",
+     "frames": 3
+    }
+   ],
+   "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+   ],
+   "align": {
+    "mode": "center"
+   },
+   "scale": 20,
+   "area": [
+    48,
+    152,
+    1440,
+    720
+   ]
   }
  ],
  "preview": {

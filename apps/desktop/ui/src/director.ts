@@ -11,6 +11,7 @@ export interface ActView {
   outcome: string | null
   enemyFamily: string | null // 적 정의의 sprite_family. 전투가 아니면 null
   endKind: string | null // 계승 대기 중 끝난 생애 종류(retired·died·long_sleep)
+  drop: string | null // 전투에서 떨어진 장비 등급(없으면 null, 03 §15 드롭 순간)
 }
 
 export interface Stage {
@@ -24,6 +25,7 @@ interface PartLike {
   kind?: string
   type?: string
   spec?: { enemies?: { id: string }[] }
+  drop?: { grade: string } | null
 }
 
 export function actViewOf(world: World): ActView {
@@ -43,6 +45,7 @@ export function actViewOf(world: World): ActView {
     // 적마다 따로 그린 시트가 있으면 그 시트, 없으면 계열(sprite_family)
     enemyFamily: enemyId && world.content.has('enemy', enemyId) ? (ENEMY_SHEETS[enemyId] ?? world.content.get('enemy', enemyId).sprite_family) : null,
     endKind: ca.life_loop.succession?.record.end_kind ?? null,
+    drop: part?.drop?.grade ?? null,
   }
 }
 
@@ -51,6 +54,11 @@ export const COMBAT_BEAT_MS = 2400
 const ENTER_UNTIL = 0.1 // 이 진행까지 적이 걸어 들어온다
 const FIGHT_UNTIL = 0.85 // 이 진행부터 결말(퇴장·전리품·쓰러짐)
 const TOWN_LOOK_MS = 12000 // 마을 대기 중 가끔 게시판 보기(발견)
+
+// 떨어진 꾸러미(D76): 이긴 전투의 결말(주인공 `상호작용`으로 줍는 동안)에 장비가 떨어졌으면 적 자리 바닥에 보인다
+export function dropShown(v: ActView): boolean {
+  return v.enemyFamily !== null && v.outcome === 'win' && v.progress >= FIGHT_UNTIL && v.drop !== null
+}
 
 const still = (hero: Motion | null, flip = false): Stage => ({ hero, flip, enemy: null, scroll: 0 })
 

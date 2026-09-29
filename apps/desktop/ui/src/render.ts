@@ -1,7 +1,8 @@
 // 기본 창 풍경 그리기(03 §2.2, D75). 캔버스에는 픽셀 그림만 그리고 글자 칸은 DOM(panel.ts)이 맡는다.
 // 캔버스 기억 크기는 장치 픽셀이고, 그림은 정수 배율 k로만 키운다(가장 가까운 이웃). 좌표는 모두 논리 픽셀이다.
 import { SCENE_W, STRIP_W, WIN, groundOf, type Surface } from './layout'
-import { SHEETS, cellRect } from './sprites'
+import { PROPS, SHEETS, cellRect } from './sprites'
+import type { PropDraw } from './props'
 import type { Icon } from './status'
 import type { BubbleItem, StripView } from './overlay'
 
@@ -20,6 +21,7 @@ export interface FrameView {
   hero: SpriteDraw | null
   enemy: SpriteDraw | null
   status: string
+  stateIcon: number | null // 이름·상태 줄 앞 행동 상태 기호(03 §4.1, ui_icons_12 칸)
   icons: Icon[]
   line: string
   mark: 'choice' | 'succession' | null
@@ -28,6 +30,7 @@ export interface FrameView {
   heroCx: number // 평소 주인공 자리(말풍선 꼬리, D82)
   strip: StripView // 기록 띠(03 §2.7)
   bubble: BubbleItem | null // 말풍선
+  props: PropDraw[] // 판정 주사위·떨어진 꾸러미(인물 위에 그린다)
 }
 
 export type Images = Record<string, CanvasImageSource | undefined>
@@ -67,6 +70,10 @@ export class Renderer {
     const feet = v.scene ? groundOf(64) : ground
     if (v.enemy) this.sprite(v.enemy, feet)
     if (v.hero) this.sprite(v.hero, feet)
+    for (const p of v.props) {
+      const s = PROPS[p.prop]
+      this.image(s.file, (p.cell % s.cols) * s.w, Math.floor(p.cell / s.cols) * s.h, s.w, s.h, Math.round(p.cx - s.w / 2), feet + p.dy)
+    }
     c.filter = 'none'
     if (this.grid) this.drawGrid()
   }

@@ -27,15 +27,16 @@ export const SHEETS: Record<string, Sheet> = {
   chr11: chr('chr_actions11_48'),
   chr9: chr('chr_actions9_48'),
   walk: chr('chr_walk12_48'),
-  rat: enm('enm_rat_48', 32, 24),
+  // v07 규격 격자 재생성(D89): 원본 도트 그대로 옮겨 칸을 실측으로 넓혔다(들쥐 40×24, 박쥐 32×40, 코볼트 40×48)
+  rat: enm('enm_rat_48', 40, 24),
   wolf: enm('enm_wolf_48', 48, 32),
-  bat: enm('enm_bat_48', 32, 32),
-  kobold: enm('enm_kobold_48', 32, 48),
-  // v06 흡수 2차 적 변형(칸·행은 바탕 적과 같다)
-  rat_big: enm('enm_rat_big_48', 32, 24),
-  kobold_foreman: enm('enm_kobold_foreman_48', 32, 48),
-  kobold_rustyhelm: enm('enm_kobold_rustyhelm_48', 32, 48),
-  kobold_boss: enm('enm_kobold_boss_48', 32, 48),
+  bat: enm('enm_bat_48', 32, 40),
+  kobold: enm('enm_kobold_48', 40, 48),
+  // 적 변형(v07 바탕 시트의 편집, 칸·행·변환은 바탕 적과 같다)
+  rat_big: enm('enm_rat_big_48', 40, 24),
+  kobold_foreman: enm('enm_kobold_foreman_48', 40, 48),
+  kobold_rustyhelm: enm('enm_kobold_rustyhelm_48', 40, 48),
+  kobold_boss: enm('enm_kobold_boss_48', 40, 48),
 }
 
 // 적마다 따로 그린 시트(없으면 계열 시트). 15 §7 변형 표
@@ -66,7 +67,22 @@ export const STRIPS = {
   ES18: 'es18_parent_letter',
   ES19: 'es19_long_sleep',
   ES20: 'es20_bellwarden_first_defeat',
+  ES21: 'es21_heir_departure',
 } as const
+
+// 소품·UI 그림(v07). 칸 번호는 가로 순번. 주사위: 굴림 2 · 성공 · 실패(금 간), 꾸러미: 떨어짐 2, 문장: 기본 · 새 소식
+export const PROPS = {
+  dice: { file: 'prop_judgement_dice_16', w: 24, h: 24, cols: 4 },
+  bundle: { file: 'prop_drop_bundle_16', w: 24, h: 24, cols: 2 },
+  crest: { file: 'ui_family_crest_16', w: 24, h: 24, cols: 2 },
+  icons: { file: 'ui_icons_12', w: 12, h: 12, cols: 6 },
+} as const
+
+// 03 §4.1 행동 상태 12종 → ui_icons_12 칸(v07 순서). 12·13 = 빈 등불·켠 등불, 14 = 초승달
+export const STATE_ICON: Record<string, number> = {
+  town_idle: 0, town_prep: 1, travel: 2, hunt: 3, adventure: 4, dungeon: 5,
+  camp: 6, return: 7, treatment: 8, awaiting_choice: 9, awaiting_succession: 10, paused: 11,
+}
 
 // 장소 배경 띠(15 §8.3). 고르는 규칙은 background.ts. v06 흡수(I87·2차): 야외 8곳 × 계절 4 × 시간대 4, 계절 없는 곳은 시간대만.
 // 없는 파일은 불러오기에서 건너뛴다. 띠 폭은 원본 도트 수 그대로(D83)
@@ -102,18 +118,14 @@ export const HERO_CLIPS: Record<Motion, Clip> = {
 export const ENEMY_MOTIONS = ['idle', 'move', 'attack', 'hit', 'exit'] as const
 export type EnemyMotion = (typeof ENEMY_MOTIONS)[number]
 
-// 15 §7.1. 박쥐 퇴장 4번째 칸은 빠져 있다(README 알려진 한계)
+// 15 §7.1. v07부터 박쥐도 퇴장 4칸이다(D89)
 export function enemyClips(family: string): Record<EnemyMotion, Clip> {
-  // 변형 시트는 바탕 계열과 행이 같다(박쥐 퇴장 3칸 등)
-  const base = family.split('_')[0]!
   return {
     idle: { sheet: family, cells: range(0, 4), ms: [200, 200, 200, 200], loop: true },
     move: { sheet: family, cells: range(4, 4), ms: [120, 120, 120, 120], loop: true },
     attack: { sheet: family, cells: range(8, 4), ms: [100, 80, 100, 160], loop: false },
     hit: { sheet: family, cells: range(12, 2), ms: [70, 150], loop: false },
-    exit: base === 'bat'
-      ? { sheet: family, cells: range(16, 3), ms: [120, 120, 120], loop: false, hold: true }
-      : { sheet: family, cells: range(16, 4), ms: [120, 120, 120, 120], loop: false, hold: true },
+    exit: { sheet: family, cells: range(16, 4), ms: [120, 120, 120, 120], loop: false, hold: true },
   }
 }
 

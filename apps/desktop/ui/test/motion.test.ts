@@ -7,7 +7,7 @@ describe('스프라이트 칸 찾기', () => {
   it('칸 번호를 시트 격자 사각형으로 바꾼다', () => {
     assert.deepEqual(cellRect(SHEETS.chr18!, 7), { sx: 48, sy: 48, w: 48, h: 48 }) // 공격 2프레임
     assert.deepEqual(cellRect(SHEETS.wolf!, 5), { sx: 48, sy: 32, w: 48, h: 32 }) // 이동 2프레임
-    assert.deepEqual(cellRect(SHEETS.rat!, 19), { sx: 96, sy: 96, w: 32, h: 24 }) // 퇴장 4프레임
+    assert.deepEqual(cellRect(SHEETS.rat!, 19), { sx: 120, sy: 96, w: 40, h: 24 }) // 퇴장 4프레임(v07 칸 40 × 24, D89)
   })
 
   it('걷기는 12칸 중 1·2·4·7·8·10번을 110ms로 돈다', () => {
@@ -19,7 +19,7 @@ describe('스프라이트 칸 찾기', () => {
   it('동작마다 프레임 수와 시간 수가 같다(15 §4)', () => {
     for (const clip of Object.values(HERO_CLIPS)) assert.equal(clip.cells.length, clip.ms.length)
     assert.deepEqual(HERO_CLIPS.attack.ms, [100, 80, 60, 60, 120, 160])
-    assert.equal(enemyClips('bat').exit.cells.length, 3) // 박쥐 퇴장 4번째 칸은 빠져 있다
+    assert.equal(enemyClips('bat').exit.cells.length, 4) // v07 박쥐는 퇴장 4칸(D89)
   })
 
   it('시트가 없는 적 계열은 가까운 계열로 대신한다', () => {

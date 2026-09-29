@@ -5,7 +5,7 @@ import { join } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { build } from 'esbuild'
 import { formatIssue, validateContent } from '@tap/content-kit'
-import { BACKGROUNDS, SHEETS, STRIPS } from '../src/sprites'
+import { BACKGROUNDS, SHEETS, STRIPS, PROPS } from '../src/sprites'
 
 export const UI_DIR = fileURLToPath(new URL('..', import.meta.url))
 export const DIST = join(UI_DIR, 'dist')
@@ -24,7 +24,7 @@ function copySprites(): string[] {
   const dir = join(DIST, 'sprites')
   mkdirSync(dir, { recursive: true })
   const missing: string[] = []
-  for (const f of new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS])) {
+  for (const f of new Set([...Object.values(SHEETS).map((s) => s.file), ...Object.values(STRIPS), ...BACKGROUNDS, ...Object.values(PROPS).map((p) => p.file)])) {
     const src = join(READY, `${f}.png`)
     if (existsSync(src)) copyFileSync(src, join(dir, `${f}.png`))
     else missing.push(f)

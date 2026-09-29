@@ -1,6 +1,6 @@
 {
   "karin_version": "1.3.0",
-  "session": 7,
+  "session": 8,
   "feature": "텝 데스크톱 완성본 — 투명 창·저장·그림·남은 기능",
   "phase": "build",
   "complexity": "Complex",
@@ -270,19 +270,25 @@
     },
     {
       "id": "P7",
-      "subject": "통합 검증(A26~A30)",
+      "subject": "통합 검증(A26~A30) — 독립 검증 반례 2회 반영(ac268ca·e6b5bf5)",
+      "status": "completed",
+      "priority": "high"
+    },
+    {
+      "id": "P8",
+      "subject": "게임 완성: v07 흡수·머리 합성 D88·연결·밸런스 루프(B1~B6)",
       "status": "in_progress",
       "priority": "high"
     }
   ],
-  "current_task": "P7",
-  "next_action": "독립 검증(A29) 결과 반영 → 종합 보고",
+  "current_task": "P8",
+  "next_action": "G1 v07 흡수(대응표·정규화)",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
     "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "442a84b",
+  "last_commit": "e6b5bf5",
   "verify_state": "pnpm check 1220 통과(480분 정산 CPU 시험은 전체 실행 부하 때 가끔 2초를 넘는다 — 단독 0.3~0.8초), lint 0, content 0 (2026-09-28)",
-  "last_updated": "2026-09-28T00:00:00+09:00"
+  "last_updated": "2026-09-29T12:00:00+09:00"
 }

@@ -1,0 +1,167 @@
+{
+  "name": "prop_drop_bundle_16",
+  "source": "assets/_imagegen/v07/prop-drop-bundle16-2.png",
+  "role": "reference",
+  "ref": null,
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+  ],
+  "rows": [
+    {
+      "action": "drop",
+      "frames": 2
+    }
+  ],
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    2,
+    1
+  ],
+  "cell": [
+    24,
+    24
+  ],
+  "cell_ratio": [
+    32,
+    10.67
+  ],
+  "scale": 17,
+  "scale_origin": "map",
+  "art_period": 17,
+  "notes": [
+    "원본 칸이 정사각 비율이 아니다(가로 32 · 세로 10.67). 축척은 한 값이어야 해 지정값 17을 쓴다"
+  ],
+  "totals": {
+    "opaque": 392,
+    "dropped_outside": 0,
+    "specks_removed": 0,
+    "colors_merged": 0,
+    "islands_folded": 0,
+    "colors": [
+      "#2B2233",
+      "#2F2420",
+      "#8E5E38",
+      "#A0664A",
+      "#A8894A",
+      "#B07A3A",
+      "#C08A58",
+      "#C88E68",
+      "#E3B48E",
+      "#F0E6CC",
+      "#F6D9C2"
+    ],
+    "palette_error_mean": 21.99,
+    "palette_error_max": 44.34
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "drop",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        407,
+        351,
+        674,
+        673
+      ],
+      "anchor": [
+        417,
+        364
+      ],
+      "shift": [
+        5,
+        3
+      ],
+      "opaque": 196,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        2,
+        19,
+        20
+      ],
+      "bbox_center_x": 11.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#8E5E38",
+        "#A0664A",
+        "#A8894A",
+        "#B07A3A",
+        "#C08A58",
+        "#C88E68",
+        "#F0E6CC"
+      ],
+      "palette_error": {
+        "mean": 21.78,
+        "max": 40.26
+      },
+      "block_purity": 0.85,
+      "colors_merged": 0,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "drop",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        858,
+        404,
+        1141,
+        704
+      ],
+      "anchor": [
+        867,
+        414
+      ],
+      "shift": [
+        4,
+        4
+      ],
+      "opaque": 196,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        4,
+        3,
+        19,
+        20
+      ],
+      "bbox_center_x": 11.5,
+      "colors": [
+        "#2B2233",
+        "#2F2420",
+        "#8E5E38",
+        "#C88E68",
+        "#E3B48E",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 22.2,
+        "max": 44.34
+      },
+      "block_purity": 0.88,
+      "colors_merged": 0,
+      "islands_folded": 0
+    }
+  ]
+}

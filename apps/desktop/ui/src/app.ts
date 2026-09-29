@@ -1,6 +1,7 @@
 // 기본 창 한 프레임 만들기: 세계 구동 → 한 줄 기록·장면 → 연출 → FrameView. DOM이 없어 헤드리스로도 돈다.
 import { journalGrade, type JournalEntry, type World } from '@tap/core'
-import { actViewOf, direct, type Stage } from './director'
+import { actViewOf, direct, dropShown, type Stage } from './director'
+import { BUNDLE_DY, DICE_DY, DiceTracker, bundleCell, type PropDraw } from './props'
 import { Driver } from './driver'
 import { WIN, stageOf } from './layout'
 import { BubbleQueue, bubbleWorthy, stripView } from './overlay'
@@ -8,11 +9,12 @@ import { Animator } from './motion'
 import { LineQueue } from './records'
 import type { FrameView } from './render'
 import { SceneTracker } from './scenes'
-import { HERO_CLIPS, STRIPS, enemyClips, spriteFamily, type EnemyMotion, type Motion } from './sprites'
+import { HERO_CLIPS, STATE_ICON, STRIPS, enemyClips, spriteFamily, type EnemyMotion, type Motion } from './sprites'
 import { pickBackground } from './background'
 import { icons, statusLine, statusViewOf } from './status'
 
 const GATE_SCENE = 'EB03_first'
+const DEPART_SCENE = 'depart' // 계승 출발 한 줄(sub depart) → ES21(12 §1.3)
 const SCROLL_PX_SEC = 20 // 층 나누기 전 합성 띠라 중간 층 속도 하나로 흘린다(15 §8.2)
 export const PAUSE_LINE = 'ⓘ 일시정지 중입니다. 나이와 진행이 멈췄습니다.'
 
@@ -31,6 +33,9 @@ export class App {
   // ES20: 부서진 종의 파수꾼(EB03)이 지키는 관문을 처음 넘은 기록에 장면을 단다
   private readonly bellwardenGate: string | null
   lastTick: readonly JournalEntry[] = [] // 이번 프레임에 새로 생긴 기록(저장 시점 판단, 13 §8.1)
+  private readonly dice = new DiceTracker()
+  private bundle: { seq: number; since: number } | null = null
+  reducedMotion = false // 운영체제 애니메이션 줄이기(03 §14): 주사위는 결과 면만
 
   // sceneFiles: 장면 id → 그림 파일(그림이 있는 장면만)
   // backgrounds: 불러온 장소 배경 띠(background.ts가 장소·계절·시간대로 고른다)
@@ -55,12 +60,13 @@ export class App {
     for (const e of this.lastTick) {
       lines.push({
         id: e.id, text: e.line, grade: journalGrade(e),
-        ...(e.refs?.event_id ? { eventId: e.refs.event_id } : e.sub === 'gate_first' && e.refs?.location_id === this.bellwardenGate ? { eventId: GATE_SCENE } : {}),
+        ...(e.refs?.event_id ? { eventId: e.refs.event_id } : e.sub === 'gate_first' && e.refs?.location_id === this.bellwardenGate ? { eventId: GATE_SCENE } : e.sub === 'depart' ? { eventId: DEPART_SCENE } : {}),
         ...(e.tag === 'gear' && e.sub === 'rare_gain' ? { long: true } : {}), // 드롭 순간(D76)
       })
       const ev = e.refs?.event_id
       const category = ev && world.content.has('event', ev) ? world.content.get('event', ev).category : undefined
       if (bubbleWorthy(e, category)) this.bubbles.push({ id: e.id, line: e.line, detail: e.detail ?? '' })
+      this.dice.push(e, now)
     }
     this.bubbles.update(now)
     if (lines.update(now)) this.scenes.onLine(lines.current?.eventId, now)
@@ -74,6 +80,14 @@ export class App {
     const heroShown = scene ? scene.row.hero !== null : this.stage.hero !== null
     const hero = this.hero
     const foe = this.enemy?.anim
+    const props: PropDraw[] = []
+    const av = actViewOf(world)
+    if (!scene && dropShown(av)) {
+      if (this.bundle?.seq !== av.seq) this.bundle = { seq: av.seq, since: now }
+      props.push({ prop: 'bundle', cell: bundleCell(now - this.bundle.since), cx: st.enemyCx, dy: BUNDLE_DY })
+    } else this.bundle = null
+    const die = this.dice.cell(now, this.reducedMotion)
+    if (die !== null && heroShown) props.push({ prop: 'dice', cell: die, cx: scene?.row.hero ? st.sceneX + scene.row.hero.x : st.heroCx, dy: DICE_DY })
     return {
       bg: { file: this.backgrounds.size ? pickBackground(world, this.backgrounds) : STRIPS.bg, offset: this.offset },
       scene: scene ? { file: this.sceneFiles[scene.row.scene]!, frame: scene.frame, x: st.sceneX } : null,
@@ -86,6 +100,7 @@ export class App {
         sheet: foe.clip.sheet, cell: foe.cell, cx: st.enemyCx, flip: false, flash: foe.motion === 'hit' && foe.frame === 0,
       } : null,
       status: sv ? statusLine(sv) : world.state.family.name,
+      stateIcon: sv ? STATE_ICON[paused ? 'paused' : sv.state] ?? null : null,
       icons: sv ? icons(sv) : [],
       line: paused ? PAUSE_LINE : lines.current?.text ?? '',
       mark: world.state.pending_choice ? 'choice' : world.state.current_activity.state === 'awaiting_succession' ? 'succession' : null,
@@ -94,6 +109,7 @@ export class App {
       heroCx: st.heroCx,
       strip: stripView(world),
       bubble: this.bubbles.current,
+      props,
     }
   }
 

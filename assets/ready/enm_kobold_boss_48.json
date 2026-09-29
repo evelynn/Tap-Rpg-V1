@@ -1,8 +1,8 @@
 {
   "name": "enm_kobold_boss_48",
-  "source": "assets/_imagegen/v06/w08-kobold-boss18-48.png",
-  "role": "reference",
-  "ref": null,
+  "source": "assets/_imagegen/v07/w08-kobold-boss18-48.png",
+  "role": "layer",
+  "ref": "enm_kobold_48",
   "palette": [
     "outline",
     "skin",
@@ -47,45 +47,45 @@
     5
   ],
   "cell": [
-    32,
+    40,
     48
   ],
   "cell_ratio": [
-    8,
-    6.4
+    4.8,
+    6
   ],
-  "scale": 6.97,
-  "scale_origin": "map",
-  "art_period": 5,
+  "scale": 5.84,
+  "scale_origin": "reference",
+  "art_period": 5.84,
   "notes": [
-    "원본 칸이 정사각 비율이 아니다(가로 8 · 세로 6.4). 축척은 한 값이어야 해 지정값 6.97을 쓴다",
-    "원본 그림의 화소 블록은 약 5인데 축척은 6.97이다 — 원본 화소 1.39개가 논리 화소 1개로 합쳐져 가는 선·세부가 빠질 수 있다"
+    "원본 칸이 정사각 비율이 아니다(가로 4.8 · 세로 6). 축척은 한 값이어야 해 지정값 5.84을 쓴다"
   ],
   "totals": {
-    "opaque": 7867,
+    "opaque": 10675,
     "dropped_outside": 0,
     "specks_removed": 0,
-    "colors_merged": 472,
+    "colors_merged": 1003,
     "islands_folded": 2,
     "colors": [
+      "#2B2233",
       "#2F2420",
       "#4A3A32",
       "#4C4A52",
-      "#4D6A3E",
       "#5E3C24",
+      "#6C6A70",
+      "#6D8F5A",
       "#6E442C",
       "#6E5A48",
       "#6E6862",
       "#6E7A5A",
       "#743426",
       "#7A4E24",
+      "#7A5A6E",
       "#7D7B80",
-      "#8A96A6",
       "#8E5E38",
       "#9A8A78",
       "#9A948C",
       "#9AA85A",
-      "#A0664A",
       "#A4523A",
       "#A8883E",
       "#B04A42",
@@ -98,14 +98,14 @@
       "#C8C2B8",
       "#C98E72",
       "#D8B868",
-      "#E3B48E",
       "#E8B89A",
+      "#E8E4DC",
       "#E8E6E0",
       "#F0E6CC",
       "#F6D9C2"
     ],
-    "palette_error_mean": 40.04,
-    "palette_error_max": 158.37
+    "palette_error_mean": 38.77,
+    "palette_error_max": 177.18
   },
   "cells": [
     {
@@ -115,32 +115,33 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        71,
-        84,
-        244,
-        305
+        80,
+        110,
+        242,
+        307
       ],
       "anchor": [
-        76.25,
-        89.25
+        84.75,
+        123.25
       ],
       "shift": [
-        5,
+        9,
         13
       ],
-      "opaque": 440,
+      "opaque": 558,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        4,
-        12,
-        28,
+        8,
+        10,
+        35,
         43
       ],
-      "bbox_center_x": 16,
+      "bbox_center_x": 21.5,
       "colors": [
         "#2F2420",
         "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
         "#6E442C",
         "#6E5A48",
@@ -149,12 +150,11 @@
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
-        "#9A8A78",
         "#9A948C",
         "#9AA85A",
-        "#A0664A",
         "#A8883E",
         "#B04A42",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
@@ -167,11 +167,11 @@
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.62,
-        "max": 143.9
+        "mean": 38.12,
+        "max": 131.01
       },
-      "block_purity": 0.61,
-      "colors_merged": 32,
+      "block_purity": 0.54,
+      "colors_merged": 57,
       "islands_folded": 0
     },
     {
@@ -181,35 +181,36 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        315,
-        84,
+        313,
+        109,
         486,
-        305
+        307
       ],
       "anchor": [
-        320.25,
-        87.5
+        324.5,
+        122.5
       ],
       "shift": [
-        5,
-        13
+        9,
+        12
       ],
-      "opaque": 444,
+      "opaque": 565,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        4,
-        12,
-        28,
+        7,
+        10,
+        35,
         43
       ],
-      "bbox_center_x": 16,
+      "bbox_center_x": 21,
       "colors": [
         "#2F2420",
-        "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
         "#6E5A48",
-        "#6E6862",
         "#6E7A5A",
         "#743426",
         "#7A4E24",
@@ -217,10 +218,75 @@
         "#8E5E38",
         "#9A948C",
         "#9AA85A",
-        "#A0664A",
+        "#A8883E",
+        "#B04A42",
+        "#B0603A",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8783A",
+        "#C8C2B8",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 38.33,
+        "max": 93.62
+      },
+      "block_purity": 0.53,
+      "colors_merged": 53,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "idle",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        552,
+        109,
+        724,
+        307
+      ],
+      "anchor": [
+        564.5,
+        123
+      ],
+      "shift": [
+        9,
+        12
+      ],
+      "opaque": 574,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        9,
+        35,
+        43
+      ],
+      "bbox_center_x": 20.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E5A48",
+        "#743426",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
         "#A4523A",
         "#A8883E",
         "#B04A42",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
@@ -232,46 +298,47 @@
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.39,
-        "max": 147.69
+        "mean": 37.81,
+        "max": 107.78
       },
-      "block_purity": 0.59,
-      "colors_merged": 26,
+      "block_purity": 0.56,
+      "colors_merged": 59,
       "islands_folded": 0
     },
     {
-      "col": 2,
+      "col": 3,
       "row": 0,
       "action": "idle",
       "expected": "content",
       "status": "ok",
       "source_box": [
-        559,
-        84,
-        734,
-        305
+        785,
+        109,
+        962,
+        307
       ],
       "anchor": [
-        564.25,
-        88.5
+        792,
+        122
       ],
       "shift": [
-        5,
-        13
+        7,
+        12
       ],
-      "opaque": 446,
+      "opaque": 562,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        4,
-        12,
-        28,
+        6,
+        10,
+        35,
         43
       ],
-      "bbox_center_x": 16,
+      "bbox_center_x": 20.5,
       "colors": [
         "#2F2420",
         "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
         "#6E442C",
         "#6E5A48",
@@ -280,13 +347,142 @@
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
-        "#9A8A78",
         "#9A948C",
         "#9AA85A",
-        "#A0664A",
-        "#A4523A",
         "#A8883E",
         "#B04A42",
+        "#B0603A",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8783A",
+        "#C88E68",
+        "#C8C2B8",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 38.55,
+        "max": 122.31
+      },
+      "block_purity": 0.53,
+      "colors_merged": 58,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        72,
+        382,
+        248,
+        592
+      ],
+      "anchor": [
+        83.25,
+        401.25
+      ],
+      "shift": [
+        8,
+        11
+      ],
+      "opaque": 599,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        7,
+        35,
+        43
+      ],
+      "bbox_center_x": 20.5,
+      "colors": [
+        "#2F2420",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#743426",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B04A42",
+        "#B0603A",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8783A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 39.45,
+        "max": 155.31
+      },
+      "block_purity": 0.55,
+      "colors_merged": 53,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        312,
+        382,
+        492,
+        592
+      ],
+      "anchor": [
+        324.5,
+        401.5
+      ],
+      "shift": [
+        9,
+        11
+      ],
+      "opaque": 592,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        7,
+        36,
+        42
+      ],
+      "bbox_center_x": 21,
+      "colors": [
+        "#2F2420",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#743426",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B04A42",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
@@ -300,209 +496,12 @@
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.45,
-        "max": 152.71
+        "mean": 38.61,
+        "max": 134.12
       },
-      "block_purity": 0.6,
-      "colors_merged": 37,
-      "islands_folded": 0
-    },
-    {
-      "col": 3,
-      "row": 0,
-      "action": "idle",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        792,
-        84,
-        977,
-        305
-      ],
-      "anchor": [
-        797.25,
-        84.5
-      ],
-      "shift": [
-        4,
-        12
-      ],
-      "opaque": 457,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        3,
-        12,
-        29,
-        43
-      ],
-      "bbox_center_x": 16,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E5A48",
-        "#6E6862",
-        "#6E7A5A",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A948C",
-        "#9AA85A",
-        "#A0664A",
-        "#A4523A",
-        "#A8883E",
-        "#B04A42",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C98E72",
-        "#D8B868",
-        "#E8B89A",
-        "#E8E6E0",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 40.02,
-        "max": 125.04
-      },
-      "block_purity": 0.59,
-      "colors_merged": 27,
-      "islands_folded": 0
-    },
-    {
-      "col": 0,
-      "row": 1,
-      "action": "move",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        71,
-        375,
-        245,
-        594
-      ],
-      "anchor": [
-        76.25,
-        376.5
-      ],
-      "shift": [
-        5,
-        13
-      ],
-      "opaque": 434,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        4,
-        13,
-        28,
-        43
-      ],
-      "bbox_center_x": 16,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E442C",
-        "#6E5A48",
-        "#6E6862",
-        "#6E7A5A",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A8A78",
-        "#9A948C",
-        "#9AA85A",
-        "#A4523A",
-        "#A8883E",
-        "#B04A42",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C98E72",
-        "#D8B868",
-        "#E3B48E",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 39.7,
-        "max": 143.9
-      },
-      "block_purity": 0.59,
-      "colors_merged": 18,
-      "islands_folded": 0
-    },
-    {
-      "col": 1,
-      "row": 1,
-      "action": "move",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        316,
-        375,
-        486,
-        594
-      ],
-      "anchor": [
-        320.25,
-        376.5
-      ],
-      "shift": [
-        5,
-        13
-      ],
-      "opaque": 438,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        4,
-        13,
-        28,
-        43
-      ],
-      "bbox_center_x": 16,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E442C",
-        "#6E5A48",
-        "#6E6862",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A8A78",
-        "#9A948C",
-        "#9AA85A",
-        "#A8883E",
-        "#B04A42",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C98E72",
-        "#D8B868",
-        "#E8B89A",
-        "#E8E6E0",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 40.06,
-        "max": 143.9
-      },
-      "block_purity": 0.6,
-      "colors_merged": 28,
-      "islands_folded": 0
+      "block_purity": 0.55,
+      "colors_merged": 59,
+      "islands_folded": 1
     },
     {
       "col": 2,
@@ -511,361 +510,43 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        559,
-        375,
-        731,
-        594
+        549,
+        382,
+        728,
+        592
       ],
       "anchor": [
-        564.25,
-        376.5
+        562.5,
+        401
       ],
       "shift": [
-        5,
-        13
+        9,
+        11
       ],
-      "opaque": 434,
+      "opaque": 618,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        4,
-        13,
-        28,
+        6,
+        7,
+        36,
         43
       ],
-      "bbox_center_x": 16,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E442C",
-        "#6E5A48",
-        "#6E6862",
-        "#6E7A5A",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A948C",
-        "#9AA85A",
-        "#A8883E",
-        "#B04A42",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C98E72",
-        "#D8B868",
-        "#E8B89A",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 39.6,
-        "max": 85.68
-      },
-      "block_purity": 0.62,
-      "colors_merged": 25,
-      "islands_folded": 0
-    },
-    {
-      "col": 3,
-      "row": 1,
-      "action": "move",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        805,
-        375,
-        978,
-        594
-      ],
-      "anchor": [
-        809.25,
-        376.25
-      ],
-      "shift": [
-        5,
-        13
-      ],
-      "opaque": 425,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        4,
-        13,
-        28,
-        43
-      ],
-      "bbox_center_x": 16,
+      "bbox_center_x": 21,
       "colors": [
         "#2F2420",
         "#4A3A32",
         "#4C4A52",
         "#5E3C24",
-        "#6E5A48",
-        "#6E6862",
-        "#6E7A5A",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A8A78",
-        "#9A948C",
-        "#9AA85A",
-        "#A0664A",
-        "#A8883E",
-        "#B04A42",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C98E72",
-        "#D8B868",
-        "#E8B89A",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 39.34,
-        "max": 158.37
-      },
-      "block_purity": 0.6,
-      "colors_merged": 24,
-      "islands_folded": 0
-    },
-    {
-      "col": 0,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        53,
-        655,
-        240,
-        883
-      ],
-      "anchor": [
-        57.25,
-        658.5
-      ],
-      "shift": [
-        3,
-        12
-      ],
-      "opaque": 486,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        2,
-        11,
-        28,
-        43
-      ],
-      "bbox_center_x": 15,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E5A48",
-        "#6E6862",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A8A78",
-        "#9A948C",
-        "#9AA85A",
-        "#A0664A",
-        "#A4523A",
-        "#A8883E",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C98E72",
-        "#D8B868",
-        "#E8B89A",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 39.45,
-        "max": 72.79
-      },
-      "block_purity": 0.62,
-      "colors_merged": 30,
-      "islands_folded": 0
-    },
-    {
-      "col": 1,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        315,
-        628,
-        500,
-        883
-      ],
-      "anchor": [
-        316.25,
-        629.25
-      ],
-      "shift": [
-        4,
-        8
-      ],
-      "opaque": 458,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        4,
-        8,
-        29,
-        43
-      ],
-      "bbox_center_x": 16.5,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E5A48",
-        "#6E6862",
-        "#7A4E24",
-        "#7D7B80",
-        "#8E5E38",
-        "#9A8A78",
-        "#9A948C",
-        "#9AA85A",
-        "#A0664A",
-        "#A8883E",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C08A58",
-        "#C8783A",
-        "#C88E68",
-        "#D8B868",
-        "#E8B89A",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 40.48,
-        "max": 71.65
-      },
-      "block_purity": 0.64,
-      "colors_merged": 20,
-      "islands_folded": 0
-    },
-    {
-      "col": 2,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        517,
-        732,
-        715,
-        884
-      ],
-      "anchor": [
-        521.5,
-        736.5
-      ],
-      "shift": [
-        2,
-        23
-      ],
-      "opaque": 361,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        1,
-        22,
-        29,
-        43
-      ],
-      "bbox_center_x": 15,
-      "colors": [
-        "#2F2420",
-        "#5E3C24",
+        "#6C6A70",
         "#6E442C",
         "#6E5A48",
-        "#6E6862",
         "#743426",
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
         "#9A948C",
         "#9AA85A",
-        "#A4523A",
-        "#A8883E",
-        "#B07A3A",
-        "#B4B2B0",
-        "#C8783A",
-        "#C88E68",
-        "#D8B868",
-        "#E8B89A",
-        "#E8E6E0",
-        "#F0E6CC",
-        "#F6D9C2"
-      ],
-      "palette_error": {
-        "mean": 40.95,
-        "max": 81.49
-      },
-      "block_purity": 0.58,
-      "colors_merged": 27,
-      "islands_folded": 0
-    },
-    {
-      "col": 3,
-      "row": 2,
-      "action": "attack",
-      "expected": "content",
-      "status": "ok",
-      "source_box": [
-        805,
-        655,
-        986,
-        883
-      ],
-      "anchor": [
-        810.25,
-        658.5
-      ],
-      "shift": [
-        5,
-        12
-      ],
-      "opaque": 447,
-      "dropped_outside": 0,
-      "specks_removed": 0,
-      "bbox": [
-        4,
-        11,
-        29,
-        43
-      ],
-      "bbox_center_x": 16.5,
-      "colors": [
-        "#2F2420",
-        "#4A3A32",
-        "#5E3C24",
-        "#6E5A48",
-        "#6E6862",
-        "#743426",
-        "#7A4E24",
-        "#7D7B80",
-        "#8A96A6",
-        "#8E5E38",
-        "#9A948C",
-        "#9AA85A",
-        "#A4523A",
         "#A8883E",
         "#B04A42",
         "#B0603A",
@@ -873,17 +554,347 @@
         "#B4B2B0",
         "#C08A58",
         "#C8783A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 39.9,
+        "max": 169.49
+      },
+      "block_purity": 0.54,
+      "colors_merged": 60,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 1,
+      "action": "move",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        786,
+        381,
+        964,
+        591
+      ],
+      "anchor": [
+        798.75,
+        395.25
+      ],
+      "shift": [
+        8,
+        10
+      ],
+      "opaque": 589,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        7,
+        36,
+        42
+      ],
+      "bbox_center_x": 21,
+      "colors": [
+        "#2F2420",
+        "#4C4A52",
+        "#5E3C24",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#743426",
+        "#7A4E24",
+        "#7A5A6E",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B04A42",
+        "#B0603A",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8783A",
+        "#C88E68",
+        "#C8C2B8",
         "#D8B868",
         "#E8B89A",
         "#F0E6CC",
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 39.99,
-        "max": 143.9
+        "mean": 38.2,
+        "max": 131.87
       },
-      "block_purity": 0.6,
-      "colors_merged": 34,
+      "block_purity": 0.54,
+      "colors_merged": 61,
+      "islands_folded": 0
+    },
+    {
+      "col": 0,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        68,
+        665,
+        248,
+        876
+      ],
+      "anchor": [
+        72.25,
+        682
+      ],
+      "shift": [
+        7,
+        11
+      ],
+      "opaque": 635,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        8,
+        36,
+        43
+      ],
+      "bbox_center_x": 21,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#743426",
+        "#7A4E24",
+        "#7A5A6E",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B04A42",
+        "#B0603A",
+        "#B07A3A",
+        "#C08A58",
+        "#C8783A",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E4DC",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 38.14,
+        "max": 152.12
+      },
+      "block_purity": 0.54,
+      "colors_merged": 62,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        310,
+        645,
+        498,
+        877
+      ],
+      "anchor": [
+        330.5,
+        660
+      ],
+      "shift": [
+        9,
+        7
+      ],
+      "opaque": 623,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        5,
+        4,
+        36,
+        43
+      ],
+      "bbox_center_x": 20.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#6E7A5A",
+        "#743426",
+        "#7A4E24",
+        "#7A5A6E",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#B07A3A",
+        "#C08A58",
+        "#C8783A",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 38.98,
+        "max": 90.69
+      },
+      "block_purity": 0.59,
+      "colors_merged": 38,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        521,
+        731,
+        706,
+        882
+      ],
+      "anchor": [
+        533.25,
+        734.25
+      ],
+      "shift": [
+        4,
+        20
+      ],
+      "opaque": 517,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        2,
+        19,
+        33,
+        45
+      ],
+      "bbox_center_x": 17.5,
+      "colors": [
+        "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
+        "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
+        "#6E5A48",
+        "#6E7A5A",
+        "#743426",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B0603A",
+        "#B07A3A",
+        "#B4B2B0",
+        "#C08A58",
+        "#C8783A",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 38.29,
+        "max": 108.69
+      },
+      "block_purity": 0.55,
+      "colors_merged": 41,
+      "islands_folded": 1
+    },
+    {
+      "col": 3,
+      "row": 2,
+      "action": "attack",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        783,
+        665,
+        963,
+        877
+      ],
+      "anchor": [
+        797,
+        681.25
+      ],
+      "shift": [
+        9,
+        10
+      ],
+      "opaque": 609,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        6,
+        7,
+        36,
+        43
+      ],
+      "bbox_center_x": 21,
+      "colors": [
+        "#2F2420",
+        "#4C4A52",
+        "#5E3C24",
+        "#6D8F5A",
+        "#6E442C",
+        "#6E5A48",
+        "#6E6862",
+        "#743426",
+        "#7A4E24",
+        "#7D7B80",
+        "#8E5E38",
+        "#9A948C",
+        "#9AA85A",
+        "#A8883E",
+        "#B04A42",
+        "#B0603A",
+        "#B07A3A",
+        "#C08A58",
+        "#C8783A",
+        "#C8C2B8",
+        "#C98E72",
+        "#D8B868",
+        "#E8B89A",
+        "#E8E6E0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 38.12,
+        "max": 114.74
+      },
+      "block_purity": 0.56,
+      "colors_merged": 59,
       "islands_folded": 0
     },
     {
@@ -893,60 +904,61 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        70,
-        943,
-        245,
-        1165
+        65,
+        947,
+        247,
+        1153
       ],
       "anchor": [
-        76.25,
-        943.5
+        83,
+        959.75
       ],
       "shift": [
-        5,
-        12
+        9,
+        11
       ],
-      "opaque": 451,
+      "opaque": 605,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        4,
-        12,
-        28,
+        6,
+        9,
+        36,
         43
       ],
-      "bbox_center_x": 16,
+      "bbox_center_x": 21,
       "colors": [
         "#2F2420",
         "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
+        "#6C6A70",
         "#6E5A48",
-        "#6E6862",
         "#743426",
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
         "#9A948C",
         "#9AA85A",
-        "#A0664A",
-        "#A4523A",
         "#A8883E",
         "#B04A42",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
         "#C8783A",
+        "#C98E72",
         "#D8B868",
         "#E8B89A",
         "#F0E6CC",
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 39.5,
-        "max": 111.63
+        "mean": 38.6,
+        "max": 177.18
       },
-      "block_purity": 0.59,
-      "colors_merged": 36,
+      "block_purity": 0.56,
+      "colors_merged": 61,
       "islands_folded": 0
     },
     {
@@ -956,47 +968,46 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        300,
-        947,
-        493,
-        1165
+        310,
+        948,
+        488,
+        1156
       ],
       "anchor": [
-        300.25,
-        947.5
+        312,
+        959.5
       ],
       "shift": [
-        3,
-        13
+        7,
+        10
       ],
-      "opaque": 469,
+      "opaque": 619,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        3,
-        13,
-        30,
+        6,
+        8,
+        36,
         43
       ],
-      "bbox_center_x": 16.5,
+      "bbox_center_x": 21,
       "colors": [
         "#2F2420",
-        "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
         "#6E5A48",
-        "#6E6862",
-        "#6E7A5A",
         "#743426",
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
         "#9A948C",
         "#9AA85A",
-        "#A4523A",
         "#A8883E",
         "#B04A42",
+        "#B0603A",
         "#B07A3A",
-        "#B4B2B0",
         "#C08A58",
         "#C8783A",
         "#C88E68",
@@ -1006,11 +1017,11 @@
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.12,
-        "max": 147.69
+        "mean": 37.3,
+        "max": 91.67
       },
-      "block_purity": 0.6,
-      "colors_merged": 31,
+      "block_purity": 0.54,
+      "colors_merged": 53,
       "islands_folded": 0
     },
     {
@@ -1066,46 +1077,49 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        36,
-        1274,
-        235,
+        42,
+        1288,
+        238,
         1446
       ],
       "anchor": [
-        38.5,
-        1277.5
+        53,
+        1310.25
       ],
       "shift": [
-        2,
-        20
+        5,
+        21
       ],
-      "opaque": 389,
+      "opaque": 522,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        2,
-        19,
-        29,
+        3,
+        18,
+        36,
         43
       ],
-      "bbox_center_x": 15.5,
+      "bbox_center_x": 19.5,
       "colors": [
         "#2F2420",
+        "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
         "#6E5A48",
-        "#6E6862",
+        "#743426",
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
-        "#9A8A78",
         "#9A948C",
         "#9AA85A",
         "#A8883E",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
         "#C8783A",
-        "#C98E72",
         "#D8B868",
         "#E8B89A",
         "#E8E6E0",
@@ -1113,12 +1127,12 @@
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.3,
-        "max": 66.2
+        "mean": 39.53,
+        "max": 91.67
       },
-      "block_purity": 0.58,
-      "colors_merged": 22,
-      "islands_folded": 1
+      "block_purity": 0.52,
+      "colors_merged": 55,
+      "islands_folded": 0
     },
     {
       "col": 1,
@@ -1127,53 +1141,60 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        300,
-        1260,
-        501,
+        302,
+        1264,
+        502,
         1446
       ],
       "anchor": [
-        305.5,
-        1265.5
+        302.5,
+        1276.25
       ],
       "shift": [
-        1,
-        18
+        3,
+        15
       ],
-      "opaque": 417,
+      "opaque": 596,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        0,
-        17,
-        28,
+        3,
+        13,
+        36,
         43
       ],
-      "bbox_center_x": 14,
+      "bbox_center_x": 19.5,
       "colors": [
         "#2F2420",
+        "#4C4A52",
         "#5E3C24",
+        "#6C6A70",
+        "#6E442C",
         "#6E5A48",
-        "#6E6862",
         "#743426",
         "#7A4E24",
+        "#7A5A6E",
         "#7D7B80",
         "#8E5E38",
         "#9A948C",
         "#9AA85A",
         "#A8883E",
+        "#B04A42",
+        "#B0603A",
+        "#B07A3A",
         "#B4B2B0",
+        "#C08A58",
         "#D8B868",
         "#E8B89A",
         "#F0E6CC",
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.33,
-        "max": 70.1
+        "mean": 41.01,
+        "max": 175.88
       },
-      "block_purity": 0.66,
-      "colors_merged": 13,
+      "block_purity": 0.62,
+      "colors_merged": 51,
       "islands_folded": 0
     },
     {
@@ -1183,33 +1204,35 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        540,
-        1227,
-        717,
+        552,
+        1224,
+        728,
         1446
       ],
       "anchor": [
-        545.5,
-        1233.5
+        563.25,
+        1246
       ],
       "shift": [
-        2,
-        14
+        6,
+        10
       ],
-      "opaque": 427,
+      "opaque": 637,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        1,
-        13,
-        26,
+        4,
+        7,
+        33,
         43
       ],
-      "bbox_center_x": 13.5,
+      "bbox_center_x": 18.5,
       "colors": [
         "#2F2420",
-        "#4D6A3E",
+        "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
+        "#6E442C",
         "#6E5A48",
         "#6E6862",
         "#743426",
@@ -1220,21 +1243,23 @@
         "#9A948C",
         "#9AA85A",
         "#A8883E",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
         "#C8783A",
         "#D8B868",
         "#E8B89A",
+        "#E8E6E0",
         "#F0E6CC",
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 39.38,
-        "max": 72.79
+        "mean": 39.87,
+        "max": 91.67
       },
-      "block_purity": 0.61,
-      "colors_merged": 24,
+      "block_purity": 0.56,
+      "colors_merged": 66,
       "islands_folded": 0
     },
     {
@@ -1244,62 +1269,64 @@
       "expected": "content",
       "status": "ok",
       "source_box": [
-        793,
-        1227,
-        977,
+        792,
+        1223,
+        980,
         1446
       ],
       "anchor": [
-        794.5,
-        1231.5
+        809.75,
+        1251.75
       ],
       "shift": [
-        2,
-        13
+        6,
+        11
       ],
-      "opaque": 444,
+      "opaque": 655,
       "dropped_outside": 0,
       "specks_removed": 0,
       "bbox": [
-        2,
-        12,
-        27,
+        3,
+        6,
+        34,
         43
       ],
-      "bbox_center_x": 14.5,
+      "bbox_center_x": 18.5,
       "colors": [
+        "#2B2233",
         "#2F2420",
         "#4A3A32",
+        "#4C4A52",
         "#5E3C24",
+        "#6E442C",
         "#6E5A48",
         "#6E6862",
-        "#6E7A5A",
         "#743426",
         "#7A4E24",
         "#7D7B80",
         "#8E5E38",
         "#9A948C",
         "#9AA85A",
-        "#A4523A",
         "#A8883E",
-        "#B04A42",
+        "#B0603A",
         "#B07A3A",
         "#B4B2B0",
         "#C08A58",
         "#C8783A",
-        "#C98E72",
+        "#C88E68",
         "#D8B868",
         "#E8B89A",
+        "#E8E6E0",
         "#F0E6CC",
         "#F6D9C2"
       ],
       "palette_error": {
-        "mean": 40.24,
-        "max": 89.27
+        "mean": 39.02,
+        "max": 111.31
       },
-      "block_purity": 0.6,
-      "colors_merged": 18,
-      "islands_folded": 1
+      "block_purity": 0.58,
+      "colors_merged": 57,
+      "islands_folded": 0
     }
   ]
 }

@@ -1,0 +1,159 @@
+{
+  "name": "ui_family_crest_16",
+  "source": "assets/_imagegen/v07/ui-family-crest16-2.png",
+  "role": "reference",
+  "ref": null,
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+  ],
+  "rows": [
+    {
+      "action": "crest",
+      "frames": 2
+    }
+  ],
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    2,
+    1
+  ],
+  "cell": [
+    24,
+    24
+  ],
+  "cell_ratio": [
+    24,
+    10.67
+  ],
+  "scale": 15,
+  "scale_origin": "map",
+  "art_period": 15,
+  "notes": [
+    "원본 칸이 정사각 비율이 아니다(가로 24 · 세로 10.67). 축척은 한 값이어야 해 지정값 15을 쓴다"
+  ],
+  "totals": {
+    "opaque": 638,
+    "dropped_outside": 0,
+    "specks_removed": 0,
+    "colors_merged": 13,
+    "islands_folded": 0,
+    "colors": [
+      "#2B2233",
+      "#6D8F5A",
+      "#7B5CC4",
+      "#A8894A",
+      "#B07A3A",
+      "#C9A34A",
+      "#F0E6CC"
+    ],
+    "palette_error_mean": 13.17,
+    "palette_error_max": 41.26
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "crest",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        397,
+        365,
+        706,
+        659
+      ],
+      "anchor": [
+        410,
+        373
+      ],
+      "shift": [
+        2,
+        3
+      ],
+      "opaque": 319,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        1,
+        2,
+        21,
+        21
+      ],
+      "bbox_center_x": 11,
+      "colors": [
+        "#2B2233",
+        "#6D8F5A",
+        "#A8894A",
+        "#B07A3A",
+        "#F0E6CC"
+      ],
+      "palette_error": {
+        "mean": 13.07,
+        "max": 41.26
+      },
+      "block_purity": 0.91,
+      "colors_merged": 10,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "crest",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        831,
+        365,
+        1140,
+        659
+      ],
+      "anchor": [
+        843,
+        373
+      ],
+      "shift": [
+        2,
+        3
+      ],
+      "opaque": 319,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        1,
+        2,
+        21,
+        21
+      ],
+      "bbox_center_x": 11,
+      "colors": [
+        "#2B2233",
+        "#6D8F5A",
+        "#7B5CC4",
+        "#A8894A",
+        "#B07A3A",
+        "#C9A34A",
+        "#F0E6CC"
+      ],
+      "palette_error": {
+        "mean": 13.26,
+        "max": 41.26
+      },
+      "block_purity": 0.91,
+      "colors_merged": 3,
+      "islands_folded": 0
+    }
+  ]
+}

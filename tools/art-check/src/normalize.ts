@@ -136,8 +136,10 @@ export interface Ownership {
 }
 
 /** 전경 화소를 8방향 덩어리로 묶어 무게중심이 든 칸에 배정한다 */
-export function assignCells(img: SourceImage, key: KeyOptions, cols: number, rows: number): Ownership {
+/** area: 칸 격자가 놓인 원본 영역 [x, y, 폭, 높이](틀의 격자 자리). 없으면 원본 전체를 똑같이 나눈다 */
+export function assignCells(img: SourceImage, key: KeyOptions, cols: number, rows: number, area?: [number, number, number, number]): Ownership {
   const { width: W, height: H } = img
+  const [ax, ay, aw, ah] = area ?? [0, 0, W, H]
   const owner = new Int16Array(W * H).fill(-1)
   const fg = new Uint8Array(W * H)
   for (let i = 0; i < W * H; i++) fg[i] = isBackground(img.rgba, i * 4, key) ? 0 : 1
@@ -173,8 +175,8 @@ export function assignCells(img: SourceImage, key: KeyOptions, cols: number, row
         }
       }
     }
-    const cx = Math.min(cols - 1, Math.floor(((sx / comp.length + 0.5) * cols) / W))
-    const cy = Math.min(rows - 1, Math.floor(((sy / comp.length + 0.5) * rows) / H))
+    const cx = Math.max(0, Math.min(cols - 1, Math.floor(((sx / comp.length + 0.5 - ax) * cols) / aw)))
+    const cy = Math.max(0, Math.min(rows - 1, Math.floor(((sy / comp.length + 0.5 - ay) * rows) / ah)))
     const cell = cy * cols + cx
     let box = boxes[cell] ?? null
     for (const p of comp) {
@@ -481,6 +483,8 @@ export interface SheetSpec {
   align: AlignSpec
   /** 대응표가 정한 축척(없으면 칸 비율) */
   scale?: number
+  /** 칸 격자가 놓인 원본 영역 [x, y, 폭, 높이](없으면 원본 전체) */
+  area?: [number, number, number, number]
 }
 
 export interface NormalizeResult {
@@ -510,12 +514,12 @@ const analyses = new WeakMap<SourceImage, Map<string, SheetAnalysis>>()
  * 칸 배정·팔레트 번호(기준점 위상용)·색 묶기(clusterColors, 시트 전체)를 하고, 기준 시트면 원본 블록 크기
  * (칸마다 경계 세기 자기상관을 더해 blockSize)와 칸별 격자선(fitCuts, 칸 bbox를 1화소 넓혀 윤곽 경계도 넣는다)을 찾는다.
  */
-function analyzeSheet(img: SourceImage, key: KeyOptions, cols: number, rows: number, snapper: Snapper, withBlocks: boolean): SheetAnalysis {
-  const k = `${cols}x${rows}|${JSON.stringify(key)}|${withBlocks}`
+function analyzeSheet(img: SourceImage, key: KeyOptions, cols: number, rows: number, snapper: Snapper, withBlocks: boolean, area?: [number, number, number, number]): SheetAnalysis {
+  const k = `${cols}x${rows}|${JSON.stringify(key)}|${withBlocks}|${area?.join(',') ?? ''}`
   let byKey = analyses.get(img)
   const hit = byKey?.get(k)
   if (hit !== undefined && hit.snapper === snapper) return hit
-  const own = assignCells(img, key, cols, rows)
+  const own = assignCells(img, key, cols, rows, area)
   const maps = own.boxes.map((_, n) => labelCell(img, own, n, snapper))
   const pixels: number[] = []
   for (let p = 0; p < own.owner.length; p++) if (own.owner[p]! >= 0) pixels.push(p)
@@ -571,9 +575,10 @@ export function normalizeSheet(
   if (reference !== undefined && (reference.sourceSize[0] !== img.width || reference.sourceSize[1] !== img.height)) {
     throw new Error(`레이어 원본 크기 ${img.width}×${img.height}가 기준 시트 원본 ${reference.sourceSize[0]}×${reference.sourceSize[1]}와 다르다`)
   }
-  const an = analyzeSheet(img, key, cols, rows, snapper, reference === undefined)
+  const an = analyzeSheet(img, key, cols, rows, snapper, reference === undefined, spec.area)
   const { own, maps } = an
-  const ratio: [number, number] = [img.width / cols / cw, img.height / rows / ch]
+  const [aw, ah] = spec.area ? [spec.area[2], spec.area[3]] : [img.width, img.height]
+  const ratio: [number, number] = [aw / cols / cw, ah / rows / ch]
   const notes: string[] = []
   // 레이어는 블록 크기·격자선을 물려받는다(민머리·면이 넓은 레이어에서는 추정도 흔들린다)
   const period = reference === undefined ? an.block?.period ?? null : reference.blockSize

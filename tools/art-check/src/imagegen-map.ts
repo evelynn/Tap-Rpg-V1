@@ -41,6 +41,11 @@ export interface ReferenceEntry {
    * bbox 높이) 중앙값이 height가 되는 축척을 찾는다. 생성 화소를 형식에 맞게 다시 뽑는 것일 뿐 새로 그리지 않는다(D66)
    */
   scale_to_spec?: ScaleToSpec
+  /**
+   * 칸 격자가 놓인 원본 영역 [x, y, 폭, 높이](틀 JSON의 격자 자리, 원본 화소). 적지 않으면 원본 전체를 똑같이 나눈다.
+   * 틀 위에서 그린 시트는 격자 둘레에 여백이 있어, 전체를 나누면 아래 행 그림이 윗칸으로 배정된다(v07 박쥐)
+   */
+  area?: [number, number, number, number]
 }
 
 export interface ScaleToSpec {
@@ -228,6 +233,9 @@ export function validateMap(m: ImagegenMap, manifest: Pick<Manifest, 'palettes' 
         fail(where, `모르는 정렬 방식이다: ${(e.align as { mode: string }).mode}`)
       }
       if (e.scale !== undefined && !(e.scale > 0)) fail(where, 'scale은 양수여야 한다')
+      if (e.area !== undefined && !(Array.isArray(e.area) && e.area.length === 4 && e.area.every((v) => Number.isInteger(v) && v >= 0) && e.area[2] > 0 && e.area[3] > 0)) {
+        fail(where, 'area는 [x, y, 폭, 높이] 음이 아닌 정수 넷이다')
+      }
       if (e.scale_to_spec !== undefined) {
         const t = e.scale_to_spec
         if (e.scale !== undefined) fail(where, 'scale과 scale_to_spec은 함께 쓸 수 없다')

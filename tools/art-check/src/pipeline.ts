@@ -84,7 +84,7 @@ export class Normalizer {
   private normalizeFile(entry: SourceEntry, sourcePath: string, ref: ReferenceEntry, refResult: EntryResult | undefined): EntryResult {
     const img = decodePng(readFileSync(sourcePath))
     const snapper = new Snapper(paletteFor(this.manifest, entry.palette))
-    const spec = { grid: ref.grid, cell: ref.cell, rows: ref.rows, align: ref.align, scale: ref.scale }
+    const spec = { grid: ref.grid, cell: ref.cell, rows: ref.rows, align: ref.align, scale: ref.scale, area: ref.area }
     const key = keyOptions(this.lm)
     if (refResult === undefined && ref.scale_to_spec !== undefined) {
       return { ...normalizeToSpec(img, spec, snapper, key, ref), entry, sourcePath }

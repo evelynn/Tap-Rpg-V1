@@ -35,6 +35,8 @@ export const SCENES: Record<string, SceneRow> = {
   S08: { scene: 'ES19', hero: { x: 34, motion: 'sleep' }, hold: true },
   // ES20(EB03 부서진 종의 파수꾼 관문 첫 격파): 사건이 아니라 전투 기록이라 앱이 그 기록에 이 키를 단다(app.ts GATE_SCENE)
   EB03_first: { scene: 'ES20', hero: { x: 30, motion: 'cheer' }, hold: false },
+  // ES21 계승 출발(15 §9.3): 새 인물이 x 24에서 제자리 걷기. 은퇴 부모 손 흔들기 레이어(노년 외형 시트)는 아직 없다
+  depart: { scene: 'ES21', hero: { x: 24, motion: 'walk' }, hold: false },
 }
 
 export function sceneFor(eventId: string | undefined, available: ReadonlySet<string>): SceneRow | null {

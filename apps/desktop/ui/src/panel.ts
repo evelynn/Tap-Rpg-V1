@@ -26,17 +26,28 @@ function iconSvg(icon: Icon, ink: string): string {
   }
 }
 
+// v07 12 × 12 그림(sprites/ui_icons_12.png) 한 칸. 화면 배율(정수)로만 키운다(번지지 않게, D75)
+export const ICON_STYLE = (cell: number): string => `background-position: calc(${-(cell % 6) * 12}px * var(--u, 1)) calc(${-Math.floor(cell / 6) * 12}px * var(--u, 1))`
+const STATE_ICON_ROOM = 160 // 상태 기호(12 + 사이 3)를 넣고도 글자가 175 안에 드는 폭
+
 export class Panel {
   private readonly status: HTMLElement
+  private readonly statusIcon: HTMLElement
+  private readonly statusText: HTMLElement
+  private readonly measureBold: CanvasRenderingContext2D
   private readonly icons: HTMLElement
   private readonly record: HTMLElement
   private readonly measure: CanvasRenderingContext2D
-  private last = { status: '', icons: '', line: '\u0000', dark: false }
+  private last: { status: string; stateIcon: number | null; icons: string; line: string; dark: boolean } = { status: '', stateIcon: -1, icons: '', line: '\u0000', dark: false }
 
   // u: 화면 배율(D81, CSS 변수 --u와 같은 값). 글자 폭을 잴 때 곱한다(글자는 늘 장치 픽셀로 그린다)
   constructor(private readonly root: HTMLElement, private u: number) {
-    root.innerHTML = '<div class="plate"></div><div class="status"></div><div class="icons"></div><div class="record" aria-live="off"></div>'
+    root.innerHTML = '<div class="plate"></div><div class="status"><span class="sico" aria-hidden="true"></span><span class="stxt"></span></div><div class="icons"></div><div class="record" aria-live="off"></div>'
     this.status = root.querySelector('.status')!
+    this.statusIcon = root.querySelector('.sico')!
+    this.statusText = root.querySelector('.stxt')!
+    this.measureBold = document.createElement('canvas').getContext('2d')!
+    this.measureBold.font = `bold ${TEXT.font * u}px ${FONT_FAMILY}`
     this.icons = root.querySelector('.icons')!
     this.record = root.querySelector('.record')!
     this.measure = document.createElement('canvas').getContext('2d')!
@@ -46,12 +57,19 @@ export class Panel {
   setScale(u: number): void {
     this.u = u
     this.measure.font = `${TEXT.font * u}px ${FONT_FAMILY}`
+    this.measureBold.font = `bold ${TEXT.font * u}px ${FONT_FAMILY}`
   }
 
   update(v: FrameView): void {
     const ink = v.dark ? '#F4EFE6' : '#2B2233'
     if (v.dark !== this.last.dark) this.root.classList.toggle('dark', v.dark)
-    if (v.status !== this.last.status) this.status.textContent = v.status
+    if (v.status !== this.last.status || v.stateIcon !== this.last.stateIcon) {
+      this.statusText.textContent = v.status
+      // 03 §4.1 상태 기호는 줄 앞에. 가장 긴 이름·조건어로 글자가 160을 넘으면 기호를 빼 글자를 지킨다(I97)
+      const fits = this.measureBold.measureText(v.status).width / this.u <= STATE_ICON_ROOM
+      this.statusIcon.hidden = v.stateIcon === null || !fits
+      if (v.stateIcon !== null) this.statusIcon.setAttribute('style', ICON_STYLE(v.stateIcon))
+    }
     const iconKey = JSON.stringify([v.icons, v.mark, v.attitude, v.dark])
     if (iconKey !== this.last.icons) this.icons.innerHTML = this.iconRow(v, ink)
     if (v.line !== this.last.line) {
@@ -61,15 +79,18 @@ export class Panel {
       const w = this.measure.measureText(v.line).width / this.u
       if (w > TEXT.w) console.warn(`[텝] 한 줄 기록이 글자 칸 폭 ${TEXT.w}을 넘는다(${w.toFixed(1)}px): ${v.line}`)
     }
-    this.last = { status: v.status, icons: iconKey, line: v.line, dark: v.dark }
+    this.last = { status: v.status, stateIcon: v.stateIcon, icons: iconKey, line: v.line, dark: v.dark }
   }
 
   private iconRow(v: FrameView, ink: string): string {
     const s = TEXT.icons.size
-    const cells = v.icons.map((i) => `<svg xmlns="${SVG}" viewBox="0 0 ${s} ${s}" class="ico"${i.label ? ` aria-label="${i.label}"><title>${i.label}</title>` : ' aria-hidden="true">'}${iconSvg(i, ink)}</svg>`)
-    // 표식이 없어도 자리를 비워 둬 아이콘이 움직이지 않는다(03 §2.2)
+    // 일시정지는 v07 그림(세로 막대 두 개), 나머지 칸은 그림이 아직 없어 자리 도형
+    const cells = v.icons.map((i) => i.label === '일시정지'
+      ? `<span class="ico bmp" role="img" aria-label="${i.label}" title="${i.label}" style="${ICON_STYLE(11)}"></span>`
+      : `<svg xmlns="${SVG}" viewBox="0 0 ${s} ${s}" class="ico"${i.label ? ` aria-label="${i.label}"><title>${i.label}</title>` : ' aria-hidden="true">'}${iconSvg(i, ink)}</svg>`)
+    // 표식이 없어도 자리를 비워 둬 아이콘이 움직이지 않는다(03 §2.2). 봉인된 두루마리·펼친 책은 v07 그림(03 §4.2)
     const mark = v.mark
-      ? `<span class="mark ${v.mark}" title="${v.mark === 'choice' ? '중요한 선택 1건이 기다리고 있습니다' : '계승을 기다리고 있습니다'}">${v.mark === 'choice' ? '1' : '✿'}</span>`
+      ? `<span class="mark bmp ${v.mark}" role="img" aria-label="${v.mark === 'choice' ? '중요한 선택 1건' : '계승 대기'}" title="${v.mark === 'choice' ? '중요한 선택 1건이 기다리고 있습니다' : '계승을 기다리고 있습니다'}" style="${ICON_STYLE(v.mark === 'choice' ? 9 : 10)}"></span>`
       : '<span class="mark none" aria-hidden="true"></span>'
     return `${cells.join('')}${mark}<span class="attitude" title="현재 태도: ${v.attitude}">${v.attitude.slice(0, 1)}</span>`
   }

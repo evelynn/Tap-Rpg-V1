@@ -1,0 +1,241 @@
+{
+  "name": "prop_judgement_dice_16",
+  "source": "assets/_imagegen/v07/prop-judgement-dice16-4.png",
+  "role": "reference",
+  "ref": null,
+  "palette": [
+    "outline",
+    "skin",
+    "hair",
+    "hair_white",
+    "metal",
+    "bronze",
+    "leather",
+    "cloth",
+    "fx",
+    "ext_enemy",
+    "ext_ui"
+  ],
+  "rows": [
+    {
+      "action": "roll",
+      "frames": 4
+    }
+  ],
+  "source_size": [
+    1536,
+    1024
+  ],
+  "grid": [
+    4,
+    1
+  ],
+  "cell": [
+    24,
+    24
+  ],
+  "cell_ratio": [
+    16,
+    10.67
+  ],
+  "scale": 13.75,
+  "scale_origin": "map",
+  "art_period": 13.75,
+  "notes": [
+    "원본 칸이 정사각 비율이 아니다(가로 16 · 세로 10.67). 축척은 한 값이어야 해 지정값 13.75을 쓴다"
+  ],
+  "totals": {
+    "opaque": 1227,
+    "dropped_outside": 0,
+    "specks_removed": 0,
+    "colors_merged": 0,
+    "islands_folded": 0,
+    "colors": [
+      "#2B2233",
+      "#B4B2B0",
+      "#C8C2B8",
+      "#F0E6CC",
+      "#F6D9C2",
+      "#FFE38A"
+    ],
+    "palette_error_mean": 25.68,
+    "palette_error_max": 52.41
+  },
+  "cells": [
+    {
+      "col": 0,
+      "row": 0,
+      "action": "roll",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        101,
+        366,
+        368,
+        660
+      ],
+      "anchor": [
+        113,
+        379.25
+      ],
+      "shift": [
+        3,
+        2
+      ],
+      "opaque": 312,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        2,
+        1,
+        20,
+        21
+      ],
+      "bbox_center_x": 11,
+      "colors": [
+        "#2B2233",
+        "#B4B2B0",
+        "#C8C2B8",
+        "#F0E6CC"
+      ],
+      "palette_error": {
+        "mean": 23.1,
+        "max": 52.41
+      },
+      "block_purity": 0.9,
+      "colors_merged": 0,
+      "islands_folded": 0
+    },
+    {
+      "col": 1,
+      "row": 0,
+      "action": "roll",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        461,
+        366,
+        726,
+        660
+      ],
+      "anchor": [
+        467.5,
+        379.25
+      ],
+      "shift": [
+        2,
+        2
+      ],
+      "opaque": 311,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        2,
+        1,
+        20,
+        21
+      ],
+      "bbox_center_x": 11,
+      "colors": [
+        "#2B2233",
+        "#B4B2B0",
+        "#F0E6CC",
+        "#F6D9C2"
+      ],
+      "palette_error": {
+        "mean": 21.83,
+        "max": 51.61
+      },
+      "block_purity": 0.91,
+      "colors_merged": 0,
+      "islands_folded": 0
+    },
+    {
+      "col": 2,
+      "row": 0,
+      "action": "roll",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        824,
+        386,
+        1077,
+        635
+      ],
+      "anchor": [
+        829.25,
+        387.25
+      ],
+      "shift": [
+        3,
+        3
+      ],
+      "opaque": 302,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        3,
+        3,
+        20,
+        20
+      ],
+      "bbox_center_x": 11.5,
+      "colors": [
+        "#2B2233",
+        "#B4B2B0",
+        "#F0E6CC",
+        "#FFE38A"
+      ],
+      "palette_error": {
+        "mean": 34.83,
+        "max": 52.41
+      },
+      "block_purity": 0.97,
+      "colors_merged": 0,
+      "islands_folded": 0
+    },
+    {
+      "col": 3,
+      "row": 0,
+      "action": "roll",
+      "expected": "content",
+      "status": "ok",
+      "source_box": [
+        1186,
+        386,
+        1439,
+        635
+      ],
+      "anchor": [
+        1189.25,
+        387.25
+      ],
+      "shift": [
+        3,
+        3
+      ],
+      "opaque": 302,
+      "dropped_outside": 0,
+      "specks_removed": 0,
+      "bbox": [
+        3,
+        3,
+        20,
+        20
+      ],
+      "bbox_center_x": 11.5,
+      "colors": [
+        "#2B2233",
+        "#B4B2B0",
+        "#F0E6CC"
+      ],
+      "palette_error": {
+        "mean": 23.14,
+        "max": 51.61
+      },
+      "block_purity": 0.95,
+      "colors_merged": 0,
+      "islands_folded": 0
+    }
+  ]
+}
