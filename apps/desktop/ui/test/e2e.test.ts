@@ -10,6 +10,8 @@ import {
 import { Saver, loadGame, localBackend } from '../src/persist'
 import { bookPages } from '../src/book'
 import { FirstRunWindow } from '../src/firstrun'
+import { HAIR_STYLES, HAIR_TONES } from '../src/hair'
+import { sceneFor } from '../src/scenes'
 
 let content: Content
 class MemStorage {
@@ -78,6 +80,12 @@ describe('교차 E2E(A26)', () => {
     assert.equal(heir.generation, 2)
     assert.equal(bookOf(w.state.family.chronicle.at(-1)!)!.received_by?.char_uid, heir.uid)
     assert.equal(w.state.family.chronicle.at(-1)!.candidates_passed.length, plan.candidates.length - 1)
+    // 출발 한 줄(sub depart) → 계승 출발 장면 ES21(D89), 새 인물 머리는 합성할 수 있는 값(D88)
+    const depart = w.state.journal.filter((e) => e.sub === 'depart').at(-1)
+    assert.ok(depart, '출발 한 줄')
+    assert.equal(sceneFor('depart', new Set(['ES21']))?.scene, 'ES21')
+    assert.ok((HAIR_STYLES as readonly string[]).includes(heir.appearance.hair), heir.appearance.hair)
+    assert.ok(heir.appearance.hair_color in HAIR_TONES, heir.appearance.hair_color)
     for (let i = 0; i < 100; i++) w.advance(60)
     await saver.flush()
     // 6 다시 이어하기: 2대째, 책이 서가에 남아 있다
