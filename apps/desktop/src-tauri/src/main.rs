@@ -43,8 +43,9 @@ fn main() {
                 let p = save::show_request_path();
                 if p.exists() {
                     let _ = std::fs::remove_file(&p);
+                    // 화면 쪽 상태(보이는 중·그리기)도 함께 바뀌도록 트레이 `보이기`와 같은 길로 보낸다
+                    let _ = handle.emit("tap://tray", "show".to_string());
                     if let Some(w) = handle.get_webview_window("main") {
-                        let _ = w.show();
                         let _ = w.unminimize();
                     }
                 }

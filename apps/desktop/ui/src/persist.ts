@@ -84,7 +84,13 @@ export async function loadGame(backend: SaveBackend, content: Content, now: numb
   const body = r.result.root.body
   const savedAt = r.result.root.header.saved_at_utc
   const pristine = JSON.stringify(body)
-  let world = loadGameWorld(content, body)
+  let world: World
+  try {
+    world = loadGameWorld(content, body)
+  } catch (e) {
+    console.error('[텝] 저장으로 세계를 만들지 못했다', e)
+    return { kind: 'fail', message: r.result.read_only ? '더 새로운 버전에서 만든 기록이라 이 버전에서 열 수 없습니다.' : '저장 기록을 열 수 없습니다.' }
+  }
   let summary: ReturnSummary | null = null
   let offlineFailed = false
   if (!r.result.read_only) {
@@ -115,8 +121,8 @@ export class Saver {
     return this.pump()
   }
 
-  // 잦은 행동 적용 저장은 2초에 한 번까지(백업 시점은 바로)
-  requestThrottled(now: number): void {
+  // 잦은 행동 적용 저장은 2초에 한 번까지(백업 시점은 바로). 마지막 쓰기와 같은 벽시계로 잰다
+  requestThrottled(now: number = Date.now()): void {
     if (now - this.lastWrite >= 2000) void this.request()
   }
 

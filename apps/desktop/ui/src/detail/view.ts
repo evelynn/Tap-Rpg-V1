@@ -76,6 +76,7 @@ export class DetailWindow {
   private reader: BookViewer | null = null // 책 보기(03 §5.6)
   private destAsk: string | null = null // 확인 칸을 펼친 목적지
   onSuccession: (() => void) | null = null // 가문 탭 `계승 진행 ›`(03 §5.5)
+  onSettings: (() => void) | null = null // 방침 탭 `창 설정 열기`(03 §1)
   private readonly body: HTMLElement
   private readonly tabBar: HTMLElement
   private readonly title: HTMLElement
@@ -403,6 +404,7 @@ export class DetailWindow {
         toggle('오프라인 진행', 'offline_progress'),
         toggle('  생애 단계 경계 정지', 'stage_boundary_stop', !p.offline_progress)),
       this.blessing(),
+      this.onSettings ? h('div', { class: 'd-acts' }, button('창 설정 열기', () => this.onSettings?.())) : null, // 03 §1
       h('div', { class: 'd-dim' }, '모든 변경은 다음 행동부터 적용됩니다.'),
     ].filter((n): n is HTMLElement => n !== null)
   }

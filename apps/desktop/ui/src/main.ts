@@ -228,10 +228,13 @@ function boot(b: Boot): void {
 
   // 상세 창(03 §5)·운명 선택(03 §6)·계승(03 §8)·설정(03 §7)·복귀 요약(03 §9): 투명 창 안의 떠 있는 판(D85)
   const detail = new DetailWindow(document.getElementById('detail')!, app.world, (t) => app.note(t), () => app.driver.setPaused(!app.driver.paused))
-  const menu = new QuickMenu(document.getElementById('menu')!)
+  const menuEl = document.getElementById('menu')!
+  if (desktop) document.getElementById('app')!.append(menuEl) // 투명 창은 #app 크기만 감싸므로 메뉴도 판으로(D85)
+  const menu = new QuickMenu(menuEl)
   const choice = new ChoiceWindow(document.getElementById('choice')!, app.world, () => detail.render())
   const succession = new SuccessionWindow(document.getElementById('succession')!, app.world, () => detail.render())
   detail.onSuccession = () => succession.show()
+  detail.onSettings = () => settingsWin.show()
 
   // 저장(13 §8.1): 30초마다, 행동 적용 뒤(2초에 한 번까지), 귀환·큰 선택·생애 끝·계승은 백업과 함께, 종료 때
   const saver = new Saver(b.backend, () => app.world, b.meta)
@@ -243,7 +246,7 @@ function boot(b: Boot): void {
     const lifeTurn = app.lastTick.some((e) => e.tag === 'retire' || e.tag === 'death' || e.tag === 'succession')
     if (lifeTurn) void saver.request({ backup: true, force: true })
     else if (st !== lastState && (st === 'town_prep' || st === 'awaiting_choice' || st === 'awaiting_succession')) void saver.request({ backup: true })
-    else if (app.lastTick.length) saver.requestThrottled(now)
+    else if (app.lastTick.length) saver.requestThrottled()
     lastState = st
   }
   const quit = async (): Promise<void> => {
@@ -254,7 +257,7 @@ function boot(b: Boot): void {
   if (b.isNew) void saver.request({ backup: true }) // 새 가문은 바로 한 번 남긴다
 
   // 안내(03 §11.2·§12.2): 첫 가문 첫 인물만, 8초·60초 간격
-  const guide = new GuideScheduler(content, (t) => app.note(t), () => b.settings.guides_done, () => set({ guides_done: true }))
+  const guide = new GuideScheduler(content, (t) => app.note(t), () => b.settings.guides_done, () => set({ guides_done: true }), b.settings.guides_seen, (ids) => b.saveSettings({ guides_seen: ids }))
 
   const settingsWin = new SettingsWindow(document.getElementById('settings')!, get, {
     change: (patch) => {
@@ -263,7 +266,7 @@ function boot(b: Boot): void {
     },
     resetPosition: () => { set({ position_locked: false }); void shell?.resetPosition() },
     resetSize: () => set({ window_scale: 1, text_scale: 1, window_width: 768 }),
-    replayGuides: () => { set({ guides_done: false }); guide.replay() },
+    replayGuides: () => { set({ guides_done: false, guides_seen: [] }); guide.replay() },
     desktop,
   })
 
@@ -272,7 +275,7 @@ function boot(b: Boot): void {
   })
   const sum = loaded.kind === 'ok' ? loaded.summary : null
   if ((sum && sum.settled_sec >= SUMMARY_MIN_SEC) || startNotes.length) summaryWin.show(sum ? summaryView(app.world, sum) : null, startNotes)
-  else if (sum) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
+  else if (sum && sum.settled_sec > 0) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
 
   // 데스크톱 투명 창(D85): 판 크기에 창을 맞추고 기본 창 자리를 지킨다. 트레이 메뉴(03 §10)
   let shell: DesktopShell | null = null
@@ -378,7 +381,7 @@ function boot(b: Boot): void {
     if (gap >= 30000 && !app.driver.paused && app.world.state.current_activity.state !== 'paused') {
       try {
         const r = runOffline(app.world, { now_utc: Date.now(), saved_at_utc: Date.now() - gap })
-        if (r.summary) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
+        if (r.summary && r.summary.settled_sec > 0) app.note('ⓘ 자리를 비운 동안의 일을 정리했습니다')
       } catch (e) { console.error('[텝] 실행 중 정산 실패', e) }
       void saver.request({ backup: true })
     }

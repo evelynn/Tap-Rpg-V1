@@ -25,7 +25,12 @@ export class GuideScheduler {
   private lastId = -1
   private started = false
 
-  constructor(private readonly content: Content, private readonly note: (text: string) => void, private readonly done: () => boolean, private readonly markDone: () => void) {}
+  // seen0·onSeen: 본 안내 id를 설정에 남겨, 다시 켜도 처음부터 반복하지 않는다
+  constructor(private readonly content: Content, private readonly note: (text: string) => void, private readonly done: () => boolean, private readonly markDone: () => void,
+    seen0: readonly string[] = [], private readonly onSeen: (ids: string[]) => void = () => {}) {
+    for (const id of seen0) this.seen.add(id)
+    if (seen0.includes('start')) this.started = true
+  }
 
   replay(): void {
     this.seen.clear()
@@ -68,5 +73,6 @@ export class GuideScheduler {
     if (this.seen.has(id)) return
     this.seen.add(id)
     this.queue.push(id)
+    this.onSeen([...this.seen])
   }
 }

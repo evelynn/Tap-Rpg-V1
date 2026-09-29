@@ -93,7 +93,8 @@ export class FirstRunWindow {
             b.style.borderLeft = `8px solid ${hex}`
             return b
           }))),
-        h('div', { class: 'd-preview' }, h('div', { class: 'd-hero', 'data-hair': this.hair, 'data-color': this.color })))
+        h('div', { class: 'd-preview' }, h('div', { class: 'd-hero', 'data-hair': this.hair, 'data-color': this.color })),
+        h('div', { class: 'd-note' }, '미리보기는 기본 모습입니다. 고른 머리 모양·색은 기록되고, 머리 그림이 준비되면 게임에 반영됩니다.'))
     } else if (this.step === 2) {
       body.append(h('div', { class: 'd-strong' }, '어떤 태도로 모험할까요?'), h('div', { class: 'd-note' }, '언제든 바꿀 수 있습니다.'),
         ...[...this.content.list('attitude')].sort((a, b) => a.order - b.order).map((a) => {

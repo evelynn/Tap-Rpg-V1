@@ -77,6 +77,10 @@ fn foreground_fullscreen(own: isize) -> bool {
             return false;
         }
         let mon = MonitorFromWindow(fg, MONITOR_DEFAULTTONEAREST);
+        // 텝이 있는 모니터만(03 §10 `그 모니터의 기본 창을 숨긴다`)
+        if own != 0 && MonitorFromWindow(own as HWND, MONITOR_DEFAULTTONEAREST) != mon {
+            return false;
+        }
         let mut mi: MONITORINFO = std::mem::zeroed();
         mi.cbSize = std::mem::size_of::<MONITORINFO>() as u32;
         if GetMonitorInfoW(mon, &mut mi) == 0 {

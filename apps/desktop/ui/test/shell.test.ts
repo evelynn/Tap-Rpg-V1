@@ -36,6 +36,8 @@ describe('설정(03 §7)', () => {
     assert.equal(readSettings({ window_scale: 5, text_scale: 2, theme: 'neon' }).window_scale, 1)
     assert.equal(readSettings({ text_scale: 2 }).text_scale, 1)
     assert.equal(readSettings({ theme: 'neon' }).theme, 'system')
+    assert.equal(readSettings({ window_width: 99999 }).window_width, 1536, '손상된 너비는 범위 안으로')
+    assert.deepEqual(readSettings({ guides_seen: ['start', 3] }).guides_seen, ['start'])
   })
 })
 
@@ -62,6 +64,16 @@ describe('첫 실행 안내(03 §11.2·§12.2)', () => {
     g.tick(mkWorld(j), GUIDE_GAP_MS * 2)
     g.tick(mkWorld(j), GUIDE_GAP_MS * 3)
     assert.equal(shown.filter((s) => /일지/.test(s)).length, 1, '같은 안내는 한 번만')
+  })
+  it('이미 본 안내는 다시 켜도 뜨지 않고, 새로 본 안내는 알린다', () => {
+    const shown: string[] = []
+    let saved: string[] = []
+    const g = new GuideScheduler({} as Content, (t) => shown.push(t), () => false, () => {}, ['start', 'journal'], (ids) => { saved = ids })
+    g.tick(mkWorld([{ id: 1, tag: 'travel' }]), 0)
+    g.tick(mkWorld([{ id: 1, tag: 'travel' }, { id: 2, tag: 'hunt' }, { id: 3, tag: 'check' }]), 0)
+    assert.equal(shown.length, 1)
+    assert.match(shown[0]!, /판정/)
+    assert.ok(saved.includes('check'))
   })
   it('두 번째 인물(연대기 있음)·안내를 다 본 뒤에는 뜨지 않는다', () => {
     const shown: string[] = []

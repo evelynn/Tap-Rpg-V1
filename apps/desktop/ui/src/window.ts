@@ -37,7 +37,7 @@ export const tauriApi = (): TauriApi | null => {
 
 export const MAGNET = 12 // 가장자리 자석(03 §10)
 export const MARGIN = { right: 16, bottom: 8 } // 기본 위치 여백
-export const PAD = 6 // 판 그림자가 잘리지 않게 창 가장자리에 둔 투명 여백
+export const PAD = 0 // 판 그림자 자리는 #app 안쪽 여백(index.html 6)이 맡는다. 창은 #app 크기 그대로
 
 // 저장하는 위치(03 §10 다중 모니터): 모니터 이름 + 작업 영역 기준 상대 좌표(기본 창 왼쪽, 아래)
 export interface SavedPos { monitor: string | null; rx: number; rb: number }
@@ -133,10 +133,22 @@ export class DesktopShell {
 
   private async place(anchor: Pos): Promise<void> {
     this.anchor = anchor
+    void this.limitPanels(anchor)
     const off = this.basicOffset()
     this.moving = true
     await this.win.setPosition(new this.t.dpi.LogicalPosition(Math.round(anchor.x - off.x), Math.round(anchor.y - off.y)))
     setTimeout(() => { this.moving = false }, 200)
+  }
+
+  // 열린 판이 화면 위로 넘치지 않게 판 최대 높이를 고정점 위 남은 공간으로(글자 배율 zoom으로 나눈다)
+  private async limitPanels(anchor: Pos): Promise<void> {
+    const ms = await this.monitors()
+    const m = ms.find((x) => { const a = area(x); return anchor.x >= a.x - 1 && anchor.x < a.x + a.w && anchor.y > a.y && anchor.y <= a.y + a.h + 1 }) ?? ms[0]
+    const wa = m ? area(m) : await this.primaryArea()
+    const stack = document.getElementById('stack')!.getBoundingClientRect().height
+    const t = Number(getComputedStyle(document.documentElement).getPropertyValue('--t')) || 1
+    const room = anchor.y - wa.y - stack - 24
+    document.documentElement.style.setProperty('--panel-max', `${Math.max(200, Math.floor(room / t))}px`)
   }
 
   private async monitors(): Promise<Monitor[]> {

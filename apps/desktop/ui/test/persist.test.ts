@@ -88,4 +88,20 @@ describe('저장·이어하기', () => {
     assert.equal(r.kind, 'fail')
     assert.equal(store.getItem('tap.save/save.json'), null)
   })
+
+  it('행동 직후 저장은 2초 간격으로 다시 돈다(독립 검증 결함 2: 시계가 달라 첫 저장 뒤 멈추던 것)', async () => {
+    const store = new MemStorage() as unknown as Storage
+    let writes = 0
+    const be = { ...localBackend(store), write: async () => { writes++ } }
+    const w = newWorld()
+    const saver = new Saver(be, () => w, () => meta(Date.now()))
+    await saver.request()
+    assert.equal(writes, 1)
+    saver.requestThrottled(Date.now() + 1000)
+    await new Promise((r) => setTimeout(r, 10))
+    assert.equal(writes, 1, '2초 안에는 쓰지 않는다')
+    saver.requestThrottled(Date.now() + 2500)
+    await new Promise((r) => setTimeout(r, 10))
+    assert.equal(writes, 2)
+  })
 })
