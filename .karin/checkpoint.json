@@ -279,16 +279,22 @@
       "subject": "게임 완성: v07 흡수·머리 합성 D88·연결·밸런스 루프(B1~B6)",
       "status": "in_progress",
       "priority": "high"
+    },
+    {
+      "id": "D91",
+      "subject": "기본 창·메뉴 디자인 변경(풍경 위 투명, 오른쪽 칸 → 작은 상태 칩, 메뉴 전부 같은 결) — 방향 확정, 구현 전(HANDOFF 맨 위)",
+      "status": "pending",
+      "priority": "high"
     }
   ],
-  "current_task": "P8",
-  "next_action": "G1 v07 흡수(대응표·정규화)",
+  "current_task": "D91",
+  "next_action": "HANDOFF 맨 위 D91 디자인 변경 구현(03 먼저) → 밸런스 에이전트 결과 검토·커밋 → 독립 재검증 → 종합 보고",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
     "아트는 codex(별도 터미널)가 생성 — 지시문은 사용자가 붙여 넣음"
   ],
-  "last_commit": "e6b5bf5",
+  "last_commit": "ba45820",
   "verify_state": "pnpm check 1220 통과(480분 정산 CPU 시험은 전체 실행 부하 때 가끔 2초를 넘는다 — 단독 0.3~0.8초), lint 0, content 0 (2026-09-28)",
-  "last_updated": "2026-09-29T12:00:00+09:00"
+  "last_updated": "2026-09-29T13:00:00+09:00"
 }
