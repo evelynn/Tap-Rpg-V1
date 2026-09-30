@@ -82,8 +82,9 @@ pub fn save_write(text: String, backup_due: bool, force_backup: bool, backups: u
             }
         }
         let save = dir.join(SAVE_FILE);
+        // 옮기지 않고 복사한다: 아래 교체가 실패해도 save.json이 남는다
         if save.exists() {
-            let _ = fs::rename(&save, dir.join(backup(1)));
+            let _ = fs::copy(&save, dir.join(backup(1)));
         }
     }
     // Windows rename은 MoveFileEx(REPLACE_EXISTING)라 원자적으로 덮어쓴다. 실패하면 save.json은 그대로 남는다
