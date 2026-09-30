@@ -45,6 +45,16 @@ describe('부재 시간 측정(13 §2.1)', () => {
     assert.equal(off.high_water_utc, hw)
   })
 
+  it('저장 시각이 현재보다 늦어도 부재 시간은 음수가 되지 않는다', () => {
+    const world = makeGame()
+    const off = world.state.offline_state
+    off.high_water_utc = 1000
+    const a = measureAbsence(world.content, world.state, { now_utc: 2000, saved_at_utc: 9_000_000 })
+    assert.equal(a.absent_sec, 0)
+    assert.equal(a.settleable_sec, 0)
+    assert.equal(a.skip, 'too_short')
+  })
+
   it('48시간을 넘는 부재는 미래 점프로 기록하되 상한까지만 정산한다', () => {
     const world = makeGame()
     const off = world.state.offline_state

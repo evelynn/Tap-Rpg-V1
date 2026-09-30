@@ -3,7 +3,7 @@ import { before, describe, it } from 'node:test'
 import assert from 'node:assert/strict'
 import { fileURLToPath } from 'node:url'
 import { validateContent } from '@tap/content-kit'
-import { Content, bodyChecksum, createGameWorld, makeSaveRoot, serializeSave, summaryView, type World } from '@tap/core'
+import { Content, bodyChecksum, createGameWorld, loadGameWorld, makeSaveRoot, serializeSave, summaryView, type World } from '@tap/core'
 import { Saver, loadGame, localBackend } from '../src/persist'
 
 let content: Content
@@ -87,6 +87,43 @@ describe('저장·이어하기', () => {
     const r = await loadGame(localBackend(store), content, Date.now())
     assert.equal(r.kind, 'fail')
     assert.equal(store.getItem('tap.save/save.json'), null)
+  })
+
+  it('고른 파일로 세계를 만들지 못하면 그 파일만 옮기고 다음 정상 파일로 복구한다(13 §8.5)', async () => {
+    const store = new MemStorage() as unknown as Storage
+    const be = localBackend(store)
+    const w = newWorld()
+    const saver = new Saver(be, () => w, () => meta(Date.now()))
+    await saver.request({ backup: true, force: true })
+    w.advance(600)
+    await saver.request({ backup: true, force: true }) // save → backup_1, 새 save
+    const backup = store.getItem('tap.save/backup_1.json')
+    assert.ok(backup)
+    let calls = 0
+    const r = await loadGame(be, content, Date.now(), (c, body) => {
+      if (calls++ === 0) throw new Error('세계 만들기 실패')
+      return loadGameWorld(c, body)
+    })
+    assert.equal(r.kind, 'ok')
+    if (r.kind === 'ok') assert.equal(r.recovered, true)
+    assert.equal(store.getItem('tap.save/save.json'), null, '실패한 파일만 옮긴다')
+    assert.equal(store.getItem('tap.save/backup_1.json'), backup, '정상 백업은 그대로 둔다')
+  })
+
+  it('쓰기가 실패하면 백업·강제 표시를 다음 저장으로 넘긴다', async () => {
+    const store = new MemStorage() as unknown as Storage
+    const seen: [boolean, boolean][] = []
+    const be = { ...localBackend(store), write: async (_t: string, backup: boolean, force: boolean) => {
+      seen.push([backup, force])
+      if (seen.length === 1) throw new Error('디스크 오류')
+    } }
+    const w = newWorld()
+    const saver = new Saver(be, () => w, () => meta(Date.now()))
+    await saver.request({ backup: true, force: true })
+    assert.equal(seen.length, 1, '실패한 쓰기를 바로 되풀이하지 않는다')
+    await saver.request()
+    await saver.request()
+    assert.deepEqual(seen, [[true, true], [true, true], [false, false]])
   })
 
   it('행동 직후 저장은 2초 간격으로 다시 돈다(독립 검증 결함 2: 시계가 달라 첫 저장 뒤 멈추던 것)', async () => {

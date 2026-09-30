@@ -36,7 +36,7 @@ export function measureAbsence(content: Content, state: SaveBody, input: Absence
     return { absent_sec: 0, settleable_sec: 0, skip: 'clock_backward' }
   }
   if (now >= hw) {
-    absent = now - Math.max(last, hw)
+    absent = Math.max(0, now - Math.max(last, hw)) // 저장 시각이 now보다 늦으면 0(음수 부재는 없다)
     // 미래 점프는 막지 않는다. 상한과 정지 지점만으로 이득을 제한하고 기록만 남긴다
     if (absent > FORWARD_JUMP_MS) off.clock_anomalies.push({ kind: 'forward_jump', now, hw, absent })
     off.high_water_utc = now

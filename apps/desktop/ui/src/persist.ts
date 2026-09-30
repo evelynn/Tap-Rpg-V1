@@ -72,40 +72,47 @@ export type Loaded =
   | { kind: 'ok'; world: World; savedAt: number; recovered: boolean; readOnly: boolean; summary: ReturnSummary | null; offlineFailed: boolean }
 
 // 시작: 파일 고르기 → 세계 → 부재 정산(13 §2). 정산 중 예외면 같은 저장으로 다시 읽어 정산 없이 시작한다(13 §2.3)
-export async function loadGame(backend: SaveBackend, content: Content, now: number): Promise<Loaded> {
+// 고른 파일로 세계를 만들지 못하면 그 파일만 손상으로 옮기고 남은 파일에서 다시 고른다(13 §8.5 첫 정상 파일, I100)
+export async function loadGame(backend: SaveBackend, content: Content, now: number, makeWorld: typeof loadGameWorld = loadGameWorld): Promise<Loaded> {
   const backups = content.balance.offline.backups
-  const files = await backend.readAll(backups)
+  let files = await backend.readAll(backups)
   if (!files.length) return { kind: 'none' }
-  const r = pickSave(files, content)
-  if (!r.ok) {
-    await backend.quarantine(r.files, new Date(now).toISOString().replace(/[:.]/g, ''))
-    return { kind: 'fail', message: '저장 기록을 읽을 수 없습니다. 손상된 파일은 따로 옮겨 두었습니다.' }
-  }
-  for (const m of r.preMigration) await backend.extra(m.file, m.text)
-  const body = r.result.root.body
-  const savedAt = r.result.root.header.saved_at_utc
-  const pristine = JSON.stringify(body)
-  let world: World
-  try {
-    world = loadGameWorld(content, body)
-  } catch (e) {
-    console.error('[텝] 저장으로 세계를 만들지 못했다', e)
-    if (r.result.read_only) return { kind: 'blocked', message: '더 새로운 버전에서 만든 기록이라 이 버전에서는 열 수 없습니다. 기록은 그대로 두었습니다. 새 버전으로 실행해 주세요.' }
-    await backend.quarantine(files.map((f) => f.file), new Date(now).toISOString().replace(/[:.]/g, ''))
-    return { kind: 'fail', message: '저장 기록을 열 수 없습니다. 손상된 파일은 따로 옮겨 두었습니다.' }
-  }
-  let summary: ReturnSummary | null = null
-  let offlineFailed = false
-  if (!r.result.read_only) {
-    try {
-      summary = runOffline(world, { now_utc: now, saved_at_utc: savedAt }).summary
-    } catch (e) {
-      console.error('[텝] 부재 정산 실패 — 정산 없이 시작한다', e)
-      world = loadGameWorld(content, JSON.parse(pristine))
-      offlineFailed = true
+  const stamp = new Date(now).toISOString().replace(/[:.]/g, '')
+  let dropped = false
+  for (;;) {
+    const r = pickSave(files, content)
+    if (!r.ok) {
+      await backend.quarantine(r.files, stamp)
+      return { kind: 'fail', message: dropped ? '저장 기록을 열 수 없습니다. 손상된 파일은 따로 옮겨 두었습니다.' : '저장 기록을 읽을 수 없습니다. 손상된 파일은 따로 옮겨 두었습니다.' }
     }
+    for (const m of r.preMigration) await backend.extra(m.file, m.text)
+    const body = r.result.root.body
+    const savedAt = r.result.root.header.saved_at_utc
+    const pristine = JSON.stringify(body)
+    let world: World
+    try {
+      world = makeWorld(content, body)
+    } catch (e) {
+      console.error('[텝] 저장으로 세계를 만들지 못했다', e)
+      if (r.result.read_only) return { kind: 'blocked', message: '더 새로운 버전에서 만든 기록이라 이 버전에서는 열 수 없습니다. 기록은 그대로 두었습니다. 새 버전으로 실행해 주세요.' }
+      await backend.quarantine([r.file], stamp)
+      files = files.filter((f) => f.file !== r.file)
+      dropped = true
+      continue
+    }
+    let summary: ReturnSummary | null = null
+    let offlineFailed = false
+    if (!r.result.read_only) {
+      try {
+        summary = runOffline(world, { now_utc: now, saved_at_utc: savedAt }).summary
+      } catch (e) {
+        console.error('[텝] 부재 정산 실패 — 정산 없이 시작한다', e)
+        world = makeWorld(content, JSON.parse(pristine))
+        offlineFailed = true
+      }
+    }
+    return { kind: 'ok', world, savedAt, recovered: r.recovered || dropped, readOnly: r.result.read_only, summary, offlineFailed }
   }
-  return { kind: 'ok', world, savedAt, recovered: r.recovered, readOnly: r.result.read_only, summary, offlineFailed }
 }
 
 // 저장 요청 줄(13 §8.2): 한 번에 한 쓰기, 쓰는 동안 들어온 요청은 가장 새 것 하나만 남긴다
@@ -113,6 +120,7 @@ export class Saver {
   private busy = false
   private next: { backup: boolean; force: boolean } | null = null
   private lastWrite = 0
+  private carry: { backup: boolean; force: boolean } | null = null // 실패한 쓰기의 백업 표시. 다음 쓰기가 이어받는다(I100)
   readOnly = false
 
   constructor(private readonly backend: SaveBackend, private readonly world: () => World | null, private readonly meta: () => SaveMeta) {}
@@ -134,14 +142,16 @@ export class Saver {
     const w = this.world()
     if (!w || !this.next) return
     this.busy = true
-    const job = this.next
+    const job = { backup: this.next.backup || !!this.carry?.backup, force: this.next.force || !!this.carry?.force }
     this.next = null
+    this.carry = null
     try {
       const root = makeSaveRoot(w.snapshot(), this.meta())
       await this.backend.write(serializeSave(root), job.backup, job.force, w.content.balance.offline.backups)
       this.lastWrite = Date.now()
     } catch (e) {
       console.error('[텝] 저장 실패', e)
+      this.carry = job // 바로 되풀이하지 않는다. 다음 저장 요청 때 같은 표시로 쓴다
     } finally {
       this.busy = false
     }
