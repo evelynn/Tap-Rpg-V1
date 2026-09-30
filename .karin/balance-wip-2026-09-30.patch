@@ -1,0 +1,699 @@
+diff --git a/content/base/attitudes/attitudes.json b/content/base/attitudes/attitudes.json
+index e93649a..5245c9a 100644
+--- a/content/base/attitudes/attitudes.json
++++ b/content/base/attitudes/attitudes.json
+@@ -3,13 +3,13 @@
+     "id": "stable", "name": "안정적", "reason_label": "안정적", "order": 0,
+     "activity_weights": { "hunt": 60, "adventure": 30, "dungeon": 10 },
+     "retreat_hp": 0.60, "return_fatigue": 60, "max_risk": "normal", "max_risk_adventure": null,
+-    "dungeon_depth_offset": -1, "gate_risk_limit": -1, "lethal_gate_risk_limit": -1,
++    "dungeon_depth_offset": -1, "gate_risk_limit": 0, "lethal_gate_risk_limit": -1,
+     "gate_hp_ratio": 0.80, "potion_reserve_n": 0, "dungeon_safety_k": 2.0,
+     "buy_targets": { "potion": 4, "ration": 2, "bandage": 1, "moon_wine": 2 },
+     "bandage_use_at": 1,
+     "eval_mult": { "weapon": 0.8, "armor": 1.2 },
+     "light_treat": { "min_injuries": 1, "if_dungeon_candidate": false },
+-    "reserve_ratio": 0.40, "hunt_target_encounters": 8, "adventure_scenes": [3, 4], "location_target_risk": -2,
++    "reserve_ratio": 0.20, "hunt_target_encounters": 7, "adventure_scenes": [4, 5], "location_target_risk": -2,
+     "fit_coef": { "very_low": 0.6, "low": 1.0, "normal": 1.0, "high": 0.8,
+                   "_note": "high 0.8은 04 §5.2에 없는 칸(사용자가 상한을 올린 경우). DS-16 권장값" },
+     "retreat_camp": false,
+@@ -24,14 +24,14 @@
+   {
+     "id": "adventurous", "name": "모험적", "reason_label": "모험적", "order": 1,
+     "activity_weights": { "hunt": 30, "adventure": 45, "dungeon": 25 },
+-    "retreat_hp": 0.40, "return_fatigue": 70, "max_risk": "normal", "max_risk_adventure": "high",
++    "retreat_hp": 0.30, "return_fatigue": 70, "max_risk": "normal", "max_risk_adventure": "high",
+     "dungeon_depth_offset": 0, "gate_risk_limit": 2, "lethal_gate_risk_limit": -1,
+     "gate_hp_ratio": 0.70, "potion_reserve_n": 1, "dungeon_safety_k": 1.3,
+     "buy_targets": { "potion": 3, "ration": 2, "bandage": 1, "moon_wine": 2 },
+     "bandage_use_at": 2,
+     "eval_mult": { "weapon": 1.0, "armor": 1.0 },
+     "light_treat": { "min_injuries": 2, "if_dungeon_candidate": true },
+-    "reserve_ratio": 0.30, "hunt_target_encounters": 10, "adventure_scenes": [4, 5], "location_target_risk": 0,
++    "reserve_ratio": 0.15, "hunt_target_encounters": 7, "adventure_scenes": [5, 6], "location_target_risk": 0,
+     "fit_coef": { "very_low": 0.6, "low": 0.9, "normal": 1.0, "high": 0.8, "high_adventure": 0.8,
+                   "_note": "high(모험 활동 밖) 0.8은 04 §5.2에 없는 칸. DS-16 권장값. high_adventure가 04 원문" },
+     "retreat_camp": false,
+@@ -46,14 +46,14 @@
+   {
+     "id": "challenging", "name": "도전적", "reason_label": "도전적", "order": 2,
+     "activity_weights": { "hunt": 20, "adventure": 25, "dungeon": 55 },
+-    "retreat_hp": 0.25, "return_fatigue": 80, "max_risk": "high", "max_risk_adventure": null,
++    "retreat_hp": 0.15, "return_fatigue": 80, "max_risk": "high", "max_risk_adventure": null,
+     "dungeon_depth_offset": 0, "gate_risk_limit": 5, "lethal_gate_risk_limit": 2,
+     "gate_hp_ratio": 0.55, "potion_reserve_n": 2, "dungeon_safety_k": 1.0,
+     "buy_targets": { "potion": 2, "ration": 2, "bandage": 2, "moon_wine": 2 },
+     "bandage_use_at": 2,
+     "eval_mult": { "weapon": 1.2, "armor": 0.8 },
+     "light_treat": { "min_injuries": 2, "if_dungeon_candidate": false },
+-    "reserve_ratio": 0.20, "hunt_target_encounters": 12, "adventure_scenes": [5, 6], "location_target_risk": 2,
++    "reserve_ratio": 0.10, "hunt_target_encounters": 6, "adventure_scenes": [4, 5], "location_target_risk": 2,
+     "fit_coef": { "very_low": 0.6, "low": 0.9, "normal": 1.0, "high": 1.0 },
+     "retreat_camp": true,
+     "shortcut": { "chance": 1.0 },
+diff --git a/content/base/balance.json b/content/base/balance.json
+index 6e51b9f..6dd4aeb 100644
+--- a/content/base/balance.json
++++ b/content/base/balance.json
+@@ -88,12 +88,12 @@
+                 "negotiation_check": 2, "trade_return": 1 } },
+   "xp": {                                               "_comment": "01 §2.4, 05 §3.1",
+     "target_min": { "base": 4, "amp": 20, "tau": 6, "linear": 0.3 },
+-    "prod_rate": 0.75, "req_round": 5, "req_min": 25, "max_level": 30,
++    "prod_rate": 0.59, "req_round": 5, "req_min": 25, "max_level": 30,
+     "encounter_base": { "flat": 6, "per_level": 3 },
+     "rank_mult": { "normal": 1, "elite": 2.5, "boss": 10 },
+-    "activity_mult": { "hunt": 1.0, "adventure": 0.8, "dungeon_room": 1.3 },
++    "activity_mult": { "hunt": 1.0, "adventure": 0.8, "dungeon_room": 2.0 },
+     "dungeon_noncombat_mult": 0.5,                      "_note": "던전 비전투 방 = XP(방 레벨) × dungeon_room × 이 값, 휴식 지점 0",
+-    "overlevel_decay": { "free_gap": 2, "per_level": 0.15, "floor": 0.2 }
++    "overlevel_decay": { "free_gap": 4, "per_level": 0.08, "floor": 0.2 }
+   },
+   "check": {                                            "_comment": "01 §3. fumble_table = 05 §6.4 가벼운 곤란(사건이 따로 정하면 그것을 따름)",
+     "mod_cap": [-5, 5], "trait_mod_cap": 2,
+@@ -147,7 +147,7 @@
+     "max_rounds": { "normal": 12, "elite_gate": 20, "boss_gate": 36 },
+     "stalemate_xp_ratio": 0.3, "crit_mult": 2, "fumble_enemy_bonus": 2,
+     "ambush": { "chance": 0.10, "night_add": 0.05, "fail_enemy_hit_add": 2 },
+-    "flee": { "hp_ratio_mult": 0.5, "fail_enemy_hit_add": 2 },  "_note": "도주 조건 HP ≤ 최대 HP × 퇴각 기준 × 0.5(05 §7.5)",
++    "flee": { "hp_ratio_mult": 0.25, "fail_enemy_hit_add": 2 },  "_note": "도주 조건 HP ≤ 최대 HP × 퇴각 기준 × 0.5(05 §7.5)",
+     "night": { "enemy_level_add": 1, "risk_add": 1,
+                "modifiers": [ { "target": "check.stealth", "op": "add", "value": 2 },
+                               { "target": "check.ambush", "op": "add", "value": 2 } ],
+@@ -156,9 +156,9 @@
+     "dungeon_room_level_div": 2
+   },
+   "enemy_formula": {                                    "_comment": "01 §5.1. 런타임 적 수치의 출처 + V17 경고 기준(아래 필드 규칙)",
+-    "normal": { "hp": { "base": 8, "per_level": 2.3 }, "ac": { "base": 10, "div": 3 }, "hit": { "base": 2, "div": 3 },
+-                "dmg_min": { "base": 1, "div": 6 }, "dmg_max": { "base": 2, "div": 2.5 },
+-                "xp": { "base": 6, "per_level": 3 }, "coins": { "base": 3, "per_level": 1.5, "growth": 1.08 } },
++    "normal": { "hp": { "base": 8, "per_level": 2.0 }, "ac": { "base": 10, "div": 3 }, "hit": { "base": 2, "div": 2.8 },
++                "dmg_min": { "base": 1, "div": 5 }, "dmg_max": { "base": 2, "div": 2.1 },
++                "xp": { "base": 6, "per_level": 3 }, "coins": { "base": 8, "per_level": 1.5, "growth": 1.07 } },
+     "elite": { "hp_mult": 2.5, "ac_add": 0, "hit_add": 2, "dmg_mult": 1.3, "xp_mult": 2.5, "coins_mult": 2.5 },
+     "boss":  { "hp_mult": 5,   "ac_add": 2, "hit_add": 3, "dmg_mult": 1.5, "xp_mult": 10,  "coins_mult": 10 },
+     "rounding": { "base": "round", "hp_mult": "round", "dmg_mult": "ceil", "xp_coins_mult": "floor" }
+@@ -168,7 +168,7 @@
+     "camp": { "sec": 60, "hp_ratio": 0.30, "fatigue": -40, "no_ration_mult": 0.5 },
+     "inn": { "hp_ratio": 1.0, "cost": { "base": 5, "per_level": 2 }, "max_times": 2 },
+     "lodging": { "hp_ratio": 1.0, "max_times": 2 },
+-    "town_rest_when": { "hp_ratio_lt": 0.90, "fatigue_gt": 20 },
++    "town_rest_when": { "hp_ratio_lt": 0.90, "fatigue_gt": 10 },
+     "rest_point": { "sec": 60, "hp_ratio": 0.15, "fatigue": -15 }
+   },
+   "injury": {                                           "_comment": "01 §6.2",
+@@ -200,7 +200,7 @@
+   "risk": {                                             "_comment": "01 §7.2. 순찰 구역은 region.patrol_zone",
+     "bands": [ { "max": -4, "grade": "very_low" }, { "max": -1, "grade": "low" },
+                { "max": 2, "grade": "normal" }, { "max": 5, "grade": "high" }, { "grade": "reckless" } ],
+-    "gear_level_per_tier": 2
++    "gear_level_per_tier": 1
+   },
+   "economy": {                                          "_comment": "01 §9, 08",
+     "tier_levels": [[1, 5], [6, 11], [12, 17], [18, 23], [24, 30]],
+@@ -215,7 +215,7 @@
+     "grade_stats": { "common": { "dmg_mult": 1.0, "hit": 0, "ac": 0 }, "good": { "dmg_mult": 1.15, "hit": 1, "ac": 1 },
+                      "rare": { "dmg_mult": 1.3, "hit": 1, "ac": 2 }, "legendary": { "dmg_mult": 1.45, "hit": 2, "ac": 3 } },
+     "good_effect_chance": 0.6, "rare_effect_count": 1, "named_rare_effect_count": 2,
+-    "sell_ratio": 0.25, "maintenance_ratio": 0.005, "discount_cap": 0.20, "auto_buy_min_improvement": 0.08,
++    "sell_ratio": 0.15, "maintenance_ratio": 0.005, "discount_cap": 0.20, "auto_buy_min_improvement": 0.08,
+     "drops": {
+       "hunt":           { "chance": 0.06, "grades": { "common": 90, "good": 9,  "rare": 1,  "legendary": 0 } },
+       "dungeon_combat": { "chance": 0.08, "grades": { "common": 80, "good": 17, "rare": 3,  "legendary": 0 } },
+@@ -338,7 +338,7 @@
+     "camp": { "max_per_sortie": 1, "max_elapsed_min": 10 },
+     "potion_margin": 0.10,
+     "hunt": { "target_jitter": 2, "safety_cap_encounters": 18, "safety_cap_min": 15 },
+-    "adaptation_returns": 3,
++    "adaptation_returns": 2,
+     "low_cap_notice_streak": 10,
+     "lines": { "low_cap": "방침대로 익숙한 길만 걸었다.", "forced_nearby": "몸을 추스르려 가까운 길을 골랐다.",
+                "lost_destination": "익숙한 길이 사라졌다." },
+@@ -354,7 +354,7 @@
+   "dungeon": {                                          "_comment": "07 §5. loss_model의 보물·휴식 항은 region.treasure_table·chest.trapped·trap_loss·recovery.rest_point를 읽는다",
+     "first_room_kinds": ["combat", "treasure"], "no_repeat": ["rest"], "max_run": { "trap": 2 },
+     "treasure_guarantee_min_rooms": 4, "validate_loss_cap": 0.75, "retries": 5,
+-    "room_coin_mult": 1.2,                              "_note": "01 §9.4 던전 전투 방 동전 ×1.2",
++    "room_coin_mult": 1.0,                              "_note": "01 §9.4 던전 전투 방 동전 ×1.2",
+     "loss_model": { "combat_base": 0.11, "pair_mult": 1.1, "level_coef": 0.08, "level_clamp": [0.5, 2.0],
+                     "trap_loss": 0.10, "event": 0.03 },
+     "gate_prep": { "hp_below": 0.70, "max_potions": 2 },
+diff --git a/content/base/enemies/enemies.json b/content/base/enemies/enemies.json
+index 9af2e7a..93278b9 100644
+--- a/content/base/enemies/enemies.json
++++ b/content/base/enemies/enemies.json
+@@ -2,7 +2,7 @@
+   {
+     "_comment": "수치 01 §5.2, 특수능력 07 §4.1, 승리 문장 07 §4.2, 퇴장 07 §4.1",
+     "id": "EN01", "name": "여울 들쥐", "family": "rat", "level": 1, "rank": "normal",
+-    "hp": 10, "ac": 10, "hit": 2, "damage": [1, 2], "xp": 9, "coins": 5,
++    "hp": 10, "ac": 10, "hit": 2, "damage": [1, 2], "xp": 9, "coins": 10,
+     "material_id": "mat_EN01",
+     "specials": [ { "kind": "cowardly_flee", "hp_ratio_lte": 0.30, "chance": 0.25, "xp_ratio": 0.5 } ],
+     "sprite_family": "rat", "palette_id": "rat_river",
+@@ -12,7 +12,7 @@
+   },
+   {
+     "id": "EN02", "name": "큰 들쥐", "family": "rat", "level": 4, "rank": "normal",
+-    "hp": 17, "ac": 11, "hit": 3, "damage": [1, 3], "xp": 18, "coins": 12,
++    "hp": 16, "ac": 11, "hit": 3, "damage": [1, 3], "xp": 18, "coins": 18,
+     "material_id": "mat_EN02",
+     "specials": [ { "kind": "gnaw", "chance": 0.15, "ac_add": -1, "max_times": 1 } ],
+     "sprite_family": "rat", "palette_id": "rat_big",
+@@ -22,7 +22,7 @@
+   },
+   {
+     "id": "EN03", "name": "여울 늑대", "family": "wolf", "level": 8, "rank": "normal",
+-    "hp": 26, "ac": 12, "hit": 4, "damage": [2, 5], "xp": 30, "coins": 28,
++    "hp": 24, "ac": 12, "hit": 4, "damage": [2, 5], "xp": 30, "coins": 34,
+     "material_id": "mat_EN03",
+     "specials": [ { "kind": "pack_hunt", "min_count": 2, "hit_add": 1 } ],
+     "sprite_family": "wolf", "palette_id": "wolf_river",
+@@ -33,7 +33,7 @@
+   {
+     "_comment": "lines는 16 §2.4 예시",
+     "id": "EN04", "name": "잿빛 늑대", "family": "wolf", "level": 15, "rank": "normal",
+-    "hp": 42, "ac": 15, "hit": 7, "damage": [3, 8], "xp": 51, "coins": 81,
++    "hp": 38, "ac": 15, "hit": 7, "damage": [4, 9], "xp": 51, "coins": 84,
+     "material_id": "mat_EN04",
+     "specials": [ { "kind": "howl", "check": "fear", "on_fail": [ { "target": "hit", "op": "add", "value": -1 } ] } ],
+     "sprite_family": "wolf", "palette_id": "wolf_ash",
+@@ -43,7 +43,7 @@
+   },
+   {
+     "id": "EN05", "name": "종굴 박쥐", "family": "bat", "level": 7, "rank": "normal",
+-    "hp": 24, "ac": 12, "hit": 4, "damage": [2, 4], "xp": 27, "coins": 23,
++    "hp": 22, "ac": 12, "hit": 4, "damage": [2, 5], "xp": 27, "coins": 30,
+     "material_id": "mat_EN05",
+     "specials": [ { "kind": "erratic_flight", "first_attack_hit_add": -2 } ],
+     "sprite_family": "bat", "palette_id": "bat_bell",
+@@ -54,7 +54,7 @@
+   {
+     "_comment": "TI02 +1은 특성의 special.screech.fatigue",
+     "id": "EN06", "name": "쇳소리 박쥐", "family": "bat", "level": 15, "rank": "normal",
+-    "hp": 42, "ac": 15, "hit": 7, "damage": [3, 8], "xp": 51, "coins": 81,
++    "hp": 38, "ac": 15, "hit": 7, "damage": [4, 9], "xp": 51, "coins": 84,
+     "material_id": "mat_EN06",
+     "specials": [ { "kind": "screech", "fatigue": 2 } ],
+     "sprite_family": "bat", "palette_id": "bat_iron",
+@@ -65,7 +65,7 @@
+   {
+     "_comment": "어둠 방어 무효(J04·TA02)는 수정자 dark_penalty_ignore",
+     "id": "EN07", "name": "그림자 박쥐", "family": "bat", "level": 23, "rank": "normal",
+-    "hp": 61, "ac": 17, "hit": 9, "damage": [4, 11], "xp": 75, "coins": 220,
++    "hp": 54, "ac": 17, "hit": 10, "damage": [5, 12], "xp": 75, "coins": 201,
+     "material_id": "mat_EN07",
+     "specials": [ { "kind": "dark_defense", "ac_add": 1,
+                     "when": { "any": [ { "time_of_day": "night" }, { "location_kind": ["dungeon_floor"] } ] } } ],
+@@ -76,7 +76,7 @@
+   },
+   {
+     "id": "EN08", "name": "폐광 코볼트", "family": "kobold", "level": 10, "rank": "normal",
+-    "hp": 31, "ac": 13, "hit": 5, "damage": [2, 6], "xp": 36, "coins": 39,
++    "hp": 28, "ac": 13, "hit": 5, "damage": [3, 6], "xp": 36, "coins": 45,
+     "material_id": "mat_EN08",
+     "specials": [ { "kind": "stone_throw", "damage": [1, 3], "hit_check": true } ],
+     "sprite_family": "kobold", "palette_id": "kobold_mine",
+@@ -86,7 +86,7 @@
+   },
+   {
+     "id": "EN09", "name": "코볼트 광부장", "family": "kobold", "level": 18, "rank": "normal",
+-    "hp": 49, "ac": 16, "hit": 8, "damage": [4, 9], "xp": 60, "coins": 120,
++    "hp": 44, "ac": 16, "hit": 8, "damage": [4, 10], "xp": 60, "coins": 118,
+     "material_id": "mat_EN09",
+     "specials": [ { "kind": "heavy_swing", "rounds": [3, 6, 9], "damage_mult": 1.5 } ],
+     "sprite_family": "kobold", "palette_id": "kobold_foreman",
+@@ -97,7 +97,7 @@
+   {
+     "_comment": "W05의 코볼트 추가 피해는 감소 뒤에 더한다(엔진 순서 규칙)",
+     "id": "EN10", "name": "녹슨 투구 코볼트", "family": "kobold", "level": 26, "rank": "normal",
+-    "hp": 68, "ac": 18, "hit": 10, "damage": [5, 12], "xp": 84, "coins": 311,
++    "hp": 60, "ac": 18, "hit": 11, "damage": [6, 14], "xp": 84, "coins": 273,
+     "material_id": "mat_EN10",
+     "specials": [ { "kind": "damage_reduction", "value": 2, "min": 1 } ],
+     "sprite_family": "kobold", "palette_id": "kobold_helm",
+@@ -108,7 +108,7 @@
+   {
+     "_comment": "07 §4.3 호루라기. 승리 문장은 14 §5.1 문형, 퇴장은 15 §7.1 코볼트 퇴장",
+     "id": "EB01", "name": "코볼트 두목", "family": "kobold", "level": 13, "rank": "elite",
+-    "hp": 95, "ac": 14, "hit": 8, "damage": [4, 10], "xp": 112, "coins": 152,
++    "hp": 85, "ac": 14, "hit": 8, "damage": [4, 11], "xp": 112, "coins": 165,
+     "material_id": "mat_EB01",
+     "specials": [ { "kind": "summon", "hp_ratio_lte": 0.5, "enemy_id": "EN08", "level": 10, "skip_attack": true, "max_times": 1 } ],
+     "sprite_family": "kobold", "palette_id": "kobold_boss",
+@@ -119,7 +119,7 @@
+   {
+     "_comment": "07 §4.3 갱도 흔들기 DC 17 = D2 지역 기준(dc_offset 0). 승리 문장은 14 §5.1 문형, 퇴장은 15 §7.1",
+     "id": "EB02", "name": "늙은 광부장", "family": "kobold", "level": 21, "rank": "elite",
+-    "hp": 141, "ac": 17, "hit": 11, "damage": [6, 13], "xp": 172, "coins": 435,
++    "hp": 125, "ac": 17, "hit": 11, "damage": [7, 16], "xp": 172, "coins": 410,
+     "material_id": "mat_EB02",
+     "specials": [ {
+       "kind": "cave_shake", "hp_thresholds": [0.6, 0.3], "check": "trap_evade", "dc_offset": 0,
+@@ -135,6 +135,7 @@
+     "_comment": "07 §4.4 단계: 경계 67%/34%를 hp_above 0.66/0.33(초과)으로. 공포 DC 25 = D3 지역 기준 21 + 관문 +4이며 +4는 check_kinds.fear.gate_add가 더하므로 dc_offset 0. 공포 면역(W10·TA08)은 수정자 fear_immunity. 승리 문장 02 §7·07 §9.2, 퇴장 15 §7.3",
+     "id": "EB03", "name": "부서진 종의 파수꾼", "family": "unique", "level": 29, "rank": "boss",
+     "hp": 373, "ac": 21, "hit": 14, "damage": [8, 20], "xp": 930, "coins": 4330,
++    "_note": "등록부 값이 기준(01 §5.2). 적 기준식을 조정한 D91 뒤에도 치명 관문 승률 표(07 §4.4)를 유지하려고 이전 값을 둔다",
+     "material_id": "mat_EB03",
+     "lethal": true,
+     "specials": [ {
+diff --git a/content/base/events/fate/F02.json b/content/base/events/fate/F02.json
+index 568302c..e6806ed 100644
+--- a/content/base/events/fate/F02.json
++++ b/content/base/events/fate/F02.json
+@@ -5,7 +5,7 @@
+   "locations": ["A4"],
+   "triggers": ["adventure_event_scene"],
+   "condition": { "all": [
+-    { "age_gte": 50 },
++    { "age_gte": 58 },
+     { "mutation": "none" },
+     { "lifetime_count_lt": { "event": "F02", "count": 1 } }
+   ] },
+diff --git a/content/base/regions/D1.json b/content/base/regions/D1.json
+index b3e1fbc..1e09065 100644
+--- a/content/base/regions/D1.json
++++ b/content/base/regions/D1.json
+@@ -6,7 +6,7 @@
+   "level_range": [6, 13],
+   "level_mid": 9,
+   "travel_sec": 60,
+-  "unlock": { "any": [ { "discovered": "D1" }, { "level_gte": 10 } ] },
++  "unlock": { "any": [ { "discovered": "D1" }, { "level_gte": 8 } ] },
+   "guild_rank_req": "bronze",
+   "patrol_zone": false,
+   "fallback": false,
+diff --git a/content/examples/mist-forest/enemies/MF_EN01.json b/content/examples/mist-forest/enemies/MF_EN01.json
+index ddc67db..c5d2d79 100644
+--- a/content/examples/mist-forest/enemies/MF_EN01.json
++++ b/content/examples/mist-forest/enemies/MF_EN01.json
+@@ -5,12 +5,12 @@
+   "family": "bat",
+   "level": 14,
+   "rank": "normal",
+-  "hp": 40,
++  "hp": 36,
+   "ac": 14,
+-  "hit": 6,
+-  "damage": [3, 7],
++  "hit": 7,
++  "damage": [3, 8],
+   "xp": 48,
+-  "coins": 70,
++  "coins": 75,
+   "specials": [ { "kind": "erratic_flight", "first_attack_hit_add": -2 } ],
+   "sprite_family": "bat",
+   "palette_id": "bat_bell",
+diff --git "a/docs/design/01_\355\225\265\354\213\254\352\267\234\354\271\231_\354\210\230\354\271\230\352\270\260\354\244\200.md" "b/docs/design/01_\355\225\265\354\213\254\352\267\234\354\271\231_\354\210\230\354\271\230\352\270\260\354\244\200.md"
+index 8ab21aa..95250ac 100644
+--- "a/docs/design/01_\355\225\265\354\213\254\352\267\234\354\271\231_\354\210\230\354\271\230\352\270\260\354\244\200.md"
++++ "b/docs/design/01_\355\225\265\354\213\254\352\267\234\354\271\231_\354\210\230\354\271\230\352\270\260\354\244\200.md"
+@@ -123,12 +123,12 @@
+ 
+ ### 2.4 레벨과 경험치
+ 
+-- 레벨 1~30. 레벨 n에서 n+1로 가는 필요 경험치 `req(n) = 5 단위 반올림(목표 분(n) × 0.75 × (6 + 3n))`, 최소 25.
++- 레벨 1~30. 레벨 n에서 n+1로 가는 필요 경험치 `req(n) = 5 단위 반올림(목표 분(n) × 0.59 × (6 + 3n))`, 최소 25.
+ - `목표 분(n) = 4 + 20 × (1 − e^(−(n−1)/6)) + 0.3 × (n − 1)`.
+ - 조우 1회 기본 경험치 `XP(L) = 6 + 3L` (L = 적 레벨). 정예 ×2.5, 보스 ×10.
+-- 활동 계수: 사냥 조우 ×1.0, 모험 장면 ×0.8(발견 보너스 별도), 던전 방 ×1.3.
+-- **과소 난도 감쇠**: 인물 레벨이 적 레벨 + 2를 넘으면 경험치 × max(0.2, 1 − 0.15 × (레벨 차 − 2)).
+-- 평균 생산 활동 비율 0.75회/분(이동·휴식·정비 포함)을 기준으로 아래 표준 진행표를 계산했다.
++- 활동 계수: 사냥 조우 ×1.0, 모험 장면 ×0.8(발견 보너스 별도), 던전 방 ×2.0.
++- **과소 난도 감쇠**: 인물 레벨이 적 레벨 + 4를 넘으면 경험치 × max(0.2, 1 − 0.08 × (레벨 차 − 4)).
++- 평균 생산 활동 비율 0.59회/분(이동·휴식·정비 포함, 17 시뮬레이터 실측 — D92)을 기준으로 아래 표준 진행표를 계산했다. **아래 표의 `다음까지 XP`·`누적 XP` 열은 0.75회/분 때 값으로 아직 다시 쓰지 않았다** — 실제 값은 위 식(레벨 30 누적 23,780)이며 도달 시점·나이 열은 그대로다(BALANCE_BACKLOG B21).
+ 
+ #### 표준 진행표 (모험적 태도, 적정 난도, 일반 등급 장비 가정)
+ 
+@@ -254,12 +254,14 @@
+ 
+ | 수치 | 일반 | 정예 | 보스 |
+ | --- | --- | --- | --- |
+-| 체력 | 8 + 2.3L | ×2.5 | ×5 |
++| 체력 | 8 + 2.0L | ×2.5 | ×5 |
+ | 방어 | 10 + ⌊L/3⌋ | 동일 | +2 |
+-| 명중 | 2 + ⌊L/3⌋ | +2 | +3 |
+-| 피해 | (1 + ⌊L/6⌋) ~ (2 + ⌊L/2.5⌋) | ×1.3 올림 | ×1.5 올림 |
++| 명중 | 2 + ⌊L/2.8⌋ | +2 | +3 |
++| 피해 | (1 + ⌊L/5⌋) ~ (2 + ⌊L/2.1⌋) | ×1.3 올림 | ×1.5 올림 |
+ | 경험치 | 6 + 3L | ×2.5 | ×10 |
+-| 동전 | (3 + 1.5L) × 1.08^L 반올림 | ×2.5 | ×10 |
++| 동전 | (8 + 1.5L) × 1.07^L 반올림 | ×2.5 | ×10 |
++
++- 위 식은 D92(17 시뮬레이터 실측 조정) 값이다. EB03만 조정 전 식의 값을 등록부에 그대로 둔다(07 §4.4 치명 관문 승률 표 유지).
+ 
+ ### 5.2 적 등록부 (첫 검증판)
+ 
+@@ -267,18 +269,18 @@
+ 
+ | ID | 이름 | 계열 | L | 구분 | HP | 방어 | 명중 | 피해 | XP | 동전 | 주 출현 |
+ | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+-| EN01 | 여울 들쥐 | 들쥐 | 1 | 일반 | 10 | 10 | +2 | 1~2 | 9 | 5 | H1 |
+-| EN02 | 큰 들쥐 | 들쥐 | 4 | 일반 | 17 | 11 | +3 | 1~3 | 18 | 12 | H1, H2 |
+-| EN03 | 여울 늑대 | 늑대 | 8 | 일반 | 26 | 12 | +4 | 2~5 | 30 | 28 | H2, H3 |
+-| EN04 | 잿빛 늑대 | 늑대 | 15 | 일반 | 42 | 15 | +7 | 3~8 | 51 | 81 | H3, H4 |
+-| EN05 | 종굴 박쥐 | 박쥐 | 7 | 일반 | 24 | 12 | +4 | 2~4 | 27 | 23 | D1 |
+-| EN06 | 쇳소리 박쥐 | 박쥐 | 15 | 일반 | 42 | 15 | +7 | 3~8 | 51 | 81 | D2, H4 |
+-| EN07 | 그림자 박쥐 | 박쥐 | 23 | 일반 | 61 | 17 | +9 | 4~11 | 75 | 220 | D3, H5 |
+-| EN08 | 폐광 코볼트 | 코볼트 | 10 | 일반 | 31 | 13 | +5 | 2~6 | 36 | 39 | D1 |
+-| EN09 | 코볼트 광부장 | 코볼트 | 18 | 일반 | 49 | 16 | +8 | 4~9 | 60 | 120 | D2, H4 |
+-| EN10 | 녹슨 투구 코볼트 | 코볼트 | 26 | 일반 | 68 | 18 | +10 | 5~12 | 84 | 311 | D3, H5 |
+-| EB01 | 코볼트 두목 | 코볼트 | 13 | 정예(D1 관문) | 95 | 14 | +8 | 4~10 | 112 | 152 | D1 관문 |
+-| EB02 | 늙은 광부장 | 코볼트 | 21 | 정예(D2 관문) | 141 | 17 | +11 | 6~13 | 172 | 435 | D2 관문 |
++| EN01 | 여울 들쥐 | 들쥐 | 1 | 일반 | 10 | 10 | +2 | 1~2 | 9 | 10 | H1 |
++| EN02 | 큰 들쥐 | 들쥐 | 4 | 일반 | 16 | 11 | +3 | 1~3 | 18 | 18 | H1, H2 |
++| EN03 | 여울 늑대 | 늑대 | 8 | 일반 | 24 | 12 | +4 | 2~5 | 30 | 34 | H2, H3 |
++| EN04 | 잿빛 늑대 | 늑대 | 15 | 일반 | 38 | 15 | +7 | 4~9 | 51 | 84 | H3, H4 |
++| EN05 | 종굴 박쥐 | 박쥐 | 7 | 일반 | 22 | 12 | +4 | 2~5 | 27 | 30 | D1 |
++| EN06 | 쇳소리 박쥐 | 박쥐 | 15 | 일반 | 38 | 15 | +7 | 4~9 | 51 | 84 | D2, H4 |
++| EN07 | 그림자 박쥐 | 박쥐 | 23 | 일반 | 54 | 17 | +10 | 5~12 | 75 | 201 | D3, H5 |
++| EN08 | 폐광 코볼트 | 코볼트 | 10 | 일반 | 28 | 13 | +5 | 3~6 | 36 | 45 | D1 |
++| EN09 | 코볼트 광부장 | 코볼트 | 18 | 일반 | 44 | 16 | +8 | 4~10 | 60 | 118 | D2, H4 |
++| EN10 | 녹슨 투구 코볼트 | 코볼트 | 26 | 일반 | 60 | 18 | +11 | 6~14 | 84 | 273 | D3, H5 |
++| EB01 | 코볼트 두목 | 코볼트 | 13 | 정예(D1 관문) | 85 | 14 | +8 | 4~11 | 112 | 165 | D1 관문 |
++| EB02 | 늙은 광부장 | 코볼트 | 21 | 정예(D2 관문) | 125 | 17 | +11 | 7~16 | 172 | 410 | D2 관문 |
+ | EB03 | 부서진 종의 파수꾼 | 고유 | 29 | 보스(D3 관문, 치명) | 373 | 21 | +14 | 8~20 | 930 | 4,330 | D3 관문 |
+ 
+ 소수 처리: 체력은 부록 A 스크립트의 반올림 결과, 정예·보스의 경험치·동전은 배수 적용 후 내림. 계산식과 등록부가 다르면 **등록부 값이 기준**이다.
+@@ -379,7 +381,7 @@
+ | H3 | 늑대 언덕 | 사냥터 | 8~15 | 11 | 45 | EN03, EN04 | 레벨 7 또는 A1 발견 |
+ | H4 | 광재 골짜기 | 사냥터 | 14~21 | 17 | 60 | EN04, EN06, EN09 | D1 첫 진입 |
+ | H5 | 무너진 갱도 입구 | 사냥터 | 20~30 | 25 | 70 | EN07, EN10 | D2 첫 진입 |
+-| D1 | 종소리 폐광 상층 | 던전 층 | 6~13 | 9 | 60 | EN05, EN08 / 관문 EB01 | A2에서 `폐광 입구` 발견 또는 레벨 10 길드 안내. 길드 동패 이상 |
++| D1 | 종소리 폐광 상층 | 던전 층 | 6~13 | 9 | 60 | EN05, EN08 / 관문 EB01 | A2에서 `폐광 입구` 발견 또는 레벨 8 길드 안내. 길드 동패 이상 |
+ | D2 | 종소리 폐광 중층 | 던전 층 | 13~21 | 17 | 60 + 층 하강 20 | EN06, EN09 / 관문 EB02 | EB01 격파. 길드 은패 이상 |
+ | D3 | 종소리 폐광 심층 | 던전 층 | 21~30 | 25 | 60 + 층 하강 40 | EN07, EN10 / 관문 EB03(치명) | EB02 격파. 길드 금패 이상 |
+ | A1 | 여울 들길 | 모험 경로 | 1~8 | 4 | 25 | 마을 주변 발견, 생활 사건 | 시작 |
+@@ -433,7 +435,7 @@
+ | T5 | 24~30 | 7,500 | 6,750 | 6,000 | 11,250 |
+ 
+ - 등급 가격 배수: 일반 ×1.0, 좋은 ×2.2, 희귀 ×5(상점 판매는 R01 등 지정 품목만), 전설은 판매하지 않음.
+-- 판매가 = 기준 구매가 × 25%.
++- 판매가 = 기준 구매가 × 15%.
+ - **초기 표준 무기** = T1 일반 무기 W02 `여울 대장간 한손검`, 120동전. 계승 돈 상한은 이 가격의 3배인 **360동전**이다.
+ 
+ ### 9.3 장비 단계별 기본 성능 (일반 등급)
+@@ -613,7 +615,7 @@
+ | ID | 이름 | 장소 | 조건 요약 |
+ | --- | --- | --- | --- |
+ | F01 | 전문화의 갈림길 | T00 | 레벨 8 이상, 근접·탐색·생존·교섭 가운데 하나 숙련 2단계 이상, 마을 귀환 시(05 §8.1, D79) |
+-| F02 | 별잠 샘물 | A4 | 50세 이상, 생애 1회 |
++| F02 | 별잠 샘물 | A4 | 58세 이상, 생애 1회 |
+ | F03 | 마지막 잔을 권하는 성주 | A4 | 35~64세, 모험적 또는 도전적 태도로 A4 진입, 생애 1회 (A4는 D3 첫 진입으로 열리므로 금패·레벨 18 이상이 자동으로 전제된다) |
+ 
+ | F04 | 두 번째 갈림길 | T00 | 1차 직업 있음, 레벨 20 이상, 1차 직업의 배수 숙련 하나가 3단계 이상, 2차 직업 없음, 마을 귀환 시, 생애 최대 2회(05 §8.5, D79) |
+@@ -841,15 +843,15 @@
+ ## 부록 A 기준값 산출식
+ 
+ ```python
+-MIN_PER_YEAR = 12; START_AGE = 18; PROD_RATE = 0.75
++MIN_PER_YEAR = 12; START_AGE = 18; PROD_RATE = 0.59
+ xp_encounter(L) = 6 + 3*L
+ target_min(n)   = 4 + 20*(1 - exp(-(n-1)/6)) + 0.3*(n-1)
+ req(n)          = max(25, round5(target_min(n) * PROD_RATE * xp_encounter(n)))
+ tier(L)         = T1(1~5) T2(6~11) T3(12~17) T4(18~23) T5(24~30)
+-enemy(L): hp = 8 + 2.3L, ac = 10 + L//3, hit = 2 + L//3,
+-          dmg = (1 + L//6) ~ (2 + int(L/2.5))
++enemy(L): hp = 8 + 2.0L, ac = 10 + L//3, hit = 2 + int(L/2.8),
++          dmg = (1 + L//5) ~ (2 + int(L/2.1))
+           elite: hp×2.5, hit+2, dmg×1.3(올림) / boss: hp×5, ac+2, hit+3, dmg×1.5(올림)
+-coins(L) = round((3 + 1.5L) * 1.08**L)
++coins(L) = round((8 + 1.5L) * 1.07**L)
+ ```
+ 
+ 검산 결과 (일반 등급 장비, 동일 레벨 적 1체): 라운드 3.2~4.8, 체력 손실 7.9~14.0%. 좋은 등급 장비에서는 라운드 3.0~3.6, 손실 7.1~10.0%.
+diff --git "a/docs/design/10_\354\202\254\352\261\264_\354\213\234\354\212\244\355\205\234.md" "b/docs/design/10_\354\202\254\352\261\264_\354\213\234\354\212\244\355\205\234.md"
+index d473a74..9cf07b5 100644
+--- "a/docs/design/10_\354\202\254\352\261\264_\354\213\234\354\212\244\355\205\234.md"
++++ "b/docs/design/10_\354\202\254\352\261\264_\354\213\234\354\212\244\355\205\234.md"
+@@ -267,7 +267,7 @@ v0.1 §2.1의 "5분 안에 작은 사건"과 01 §17의 "첫 10분 판정 기록
+ 
+ | 단위 | 정의 |
+ | --- | --- |
+-| 동전 단위 | `(3 + 1.5L) × 1.08^L` 반올림 (01 §5.1 동전식) |
++| 동전 단위 | `(8 + 1.5L) × 1.07^L` 반올림 (01 §5.1 동전식) |
+ | 경험치 단위 | `6 + 3L` (01 §2.4) |
+ | 기준 레벨 L | 필드·던전·모험 사건 = 장소 권장 레벨 중앙값(01 §8.1). 마을·편지 사건 = 인물 레벨 |
+ 
+diff --git a/docs/design/tools/balance.py b/docs/design/tools/balance.py
+index d34be8c..f8619ab 100644
+--- a/docs/design/tools/balance.py
++++ b/docs/design/tools/balance.py
+@@ -7,7 +7,7 @@ MIN_PER_YEAR = 12
+ START_AGE = 18
+ 
+ # ---- xp model ----
+-PROD_RATE = 0.75  # productive encounters per effective minute (avg incl. travel/rest/town)
++PROD_RATE = 0.59  # productive encounters per effective minute (avg incl. travel/rest/town). D92: 17 시뮬레이터 실측으로 0.75 → 0.59
+ 
+ def xp_encounter(L):
+     return 6 + 3 * L
+@@ -62,11 +62,11 @@ def char(L, grade='일반'):
+     return dict(t=t, ab=ab, ac=ac, hp=hp, dmg=dmg)
+ 
+ def enemy(L, kind='normal'):
+-    hp = 8 + 2.3 * L
++    hp = 8 + 2.0 * L          # D92: 8 + 2.3L → 8 + 2.0L
+     ac = 10 + L // 3
+-    hit = 2 + L // 3
+-    dlo = 1 + L // 6
+-    dhi = 2 + int(L / 2.5)
++    hit = 2 + int(L / 2.8)    # D92: 2 + L//3 → 2 + ⌊L/2.8⌋
++    dlo = 1 + L // 5          # D92: 1 + L//6 → 1 + L//5
++    dhi = 2 + int(L / 2.1)    # D92: 2 + ⌊L/2.5⌋ → 2 + ⌊L/2.1⌋
+     if kind == 'elite':
+         hp *= 2.5; hit += 2; dlo = math.ceil(dlo * 1.3); dhi = math.ceil(dhi * 1.3)
+     if kind == 'boss':
+@@ -79,7 +79,7 @@ def p_hit(bonus, ac):
+     return min(0.95, max(0.05, p))
+ 
+ def coins(L):
+-    return round((3 + 1.5 * L) * 1.08 ** L)
++    return round((8 + 1.5 * L) * 1.07 ** L)  # D92: (3 + 1.5L) × 1.08^L → (8 + 1.5L) × 1.07^L
+ 
+ print('== LEVEL TABLE ==')
+ cum = 0
+diff --git a/docs/dev/BALANCE_BACKLOG.md b/docs/dev/BALANCE_BACKLOG.md
+index ed75b5e..8776cff 100644
+--- a/docs/dev/BALANCE_BACKLOG.md
++++ b/docs/dev/BALANCE_BACKLOG.md
+@@ -25,6 +25,30 @@
+ | B12 | 태도가 보상 배율 차이만 된다 | 04·10(역할 구분) | R1 임계: 은퇴 레벨 중앙값 차 ≤ 3 | 분당 수입 43.78/57.65/137.78, 은퇴 레벨 20/21/25(차 5), 패배 중앙값 0/0/3. `pnpm sim` 경보 R1 발동(← 드롭 수납 수정 전 37.92/48.57/103.74, 차 4.5) | 설계. R1 대응 지침대로 수치 조정 전에 역할 구분(활동 선택·퇴각·사건 선호·구매 이유)을 04·10에서 먼저 본다 |
+ | B13 | 17 §5 헤드리스 시뮬레이터 | `tools/sim` (T12) | 17 §5.1 입력·출력 규격, §5.3 보고 형식 | 구현됨(웨이브 5). 300생애 1분 47초, 17 §8 경보 R1·R2·R3·R4·R8~R11 자동 판정 | 해결. R3(2대 이후 성장)은 `--gen`이 없어 잴 수 없다 → 계승까지 도는 측정은 후속 |
+ 
++## 2026-09-30 재측정 — D92 조정 뒤
++
++- 조건: `pnpm sim --attitude all --seeds 1-40`(120생애, 2분 9초, 콘텐츠 해시 618cf8826810). 위 표(B01~B12)는 조정 전 값이라 그대로 둔다.
++- 조정 내용(00 §3 D92): `xp.prod_rate` 0.75→0.59, `activity_mult.dungeon_room` 1.3→2.0, `overlevel_decay` 2·0.15→4·0.08, `enemy_formula`(hp 2.3→2.0/L, hit div 3→2.8, dmg div 6→5·2.5→2.1, coins 3·1.08→8·1.07)와 적 12종 등록부(EB03 유지), `flee.hp_ratio_mult` 0.5→0.25, `town_rest_when.fatigue_gt` 20→10, `risk.gear_level_per_tier` 2→1, `sell_ratio` 0.25→0.15, `adaptation_returns` 3→2, `dungeon.room_coin_mult` 1.2→1.0, 태도 3종(`retreat_hp` 0.60/0.30/0.15, `reserve_ratio` 0.20/0.15/0.10, `hunt_target_encounters` 7/7/6, `adventure_scenes` [4,5]/[5,6]/[4,5], 안정적 `gate_risk_limit` −1→0), F02 `age_gte` 50→58, D1 길드 안내 레벨 10→8. 시뮬레이터의 `68세 은퇴 시 레벨`은 사망·시간 상한 생애만 빼고 68세 시점 레벨로 잰다.
++
++| 지표 | 목표 | 안정적/모험적/도전적 중앙값(범위 내 비율) | 판정 |
++| --- | --- | --- | --- |
++| 전투 라운드 | 3~5 | 4/4.75/4 (85/85/82.5%) | 합격(← B01) |
++| 전투 1회 체력 손실 | 8~14% | 9.2/8.69/6.91% (55/55/42.5%) | 불합격. 도전적이 하한 아래 |
++| 레벨 10 도달 나이 | 26~31 | 27/27.5/28 (95/90/77.5%) | 도전적만 미달 |
++| 레벨 20 도달 나이 | 46~53 | 48.5/47/45 (92.5/70/30%) | 모험적·도전적이 빠르다 |
++| 68세 은퇴 시 레벨 | 25~27/26~28/27~29 | 26/27/29 (82.5/85/62.5%) | 도전적만 미달. 레벨 30 도달 7.5/85/90% |
++| 활동 비중 사냥·모험·던전 | 04 §5 ±10%p | 62.1·23.7·13.1 / 31.1·41.3·29.7 / 23.1·25.1·51.0 | 안정적 사냥 72.5%·던전 75%만 미달 |
++| 생애당 일반 패배 | 0~3/2~6/5~12 | 0/2/6 (100/65/60%) | 모험적·도전적 비율 미달 |
++| 수입 대비 지출 | 60~75% | 71.29/60.87/42.5% (35/40/5%) | 불합격. 도전적이 가장 멀다 |
++| 사망 비율 | 관찰 | 0/0/0% | — |
++
++- 경보: **발동 0건**. R1 은퇴 레벨 차 3(임계 >3, 경계선), R9 첫 진입 59세·F03 제시율 67.5%, R10 p90 78.82%, R11 금패 80%·최심 던전 진입 55%(임계 50%, 여유 작음). R3은 잴 수 없음.
++- 다음 조정 후보: (1) 도전적 성장 과속 — 레벨 20 중앙값 45세·레벨 30 도달 90%, `dungeon_room` 2.0을 낮추거나 도전적 던전 비중 쪽을 본다. (2) 도전적 체력 손실 6.91%·지출 42.5% — 수입이 남는다(은퇴 소지금 28,788). (3) 흡혈귀 생애 비율 0/67.5/82.5%가 높다 — F03 제시 조건 확인. (4) R1·R11이 경계선이라 300생애(`--seeds 1-100`)로 다시 잰다.
++
++| ID | 항목 | 관측 | 필요한 일 |
++| --- | --- | --- | --- |
++| B21 | D92 문서 동기화 미완 | 01 §2.4 식·§5.1·§5.2·§8·§9·§12·부록 A, 10의 동전식은 고쳤다. **01 §2.4 표준 진행표의 XP 두 열, 04 §5.2 태도 표(퇴각 기준·예비금·목표 조우·모험 장면·관문 위험), 05 §7.5 도주 조건 0.5, 07(던전 방 동전 ×1.2·§4.4 승률 표 재검산), 08(판매가 25%·§ 수입 계산 가정 0.75회/분), 06 TA05 근거 문장, `balance.json`의 `_note` 두 곳(도주 0.5, 방 동전 ×1.2)은 옛 값** | 소유 문서 표를 content 값으로 옮기고 `python docs/design/tools/balance.py`로 부록 A 검산(전투 손실 7.9~14.0%)을 다시 돌린다 |
++
+ ## 설계 확정이 먼저 필요한 항목
+ 
+ 수치 조정이 아니라 **규칙 문서의 빈칸**이라 코드로 먼저 고칠 수 없는 것들이다.
+diff --git a/packages/content-kit/test/base-content.test.ts b/packages/content-kit/test/base-content.test.ts
+index 0f47b6f..1443d5b 100644
+--- a/packages/content-kit/test/base-content.test.ts
++++ b/packages/content-kit/test/base-content.test.ts
+@@ -29,19 +29,20 @@ describe('기반 팩 — 01 등록부 개수', () => {
+ 
+ describe('기반 팩 — 적 13종 = 01 §5.2', () => {
+   // id, 이름, 계열, L, 구분, HP, 방어, 명중, 피해, XP, 동전
++  // D91(2026-09-29) 적 기준식 조정 뒤 값. EB03은 07 §4.4 승률 표를 위해 등록부 값 유지(_note)
+   const REG: [string, string, string, number, string, number, number, number, [number, number], number, number][] = [
+-    ['EN01', '여울 들쥐', '들쥐', 1, 'normal', 10, 10, 2, [1, 2], 9, 5],
+-    ['EN02', '큰 들쥐', '들쥐', 4, 'normal', 17, 11, 3, [1, 3], 18, 12],
+-    ['EN03', '여울 늑대', '늑대', 8, 'normal', 26, 12, 4, [2, 5], 30, 28],
+-    ['EN04', '잿빛 늑대', '늑대', 15, 'normal', 42, 15, 7, [3, 8], 51, 81],
+-    ['EN05', '종굴 박쥐', '박쥐', 7, 'normal', 24, 12, 4, [2, 4], 27, 23],
+-    ['EN06', '쇳소리 박쥐', '박쥐', 15, 'normal', 42, 15, 7, [3, 8], 51, 81],
+-    ['EN07', '그림자 박쥐', '박쥐', 23, 'normal', 61, 17, 9, [4, 11], 75, 220],
+-    ['EN08', '폐광 코볼트', '코볼트', 10, 'normal', 31, 13, 5, [2, 6], 36, 39],
+-    ['EN09', '코볼트 광부장', '코볼트', 18, 'normal', 49, 16, 8, [4, 9], 60, 120],
+-    ['EN10', '녹슨 투구 코볼트', '코볼트', 26, 'normal', 68, 18, 10, [5, 12], 84, 311],
+-    ['EB01', '코볼트 두목', '코볼트', 13, 'elite', 95, 14, 8, [4, 10], 112, 152],
+-    ['EB02', '늙은 광부장', '코볼트', 21, 'elite', 141, 17, 11, [6, 13], 172, 435],
++    ['EN01', '여울 들쥐', '들쥐', 1, 'normal', 10, 10, 2, [1, 2], 9, 10],
++    ['EN02', '큰 들쥐', '들쥐', 4, 'normal', 16, 11, 3, [1, 3], 18, 18],
++    ['EN03', '여울 늑대', '늑대', 8, 'normal', 24, 12, 4, [2, 5], 30, 34],
++    ['EN04', '잿빛 늑대', '늑대', 15, 'normal', 38, 15, 7, [4, 9], 51, 84],
++    ['EN05', '종굴 박쥐', '박쥐', 7, 'normal', 22, 12, 4, [2, 5], 27, 30],
++    ['EN06', '쇳소리 박쥐', '박쥐', 15, 'normal', 38, 15, 7, [4, 9], 51, 84],
++    ['EN07', '그림자 박쥐', '박쥐', 23, 'normal', 54, 17, 10, [5, 12], 75, 201],
++    ['EN08', '폐광 코볼트', '코볼트', 10, 'normal', 28, 13, 5, [3, 6], 36, 45],
++    ['EN09', '코볼트 광부장', '코볼트', 18, 'normal', 44, 16, 8, [4, 10], 60, 118],
++    ['EN10', '녹슨 투구 코볼트', '코볼트', 26, 'normal', 60, 18, 11, [6, 14], 84, 273],
++    ['EB01', '코볼트 두목', '코볼트', 13, 'elite', 85, 14, 8, [4, 11], 112, 165],
++    ['EB02', '늙은 광부장', '코볼트', 21, 'elite', 125, 17, 11, [7, 16], 172, 410],
+     ['EB03', '부서진 종의 파수꾼', '고유', 29, 'boss', 373, 21, 14, [8, 20], 930, 4330],
+   ]
+ 
+@@ -110,10 +111,10 @@ describe('기반 팩 — 장비 기준가 = 01 §9.2', () => {
+ })
+ 
+ describe('기반 팩 — 레벨 필요 경험치 = 01 §2.4 표준 진행표', () => {
+-  // 레벨 1~29의 `다음까지 XP`
++  // 레벨 1~29의 `다음까지 XP`. D91(2026-09-29) prod_rate 0.75 → 0.59 뒤 값(도달 시점 열은 그대로)
+   const NEXT = [
+-    25, 65, 115, 170, 235, 305, 375, 445, 525, 600, 680, 760, 840, 920, 1005,
+-    1090, 1170, 1255, 1340, 1430, 1515, 1605, 1690, 1780, 1875, 1965, 2060, 2150, 2245,
++    25, 50, 90, 135, 185, 240, 295, 350, 410, 470, 535, 595, 660, 725, 790,
++    855, 920, 990, 1055, 1125, 1190, 1260, 1330, 1400, 1475, 1545, 1620, 1695, 1765,
+   ]
+   // req(n) = max(req_min, req_round 단위 반올림(목표 분(n) × prod_rate × XP(n)))
+   const x = balance.xp
+@@ -124,10 +125,10 @@ describe('기반 팩 — 레벨 필요 경험치 = 01 §2.4 표준 진행표', (
+     return Math.max(x.req_min, Math.round(raw / x.req_round) * x.req_round)
+   }
+ 
+-  it('레벨 1~29 필요 경험치와 레벨 30 누적 30,235', () => {
++  it('레벨 1~29 필요 경험치와 레벨 30 누적 23,780', () => {
+     assert.equal(x.max_level, 30)
+     const got = NEXT.map((_, i) => req(i + 1))
+     assert.deepEqual(got, NEXT)
+-    assert.equal(got.reduce((a, b) => a + b, 0), 30235)
++    assert.equal(got.reduce((a, b) => a + b, 0), 23780)
+   })
+ })
+diff --git a/tools/sim/src/alerts.ts b/tools/sim/src/alerts.ts
+index b1ae716..d65e0d8 100644
+--- a/tools/sim/src/alerts.ts
++++ b/tools/sim/src/alerts.ts
+@@ -26,11 +26,10 @@ const fmt = (v: number | null, unit = ''): string => (v === null ? '없음' : `$
+ 
+ // 태도 비교용 4지표(R1)
+ function attitudeScores(rows: readonly LifeRow[]): { income: number; discoveries: number; retireLevel: number; survival: number } {
+-  const retired = rows.filter((r) => r.end_kind === 'retired')
+   return {
+     income: med(rows.map((r) => (r.minutes > 0 ? r.income / r.minutes : null))) ?? 0,
+     discoveries: med(rows.map((r) => r.discoveries)) ?? 0,
+-    retireLevel: med(retired.map((r) => r.retire_level)) ?? 0,
++    retireLevel: med(rows.map((r) => r.retire_level)) ?? 0, // 68세 시점 레벨(사망 생애는 null)
+     survival: rows.length ? rows.filter((r) => r.end_kind !== 'died').length / rows.length : 0,
+   }
+ }
+diff --git a/tools/sim/src/life.ts b/tools/sim/src/life.ts
+index e050657..5124175 100644
+--- a/tools/sim/src/life.ts
++++ b/tools/sim/src/life.ts
+@@ -37,7 +37,7 @@ export interface LifeRow {
+   sortie_minutes: number | null // 출정 길이 분(생애 중앙값)
+   level10_age: number | null
+   level20_age: number | null
+-  retire_level: number | null // 은퇴로 끝난 생애만
++  retire_level: number | null // 기본 은퇴 나이(68세) 시점 레벨. 사망 생애 제외(17 §5.2, I-row: 생명 연장·긴 잠 생애도 68세 시점으로 잰다)
+   share_hunt: number | null // 출정 시간 비중 %
+   share_adventure: number | null
+   share_dungeon: number | null
+@@ -127,6 +127,7 @@ interface Acc {
+   choiceWaits: number
+   level10: number | null
+   level20: number | null
++  level68: number | null // 기본 은퇴 나이에 처음 닿았을 때의 레벨(생명 연장·흡혈귀 생애)
+   level30: boolean
+   level2Min: number | null
+   firstEquipMin: number | null
+@@ -160,7 +161,7 @@ interface Acc {
+ function newAcc(ch: Character): Acc {
+   return {
+     charUid: ch.uid, gen: ch.generation, income: 0, spend: 0, rounds: [], hpLoss: [], sortieMin: [], actMin: {},
+-    defeats: 0, fateOffers: 0, fateByEvent: {}, choiceWaits: 0, level10: null, level20: null, level30: false,
++    defeats: 0, fateOffers: 0, fateByEvent: {}, choiceWaits: 0, level10: null, level20: null, level68: null, level30: false,
+     level2Min: null, firstEquipMin: null, firstReturnMin: null, firstRestMin: null, firstCheckMin: null,
+     bankruptcies: 0, firstVisitAge: {}, vampire: false, thirstMax: 0, thirstHighMin: 0, consumables: {},
+     consumablePrev: {}, eventRepeatMax: 0, seenSorties: new Set(), seenChoice: null, lastJournalId: -1,
+@@ -269,6 +270,7 @@ class Watcher {
+     if (a.level2Min === null && ch.level >= 2) a.level2Min = ch.eff_min
+     if (a.level10 === null && ch.level >= 10) a.level10 = age
+     if (a.level20 === null && ch.level >= 20) a.level20 = age
++    if (a.level68 === null && age >= time.base_retire_age) a.level68 = ch.level
+     if (ch.level >= 30) a.level30 = true
+ 
+     // 장비 교체: 장착 슬롯 조합이 처음 바뀐 시점(첫 5분 항목, 01 §17)
+@@ -358,7 +360,9 @@ class Watcher {
+       sortie_minutes: roundOpt(median(a.sortieMin), 3),
+       level10_age: a.level10,
+       level20_age: a.level20,
+-      retire_level: endKind === 'retired' ? (rec?.peak_level ?? a.lastLevel) : null,
++      // 68세 은퇴 시 레벨(01 §17): 68세 시점 레벨. 68세에 은퇴한 생애는 그 자리에서 인물이 사라지므로 최고 레벨,
++      // 생명 연장(F02)·흡혈귀 긴 잠처럼 68세를 넘겨 산 생애는 68세에 처음 닿은 순간의 레벨이다. 사망·시간 상한 생애는 뺀다
++      retire_level: endKind === 'died' || endKind === 'running' ? null : (a.level68 ?? (endKind === 'retired' ? (rec?.peak_level ?? a.lastLevel) : null)),
+       share_hunt: roundOpt(share('hunt'), 3),
+       share_adventure: roundOpt(share('adventure'), 3),
+       share_dungeon: roundOpt(share('dungeon'), 3),
+diff --git a/tools/sim/src/metrics.ts b/tools/sim/src/metrics.ts
+index b4b07a9..cfd4e26 100644
+--- a/tools/sim/src/metrics.ts
++++ b/tools/sim/src/metrics.ts
+@@ -8,7 +8,7 @@ import type { LifeRow } from './life'
+ export type Range = readonly [number, number]
+ 
+ // 값이 없는 생애(도달 못 함·해당 없음)를 어떻게 셀지: scope 안이면 범위 밖으로 센다
+-export type Scope = 'all' | 'retired' | 'first_gen'
++export type Scope = 'all' | 'reached_retire_age' | 'first_gen'
+ 
+ export interface Metric {
+   key: string
+@@ -38,7 +38,7 @@ export const METRICS: readonly Metric[] = [
+   { key: 'level10_age', label: '레벨 10 도달 나이', unit: '세', scope: 'all', value: (r) => r.level10_age, range: FIXED(26, 31) },
+   { key: 'level20_age', label: '레벨 20 도달 나이', unit: '세', scope: 'all', value: (r) => r.level20_age, range: FIXED(46, 53) },
+   {
+-    key: 'retire_level', label: '68세 은퇴 시 레벨', unit: '레벨', scope: 'retired', value: (r) => r.retire_level,
++    key: 'retire_level', label: '68세 은퇴 시 레벨', unit: '레벨', scope: 'reached_retire_age', value: (r) => r.retire_level,
+     range: BY_ATTITUDE({ stable: [25, 27], adventurous: [26, 28], challenging: [27, 29] }),
+   },
+   { key: 'share_hunt', label: '활동 비중 사냥', unit: '%', scope: 'all', value: (r) => r.share_hunt, range: shareRange('hunt') },
+@@ -61,7 +61,8 @@ export const METRICS: readonly Metric[] = [
+ export const IN_RANGE_MIN = 0.8
+ 
+ export function inScope(metric: Metric, row: LifeRow): boolean {
+-  if (metric.scope === 'retired') return row.end_kind === 'retired'
++  // 68세 시점 지표: 사망·시간 상한 생애만 뺀다(17 §5.2 '사망 생애 제외'). 긴 잠·늦은 은퇴 생애도 센다
++  if (metric.scope === 'reached_retire_age') return row.end_kind !== 'died' && row.end_kind !== 'running'
+   if (metric.scope === 'first_gen') return row.gen === 1
+   return true
+ }
+diff --git a/tools/sim/test/metrics.test.ts b/tools/sim/test/metrics.test.ts
+index f446f0a..162755a 100644
+--- a/tools/sim/test/metrics.test.ts
++++ b/tools/sim/test/metrics.test.ts
+@@ -72,16 +72,18 @@ describe('합격 판정(17 §5.2)', () => {
+     assert.equal(s.pass, false)
+   })
+ 
+-  it('은퇴 지표는 은퇴로 끝난 생애만 센다', () => {
++  // 68세 시점 레벨(I-row): 긴 잠(흡혈귀)·늦은 은퇴(생명 연장) 생애도 68세 시점 값으로 센다. 사망·시간 상한만 뺀다
++  it('68세 은퇴 시 레벨은 사망·시간 상한 생애만 뺀다', () => {
+     const m = metric('retire_level')
+     const rows = [
+       row({ end_kind: 'retired', retire_level: 26 }),
++      row({ end_kind: 'long_sleep', retire_level: 27 }),
+       row({ end_kind: 'died', retire_level: null }),
+       row({ end_kind: 'running', retire_level: null }),
+     ]
+     const s = aggregate(m, 'adventurous', content, rows)
+     assert.deepEqual(s.target, [26, 28])
+-    assert.equal(s.lives, 1)
++    assert.equal(s.lives, 2)
+     assert.equal(s.pass, true)
+   })
+ 

@@ -282,13 +282,28 @@
     },
     {
       "id": "D91",
-      "subject": "기본 창·메뉴 디자인 변경(풍경 위 투명, 오른쪽 칸 → 작은 상태 칩, 메뉴 전부 같은 결) — 방향 확정, 구현 전(HANDOFF 맨 위)",
-      "status": "pending",
+      "subject": "기본 창·메뉴 디자인 변경(풍경 위 투명, 오른쪽 칸 → 작은 상태 칩, 메뉴 전부 같은 결) — 구현·문서 반영. 남음: exe 재빌드와 눈 확인(200%·밤 배경·클릭 통과)",
+      "status": "in_progress",
       "priority": "high"
+    },
+    {
+      "id": "BAL",
+      "subject": "밸런스 조정 — 미적용, .karin/balance-wip-2026-09-30.patch 보관(코어 테스트 20건·문서 04·05·07·08 동기화 필요)",
+      "status": "pending",
+      "priority": "medium"
     }
   ],
+  "auto_dev": {
+    "version": "1.2",
+    "goal": "시간 제한 완성(14:40 마감) — 분석·수정·미개발분 문서화",
+    "slug": "timebox-finish",
+    "route": "roadmap",
+    "phase": "stopped",
+    "halt_reason": "사용자 지정 마감 14:40. 최종 독립 검증 CONFIRM 미확정 — 완성 선언 아님",
+    "last_updated": "2026-09-30T14:35:00+09:00"
+  },
   "current_task": "D91",
-  "next_action": "HANDOFF 맨 위 D91 디자인 변경 구현(03 먼저) → 밸런스 에이전트 결과 검토·커밋 → 독립 재검증 → 종합 보고",
+  "next_action": "cargo check + pnpm desktop:build로 D91 exe 눈 확인 → 독립 검증 재실행 → 밸런스 패치 재개(docs/dev/UNDEVELOPED.md 맨 아래 순서)",
   "blockers": [
     "npm 레지스트리 403: pnpm install --offline만 가능. Tauri·crates는 사용자 네트워크 허용 필요",
     "샌드박스 우회 금지",
