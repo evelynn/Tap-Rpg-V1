@@ -182,7 +182,7 @@ function boot(b: Boot): void {
   const canvas = document.getElementById('art') as HTMLCanvasElement
   const panel = new Panel(document.getElementById('col')!, 1)
   const scratch = document.createElement('canvas')
-  scratch.width = 1024 // 흰빛 덮기(인물 칸)와 띠 맨 윗줄 하늘색 재기(띠 폭)에 같이 쓴다
+  scratch.width = 1024 // 흰빛 덮기(인물 칸)에 쓴다
   scratch.height = 64
   const media = matchMedia('(prefers-color-scheme: dark)')
   const isDark = (): boolean => b.settings.theme === 'dark' || (b.settings.theme === 'system' && media.matches)
@@ -312,7 +312,7 @@ function boot(b: Boot): void {
   let shell: DesktopShell | null = null
   if (tauri) {
     shell = new DesktopShell(tauri, {
-      basic: () => win, root: document.getElementById('app')!,
+      basic: () => win, root: document.getElementById('app')!, bandTop: () => renderer.topDev / (devicePixelRatio || 1),
       loadPos: () => b.settings.window_pos, savePos: (p) => b.saveSettings({ window_pos: p }),
       hideOnFullscreen: () => b.settings.hide_on_fullscreen, clickThrough: () => b.settings.click_through,
       locked: () => b.settings.position_locked,

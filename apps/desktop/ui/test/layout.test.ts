@@ -39,15 +39,13 @@ describe('기본 창 768 × 128 배치(D75·D84)', () => {
     }
   })
 
-  it('글자 칸 작은 글자 2줄: 안쪽 x 501 폭 262, 1줄 이름·상태 175 + 아이콘·표식 84, 2줄 기록, 세로 가운데', () => {
-    assert.deepEqual([TEXT.x, TEXT.w], [501, 262])
-    assert.equal(TEXT.x + TEXT.w + 5, WIN.w)
+  it('상태 칩 작은 글자 2줄(D91): 글자 폭 최대 262, 1줄 이름·상태 175 + 아이콘·표식 70, 2줄 기록, 창 아래 여백 4 + 3', () => {
+    assert.equal(TEXT.w, 262)
     const { size, gap, markGap, w } = TEXT.icons
-    assert.equal(4 * size + 3 * gap + markGap + size + 2 + size, w, '아이콘 4칸 + 중요 표식 + 태도 표식')
+    assert.equal(4 * size + 3 * gap + markGap + size, w, '아이콘 4칸 + 표식 하나(선택·계승 대기 또는 태도)')
     assert.ok(TEXT.statusW + 3 + w <= TEXT.w)
-    assert.equal(TEXT.row1.y + TEXT.lineH, 62)
-    assert.ok(TEXT.row1.y + TEXT.lineH < TEXT.row2.y)
-    assert.equal(TEXT.row1.y, WIN.h - (TEXT.row2.y + TEXT.lineH), '위아래 여백이 같다')
+    assert.equal(TEXT.row1.y + TEXT.lineH, TEXT.row2.y)
+    assert.equal(TEXT.row2.y + TEXT.lineH, WIN.h - 7)
   })
 })
 

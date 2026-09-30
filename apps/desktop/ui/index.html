@@ -27,66 +27,76 @@
     #bubble::after { content: ''; position: absolute; left: calc(16px * var(--u, 1)); bottom: calc(-6px * var(--u, 1)); border: calc(6px * var(--u, 1)) solid transparent;
       border-bottom: 0; border-top-color: rgb(var(--paper)); }
     html.dark #stack { --paper: 42, 37, 48; color: #f4efe6; }
-    #win { position: relative; width: 100%; height: calc(128px * var(--u, 1)); box-shadow: 0 2px 8px rgba(0, 0, 0, .3); }
+    #win { position: relative; width: 100%; height: calc(128px * var(--u, 1)); } /* 배경 띠 위는 투명(D91) — 창 그림자를 두지 않는다 */
     #grip { position: absolute; z-index: 5; top: 0; right: -3px; width: 6px; height: 100%; cursor: ew-resize; }
     /* 캔버스 CSS 크기 = 장치 크기 / dpr(main.ts가 넣는다). 브라우저가 다시 늘이지 않게 pixelated도 둔다 */
     #art { position: absolute; left: 0; bottom: 0; display: block; image-rendering: pixelated; }
-    /* 글자 칸 x 496~767(272). 작은 글자 2줄: 1줄 y 17 이름·상태 + 오른쪽 아이콘·표식(84), 2줄 y 34 한 줄 기록(03 §2.2) */
-    #col { --s: calc(var(--u, 1) * var(--t, 1)); position: absolute; top: 0; right: 0; width: calc(272px * var(--s)); height: 100%;
+    /* 상태 칩(D91, 03 §2.2): 풍경 오른쪽 아래(여백 4)에 글자 폭만큼의 반투명 둥근 칩. 안쪽 여백 5·3, 글자 최대 262.
+       작은 글자 2줄: 1줄 상태 기호·이름·상태 + 아이콘·표식 하나, 2줄 한 줄 기록 */
+    #col { --s: calc(var(--u, 1) * var(--t, 1)); position: absolute; z-index: 1; right: calc(4px * var(--u, 1)); bottom: calc(4px * var(--u, 1));
+      box-sizing: border-box; max-width: calc(272px * var(--s)); padding: calc(3px * var(--s)) calc(5px * var(--s)); border-radius: calc(6px * var(--s));
       font: calc(11px * var(--s)) / calc(13px * var(--s)) system-ui, "Malgun Gothic", "Apple SD Gothic Neo", sans-serif;
-      color: #2b2233; --paper: 244, 239, 230; }
+      color: #2b2233; --paper: 244, 239, 230; background: rgba(var(--paper), .82); box-shadow: 0 1px 3px rgba(0, 0, 0, .3); white-space: nowrap; }
     #col.dark { color: #f4efe6; --paper: 42, 37, 48; }
-    /* 판: 불투명도 88%, 왼쪽 5는 풍경에서 넘어오는 그라데이션 */
-    #col .plate { position: absolute; inset: 0; background: linear-gradient(to right, rgba(var(--paper), 0), rgba(var(--paper), .88) calc(5px * var(--s))); }
-    #col .status, #col .icons, #col .record { position: absolute; height: calc(13px * var(--s)); white-space: nowrap; }
-    #col .status { left: calc(5px * var(--s)); width: calc(175px * var(--s)); top: calc((64px - 15px * var(--t, 1)) * var(--u, 1)); font-weight: bold; }
-    #col .icons { right: calc(5px * var(--s)); width: calc(84px * var(--s)); top: calc((64px - 15px * var(--t, 1)) * var(--u, 1)); display: flex; align-items: center; gap: calc(2px * var(--s)); }
+    #col .row1 { display: flex; align-items: center; gap: calc(3px * var(--s)); }
+    #col .status, #col .icons, #col .record { height: calc(13px * var(--s)); }
+    #col .status { max-width: calc(175px * var(--s)); font-weight: bold; }
+    #col .icons { margin-left: auto; display: flex; align-items: center; gap: calc(2px * var(--s)); }
     #col .ico { width: calc(12px * var(--s)); height: calc(12px * var(--s)); flex: none; }
     #col .mark, #col .attitude { flex: none; width: calc(12px * var(--s)); height: calc(12px * var(--s)); box-sizing: border-box; border-radius: calc(2px * var(--s));
       font-size: calc(9px * var(--s)); line-height: calc(12px * var(--s)); font-weight: bold; text-align: center; }
-    #col .mark { margin-left: calc(2px * var(--s)); } /* 아이콘과 표식 사이 4 = gap 2 + 2 */
-    #col .mark.none { visibility: hidden; }
+    #col .ico + .mark, #col .ico + .attitude { margin-left: calc(2px * var(--s)); } /* 아이콘과 표식 사이 4 = gap 2 + 2 */
     /* v07 12 × 12 그림(ui_icons_12): 화면 배율(정수)로만 키운다 */
     #col .bmp, #col .sico { background: url(sprites/ui_icons_12.png) no-repeat; background-size: calc(72px * var(--u, 1)) calc(36px * var(--u, 1));
       image-rendering: pixelated; width: calc(12px * var(--u, 1)); height: calc(12px * var(--u, 1)); border: 0; border-radius: 0; }
     #col .sico { display: inline-block; vertical-align: calc(-2px * var(--s)); margin-right: calc(3px * var(--s)); }
     #col .sico[hidden] { display: none; }
     #col .attitude { border: 1px solid currentColor; line-height: calc(12px * var(--s) - 2px); font-weight: normal; }
-    #col .record { left: calc(5px * var(--s)); right: calc(5px * var(--s)); top: calc((64px + 2px * var(--t, 1)) * var(--u, 1)); overflow: hidden; text-overflow: ellipsis; }
+    #col .record { max-width: calc(262px * var(--s)); overflow: hidden; text-overflow: ellipsis; }
+    #col .record:empty { display: none; }
     #win canvas, #col .status, #col .icons, #col .record { cursor: pointer; }
     /* 상세 창 480 × 560(03 §5). 시제품에서는 개발용 단추 아래에 둔다. 본문 13, 최소 12, 소제목 15 굵게, 안쪽 여백 16 */
-    #menu { position: absolute; z-index: 20; min-width: 132px; padding: 4px 0; background: #fbf8f2; color: #2b2233; border: 1px solid #8a8a8a; box-shadow: 0 2px 6px rgba(0, 0, 0, .3); font: 12px system-ui, sans-serif; }
+    /* 판 공통 스타일(D91, 03 §5.1.1): 메뉴·상세 창·선택·계승·설정·요약·첫 실행·책이 같은 토큰을 쓴다 */
+    html { --p-bg: #f4efe6; --p-fg: #2b2233; --p-line: rgba(43, 34, 51, .2); --p-sep: rgba(43, 34, 51, .12); --p-soft: rgba(43, 34, 51, .05);
+      --p-accent: #4f769f; --p-accent-soft: rgba(79, 118, 159, .15); --p-on: #fff; --p-warn: #c9453a; --p-gold: #b98a24;
+      --p-r: 10px; --p-r2: 6px; --p-pad: 16px; --p-gap: 8px; --p-fs: 13px; --p-fs-sub: 12px; --p-shadow: 0 3px 12px rgba(0, 0, 0, .24); }
+    html.dark { --p-bg: #2a2530; --p-fg: #f4efe6; --p-line: rgba(244, 239, 230, .22); --p-sep: rgba(244, 239, 230, .12); --p-soft: rgba(244, 239, 230, .06);
+      --p-accent: #86a9d0; --p-accent-soft: rgba(134, 169, 208, .2); --p-on: #1c1822; --p-warn: #e0776d; --p-gold: #d8b45a; }
+    #menu { position: absolute; z-index: 20; min-width: 132px; box-sizing: border-box; padding: 4px; background: var(--p-bg); color: var(--p-fg);
+      border: 1px solid var(--p-line); border-radius: var(--p-r); box-shadow: var(--p-shadow); font: var(--p-fs-sub) system-ui, "Malgun Gothic", sans-serif; }
     #menu[hidden] { display: none; }
-    #menu button { display: block; width: 100%; text-align: left; padding: 3px 10px; border: 0; background: transparent; color: inherit; font: inherit; cursor: pointer; }
-    #menu button:hover, #menu button:focus { background: #5a7fa8; color: #fff; outline: none; }
-    #menu hr { margin: 4px 0; border: 0; border-top: 1px solid rgba(128, 128, 128, .4); }
-    html.dark #menu { background: #2a2530; color: #f4efe6; }
-    .dwin { margin-top: 12px; width: 480px; height: 560px; display: flex; flex-direction: column; z-index: 10;
-      background: #f4efe6; color: #2b2233; font: 13px/1.5 system-ui, "Malgun Gothic", sans-serif; box-shadow: 0 4px 16px rgba(0, 0, 0, .35); outline: none; }
+    #menu button { display: block; width: 100%; text-align: left; padding: 4px 10px; border: 0; border-radius: var(--p-r2); background: transparent; color: inherit; font: inherit; cursor: pointer; }
+    #menu button:hover, #menu button:focus { background: var(--p-accent-soft); outline: none; }
+    #menu button[aria-checked=true] { font-weight: bold; }
+    #menu hr { margin: 4px 6px; border: 0; border-top: 1px solid var(--p-sep); }
+    .dwin { margin-top: 12px; width: 480px; height: 560px; box-sizing: border-box; display: flex; flex-direction: column; z-index: 10; overflow: hidden;
+      background: var(--p-bg); color: var(--p-fg); border: 1px solid var(--p-line); border-radius: var(--p-r);
+      font: var(--p-fs)/1.5 system-ui, "Malgun Gothic", sans-serif; box-shadow: var(--p-shadow); outline: none; }
     .dwin[hidden] { display: none; }
     #choice { width: 440px; height: 420px; }
     #summary { width: 400px; height: 300px; }
-    #choice .d-foot, #succession .d-foot { height: auto; flex-direction: column; align-items: stretch; gap: 4px; padding: 6px 16px; }
+    #choice .d-foot, #succession .d-foot { height: auto; flex-direction: column; align-items: stretch; gap: 4px; padding: 6px var(--p-pad); }
     .dwin .d-foot .d-acts { padding: 0; justify-content: flex-end; }
     .dwin .d-grow { flex: 1; }
-    .dwin .d-choice { padding: 6px 8px; margin: 4px 0; border: 1px solid rgba(128,128,128,.35); border-radius: 4px; cursor: pointer; }
-    .dwin .d-choice.on { border-color: #5a7fa8; background: rgba(90,127,168,.12); }
-    .dwin .d-choice.star { border-style: dashed; border-color: #c99a2e; }
+    .dwin .d-choice { padding: 6px var(--p-gap); margin: 4px 0; border: 1px solid var(--p-line); border-radius: var(--p-r2); cursor: pointer; }
+    .dwin .d-choice.on { border-color: var(--p-accent); background: var(--p-accent-soft); }
+    .dwin .d-choice.star { border-style: dashed; border-color: var(--p-gold); }
     .dwin .d-cards { display: flex; gap: 6px; flex-wrap: wrap; }
-    .dwin .d-card { flex: 1 1 130px; padding: 6px; border: 1px solid rgba(128,128,128,.35); border-radius: 4px; cursor: pointer; font-size: 12px; }
-    .dwin .d-card.on { border-color: #5a7fa8; background: rgba(90,127,168,.12); }
-    .dwin input[type=text] { font: inherit; width: 120px; }
+    .dwin .d-card { flex: 1 1 130px; padding: 6px var(--p-gap); border: 1px solid var(--p-line); border-radius: var(--p-r2); cursor: pointer; font-size: var(--p-fs-sub); }
+    .dwin .d-card.on { border-color: var(--p-accent); background: var(--p-accent-soft); }
+    .dwin input[type=text] { font: inherit; width: 120px; padding: 1px 6px; border: 1px solid var(--p-line); border-radius: var(--p-r2); background: var(--p-soft); color: inherit; }
+    .dwin select { font: inherit; font-size: var(--p-fs-sub); padding: 1px 4px; border: 1px solid var(--p-line); border-radius: var(--p-r2); background: var(--p-bg); color: inherit; }
     .dwin { word-break: keep-all; overflow-wrap: anywhere; }
-    html.dark .dwin { background: #2a2530; color: #f4efe6; }
-    .dwin button { font: inherit; font-size: 12px; padding: 1px 8px; border: 1px solid #8a8a8a; background: transparent; color: inherit; border-radius: 3px; cursor: pointer; }
-    .dwin button.on { background: #5a7fa8; border-color: #5a7fa8; color: #fff; }
+    .dwin button { font: inherit; font-size: var(--p-fs-sub); padding: 1px 8px; border: 1px solid var(--p-line); background: transparent; color: inherit; border-radius: var(--p-r2); cursor: pointer; }
+    .dwin button:hover:not(:disabled):not(.on) { background: var(--p-soft); }
+    .dwin button.on { background: var(--p-accent); border-color: var(--p-accent); color: var(--p-on); }
     .dwin button:disabled { opacity: .45; cursor: default; }
-    .dwin .d-head { height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-weight: bold; }
-    .dwin .d-tabs { height: 32px; display: flex; }
-    .dwin .d-tabs button { flex: 1; border-radius: 0; border-width: 0 0 2px; font-size: 13px; }
-    .dwin .d-tabs button.on { background: transparent; color: inherit; border-color: #5a7fa8; font-weight: bold; }
-    .dwin .d-body { flex: 1; overflow-y: auto; padding: 8px 16px; }
-    .dwin .d-foot { height: 32px; display: flex; align-items: center; justify-content: space-between; padding: 0 16px; font-size: 12px; opacity: .8; }
+    .dwin .d-head { height: 32px; flex: none; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--p-pad); font-weight: bold; border-bottom: 1px solid var(--p-sep); }
+    .dwin .d-tabs { height: 32px; flex: none; display: flex; }
+    .dwin .d-tabs button { flex: 1; border-radius: 0; border-width: 0 0 2px; border-color: var(--p-sep); font-size: var(--p-fs); }
+    .dwin .d-tabs button.on { background: transparent; color: inherit; border-color: var(--p-accent); font-weight: bold; }
+    .dwin .d-body { flex: 1; overflow-y: auto; padding: var(--p-gap) var(--p-pad); }
+    .dwin .d-foot { height: 32px; flex: none; box-sizing: border-box; display: flex; align-items: center; justify-content: space-between; padding: 0 var(--p-pad); font-size: var(--p-fs-sub); opacity: .8; border-top: 1px solid var(--p-sep); }
     .dwin .d-chips { display: flex; flex-wrap: wrap; gap: 4px; margin: 4px 0 8px; }
     .dwin .d-group { margin-top: 8px; font-weight: bold; font-size: 12px; opacity: .75; }
     .dwin .d-row { padding: 2px 0; }
@@ -104,18 +114,18 @@
     .dwin .d-off { opacity: .5; }
     .dwin .d-sum { padding: 2px 0 4px; }
     .dwin .d-dim { opacity: .65; font-size: 12px; }
-    .dwin .d-sec { padding: 8px 0; border-bottom: 1px solid rgba(128, 128, 128, .3); }
-    .dwin .d-cols { display: flex; gap: 16px; }
-    .dwin .d-badge { font-size: 12px; border: 1px solid currentColor; border-radius: 3px; padding: 0 4px; }
+    .dwin .d-sec { padding: var(--p-gap) 0; border-bottom: 1px solid var(--p-sep); }
+    .dwin .d-cols { display: flex; gap: var(--p-pad); }
+    .dwin .d-badge { font-size: var(--p-fs-sub); border: 1px solid var(--p-line); border-radius: var(--p-r2); padding: 0 5px; }
     .dwin .d-badge.neg { border-style: dashed; }
     .dwin .d-grade { font-weight: bold; }
     .dwin .d-acts { display: flex; gap: 6px; padding: 2px 0 6px 16px; }
     .dwin .d-line { display: flex; align-items: center; gap: 8px; padding: 3px 0; }
     .dwin .d-label { flex: 0 0 auto; min-width: 110px; max-width: 190px; white-space: normal; } /* 긴 이름이 단추 뒤로 가리지 않게 줄을 바꾼다 */
     .dwin .d-seg { display: flex; gap: 2px; flex-wrap: wrap; }
-    .dwin .d-confirm { margin: 4px 0 4px 16px; padding: 8px; border: 1px solid #d9534f; }
+    .dwin .d-confirm { margin: 4px 0 4px 16px; padding: var(--p-gap); border: 1px solid var(--p-warn); border-radius: var(--p-r2); }
     .dwin .d-tree { display: flex; flex-direction: column; align-items: flex-start; padding: 8px 0; }
-    .dwin .d-tree-node { border: 2px solid currentColor; border-radius: 4px; padding: 4px 10px; cursor: pointer; }
+    .dwin .d-tree-node { border: 2px solid currentColor; border-radius: var(--p-r2); padding: 4px 10px; cursor: pointer; }
     .dwin .d-tree-node.dashed { border-style: dashed; }
     .dwin .d-tree-node.thin { border-width: 1px; opacity: .8; cursor: default; }
     .dwin .d-tree-row { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
@@ -129,21 +139,21 @@
     html:not(.dev) #controls, html:not(.dev) #info { display: none; }
     html.booting #stack, html.booting #controls, html.booting #info { display: none; } /* 첫 실행 창 동안 */
     html.through #stack { opacity: .8; } /* 클릭 통과 중 80%(03 §10) */
-    html.hc #col .plate, html.hc #strip { background: rgb(var(--paper)); }
+    html.hc #col, html.hc #strip { background: rgb(var(--paper)); }
     html.hc #art { filter: brightness(.6) saturate(.5); }
     html.hc #col, html.hc #strip { color: #000; }
     html.hc.dark #col, html.hc.dark #strip { color: #fff; }
     .dwin { zoom: var(--t, 1); } /* 글자 배율은 상세 창 등 판에도(03 §7) */
     #settings { width: 400px; height: 480px; }
-    #settings .d-foot, #firstrun .d-foot, #summary .d-foot { height: auto; min-height: 32px; padding: 6px 16px; }
+    #settings .d-foot, #firstrun .d-foot, #summary .d-foot { height: auto; min-height: 32px; padding: 6px var(--p-pad); }
     #firstrun { width: 480px; height: 560px; }
     .dwin .d-preview { height: 110px; display: flex; align-items: center; justify-content: center; }
     .dwin .d-preview canvas { image-rendering: pixelated; }
     .dwin .d-hero { width: 48px; height: 48px; background: url(sprites/chr_actions18_48.png) 0 0; image-rendering: pixelated; transform: scale(2); animation: tap-idle .88s steps(4) infinite; }
     @keyframes tap-idle { to { background-position: -192px 0; } }
-    .dwin .d-place { position: relative; height: 120px; margin: 8px 0; border: 1px solid rgba(128,128,128,.5); border-radius: 4px; background: rgba(128,128,128,.12); }
+    .dwin .d-place { position: relative; height: 120px; margin: 8px 0; overflow: hidden; border: 1px solid var(--p-line); border-radius: var(--p-r2); background: var(--p-soft); }
     .dwin .d-place::after { content: ''; position: absolute; left: 0; right: 0; bottom: 0; height: 12px; background: rgba(128,128,128,.4); } /* 작업 표시줄 */
-    .dwin .d-place-win { position: absolute; right: 8px; bottom: 16px; width: 96px; height: 16px; background: #5a7fa8; border-radius: 2px; }
+    .dwin .d-place-win { position: absolute; right: 8px; bottom: 16px; width: 96px; height: 16px; background: var(--p-accent); border-radius: 2px; }
     .dwin .d-bag-grid { display: grid; grid-template-columns: repeat(10, 20px); gap: 2px; margin: 4px 0 6px 16px; }
     .dwin .d-bag-cell { width: 20px; height: 20px; box-sizing: border-box; border: 1px dashed rgba(128,128,128,.5); font-size: 11px; line-height: 18px; text-align: center; }
     .dwin .d-bag-cell.full { border: 2px solid; }

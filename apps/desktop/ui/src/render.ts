@@ -1,4 +1,4 @@
-// 기본 창 풍경 그리기(03 §2.2, D75). 캔버스에는 픽셀 그림만 그리고 글자 칸은 DOM(panel.ts)이 맡는다.
+// 기본 창 풍경 그리기(03 §2.2, D75·D91). 캔버스에는 픽셀 그림만 그리고 상태 칩은 DOM(panel.ts)이 맡는다.
 // 캔버스 기억 크기는 장치 픽셀이고, 그림은 정수 배율 k로만 키운다(가장 가까운 이웃). 좌표는 모두 논리 픽셀이다.
 import { SCENE_W, STRIP_W, WIN, groundOf, type Surface } from './layout'
 import { PROPS, SHEETS, cellRect } from './sprites'
@@ -15,7 +15,7 @@ export interface SpriteDraw {
 }
 
 export interface FrameView {
-  bg: { file: string; offset: number } // 풍경 전체(글자 판 뒤까지)를 채우는 띠
+  bg: { file: string; offset: number } // 창 전체 폭을 채우는 띠
   scene: { file: string; frame: number; x: number } | null // 이벤트 장면(판 x ~ x + 127, 풍경 가운데 D82). 그 밖의 풍경은 어둡게
   paused: boolean
   hero: SpriteDraw | null
@@ -38,6 +38,8 @@ export type Images = Record<string, CanvasImageSource | undefined>
 const SCENE_DIM = 'rgba(0, 0, 0, 0.5)' // 장면 밖 풍경 어둡게(약 50%)
 
 export class Renderer {
+  topDev = 0 // 지금 배경 띠 윗변(장치 픽셀). 이보다 위는 투명이고 마우스를 통과시킨다(D91)
+
   constructor(
     private readonly ctx: CanvasRenderingContext2D,
     private readonly images: Images,
@@ -52,19 +54,21 @@ export class Renderer {
     c.setTransform(1, 0, 0, 1, 0, 0)
     c.imageSmoothingEnabled = false
     c.filter = v.paused ? 'saturate(50%)' : 'none' // 일시정지: 현재 장면 정지, 채도 50% 낮춤(03 §15)
-    c.fillStyle = v.dark ? '#1C1822' : '#B5C7F5' // 그림 위로 남는 높이(125·150%)는 하늘색
-    c.fillRect(0, 0, this.s.devW, this.s.devH)
+    c.clearRect(0, 0, this.s.devW, this.s.devH) // 띠 위는 칠하지 않고 비운다(D91)
     c.setTransform(k, 0, 0, k, 0, artY)
     this.strip(v.bg.file, v.bg.offset, 0, logicalW)
-    const ground = groundOf((this.images[v.bg.file] as { height?: number } | undefined)?.height || 64)
+    const bandH = (this.images[v.bg.file] as { height?: number } | undefined)?.height || 64
+    const top = Math.max(0, WIN.h - bandH)
+    this.topDev = artY + top * k
+    const ground = groundOf(bandH)
     if (v.scene) {
       c.fillStyle = SCENE_DIM
       const x = v.scene.x
-      // 장면 띠(높이 64)는 원본 도트로 옮기기 전까지 창 아래에 붙이고, 판 밖(위 포함)은 어둡게(D84)
+      // 장면 띠(높이 64)는 원본 도트로 옮기기 전까지 창 아래에 붙이고, 판 밖은 배경 띠 높이 안에서만 어둡게(D84·D91)
       const sy = WIN.h - 64
-      c.fillRect(0, 0, x, WIN.h)
-      c.fillRect(x + SCENE_W, 0, logicalW - x - SCENE_W, WIN.h)
-      c.fillRect(x, 0, SCENE_W, sy)
+      c.fillRect(0, top, x, WIN.h - top)
+      c.fillRect(x + SCENE_W, top, logicalW - x - SCENE_W, WIN.h - top)
+      if (sy > top) c.fillRect(x, top, SCENE_W, sy - top)
       this.image(v.scene.file, v.scene.frame * SCENE_W, 0, SCENE_W, 64, x, sy)
     }
     const feet = v.scene ? groundOf(64) : ground
@@ -79,45 +83,14 @@ export class Renderer {
   }
 
   // 가로 이음 띠를 offset만큼 밀어 [x0, x1) 구간에 채운다. 띠 폭·높이는 그림 그대로(원본 도트, D83).
-  // 띠는 창 아래에 붙이고(D84), 띠보다 위는 띠 맨 윗줄에서 가장 흔한 색(하늘·천장) 한 가지로 채운다.
-  // 맨 윗줄을 그대로 위로 늘이면 윗변에 걸린 나무·기둥이 세로 줄이 된다
+  // 띠는 창 아래에 붙이고(D84), 띠보다 위는 칠하지 않는다(투명, D91)
   private strip(file: string, offset: number, x0: number, x1: number): void {
     const img = this.images[file] as { width?: number; height?: number } | undefined
     const w = img?.width || STRIP_W
     const h = img?.height || 64
     const top = WIN.h - h
-    if (top > 0) {
-      this.ctx.fillStyle = this.skyOf(file)
-      this.ctx.fillRect(x0, 0, x1 - x0, top)
-    }
     const o = ((Math.floor(offset) % w) + w) % w
     for (let x = x0 - ((x0 + o) % w); x < x1; x += w) this.image(file, 0, 0, w, h, x, top)
-  }
-
-  private readonly skies = new Map<string, string>()
-  private skyOf(file: string): string {
-    const hit = this.skies.get(file)
-    if (hit) return hit
-    let color = '#B5C7F5'
-    const src = this.images[file] as (CanvasImageSource & { width?: number }) | undefined
-    const k = this.scratch
-    if (src && k && src.width) {
-      const w = Math.min(src.width, k.canvas.width)
-      k.clearRect(0, 0, w, 1)
-      k.drawImage(src, 0, 0, w, 1, 0, 0, w, 1)
-      const d = k.getImageData(0, 0, w, 1).data
-      const count = new Map<number, number>()
-      for (let i = 0; i < w * 4; i += 4) {
-        const c = (d[i]! << 16) | (d[i + 1]! << 8) | d[i + 2]!
-        count.set(c, (count.get(c) ?? 0) + 1)
-      }
-      let best = 0
-      let n = -1
-      for (const [c, m] of count) if (m > n) [best, n] = [c, m]
-      color = `#${best.toString(16).padStart(6, '0')}`
-    }
-    this.skies.set(file, color)
-    return color
   }
 
   private image(file: string, sx: number, sy: number, w: number, h: number, dx: number, dy: number): void {

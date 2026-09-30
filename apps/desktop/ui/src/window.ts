@@ -72,8 +72,16 @@ export function clampInto(anchor: Pos, basic: Size, wa: Rect): Pos {
   return out ? { x: Math.min(Math.max(anchor.x, wa.x), wa.x + wa.w - basic.width), y: Math.min(Math.max(anchor.y, wa.y + basic.height), wa.y + wa.h) } : { x, y }
 }
 
+// 통과 판정(D91): 판 밖이거나, 풍경 캔버스에서 배경 띠 윗변보다 위(투명)면 마우스를 통과시킨다.
+// y: 기본 창 윗변에서 잰 커서 세로 위치, bandTop: 같은 기준의 배경 띠 윗변(CSS 픽셀)
+export function throughAt(hit: { id: string; tagName: string } | null, y: number, bandTop: number): boolean {
+  if (!hit || hit.tagName === 'HTML' || hit.tagName === 'BODY' || hit.id === 'app' || hit.id === 'stack' || hit.id === 'win') return true
+  return hit.id === 'art' && y < bandTop
+}
+
 export interface ShellHooks {
   basic: () => HTMLElement // 기본 창(#win) — 고정점과 자석 기준
+  bandTop: () => number // 배경 띠 윗변(기본 창 윗변 기준 CSS 픽셀). 그 위 캔버스는 투명
   root: HTMLElement // 판을 모두 담는 #app
   onTray: (id: string) => void
   loadPos: () => SavedPos | null
@@ -241,7 +249,7 @@ export class DesktopShell {
         const y = (c.y - p.y) / s
         const inside = x >= 0 && y >= 0 && x < this.size.width && y < this.size.height
         const hit = inside ? document.elementFromPoint(x, y) : null
-        ignore = inside && (!hit || hit === document.documentElement || hit === document.body || hit.id === 'app' || hit.id === 'stack')
+        ignore = inside && throughAt(hit, y - this.h.basic().getBoundingClientRect().top, this.h.bandTop())
       } catch { ignore = false }
     }
     if (ignore !== this.ignoring) {
