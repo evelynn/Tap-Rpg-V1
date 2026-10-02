@@ -1,0 +1,19 @@
+pnpm art:gate assets/_imagegen/v06/w11-a1-summer-dawn.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-a1-summer-dawn.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a1-summer-dawn.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y323 1536×384 비율 4(규격 4) · 위 자름 6 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589621     -    -     -  64.0(-)        9.9   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x390 (3.94:1) is taller than 4.00:1; normalization removes the top 6 rows (y 317-322) and keeps the bottom row y 706.
+- Drawn pixel blocks are 9.9-9.9 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+Exit code: 0V06_META: {"stem":"w11-a1-summer-dawn","input":"w10-a1-river-path-summer-day-r2.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-1367c9cf-c279-4f07-897b-ade865c2c07b.png","sha256":"BEF19B65EF5F89BA06DC12D6D82ED1857125CEF11FD01A97E52217AC4822CF66","width":1536,"height":1024,"exit":0,"id":"V06-90","batch":26,"review":"분홍·금빛 새벽과 얇은 먼 안개 반영. 시설 창문 소등 유지. 하늘·안개 연속 계조는 차후 평면 픽셀 군집 보정."}

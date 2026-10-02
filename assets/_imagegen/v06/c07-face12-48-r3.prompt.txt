@@ -1,0 +1,15 @@
+Edit this exact image. Replace the entire black/brown background, soft halos and shading with one FLAT BRIGHT MAGENTA color RGB(255,0,255), fully opaque. Every background pixel must visibly be bright pink-magenta, including all margins, all gaps, the space around each isolated facial feature, and the empty last three cells. No black background, no transparency, no brown glow.
+
+Keep the existing twelve isolated facial-feature clusters at exactly the same positions and sizes: ten eye/eyebrow/mouth clusters and their ten cheek squares in the top two rows; one short brown wrinkle mark and one three-line brown wrinkle cluster in the bottom row. Preserve the thicker single bottom-left wrinkle. Restore the dark facial marks to their normal dark-plum color if the black background hides them. Do not add skin, heads, hair, bodies, eyes to the wrinkle row, text, guide marks or anything else.
+
+Same opaque 1536x1024 PNG. Only background replacement and removal of unwanted halo. Return only the corrected sparse sprite layer on bright magenta.
+
+ACTUAL GATE REGENERATION FEEDBACK (verbatim):
+Regenerate this sheet on the chr_face template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (1,0) "round_smile": 1.4% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (2,0) "round_frown": 3.4% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (4,0) "round_surprised": 1.8% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (1,1) "narrow_smile": 1.3% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (2,1) "narrow_frown": 5.2% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (4,1) "narrow_surprised": 2.2% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (1,2) "wrinkle_elder": 10.2% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).

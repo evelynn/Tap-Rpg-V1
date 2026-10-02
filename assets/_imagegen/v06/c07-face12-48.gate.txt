@@ -1,0 +1,32 @@
+pnpm art:gate assets/_imagegen/v06/c07-face12-48.png --spec 'chr_face'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c07-face12-48.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/c07-face12-48.png
+FAIL chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 6.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic           635     -    -     -  4.7(-)        11.2   0.0%  ok (경고 block)
+  (1,0)   round_smile           725     -    -     -  7.2(-)        12.0   0.0%  ok (경고 block)
+  (2,0)   round_frown           649     -    -     -  4.7(-)        12.0   0.0%  ok (경고 block)
+  (3,0)   round_closed          397     -    -     -  2.0(-)         6.0   0.0%  ok
+  (4,0)   round_surprised       832     -    -     -  8.0(-)         9.4   0.0%  ok (경고 block)
+  (0,1)   narrow_basic          379     -    -     -  2.0(-)         6.0   0.0%  ok
+  (1,1)   narrow_smile          434     -    -     -  4.5(-)         5.8   0.0%  ok
+  (2,1)   narrow_frown          530     -    -     -  4.5(-)         6.0   0.0%  ok
+  (3,1)   narrow_closed         400     -    -     -  2.0(-)         5.9   0.0%  ok
+  (4,1)   narrow_surprised      762     -    -     -  8.0(-)        12.2   0.0%  ok (경고 block)
+  (0,2)   wrinkle_veteran        77     -    -     -  -                -   0.0%  ✗ missing
+  (1,2)   wrinkle_elder         253     -    -     -  6.2(-)         4.0   0.0%  ok (경고 block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Drawn pixel blocks are 4.1-12.2 image px in 6 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB04FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the chr_face template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,2) "wrinkle_veteran": the cell is empty or nearly empty (77 px). Draw the "wrinkle_veteran" frame here.
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1
+
+V06_MISSING_META: {"id":"V06-07","stem":"c07-face12-48","input":"assets/_imagegen/v06/c07-l7-blush-48-r3.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-68571a50-bbf6-4f35-bc77-6d7c23501cb9.png","sha256":"DEBD4AD85B17F15F4DBDF10069420BC3D6D260B7AB61C74059A0C4DB2AF47196","width":1536,"height":1024,"exit":1,"same":true,"spec":"chr_face","gate":"FAIL","attempt":1,"review":"10개 얼굴표정+홍조표지와3행주름2개를분리하여12칸확보. 피부·머리·몸·의복 제거, 밝은 자홍배경. 누락홍조/주름 복원됨. 다만 얼굴조각 일부가좌우로넓어지고홍조/주름크기와좌표/색이원본과달라E8/E21정밀정합필요;수치/구도완전동일주장안함."}

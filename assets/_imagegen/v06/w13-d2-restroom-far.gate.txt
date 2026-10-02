@@ -1,0 +1,18 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d2-restroom-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d2-restroom-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w13-d2-restroom-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 - · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2 · 띠 x0 y322 1536×384 비율 4(규격 4) · 위 자름 4 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589824     -    -     -  64.0(-)          -   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x388 (3.96:1) is taller than 4.00:1; normalization removes the top 4 rows (y 318-321) and keeps the bottom row y 705.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w13-d2-restroom-far","input":"w13-d2-restroom.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-9235ab5e-083b-484b-a62c-e617898d6c29.png","sha256":"33E71FA45D6B0843D3C4750877E2A06F15D4152989E6B148CD5C7B7F6A4FFEFF","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-96","batch":33,"review":"의자·탁자 포함 전경시설과 바닥 제거, 암벽 전체채움. 원경 중앙동굴 위치 유지; 반복 암석 패턴/색차 정합 보정."}

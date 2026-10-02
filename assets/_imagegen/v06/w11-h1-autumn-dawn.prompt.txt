@@ -1,0 +1,13 @@
+TECHNICAL OUTPUT: one opaque PNG exactly 1983 x 793 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it dawn: the sky turns pale pink and gold near the horizon, fading to soft blue above; the distant layers become cooler and paler with one thin flat mist band low in the far layer; only the tops of shapes catch a faint warm light from the left. Windows and lanterns stay unlit.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light rays, lens flare, bloom, soft glow halos, gradients, vignette. Output only the finished strip.
+
+Sky recolour palette: pale pink RGB(234,188,186), gold RGB(235,202,148), upper soft blue RGB(157,190,215); the single thin flat mist band uses RGB(178,198,208). Use discrete flat pixel clusters, not a smooth gradient.
+
+CRISP SKY CONTROL: any fading means three to five solid flat colour regions with hard pixel-stepped boundaries, not a smooth gradient. Preserve the autumn orange/red leaves and the exact positions and silhouettes of all trees, rocks, river and fence.

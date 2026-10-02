@@ -1,0 +1,11 @@
+POSITION CLARIFICATION: retain only the existing thin walking-path/stone/grass band at image y660..707, x0..1535. Strip bottom means y707, NOT canvas bottom. All pixels at y708..1023 must remain solid magenta. The ground fill requirement concerns tiny gaps inside this original path band only; do not make new terrain or move the path.
+
+OPAQUE OUTPUT exactly 1536 x 1024. Keep the source artwork position, scale, silhouettes and colours. Every removed pixel and every pixel outside the retained artwork is painted solid magenta RGB(255,0,255), alpha255. No transparent or dark backdrop, halo or lighting adjustment.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the walking path from the ground line down to the strip bottom, with its edge grass and stones.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the bg_near template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "near 1": only 91.5% of the rows below the ground line (row 56) are painted; the walkable ground must fill every column from the ground line to the bottom edge.

@@ -1,0 +1,7 @@
+Edit the supplied sparse facial-feature sprite layer in place. Keep the exact 1536x1024 canvas, flat opaque bright magenta RGB(255,0,255), all ten facial expression clusters with their cheek marks in the first two rows, and the elder wrinkle cluster in the second cell of the last row unchanged. Nothing else may move or change.
+
+The ONLY repair is the tiny mature/veteran wrinkle in the FIRST CELL OF THE BOTTOM ROW: it is currently so small and faint that the checker treats the cell as empty. Make that single short muted-brown horizontal wrinkle line a little thicker and more clearly readable at the same center position. Keep it as ONE tiny short wrinkle line, with the same brown color, not a face or a head. This is a small scale/readability correction of the existing mark. Do not add eyes, mouth, skin, hair, outlines, bodies, text, labels, cell borders or extra symbols. The last three cells remain empty. Do not enlarge or reposition any other facial feature.
+
+ACTUAL GATE REGENERATION FEEDBACK (verbatim):
+Regenerate this sheet on the chr_face template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,2) "wrinkle_veteran": the cell is empty or nearly empty (77 px). Draw the "wrinkle_veteran" frame here.

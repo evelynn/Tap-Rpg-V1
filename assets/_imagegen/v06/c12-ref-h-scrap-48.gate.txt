@@ -1,0 +1,19 @@
+pnpm art:gate assets/_imagegen/v06/c12-ref-h-scrap-48.png --spec chr_head_poses_ref
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c12-ref-h-scrap-48.png" "--spec" "chr_head_poses_ref"
+
+assets/_imagegen/v06/c12-ref-h-scrap-48.png
+PASS chr_head_poses_ref · canvas · 이미지 1536×1024 (틀 1536×1024) · S 10 (template) · 칸 격자 · 시트 블록 8.9 · 키 비율 0.995 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   basic               65462     0    0  -0.1  39.8(40)       9.8   0.0%  ok
+  (1,0)   bowed               58032     0    0  -1.4  37.7(-)        8.9   0.0%  ok
+  (2,0)   lying               56643     1    2     -  21.6(-)        8.8   0.0%  ok (경고 ground)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (2,0) "lying": lowest pixel 2 blocks below the template ground line.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA04FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_head_poses_ref template. No regeneration needed.
+Exit code: 0

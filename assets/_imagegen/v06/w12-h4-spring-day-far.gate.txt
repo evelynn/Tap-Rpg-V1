@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-h4-spring-day-far.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h4-spring-day-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h4-spring-day-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.5 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 12 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589498     -    -     -  64.0(-)        9.4   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 313-708 (1536x396 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x396 (3.88:1) is taller than 4.00:1; normalization removes the top 12 rows (y 313-324) and keeps the bottom row y 708.
+- Drawn pixel blocks are 9.5-9.5 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA02FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-26b3fd7f-7819-4091-89e1-026aaa5e718b.png","sha256":"516354CB59C8768BE3193CB77D4B67CF508643D86F949FCC988B3F773371AE0B","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.5 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 12 · 좌우 자름 0/0","stem":"w12-h4-spring-day-far","input":"w11-h4-spring-day","batch":25,"id":"V06-91"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-26b3fd7f-7819-4091-89e1-026aaa5e718b.png","sha256":"516354CB59C8768BE3193CB77D4B67CF508643D86F949FCC988B3F773371AE0B","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.5 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 12 · 좌우 자름 0/0","stem":"w12-h4-spring-day-far","input":"w11-h4-spring-day.png","batch":25,"id":"V06-91","review":"앞 채광구·선별장·컨베이어·수레·레일·길 제거. 먼 광산 단지·산 능선 유지, 계절 산림/구릉이 띠 하단까지 빈틈없이 채움. 확장부 산림 밀도·눈/꽃 세부 및 원경 고정화소는 마스크 정합 후속 보정 전제 수용."}

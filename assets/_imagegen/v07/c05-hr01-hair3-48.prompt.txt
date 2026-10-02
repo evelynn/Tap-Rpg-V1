@@ -1,0 +1,13 @@
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024. This is a hair-only sprite layer on a visibly painted solid RGB(255,0,255) magenta canvas, not a transparent cutout. Keep the three-pose layout: upright on the left, bowed in the middle, lying on the right. No text, grid or guide marks.
+
+Input image 1: existing hair-only layer to align. Input image 2: REF-H fully dressed character sheet, authoritative for exact head placement, angle, scalp/ear/forehead alignment and original hair appearance.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the hair. Remove face, skin, body, clothing, weapon and all other parts.
+
+SPECIFIC ALIGNMENT CORRECTION: Make the three retained hair pieces fit exactly over the corresponding heads of input image 2. Only if a hair piece is misregistered, correct its small translation/angle/scale to match that head; otherwise leave its placement unchanged. Match the ear cutout, forehead/fringe line and face opening to the character, not the outer hair bounding-box centre. Do not move all three pieces onto one horizontal line. Preserve the different head heights and the sideways lying pose.
+
+HAIRSTYLE LOCK: the original short chestnut hair: preserve its existing jagged fringe, side locks and small crown tufts. Preserve the existing pixel-block size, brown palette, texture and dark hair outline. Do not invent hidden hair, complete a face outline, or add ears/skin/eyes. Preserve genuine gaps where a hand or face covered the source hair. Keep every already aligned visible hair area unchanged.
+
+LAYOUT LOCK: retain the original 1536 x 1024 reference coordinates. The reference has three 480 x 480 image-pixel cells across x=48..527, 528..1007, 1008..1487, all at y=272..751; these are placement regions, never visible grid lines. Do not centre each floating hair within its cell: it must remain at the head location inside that cell. All non-hair pixels are one flat opaque #FF00FF. Output exactly three hair pieces and nothing else.

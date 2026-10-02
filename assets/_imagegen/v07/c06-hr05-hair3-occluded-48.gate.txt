@@ -1,0 +1,5 @@
+문 해당 없음 — 머리카락만 있는 가림막. art:gate 실행하지 않음. 자동 PASS가 아님.
+
+육안/남은 차이: V07 기본에서 세 자세의 정수리를 제거하고 양 땋은 줄과 앞머리를 남김. 땋은 줄의 원래 전체 길이와 세 마스크 위치·얼굴 구멍 유지, 피부·몸·투구 없음. 이전 가림판을 색 참고로 쓰지 않도록 요청했지만 출력 갈색이 V07 기본보다 더 황금/주황 쪽으로 밝아짐. 가림 모양 후보로 수용하되 색은 기본판에 맞춰 보정해야 하며 잘린 경계·땋은 줄 내부 색/정적 화소 E21 정합 필요. 투구 합성 E15 미확인.
+
+V07_META: {"id":"V07-hr05-occluded","stem":"c06-hr05-hair3-occluded-48","input":["assets/_imagegen/v07/c06-hr05-hair3-48.png","assets/_imagegen/v06/c06-hr05-hair3-occluded-48-r3.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e785-27f9-75d3-812f-2aeb3b2c31cb\\exec-ed93daff-62a9-4c30-a6f3-6fb439b722cf.png","sha256":"88D384E0FC2FB9AFE3B5243D8507E95F7495C02D7F473FE47DEAA00C065A1E8F","width":1536,"height":1024,"gateexit":null,"same":true,"spec":null,"attempt":1,"actualgate":"N/A — hair-only mask; no art:gate command was run","review":"V07 기본에서 세 자세의 정수리를 제거하고 양 땋은 줄과 앞머리를 남김. 땋은 줄의 원래 전체 길이와 세 마스크 위치·얼굴 구멍 유지, 피부·몸·투구 없음. 이전 가림판을 색 참고로 쓰지 않도록 요청했지만 출력 갈색이 V07 기본보다 더 황금/주황 쪽으로 밝아짐. 가림 모양 후보로 수용하되 색은 기본판에 맞춰 보정해야 하며 잘린 경계·땋은 줄 내부 색/정적 화소 E21 정합 필요. 투구 합성 E15 미확인."}

@@ -1,0 +1,20 @@
+pnpm art:gate assets/_imagegen/v06/w11-a1-spring-dusk.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-a1-spring-dusk.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a1-spring-dusk.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.7 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y322 1536×384 비율 4(규격 4) · 위 자름 4 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589787     -    -     -  64.0(-)        9.7   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x388 (3.96:1) is taller than 4.00:1; normalization removes the top 4 rows (y 318-321) and keeps the bottom row y 705.
+- Drawn pixel blocks are 9.7-9.7 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F804FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+Exit code: 0
+V06_META: {"stem":"w11-a1-spring-dusk","input":"w11-a1-spring-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-5dd19933-056d-4e08-aaf2-45339b93c306.png","sha256":"4D5513BF848A4AC920C8109B6683637F3BA8B7B9C6A5EE995B3A225DF7F41BE7","width":1536,"height":1024,"exit":0,"id":"V06-90","batch":26,"review":"봄 꽃과 구도를 유지한 노을. 먼 작은 창 일부 점등, 방앗간 소등. 구름 가장자리와 물 반사 강도는 게임 팔레트에 맞춰 차후 보정."}

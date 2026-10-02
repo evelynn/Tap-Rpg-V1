@@ -1,0 +1,49 @@
+pnpm art:gate assets/_imagegen/v06/w08-kobold-boss18-48.png --spec enm_kobold
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w08-kobold-boss18-48.png" "--spec" "enm_kobold"
+
+assets/_imagegen/v06/w08-kobold-boss18-48.png
+PASS enm_kobold · canvas · 이미지 1024×1536 (틀 1024×1536) · S 6 (template) · 칸 격자 · 시트 블록 4.5 · 키 비율 1.222 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 42
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              21742     0   -1 -12.2  36.8(30)       4.5   0.0%  ok (경고 bbox,center,block)
+  (1,0)   idle 2              21467     0   -1  -3.6  36.8(30)       4.4   0.0%  ok (경고 bbox,center,block)
+  (2,0)   idle 3              21522     0   -1   5.4  36.8(30)       4.3   0.0%  ok (경고 bbox,center,block)
+  (3,0)   idle 4              21986     0   -1  13.6  36.8(30)       4.5   0.0%  ok (경고 bbox,center,block)
+  (0,1)   move 1              21625     0   -1 -12.2  36.5(30)       4.6   0.0%  ok (경고 bbox,center,block)
+  (1,1)   move 2              21375     0   -1  -3.4  36.5(30)       4.5   0.0%  ok (경고 bbox,center,block)
+  (2,1)   move 3              21509     0   -1   5.3  36.5(30)       4.7   0.0%  ok (경고 bbox,center,block)
+  (3,1)   move 4              21154     0   -1  14.1  36.5(30)       4.5   0.0%  ok (경고 bbox,center,block)
+  (0,2)   attack 1            24040     0    0 -13.1  38.0(-)        4.8   0.0%  ok (경고 bbox,center,block)
+  (1,2)   attack 2            22908     0    0  -3.1  42.5(-)        4.5   0.0%  ok (경고 bbox,center,block)
+  (2,2)   attack 3            17461     0    0   2.4  25.3(-)        4.5   0.0%  ok (경고 bbox,center,block)
+  (3,2)   attack 4            21793     0    0  14.6  38.0(-)        4.6   0.0%  ok (경고 bbox,center,block)
+  (0,3)   hit 1               22297     0   -1 -12.2  37.0(30)       4.5   0.0%  ok (경고 bbox,center,block)
+  (1,3)   hit 2               22229     0   -1  -4.1  36.3(30)       4.3   0.0%  ok (경고 bbox,center,block)
+  (0,4)   exit 1              19020     0   -3 -14.7  28.7(-)        4.6   0.0%  ok (경고 bbox,ground,center,block)
+  (1,4)   exit 2              20420     0   -3  -0.9  31.0(-)        4.5   0.0%  ok (경고 bbox,ground,block)
+  (2,4)   exit 3              20898     0   -3   5.1  36.5(-)        4.5   0.0%  ok (경고 bbox,ground,center,block)
+  (3,4)   exit 4              21812     0   -3  15.6  36.5(-)        4.4   0.0%  ok (경고 bbox,ground,center,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 11.5 blocks).
+- Cell (0,0) "idle 1": horizontal center 12.3 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (left 2.8 blocks).
+- Cell (1,0) "idle 2": horizontal center 3.6 blocks left of the template center mark.
+- Cell (2,0) "idle 3": crosses the template cell boundary (right 7 blocks).
+- Cell (2,0) "idle 3": horizontal center 5.4 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 15.5 blocks).
+- Cell (3,0) "idle 4": horizontal center 13.6 blocks right of the template center mark.
+- Cell (0,4) "exit 1": lowest pixel 3 blocks above the template ground line.
+- Cell (1,4) "exit 2": lowest pixel 3 blocks above the template ground line.
+- Cell (2,4) "exit 3": lowest pixel 3 blocks above the template ground line.
+- Cell (3,4) "exit 4": lowest pixel 3 blocks above the template ground line.
+- Figures are 122.2% of the spec height; normalization resamples the sheet by x0.82 (map scale_to_spec).
+- Drawn pixel blocks are 4.3-4.8 image px in 18 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+- ...and 14 more bbox warnings of the same kind.
+- ...and 13 more center warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the enm_kobold template. No regeneration needed.

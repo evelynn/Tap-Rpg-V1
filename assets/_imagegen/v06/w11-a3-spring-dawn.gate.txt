@@ -1,0 +1,20 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-spring-dawn.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-spring-dawn.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a3-spring-dawn.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.95 (band) · 칸 격자 · 시트 블록 11.4 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x3 y313 1524×381 비율 4(규격 4) · 위 자름 0 · 좌우 자름 3/9 이음 188.2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              580619     -    -     -  64.0(-)       11.4   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 313-693 (1536x381 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x381 (4.03:1) is wider than 4.00:1; normalization keeps x 3-1526 (removes 3 left and 9 right columns), the window with the smallest left-right seam difference: seam score 188.2 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 11.4-11.4 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w11-a3-spring-dawn","input":"w11-a3-spring-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-a1eb0389-e468-4afa-acce-b019cff1b1ef.png","sha256":"772BDC0C58D6DD274E96C0938C2CFBC73EC2E0D4C5F4874CAE75BD7148DBBCD5","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-90","batch":30,"review":"봄꽃·폐촌 유지, 분홍금빛 새벽과 먼 산 안개띠 반영. 하늘 평면 팔레트, 2~3px 상단/정물 정합은 보정."}

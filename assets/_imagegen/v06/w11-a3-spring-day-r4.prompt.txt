@@ -1,0 +1,22 @@
+CURRENT EDIT — this short instruction is the only active request:
+Retouch the attached finished pixel-art strip. Remove its bright cyan/aqua/turquoise specks and highlights. On sky and blue scenery, those offending colours become matte, desaturated blue-grey: sky #A9BDD3, midtone #8296AA, shadow #52697E, highlights off-white #E8EEF2. No luminous aqua, electric turquoise or near-cyan edge pixels anywhere. Keep all other colours, flowers, snow, abandoned houses, well, bell tower, mountains, path, textures and silhouettes exactly as attached. Keep the opaque 1536x1024 canvas, exact strip placement and flat magenta margins. Do not redraw the scene.
+
+Everything below is an archived reference record, not instructions to execute again. Its old scene creation, season changes and template regeneration are already completed:
+===== BEGIN HISTORICAL ORIGINAL PROMPT =====
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it early spring: grass and leaves turn fresh light green #8FC06A / RGB(143,192,106), tree crowns look lighter and younger, small white and pale pink blossoms appear on the trees, and small wildflowers dot the meadow and verges.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+===== END HISTORICAL ORIGINAL PROMPT =====
+===== BEGIN HISTORICAL INPUT GATE FEEDBACK =====
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 10 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+===== END HISTORICAL FEEDBACK =====
+
+Execute only CURRENT EDIT: replace bright aqua contamination with the matte blue-grey/off-white surface colours above, preserve the finished attached image.

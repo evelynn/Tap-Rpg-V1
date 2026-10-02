@@ -1,0 +1,21 @@
+pnpm art:gate assets/_imagegen/v06/w11-h1-winter-day.png --spec bg_far
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-h1-winter-day.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-h1-winter-day.png
+FAIL bg_far · canvas · 이미지 1983×793 (틀 1536×1024) · S 6.14 (band) · 칸 격자 · 시트 블록 10.8 · 키 비율 - · 배경 100.0% · 안내색 1 · 격자 밖 0 · 경고 4 · 띠 x114 y202 1572×393 비율 4(규격 4) · 위 자름 0 · 좌우 자름 114/297 이음 194.4
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              616909     -    -     -  64.0(-)       10.8   0.0%  ok (경고 block) 채움 100%/99%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Image is 1983x793, not the 1536x1024 template canvas; the strip was found by its content at x 0-1982, y 202-594 (1983x393 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1983x393 (5.05:1) is wider than 4.00:1; normalization keeps x 114-1685 (removes 114 left and 297 right columns), the window with the smallest left-right seam difference: seam score 194.4 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 10.8-10.8 image px in 1 cells, not 6.1 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F604FC), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 1 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.

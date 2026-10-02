@@ -1,0 +1,6 @@
+문 해당 없음: V06_REQUEST.md V06-48은 균열 추출 마스크이므로 키/지면선 검사 제외.
+
+문 해당 없음. 육안 검토: E8: 6열3행 균열18개가 입력 종머리 위치를 따름. E10: 종/몸/종추/발/가슴표지 모두 제거, 붉은갈색 균열만 남음. E11: 이전 검정후광 실패와 달리 전체 불투명 단색 자홍 배경. 미세한 균열 윤곽/위치/색조 차이는 차후 원본 마스크 정합 및 #B0603A 색 보정으로 인계.
+Exit code: 
+V06_MISSING_META: {"id":"V06-48","stem":"w37-boss-crack-mask18-48-r3","input":"assets/_imagegen/v06/w35-boss-bellwarden-a18-48-r3.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-6007fecc-839d-4a49-a806-5b61a24160c4.png","review":"E8: 6열3행 균열18개가 입력 종머리 위치를 따름. E10: 종/몸/종추/발/가슴표지 모두 제거, 붉은갈색 균열만 남음. E11: 이전 검정후광 실패와 달리 전체 불투명 단색 자홍 배경. 미세한 균열 윤곽/위치/색조 차이는 차후 원본 마스크 정합 및 #B0603A 색 보정으로 인계.","attempt":1,"spec":null,"gate":"N/A","sha256":"D69F4F316A6FD9D72148141F064FAF57A14B3B4C70268A77FDC1257C037C621B","width":1536,"height":1024,"exit":null,"same":true}
+

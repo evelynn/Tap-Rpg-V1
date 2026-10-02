@@ -1,0 +1,7 @@
+Make one tiny local edit to this exact image. Preserve the entire existing opaque magenta canvas and every existing mark unchanged, except the single short brown dash in the bottom-left cell, centered near image coordinate (156,761).
+
+Thicken only that brown dash into ONE crisp short horizontal mark, approximately 18 pixels wide and 12 pixels high, at the same center, using its existing muted-brown colour. Hard square edges and solid opaque pixels. Preserve the top two rows and the three-line brown cluster to its right exactly, including their original shapes, sizes, colours and positions. Output the same 1536x1024 opaque image. This is a local repair of an already finished image; do not recreate or restyle the sheet.
+
+ACTUAL GATE REGENERATION FEEDBACK (verbatim):
+Regenerate this sheet on the chr_face template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,2) "wrinkle_veteran": the cell is empty or nearly empty (77 px). Draw the "wrinkle_veteran" frame here.

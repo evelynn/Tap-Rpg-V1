@@ -1,0 +1,19 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w14-d2-lantern-lit-1.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w14-d2-lantern-lit-1.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w14-d2-lantern-lit-1.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 15.3 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y321 1536×384 비율 4(규격 4) · 위 자름 2 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589705     -    -     -  64.0(-)       15.3   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x386 (3.98:1) is taller than 4.00:1; normalization removes the top 2 rows (y 319-320) and keeps the bottom row y 704.
+- Drawn pixel blocks are 15.3-15.3 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F906FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w14-d2-lantern-lit-1","input":"w13-d2-mine-mid-r2.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-15757de2-9f8e-4704-ac7c-1b7b2ea11473.png","sha256":"01DC879E1BEA4584662371994E8DBCE0022EA67176BF7F255589C7BD09CB8F9B","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-97","batch":34,"review":"D2 등불2 생성. 왼쪽 기존고리는 점등, 두번째가 중앙배관에 붙고 오른쪽기존고리는 비어 있어 두번째 등불을 오른쪽고리로 옮겨 보정. 정적배경 차이도 복원."}

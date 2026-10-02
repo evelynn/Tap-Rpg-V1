@@ -1,0 +1,51 @@
+pnpm art:gate assets/_imagegen/v06/w04-kobold-body18-48-r5.png --spec enm_kobold
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w04-kobold-body18-48-r5.png" "--spec" "enm_kobold"
+
+assets/_imagegen/v06/w04-kobold-body18-48-r5.png
+PASS enm_kobold · canvas · 이미지 1024×1536 (틀 1024×1536) · S 6 (template) · 칸 내용 추정 · 시트 블록 4.6 · 키 비율 1.043 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 40
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              15820     0   -1 -14.2  31.3(30)       4.6   0.0%  ok (경고 bbox,center,block)
+  (1,0)   idle 2              15721     0   -1  -5.7  31.8(30)       4.6   0.0%  ok (경고 bbox,center,block)
+  (2,0)   idle 3              15673     0   -1   2.9  31.3(30)       4.5   0.0%  ok (경고 center,block)
+  (3,0)   idle 4              16282     0   -1  10.9  31.5(30)       4.6   0.0%  ok (경고 bbox,center,block)
+  (0,1)   move 1              16061     0   -1 -14.6  31.3(30)       4.7   0.0%  ok (경고 bbox,center,block)
+  (1,1)   move 2              15441     0   -1  -5.6  31.3(30)       4.6   0.0%  ok (경고 bbox,center,block)
+  (2,1)   move 3              15861     0   -1   2.9  31.3(30)       4.6   0.0%  ok (경고 center,block)
+  (3,1)   move 4              15838     0   -1  11.6  31.8(30)       4.7   0.0%  ok (경고 bbox,center,block)
+  (0,2)   attack 1            18326     0    0 -15.4  32.8(-)        4.8   0.0%  ok (경고 bbox,center,block)
+  (1,2)   attack 2            15594     0    0  -4.7  32.8(-)        4.3   0.0%  ok (경고 bbox,center,block)
+  (2,2)   attack 3            15197     0    0   4.6  26.8(-)        4.8   0.0%  ok (경고 bbox,center,block)
+  (3,2)   attack 4            16207     0    0  11.9  32.3(-)        4.8   0.0%  ok (경고 bbox,center,block)
+  (0,3)   hit 1               16194     0   -1 -14.7  31.5(30)       4.8   0.0%  ok (경고 bbox,center,block)
+  (1,3)   hit 2               15943     0   -1  -6.1  31.0(30)       4.6   0.0%  ok (경고 bbox,center,block)
+  (0,4)   exit 1              13105     0   -3 -11.6  23.2(-)        4.5   0.0%  ok (경고 bbox,ground,center,block)
+  (1,4)   exit 2              15385     0   -3  -3.4  24.7(-)        4.5   0.0%  ok (경고 bbox,ground,center,block)
+  (2,4)   exit 3              14765     0   -3   7.8  29.0(-)        4.7   0.0%  ok (경고 bbox,ground,center,block)
+  (3,4)   exit 4              15079     0   -3  18.6  29.0(-)        4.3   0.0%  ok (경고 bbox,ground,center,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 11.3 blocks).
+- Cell (0,0) "idle 1": horizontal center 14.3 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (left 2.5 blocks).
+- Cell (1,0) "idle 2": horizontal center 5.8 blocks left of the template center mark.
+- Cell (2,0) "idle 3": horizontal center 2.9 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 7.8 blocks).
+- Cell (3,0) "idle 4": horizontal center 10.9 blocks right of the template center mark.
+- Cell (0,1) "move 1": crosses the template cell boundary (left 11.3 blocks).
+- Cell (0,4) "exit 1": lowest pixel 3 blocks above the template ground line.
+- Cell (1,4) "exit 2": lowest pixel 3 blocks above the template ground line.
+- Cell (2,4) "exit 3": lowest pixel 3 blocks above the template ground line.
+- Cell (3,4) "exit 4": lowest pixel 3 blocks above the template ground line.
+- Drawn pixel blocks are 4.3-4.8 image px in 18 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F904F8), all within the key tolerance; keying removes them.
+- ...and 12 more bbox warnings of the same kind.
+- ...and 14 more center warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the enm_kobold template. No regeneration needed.
+
+Exit code: 0
+V06_MISSING_META: {"id":"V06-40","stem":"w04-kobold-body18-48-r5","input":"assets/_imagegen/v06/w04-kobold-body18-48-r4.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-af2acf93-7ee4-4766-94c0-bd7673f04c83.png","review":"E8: 18칸/4열5행 및 빈2칸, 주요 자세 유지. E10: 금속 머리와 갈색 나무 자루 잔여는 육안상 제거됨. 다만 제거 대상 자루 끝 일부가 초록 손/팔로 치환되어 원본보다 길어진 부분이 있음(idle/move/hit1/exit3-4, attack3); 입력 합성의 실제 피부 마스크로 잘라 팔 길이/손 위치 보정 필요. E11: 불투명 단색 자홍 배경. 피부/귀/옷의 미세 정적화소·윤곽 차이도 차후 원본 정합 대상. 보정 가능한 차이로 인계하며 추가 반복하지 않음.","attempt":2,"spec":"enm_kobold","gate":"PASS","sha256":"8A1E4A84EA64ADDF687470702D70708A5B3A236FE6F596FA374A1CEA9FAFAB29","width":1024,"height":1536,"exit":0,"same":true}

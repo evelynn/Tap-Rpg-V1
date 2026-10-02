@@ -1,0 +1,21 @@
+pnpm art:gate assets/_imagegen/v06/w12-a1-autumn-dusk-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-a1-autumn-dusk-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a1-autumn-dusk-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y323 1536×384 비율 4(규격 4) · 위 자름 7 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589811     -    -     -  64.0(-)       12.0   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 316-706 (1536x391 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x391 (3.93:1) is taller than 4.00:1; normalization removes the top 7 rows (y 316-322) and keeps the bottom row y 706.
+- Drawn pixel blocks are 12-12 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+Exit code: 0
+V06_META: {"stem":"w12-a1-autumn-dusk-far","input":"w11-a1-autumn-dusk.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-33e67d79-82b2-402b-9b1c-61626105f413.png","sha256":"73FEAEC7414C051C4CBD5B9314D0E4A9792F48DD196B8808B9BC53ED962F0C05","width":1536,"height":1024,"exit":0,"id":"V06-91","batch":27,"review":"가을 노을·먼 마을 유지. 앞 시설·길·개울 대신 초원 채움. 하단에 가까운 풀 형상 남은 부분은 원경 채움 마스크 범위에서 차후 정리."}

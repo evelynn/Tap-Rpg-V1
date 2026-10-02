@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-h3-autumn-day-far-r2.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h3-autumn-day-far-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h3-autumn-day-far-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.1 · 키 비율 - · 배경 100.0% · 안내색 838 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 11 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589700     -    -     -  64.0(-)        9.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 314-708 (1536x395 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x395 (3.89:1) is taller than 4.00:1; normalization removes the top 11 rows (y 314-324) and keeps the bottom row y 708.
+- Drawn pixel blocks are 9.1-9.1 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 838 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+
+EXIT=1
+V06_REPAIR_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-54859917-c0f0-4878-9033-6b866abbce60.png","sha256":"9AFE6E90D9403739934915A2476A8E88E8207738692F55370F50BC01A8F17EB2","same":true,"width":1536,"height":1024,"exit":1,"gate":"FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 9.1 · 키 비율 - · 배경 100.0% · 안내색 838 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 11 · 좌우 자름 0/0","oldShaNow":"FD4E857673A67117A1F9F2440D6F0C39833092B3C7A2A28DDC5DCA2115CDE792","oldStem":"w12-h3-autumn-day-far","stem":"w12-h3-autumn-day-far-r2","input":"w12-h3-autumn-day-far.png","oldSha":"FD4E857673A67117A1F9F2440D6F0C39833092B3C7A2A28DDC5DCA2115CDE792","round":1,"originalUnchanged":true,"review":"실제 FAIL: 안내색 1431→838, 격자 밖 0, 채움 정상. 정확한 근접 청록 검출 반경을 명시했으나 guide 지적 반복. 가을 원경·하늘·구름은 유지되지만 왼쪽 먼 바위 첨탑이 사라지고 중앙 호수가 넓어져 요청 범위 밖 지형 변화가 생김. 기존 원본 보존, 새 결과는 색/정합 보정 미해결로 보관하며 입력 대체 비권장."}

@@ -1,0 +1,8 @@
+N/A: 신규 요청 소품의 전용 등록 틀 없음. 다른 spec으로 PASS를 만들지 않음.
+Canvas: 1536x1024
+Original SHA256 copy match: true
+Manual layout requested: 1536×1024; 16×16 논리 S16; 2칸 각각256×256; 좌상단(352,384),(928,384). 실제 그림은 수치 배치와 다름.
+Visual review: 떨어지는 기울어진 꾸러미/바닥에 놓인 꾸러미 2상태 확인. 매듭·끈·색 계보 유지, 추가 희귀 효과·그림자 없음. 지정 셀보다 큰 크기와 두 칸 좌표·바닥행 차이는 16×16 변환/앵커 보정 필요.
+Game status: 후속 규격 정규화·팔레트 검토 필요. 코드로 이미지 편집하지 않음.
+
+V07_META: {"id":"V07-drop-bundle","stem":"prop-drop-bundle16-2","input":[],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-14ab657a-8efe-46b6-bba7-5ab8eee7764e.png","sha256":"BEC468FF4D7BBA3FC549E814FFF5B6DB97557F23AC5CEE6DD2A879505EA048BC","width":1536,"height":1024,"same":true,"spec":null,"actualgate":"N/A — 등록된 전용 틀 없음; 육안 검토","review":"떨어지는 기울어진 꾸러미/바닥에 놓인 꾸러미 2상태 확인. 매듭·끈·색 계보 유지, 추가 희귀 효과·그림자 없음. 지정 셀보다 큰 크기와 두 칸 좌표·바닥행 차이는 16×16 변환/앵커 보정 필요.","layout":"1536×1024; 16×16 논리 S16; 2칸 각각256×256; 좌상단(352,384),(928,384). 실제 그림은 수치 배치와 다름.","selected":true}

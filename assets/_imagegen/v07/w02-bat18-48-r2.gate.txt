@@ -1,0 +1,54 @@
+pnpm art:gate assets/_imagegen/v07/w02-bat18-48-r2.png --spec enm_bat
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v07/w02-bat18-48-r2.png" "--spec" "enm_bat"
+
+assets/_imagegen/v07/w02-bat18-48-r2.png
+PASS enm_bat · canvas · 이미지 1024×1536 (틀 1024×1536) · S 7 (template) · 칸 격자 · 시트 블록 6.3 · 키 비율 1.311 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 37
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              12124     0   -4  -5.4  19.9(14)       6.2   0.0%  ok (경고 bbox,ground,center)
+  (1,0)   idle 2              11286     0   -4  -1.6  17.0(14)       6.5   0.0%  ok (경고 bbox,ground)
+  (2,0)   idle 3              10534     0   -4   2.3  16.6(14)       6.3   0.0%  ok (경고 bbox,ground,center)
+  (3,0)   idle 4              11767     0   -4   5.3  19.7(14)       6.3   0.0%  ok (경고 bbox,ground,center)
+  (0,1)   move 1              11872     0    1  -5.4  19.1(14)       6.2   0.0%  ok (경고 bbox,center)
+  (1,1)   move 2              11038     0    1  -1.7  16.9(14)       6.5   0.0%  ok (경고 bbox)
+  (2,1)   move 3              10864     1    1   1.9  16.7(14)       6.3   0.0%  ok (경고 bbox)
+  (3,1)   move 4              12084     0    1   4.9  19.1(14)       6.0   0.0%  ok (경고 bbox,center)
+  (0,2)   attack 1            13279     0    5  -3.7  19.9(-)        6.7   0.0%  ok (경고 bbox,ground,center)
+  (1,2)   attack 2            11555     0    5  -0.9  15.1(-)        6.4   0.0%  ok (경고 ground)
+  (2,2)   attack 3            12106     0    5   1.1  17.1(-)        6.1   0.0%  ok (경고 bbox,ground)
+  (3,2)   attack 4            11855     0    5   5.1  19.7(-)        6.2   0.0%  ok (경고 bbox,ground,center)
+  (0,3)   hit 1               12557     0   10  -5.1  20.4(14)       6.4   0.0%  ok (경고 bbox,ground,center)
+  (1,3)   hit 2               11471     0    9  -1.3  17.7(14)       6.3   0.0%  ok (경고 ground)
+  (0,4)   exit 1               9559     -    -  -2.4  17.4(-)        6.2   0.0%  ok (경고 bbox,center)
+  (1,4)   exit 2               8766     -    -   1.1  16.9(-)        6.1   0.0%  ok
+  (2,4)   exit 3               5867     -    -   2.9  13.1(-)        5.9   0.0%  ok (경고 center,block)
+  (3,4)   exit 4               3676     -    -   5.4  10.6(-)        6.4   0.0%  ok (경고 center)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 1.1 blocks, top 9.3 blocks).
+- Cell (0,0) "idle 1": lowest pixel 4 blocks above the template hover line.
+- Cell (0,0) "idle 1": horizontal center 5.4 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (top 6.7 blocks).
+- Cell (1,0) "idle 2": lowest pixel 4 blocks above the template hover line.
+- Cell (2,0) "idle 3": crosses the template cell boundary (top 5.7 blocks).
+- Cell (2,0) "idle 3": lowest pixel 4 blocks above the template hover line.
+- Cell (2,0) "idle 3": horizontal center 2.3 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 2.9 blocks, top 9.1 blocks).
+- Cell (3,0) "idle 4": lowest pixel 4 blocks above the template hover line.
+- Cell (3,0) "idle 4": horizontal center 5.3 blocks right of the template center mark.
+- Cell (0,1) "move 1": horizontal center 5.4 blocks left of the template center mark.
+- Figures are 131.1% of the spec height; normalization resamples the sheet by x0.76 (map scale_to_spec).
+- Drawn pixel blocks are 5.9-5.9 image px in 1 cells, not 7 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+- ...and 9 more bbox warnings of the same kind.
+- ...and 6 more ground warnings of the same kind.
+- ...and 7 more center warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the enm_bat template. No regeneration needed.
+
+Exit code: 0
+V07_META: {"id":"V07-A3-bat","stem":"w02-bat18-48-r2","input":["docs/art/templates/enm_bat.grid.png","docs/art/templates/enm_rat.placeholder.png","assets/_imagegen/v05/w02-bat18-48-r3.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-2b8fb1c8-472d-4918-8f8c-6d52639a80e8.png","spec":"enm_bat","review":"PASS/경고37. 18칸 및 퇴장4칸 존재, 부양·날개변화·퇴장축소 유지. 2차 선택: 기준키131.1%로 1차162.5%보다 개선. 실제 block평균6.3(S7), exit3 block5.9. 첫행/행별부양위치·중심이 원본배치를 따라 template와 다름. 정확격자 달성은 아님, 위치·키·도트밀도 차후보정 필요.","selected":true,"attempt":2,"sha256":"A5713560C14B4BF10F148D57DEAAA2A8679806FB37A345DA132B6338CAF76E78","width":1024,"height":1536,"exit":0,"same":true}
+

@@ -1,0 +1,9 @@
+Use case: precise edit of the provided key strip (four panels on the scene template). Keep the exact canvas, the strip position, panel 1 and the flat #FF00FF outside the strip exactly. Make panels 2, 3 and 4 exact copies of panel 1, pixel for pixel with the exact colours, then apply ONLY the changes listed under FRAMES (panel 1 = frame 1, left to right). Do not redraw, move, restyle, recolour, relight, brighten or saturate anything else. The empty hero slot stays empty in all four panels.
+
+FRAMES: the right lantern at 0.88 comes alive: 1 dark glass #7D7B80, 2 small ember #C8783A, 3 fully lit #FFE38A, 4 ember #C8783A; the left lantern stays lit and steady; the ripples shift one block right each frame in a repeating pattern.
+
+Do NOT draw: the player character, any young adventurer who could be mistaken for it, any person in the empty hero slot, any person or creature not listed, text, letters, numbers, runes, writing on signs, paper or banners, labels, frame numbers, arrows, musical notes, zZ letters, speech bubbles, UI elements, panel borders, grid lines, dividing lines, watermark, blood, wounds, corpses, weapons being swung, magic effects not listed, motion trails, vignette, spotlight, glow halo, lens flare, gradient sky. Output only the finished image.
+
+Canvas exactly 1536 x 1024. Preserve the fully opaque magenta background and keep all animated details outside the empty hero slot.
+
+Only the GLASS INSIDE the RIGHT lantern changes from dark to ember to yellow to ember; keep its metal housing and post identical. The left lantern stays lit and pixel-identical. Do not add glow, light rays, circles, a new sun or clouds. Keep partner pixels fixed. The small water band stays within its current narrow height. Opaque hot-pink card background must remain fully opaque magenta RGB(255,0,255); no transparency, dark matte, halos or crop. Exactly1536x1024.

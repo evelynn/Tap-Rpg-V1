@@ -1,0 +1,52 @@
+pnpm art:gate assets/_imagegen/v06/w35-boss-bellwarden-a18-48-r2.png --spec boss_bellwarden_a
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w35-boss-bellwarden-a18-48-r2.png" "--spec" "boss_bellwarden_a"
+
+assets/_imagegen/v06/w35-boss-bellwarden-a18-48-r2.png
+FAIL boss_bellwarden_a · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (template) · 칸 내용 추정 · 시트 블록 8.0 · 키 비율 1.386 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 57
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              31052     0  -34 -43.0  75.0(54)       7.9   0.0%  ok (경고 bbox,ground,center,block)
+  (1,0)   idle 2              30786     0  -34 -25.7  74.7(54)       8.1   0.0%  ok (경고 bbox,ground,center,block)
+  (2,0)   idle 3              30490     0  -34  -6.3  75.0(54)       7.8   0.0%  ok (경고 bbox,ground,center,block)
+  (3,0)   idle 4              30796     0  -34  14.0  74.7(54)       8.0   0.0%  ok (경고 bbox,ground,center,block)
+  (4,0)   idle 5              30616     0  -34  31.7  75.3(54)       7.9   0.0%  ok (경고 bbox,ground,center,block)
+  (5,0)   idle 6              28703     0  -34  50.0  67.7(54)       8.0   0.0%  ✗ scale (경고 bbox,ground,center,block)
+  (0,1)   attack_a 1          30669     0   17 -43.0  74.7(-)       11.1   0.0%  ok (경고 bbox,ground,center,block)
+  (1,1)   attack_a 2          32564     0   17 -18.7  76.0(-)       11.4   0.0%  ok (경고 bbox,ground,center,block)
+  (2,1)   attack_a 3          31592     0   17  -5.0  81.7(-)        8.0   0.0%  ok (경고 bbox,ground,center,block)
+  (3,1)   attack_a 4          27066     1   18  15.0  59.7(-)        8.4   0.0%  ok (경고 bbox,ground,center,block)
+  (4,1)   attack_a 5          26731     0   17  32.0  62.3(-)        8.7   0.0%  ok (경고 bbox,ground,center,block)
+  (5,1)   attack_a 6          30671     0   17  50.0  75.0(-)        7.8   0.0%  ok (경고 bbox,ground,center,block)
+  (0,2)   attack_b 1          26888     0   67 -43.0  63.0(-)        8.1   0.0%  ok (경고 bbox,ground,center,block)
+  (1,2)   attack_b 2          28509     0   67 -24.7  74.7(-)        7.8   0.0%  ok (경고 bbox,ground,center,block)
+  (2,2)   attack_b 3          33548     0   67  -6.7  86.0(-)        8.6   0.0%  ok (경고 bbox,ground,center,block)
+  (3,2)   attack_b 4          33677     0   67  11.7  86.0(-)        7.7   0.0%  ok (경고 bbox,ground,center,block)
+  (4,2)   attack_b 5          28411     0   67  31.3  75.3(-)        8.1   0.0%  ok (경고 bbox,ground,center,block)
+  (5,2)   attack_b 6          30644     0   67  50.0  75.3(-)        7.7   0.0%  ok (경고 bbox,ground,center,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 56 blocks, top 54.3 blocks).
+- Cell (0,0) "idle 1": lowest pixel 34 blocks above the template ground line.
+- Cell (0,0) "idle 1": horizontal center 43 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (left 35.7 blocks, top 54 blocks).
+- Cell (1,0) "idle 2": lowest pixel 34 blocks above the template ground line.
+- Cell (1,0) "idle 2": horizontal center 25.7 blocks left of the template center mark.
+- Cell (2,0) "idle 3": crosses the template cell boundary (left 16.7 blocks, top 54.3 blocks).
+- Cell (2,0) "idle 3": lowest pixel 34 blocks above the template ground line.
+- Cell (2,0) "idle 3": horizontal center 6.3 blocks left of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 16.3 blocks, top 54 blocks).
+- Cell (3,0) "idle 4": lowest pixel 34 blocks above the template ground line.
+- Cell (3,0) "idle 4": horizontal center 14 blocks right of the template center mark.
+- Figures are 138.6% of the spec height; normalization resamples the sheet by x0.72 (map scale_to_spec).
+- Drawn pixel blocks are 7.7-11.4 image px in 18 cells, not 3 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803F9), all within the key tolerance; keying removes them.
+- ...and 14 more bbox warnings of the same kind.
+- ...and 14 more ground warnings of the same kind.
+- ...and 14 more center warnings of the same kind.
+
+Regeneration feedback:
+Regenerate this sheet on the boss_bellwarden_a template (one art pixel = 3x3 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (5,0) "idle 6": the figure is 10% shorter than the other frames of this row (67.7 vs 74.9 blocks). Draw every frame of the row at the same character scale (±6%).
+ ELIFECYCLE  Command failed with exit code 1.

@@ -1,0 +1,9 @@
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed listed changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+ADD thin falls of dust from cracks in the ceiling and a second bronze bell fragment half buried in the back wall, #E0B06A #B07A3A.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+Keep the original strip placement and magenta outer margin. Only the listed additions or recolours may change the image. Added features stay within the strip and within their correct wall/middle/floor layer. Keep the existing shapes not named in the edit. No pure cyan RGB(0,255,255); pale cyan highlights must instead use RGB(185,200,255). No new text. Darkest background artwork shade is RGB(76,74,82).

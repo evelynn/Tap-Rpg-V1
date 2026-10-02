@@ -1,0 +1,11 @@
+EDIT ONLY THE THREE VISIBLE SWORDS IN ROW1. Rows2 and3 have NO sword and NO scabbard. They remain pixel-for-pixel identical to the input, with no added bells, hilt, weapon, strap or ornament. The reference to a carried/scabbarded sword applies only if one exists; NONE exists in these lower eight cells.
+
+BACKGROUND IS PAINT, NOT TRANSPARENCY: a single flat opaque RGB(255,0,255) rectangular field, alpha255, everywhere outside the figures right up to their original outlines. No cutout preview, no brown halo or black field. Preserve source pixel colours on all unchanged figure parts.
+
+CANVAS LOCK: output exactly 1774 x 887 pixels, identical to the supplied image. This is a full opaque sprite sheet. All background is flat RGB(255,0,255), alpha255. Preserve the original grid, every figure's coordinates, head, face, skin, arm and hand poses, and the original pixel-block scale. Keep the source teal trousers RGB(39,151,141) and RGB(0,118,109), hair and skin colours exactly as they are. Only the specifically listed parts change. No cropping, resizing or colour grading.
+
+Use case: precise edit of the provided sprite sheet. Keep every existing pixel, position and the flat #FF00FF / RGB(255,0,255) background exactly. In every cell with a sword, change ONLY the sword: (1) recolour a notch one block deep and two blocks long on one edge of the blade, halfway along the blade, to #5A7FA8 / RGB(90,127,168); (2) add a tiny bronze bell #E0B06A / RGB(224,176,106) #B07A3A / RGB(176,122,58) with a #2B2233 / RGB(43,34,51) outline hanging from the pommel end, about one sixth of the sword length. The carried sword in its scabbard gets only the bell. Nothing else changes.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+VISUAL CORRECTION (not gate feedback): the previous result invented bells and brown hilts beside the hips in rows2 and3. Remove that idea entirely. Change only the existing three swords held in row1, adding their blue notch and pommel bell. All8 figures in rows2 and3 must match the original source exactly with NO additions.

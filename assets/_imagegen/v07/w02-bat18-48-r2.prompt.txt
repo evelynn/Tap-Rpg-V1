@@ -1,0 +1,68 @@
+CURRENT REDRAW REQUEST — execute these instructions:
+Start from input image 1's empty magenta template. Redraw the same bat character shown in input image 3 at its specified tiny logical resolution. The old reference supplies identity only; do NOT trace its old silhouettes, pixel density, scale or placement. Input image 2 shows the correct chunky flat pixel language. Make a real small game sprite with very few blocks, not a detailed pixel-themed illustration.
+
+Draw much SMALLER, simpler bats, only 14 logical pixel rows = 98 image pixels tall including both wing tips and ears. The old reference is far too large. Make the entire first row fit image y229..326, the second row y453..550, third y677..774 and fourth y901..998. Keep these four row envelopes, changing wings inside them. Column centres x173,397,621,845. Every art pixel is a bold 7x7 square. Keep the torso compact and fixed. Draw all four fleeing bats visibly inside the fifth row y1104..1327, reducing the last two, never deleting the last one.
+
+Canvas exactly 1024 x 1536. Exactly 18 poses: row1 four idle, row2 four moving, row3 four attacking, row4 TWO hit poses then two empty cells, row5 FOUR fleeing poses. Each logical pixel is EXACTLY 7x7 identical image pixels, including eyes and outline. Work on that chunky grid from the first mark. No smaller detail or antialiasing. All unused areas and margins fully opaque solid #FF00FF, no cyan or guides.
+
+The following is the source specification archive: it records identity, pose order, palette and exact template numbers. Earlier prose about reference preservation does NOT mean copying its oversized old silhouettes. Apply the CURRENT REDRAW REQUEST above when resolving presentation details.
+
+CURRENT TASK: Redraw this existing game enemy as true coarse pixel art on the exact template grid. The previous art lost detail when reduced to game size. Correct this at drawing time: each visible pixel block is exactly 7 x 7 image pixels, including outline, eyes and tiny details. Do not reproduce fine miniature painted pixels from the old sheet. Preserve character identity while reducing detail into clean large clusters. Use the full exact 1024 x 1536 canvas and the specified inset grid; do not spread the sprites out to the canvas edges.
+
+Input image 1 role: authoritative cell geometry and canvas. Input image 2 role: the already coarse golden monster sample, only for pixel language and shading style. Input image 3 role: this species' accepted identity and poses, NOT its pixel density, positions, spacing or canvas. Re-place all eighteen poses inside input image 1's cells. The final row must contain all FOUR visible escaping sprites, including its last cell.
+
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x32 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/enm_bat.grid.png, the layout template of sheet enm_bat): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1024 x 1536 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 7 x 7 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template enm_bat (docs/art/templates/enm_bat.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1024 x 1536 px (portrait).
+- Block: S = 7. One art pixel = one 7 x 7 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 32 x 32 art px = 224 x 224 px. Grid top-left x 64, y 208; grid 896 x 1120 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 64 + (column-1) x 224, y = 208 + (row-1) x 224. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 320-326 (hovering: nothing below y 326; the ground line y 404 stays empty); height 14 art px = 98 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 544-550 (hovering: nothing below y 550; the ground line y 628 stays empty); height 14 art px = 98 px.
+- Row 3 attack (4 frames): lowest figure pixels on image rows y 768-774 (hovering: nothing below y 774; the ground line y 852 stays empty); height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 992-998 (hovering: nothing below y 998; the ground line y 1076 stays empty); height 14 art px = 98 px.
+- Row 5 exit (4 frames): no ground rule (the row text says where the figure goes); height free.
+- Horizontal centre (the figure's middle column): column 1 x 169-175, column 2 x 393-399, column 3 x 617-623, column 4 x 841-847.
+- Keep 2 art px = 14 px empty inside every cell edge.
+- HOVER: the bat never touches the ground. Its lowest pixel is on the lowest-pixel rows given above (art row 16 of 32), 12 art px above the ground line (art row 28). The flee row rises and has no ground rule.
+
+MONSTER STANDARD (input image 2 = the golden sample: the accepted river rat sheet, laid out on its own template). Make this sheet exactly like the golden sample in everything except the species:
+- The same 4 x 5 grid and the same row roles and timing: row 1 IDLE, 4 frames, 200 ms each, looping; row 2 MOVE, 4 frames, 120 ms each, looping; row 3 ATTACK, 4 frames, 100/80/100/160 ms; row 4 HIT, 2 frames, 70/150 ms, then its last two cells stay empty; row 5 EXIT, 4 frames, 120 ms each, running away (never dying, never lying hurt).
+- The same pixel language: a one-art-pixel dark plum #2B2233 outline all around, the same three tones per material (light, mid, dark), flat colour clusters, at most 12 colours in the sprite, eyes 1 to 2 art px, no texture strokes, no thick or double outline, no flat unshaded fill, no anti-aliasing.
+- The same amount of detail per ART pixel as the golden sample (its art pixels are 8 x 8 image px; this sheet's are the S of the NUMBERS block).
+- Every looping row really moves: adjacent frames differ by at least one art px in body height, a limb, the head or the tail. Never four copies of the same pose.
+- Faces LEFT in rows 1 to 4; turns to the RIGHT only while fleeing in row 5.
+- The rat is only the example of the standard: do not draw a rat, do not copy its body, colours or poses.
+
+SUBJECT AND IDENTITY: the same chibi cave bat in every cell, FACING LEFT. A compact round torso, two big rounded ears, tiny feet tucked under the body, two small bright eyes, and two membrane wings with three finger ribs each. The torso has IDENTICAL size and shape in all eighteen cells and stays at the same place unless a pose line moves it; only the wings change.
+HOVERING, NEVER STANDING: the bat flies in the air in every cell. In rows 1 to 4 the whole bat, wings included, fills exactly art rows 3 to 16 of its 32-row cell: the highest pixel (ear tips or raised wing tips) on art row 3, the lowest pixel (tucked feet or lowered wing tips) on art row 16, which is the lowest-pixel row given in the NUMBERS block. Every art row below row 16, down to the cell bottom, stays empty #FF00FF. No feet touching anything, no perch, no ground.
+PALETTE ONLY: outline #2B2233; body #7A5A6E #3A3050; wing membrane in three flat tones #9A8A78 #6E5A48 #4A3F55 used ONLY on the wings; eyes #FFE38A used ONLY on the eyes; teeth #F0E6CC.
+
+LAYOUT: exactly 18 sprites in exactly 4 equal columns and 5 equal rows of identical cells, each cell 32:32 (width to height), evenly spaced, reading order left to right then next row. Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, exactly on the ground line given in the NUMBERS block, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+ROW 1 IDLE: wings fully up; wings half down; wings fully down; wings half up. The torso does not move.
+ROW 2 MOVE: the same four wing positions with the body tilted slightly forward to the left; the torso stays in place.
+ROW 3 ATTACK: 1 wings swept back, anticipation; 2 dash: wings folded, torso three art px further left; 3 bite, small mouth open; 4 back to the idle position. Still hovering: nothing below art row 16.
+ROW 4 HIT: 1 flinch, eyes shut, wings jerk up; 2 pushed one art px right. Then two empty cells.
+ROW 5 FLEE, flying away up and to the right: 1 turning right and rising four art px; 2 rising four more art px; 3 smaller, about three quarters size; 4 about half size, near the top of the cell.
+No blood, no shadow on the ground, no speed lines.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+Final check: only eighteen sprites; four columns; five rows; exactly two empty cells at the right of row four. Uniform 7px square blocks aligned to the template cell origins, single-block outline, no smaller edge fragments. No cyan ticks and no graphics in the outer canvas margin.
+
+Visual correction from the first attempt: the sheet passed the permissive delivery gate but the figures were oversized and kept the old sheet positions. This request explicitly corrects drawing scale and placement.

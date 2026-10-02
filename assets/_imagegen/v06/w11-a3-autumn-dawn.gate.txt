@@ -1,0 +1,19 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-autumn-dawn.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-autumn-dawn.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a3-autumn-dawn.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.94 (band) · 칸 격자 · 시트 블록 14.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x5 y314 1520×380 비율 4(규격 4) · 위 자름 0 · 좌우 자름 5/11 이음 177.9
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              577584     -    -     -  64.0(-)       14.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x380 (4.04:1) is wider than 4.00:1; normalization keeps x 5-1524 (removes 5 left and 11 right columns), the window with the smallest left-right seam difference: seam score 177.9 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 14.1-14.1 image px in 1 cells, not 5.9 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w11-a3-autumn-dawn","input":"w11-a3-autumn-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-fce8afd2-e8c5-4ec1-87ad-563ec65adb55.png","sha256":"DE4705DAD67D09AF570A7BCB98A44AC46AC22C31F5767D6B1A161BD37C5AD097","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-90","batch":30,"review":"가을 잎과 새벽 금빛 하늘 유지. 지붕 밝기 증가와 하늘 그라데이션은 평면 팔레트 보정."}

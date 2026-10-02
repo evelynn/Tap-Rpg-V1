@@ -1,0 +1,32 @@
+pnpm art:gate assets/_imagegen/v07/c07-face12-48.png --spec chr_face
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v07/c07-face12-48.png" "--spec" "chr_face"
+
+assets/_imagegen/v07/c07-face12-48.png
+PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 6.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic           651     -    -     -  4.7(-)        11.9   0.0%  ok (경고 block)
+  (1,0)   round_smile           742     -    -     -  7.2(-)         2.7   0.0%  ok (경고 block)
+  (2,0)   round_frown           642     -    -     -  4.7(-)        11.5   0.0%  ok (경고 block)
+  (3,0)   round_closed          401     -    -     -  2.0(-)         6.0   0.0%  ok
+  (4,0)   round_surprised       860     -    -     -  8.2(-)        10.0   0.0%  ok (경고 block)
+  (0,1)   narrow_basic          388     -    -     -  2.0(-)         6.0   0.0%  ok
+  (1,1)   narrow_smile          449     -    -     -  4.5(-)         2.8   0.0%  ok (경고 block)
+  (2,1)   narrow_frown          526     -    -     -  4.5(-)         6.0   0.0%  ok
+  (3,1)   narrow_closed         392     -    -     -  2.0(-)         6.0   0.0%  ok
+  (4,1)   narrow_surprised      773     -    -     -  8.3(-)        10.2   0.0%  ok (경고 block)
+  (0,2)   wrinkle_veteran       575     -    -     -  2.7(-)        15.5   0.0%  ok (경고 block)
+  (1,2)   wrinkle_elder         373     -    -     -  6.3(-)         4.9   0.0%  ok (경고 block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Drawn pixel blocks are 2.7-15.5 image px in 8 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB04FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_face template. No regeneration needed.
+
+Exit code: 0
+
+V07_META: {"id":"V07-face-L2-repair","stem":"c07-face12-48","input":"assets/_imagegen/v06/c07-face12-48.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e785-27f9-75d3-812f-2aeb3b2c31cb\\exec-b1ab8f70-3b13-448a-95de-6eee8e6c7229.png","sha256":"F23E4959E0D8DBC380C1F9320219E57C4154DB9E4522F0BEABE30CEC01239022","width":1536,"height":1024,"gateexit":0,"same":true,"spec":"chr_face","attempt":1,"actualgate":"PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 6.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2","review":"첫 주름만 보강하는 국소 편집으로 입력의 표정 형태와 희소 레이어 배치를 보존했다. 위 10개 표정/홍조, 감은 눈 수평선, 좁은 놀람 눈, 두 주름 칸과 빈 3칸 확인. 찌푸림에 새 입이 생기거나 미소 입/놀람 눈이 크게 재해석되는 이전 부작용 없음. 주름-veteran 77→575px로 요청보다 크게 두꺼워졌고 elder도 253→373px로 미세 굵기 차이가 생겼으므로 주름의 게임 적용 크기/좌표/색 정합 필요. 다른 칸의 화소 수에도 작은 차이가 있어 E21 픽셀 동일성을 주장하지 않는다. 검정 후광 없음, 반투명 모든 칸0. 경고2는 블록크기 및 허용범위 키색 차이."}

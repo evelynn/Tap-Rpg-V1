@@ -1,0 +1,22 @@
+pnpm art:gate assets/_imagegen/v06/es19-long-sleep-48-k.png --spec scene_event
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/es19-long-sleep-48-k.png" "--spec" "scene_event"
+
+assets/_imagegen/v06/es19-long-sleep-48-k.png
+PASS scene_event · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (band) · 칸 격자 · 시트 블록 13.5 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y447 1536×192 비율 8(규격 8) · 위 자름 63 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   scene 1             73728     -    -     -  64.0(-)       13.1   0.0%  ok (경고 block) 채움 100%/100%
+  (1,0)   scene 2             73728     -    -     -  64.0(-)       13.5   0.0%  ok (경고 block) 채움 100%/100%
+  (2,0)   scene 3             73728     -    -     -  64.0(-)       13.6   0.0%  ok (경고 block) 채움 100%/100%
+  (3,0)   scene 4             73728     -    -     -  64.0(-)       13.8   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 384-638 (1536x255 px); the template strip is x 0-1535, y 416-607 (1536x192 px); normalization crops the strip and resamples it to 512x64.
+- Strip 1536x255 (6.02:1) is taller than 8.00:1; normalization removes the top 63 rows (y 384-446) and keeps the bottom row y 638.
+- Drawn pixel blocks are 13.1-13.8 image px in 4 cells, not 3 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB03FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the scene_event template. No regeneration needed.
+Exit code: 0

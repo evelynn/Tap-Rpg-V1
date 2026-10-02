@@ -1,0 +1,32 @@
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 256x64 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 / RGB(43,34,51) (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/bg_far.grid.png, the layout template of sheet bg_far): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 6 x 6 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF / RGB(0,255,255) tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF / RGB(255,0,255), the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template bg_far (docs/art/templates/bg_far.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 6. One art pixel = one 6 x 6 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 1 panel(s) of 256 x 64 art px = 1536 x 384 px each, filling x 0-1535, y 320-703. Outside the strip everything is flat #FF00FF / RGB(255,0,255).
+- Ground line: art row 56 of 64 = image y 656; one straight horizontal line.
+- Fill the whole strip: every pixel inside it is painted (opaque).
+
+Input image 2 role: quality and style reference only: match its detail density, shading and colour richness (its block size is not the template's; the art pixel size comes from the NUMBERS block). Do not copy its layout or objects.
+
+LAYOUT: canvas 1536 x 1024 pixels. The scene is ONE horizontal pixel-art strip exactly 1536 x 384 pixels, from y 320 to y 703, full canvas width; every pixel above y 320 and below y 703 is one flat #FF00FF / RGB(255,0,255) color and nothing is drawn there. One logical block is 6 x 6 pixels, so the strip is one side-view scene 256 blocks wide and 64 blocks high. The walkable ground surface is one perfectly straight horizontal line at block row 56 (image y 656) across the whole strip. The leftmost and rightmost columns continue into each other so the strip tiles: no object touches or crosses the left or right edge, and the horizon and the ground meet both edges at the same height and colour.
+DETAIL AND STYLE: match the attached quality reference exactly in pixel-block size, detail density and rendering: clustered foliage with several shades, visible material texture on walls, roofs, wood and stone, overlapping terrain layers with depth, deliberate small pixel details (flowers, pebbles, planks, crystals). Spread interesting shapes across the WHOLE strip; do not leave empty halves. Shading uses darker shades of the same hue; small dark accents are fine, but no pure black and no large area darker than #4C4A52 / RGB(76,74,82). Do not place a long row of large brown rounded shapes right above the ground line at character height (they swallow a brown-haired character standing in front).
+
+SCENE: Acorn Ford village beside a shallow ford. Five buildings spread evenly across the whole strip, each about 40 blocks wide: an inn with a round brown acorn-cap roof and flower boxes; a guild outpost with a green banner showing a plain forked-road mark and a blank notice board; a clinic made of a white canvas tent beside a small hut and a wooden water wheel; a smithy with a black chimney, an anvil and a sword on the wall; a general store with bundles of dried herbs under its eave and a short clothesline. Behind them a low stone bridge over the ford, trees and layered hills.
+
+Summer, full daylight. All windows and lanterns are unlit.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+COLOUR CONTROL: opaque magenta outside RGB(255,0,255); daytime sky RGB(168,204,223) with pale clouds RGB(232,238,242); foliage green RGB(143,192,106), mid-shade RGB(109,143,90), deeper foliage RGB(88,115,79); warm timber RGB(192,138,88) and RGB(142,94,56); inn roof brown RGB(122,78,48); pale canvas RGB(232,238,242). The darkest shade anywhere, including the black chimney and every small shadow, is charcoal RGB(76,74,82). Use coherent hard-edged flat pixel clusters, no smooth gradient or dark outline. Preserve the quality reference detail density and material textures.

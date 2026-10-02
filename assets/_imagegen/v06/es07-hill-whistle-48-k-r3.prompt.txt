@@ -1,0 +1,5 @@
+Edit this pixel-art scene precisely, same opaque 1536x1024 canvas. There are four panels, 384 pixels wide each. Apply the following THREE corrections identically to each panel, using coordinates LOCAL to each 384-pixel panel:
+1. Tori is TOO TALL: shrink just Tori (hat, head, body, legs, whistle together) to 75% of his CURRENT height, keeping his BOOTS planted at the exact same position on the cart board. His hat must now begin at image y465 or lower. Keep his same appearance and do not shift the cart.
+2. Put the two wolves at local centers x151 and x190 respectively. Each is only 27 image pixels wide. No part of any wolf may be left of local x132. Both face right. Their current vertical positions stay unchanged.
+3. Replace the three white whistle arcs with exactly ONE small white arc beside Tori's mouth.
+Everything else remains unchanged. Keep the opaque magenta background, no transparency, no resize or crop of the canvas. All four panels remain identical still key frames.

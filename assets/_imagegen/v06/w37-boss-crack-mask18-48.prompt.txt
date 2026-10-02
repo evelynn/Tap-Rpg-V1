@@ -1,0 +1,7 @@
+Output one opaque PNG exactly 1536 x 1024, matching the provided sheet. All removed pixels are painted opaque RGB(255,0,255); preserve every retained pixel at its original coordinates.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the crack pixels (#B0603A / RGB(176,96,58)) in each cell.
+
+There are eighteen jagged cracks on the front of the eighteen bell heads. Keep the visible rust-orange crack fill only; no bronze bell, rivets, dark outline around the bell, torso, mallet, feet or chest emblem. Do not change the crack positions or complete their hidden parts.

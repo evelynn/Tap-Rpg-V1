@@ -1,0 +1,20 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w14-d1-lantern-lit-1.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w14-d1-lantern-lit-1.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w14-d1-lantern-lit-1.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.47 (band) · 칸 격자 · 시트 블록 3.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x97 y338 1400×350 비율 4(규격 4) · 위 자름 0 · 좌우 자름 97/39 이음 97.6
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              489890     -    -     -  64.0(-)        3.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 338-687 (1536x350 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x350 (4.39:1) is wider than 4.00:1; normalization keeps x 97-1496 (removes 97 left and 39 right columns), the window with the smallest left-right seam difference: seam score 97.6 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 3.1-3.1 image px in 1 cells, not 5.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F704FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w14-d1-lantern-lit-1","input":"w13-d1-mine-upper-r2.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-ee236dc5-d135-476d-a5dd-c8da4e9828e4.png","sha256":"D50DFEF073275E1A3CD3E9E5179300519044034A821B7DCD5FD1FF6D8C17193E","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-97","batch":34,"review":"D1 기존 고리2에 등불2 추가, 광차·레일·먼다리 유지. 불꽃/등틀 추출 및 나머지 정적화소 복원으로 보정."}

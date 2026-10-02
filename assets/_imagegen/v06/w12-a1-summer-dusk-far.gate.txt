@@ -1,0 +1,20 @@
+pnpm art:gate assets/_imagegen/v06/w12-a1-summer-dusk-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-a1-summer-dusk-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a1-summer-dusk-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 10.7 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y323 1536×384 비율 4(규격 4) · 위 자름 6 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589764     -    -     -  64.0(-)       10.7   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x390 (3.94:1) is taller than 4.00:1; normalization removes the top 6 rows (y 317-322) and keeps the bottom row y 706.
+- Drawn pixel blocks are 10.7-10.7 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA02FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+Exit code: 0
+V06_META: {"stem":"w12-a1-summer-dusk-far","input":"w11-a1-summer-dusk.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-33b801ed-4a0a-48b1-8a2d-9eef49f14c7b.png","sha256":"51110551304BB1D3542EDC959D5CDC1C8FE10BD28BE264AB67FEE8B067130FDD","width":1536,"height":1024,"exit":0,"id":"V06-91","batch":27,"review":"여름 노을과 먼 창 점등을 유지한 원경 채움. 전경 시설·길 제거. 강한 수평 잔디 결 및 황색 테두리는 차후 원경 질감·명암 보정."}

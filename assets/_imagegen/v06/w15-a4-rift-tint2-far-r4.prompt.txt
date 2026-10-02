@@ -1,0 +1,31 @@
+Use case: precise-object-edit. Input image 1 is the existing cave far-layer image; edit this image, preserving its exact 1536 x 1024 canvas and the scenery band at y316 through y707.
+REPAIR ONLY THE BRIGHT CYAN LIGHT COLOUR. Keep the entire cave design and composition exactly: every arch, stalactite, stone wall, the jagged star-filled opening and all stars stay at the same positions and shapes. Keep the muted teal identity of the cave.
+Change the thin turquoise/aqua/cyan luminous rim along BOTH sides of the star fissure, including its very lowest tip, to flat neutral ivory-white #DEDFD8 with muted grey-blue shadow #91ABB5. Change any remaining tiny saturated aqua glints to the same muted grey-blue. The star flecks remain neutral white. No turquoise glow or cyan bloom remains on the rim. Use muted slate-teal light on rocks, never electric aqua. Dark teal stone colours and unrelated pixels stay unchanged. No new shapes, no new objects, no recolouring of the magenta exterior.
+The exact outside-band background stays opaque RGB(255,0,255). Entire band remains opaque scenery with no holes. Keep hard pixel-art edges. Do not run extraction, repaint geometry, resize or reposition anything.
+Earlier production requests below are archived context and are ALREADY COMPLETED; do not carry them out again. The ONLY active edit is the cyan light-colour repair just described.
+
+=== ARCHIVED PREVIOUS PROMPT (reference only; not a second edit request) ===
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the source strip boundaries and exact position. All outer margins solid opaque RGB(255,0,255).
+
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: the back cave wall, the ceiling, the deep cave silhouettes, and for H5 the daylight opening with the distant bell tower. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF. No new objects.
+
+Remove the foreground ruined stone arch and columns, steps, vines and black roses, all near crystals and rubble and floating stone shards, and the ground/floor band. Preserve the star-speckled crack as part of the back wall, exact crack position/shape/colour, back cave wall, ceiling and distant ruin silhouettes. Continue the back-wall cave scenery behind every removed item to the strip bottom. Preserve the source teal or rose-violet colour mood. No holes anywhere in the strip, no floor band. No new objects or lights. No pure cyan RGB(0,255,255). Crisp flat pixel clusters, no blur, gradient or halo.
+
+ORIGINAL ACTUAL GATE REGENERATION FEEDBACK (verbatim):
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 42 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+
+CURRENT ROUND 2 REPAIR — edit the supplied original failed far-layer image itself (42 cyan guide pixels), not the later 284-pixel attempt. The original prompt and gate feedback above are historical context. Do not re-extract the layer or reconstruct the scene.
+
+The checker flags every RGB colour satisfying R*R + (255-G)*(255-G) + (255-B)*(255-B) <= 6400, not just exactly #00FFFF. Preserve teal identity while putting every artwork colour safely OUTSIDE distance 100 from RGB(0,255,255): R*R + (255-G)*(255-G) + (255-B)*(255-B) must be greater than 10000. No highly saturated bright aqua or electric cyan pixels anywhere.
+
+Apply the smallest colour-only change needed: replace residual vivid bright cyan/aqua tones, especially tiny crack-edge flecks and the narrow luminous crack rim, with existing medium teal #419A9A / RGB(65,154,154), #66B8B8 / RGB(102,184,184), or a low-saturation pale grey-teal whose red component is at least 140. The brightest narrow crack edge may use near-white #E8EEF2 / RGB(232,238,242) or muted grey-blue #B9C8E0 / RGB(185,200,224), never vivid cyan. Keep the narrow rim the same exact width and jagged contour; do not add halo, light rays, glow, or enlarge the crack. Preserve the dark star-speckled interior and each star. Do not desaturate the whole cave, darken the scene, or change safe muted teal colours unnecessarily.
+
+Everything except these unsafe bright aqua/cyan colours remains exactly as in the input: canvas 1536 x 1024, strip x0..1535 y316..707, opaque magenta outer margins, wall shapes, stalactites and stalagmites, distant arch silhouettes, crack geometry, and absence of all removed foreground ruins, vines, roses, crystals, floating shards and floor. Fully painted far-layer strip, no gaps. Return only the repaired PNG.
+=== END ARCHIVE ===
+
+[GF — actual previous gate feedback]
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 10 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+
+FINAL ACTIVE EDIT: Only replace electric cyan/aqua glints and the full jagged fissure rim with neutral ivory-white and muted grey-blue. Preserve all teal cave geometry, star placement, canvas and band boundaries exactly. No cyan glow.

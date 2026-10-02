@@ -1,0 +1,19 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d3-toll.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d3-toll.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w13-d3-toll.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 10.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y323 1536×384 비율 4(규격 4) · 위 자름 5 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589824     -    -     -  64.0(-)       10.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x389 (3.95:1) is taller than 4.00:1; normalization removes the top 5 rows (y 318-322) and keeps the bottom row y 706.
+- Drawn pixel blocks are 10.1-10.1 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F905FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w13-d3-toll","input":"w13-d3-mine-deep.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-9d395548-8481-4a4c-ba31-c3f3ca609c94.png","sha256":"21AF3C662DCAD182200508C1936CDE52A04F6A582ECC272E164DAA5FEB8D2E1F","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-94","batch":32,"review":"천장 먼지줄기와 두번째 청동 종조각 추가. 새 조각이 벽매립보다 바닥전경처럼 보여 벽면 마스크/겹침 보정; 원래 큰 종 유지."}

@@ -1,0 +1,30 @@
+pnpm art:gate assets/_imagegen/v06/c07-face12-48-r3.png --spec 'chr_face'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c07-face12-48-r3.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/c07-face12-48-r3.png
+PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 4.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic           736     -    -     -  5.0(-)        11.9   0.0%  ok (경고 block)
+  (1,0)   round_smile           836     -    -     -  7.5(-)         3.0   0.0%  ok (경고 block)
+  (2,0)   round_frown           917     -    -     -  8.3(-)         3.8   0.0%  ok (경고 block)
+  (3,0)   round_closed          486     -    -     -  2.5(-)         5.9   0.0%  ok
+  (4,0)   round_surprised      1036     -    -     -  10.3(-)        3.0   0.0%  ok (경고 block)
+  (0,1)   narrow_basic          446     -    -     -  2.3(-)         5.0   0.0%  ok (경고 block)
+  (1,1)   narrow_smile          554     -    -     -  4.8(-)         3.3   0.0%  ok (경고 block)
+  (2,1)   narrow_frown          754     -    -     -  7.7(-)         4.2   0.0%  ok (경고 block)
+  (3,1)   narrow_closed         441     -    -     -  2.3(-)         4.9   0.0%  ok (경고 block)
+  (4,1)   narrow_surprised     1018     -    -     -  10.0(-)        2.9   0.0%  ok (경고 block)
+  (0,2)   wrinkle_veteran       247     -    -     -  1.7(-)         8.9   0.0%  ok (경고 block)
+  (1,2)   wrinkle_elder         480     -    -     -  6.7(-)         6.3   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Drawn pixel blocks are 2.9-11.9 image px in 10 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB04FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_face template. No regeneration needed.
+Exit code: 0
+
+V06_MISSING_META: {"id":"V06-07","stem":"c07-face12-48-r3","input":"assets/_imagegen/v06/c07-face12-48-r2.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-2c22f978-a941-4330-b128-62e1d5959b10.png","sha256":"35128FE903EAB04EC7BDF5E114F9793E78FA9D496E92C946951AC2F848E07B4E","width":1536,"height":1024,"exit":0,"same":true,"spec":"chr_face","gate":"PASS","attempt":3,"review":"밝은자홍과불투명 복구, 첫주름확대. 다만 첫시도대비표정의눈/입이재해석되어찌푸림이큰곡선입,가느다란놀람눈이커짐. 원본일치 관점에서첫시도보다개선아님. 세시도보존,원본정합이좋은첫시도및PASS후보선정독립비교."}

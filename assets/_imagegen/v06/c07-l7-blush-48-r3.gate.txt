@@ -1,0 +1,29 @@
+pnpm art:gate assets/_imagegen/v06/c07-l7-blush-48-r3.png --spec 'chr_face'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c07-l7-blush-48-r3.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/c07-l7-blush-48-r3.png
+PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 5.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 1
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic         22324     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,0)   round_smile         22416     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,0)   round_frown         22432     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,0)   round_closed        22421     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,0)   round_surprised     22390     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,1)   narrow_basic        22357     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,1)   narrow_smile        22416     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,1)   narrow_frown        22421     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,1)   narrow_closed       22418     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,1)   narrow_surprised    22395     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,2)   wrinkle_veteran     22347     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,2)   wrinkle_elder       22410     -    -     -  40.0(-)        5.9   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_face template. No regeneration needed.
+Exit code: 0
+
+V06_MISSING_META: {"id":"V06-07","stem":"c07-l7-blush-48-r3","input":"assets/_imagegen/v06/c07-l7-blush-48.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-68470414-c71d-4647-82dd-c54aa3492ea9.png","sha256":"BFAA1577659FBF9500F8628ADFB9D40D1B6CE16EAE73DD68590660CCD1B91D74","width":1536,"height":1024,"exit":0,"same":true,"spec":"chr_face","gate":"PASS","attempt":3,"review":"실제 PASS·밝은 자홍 배경 회복. 홍조9개 존재하나2행5열 홍조표지가 여전히 없고3행 주름의 식별도가 낮아 E19/E21후속보정필요. 크기/배치 동일."}

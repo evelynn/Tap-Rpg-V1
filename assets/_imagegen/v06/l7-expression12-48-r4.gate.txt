@@ -1,0 +1,29 @@
+pnpm art:gate assets/_imagegen/v06/l7-expression12-48-r4.png --spec 'chr_face'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/l7-expression12-48-r4.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/l7-expression12-48-r4.png
+PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 5.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 1
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic         22289     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,0)   round_smile         22312     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,0)   round_frown         22292     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,0)   round_closed        22292     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,0)   round_surprised     22288     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,1)   narrow_basic        22281     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,1)   narrow_smile        22320     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,1)   narrow_frown        22297     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,1)   narrow_closed       22292     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,1)   narrow_surprised    22304     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,2)   wrinkle_veteran     22264     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,2)   wrinkle_elder       22302     -    -     -  40.0(-)        5.9   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_face template. No regeneration needed.
+Exit code: 0
+
+V06_MISSING_META: {"id":"V06-01","stem":"l7-expression12-48-r4","input":"docs/art/templates/chr_face.placeholder.png; assets/_imagegen/v05/02-ref-b-actions18-48-teal.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-ad4d183f-67c5-45c1-848a-731c5a473b58.png","sha256":"A16B389CE3AB64C47A7F9EDEE541A58156802787F1E5726C91F42F74B956279A","width":1536,"height":1024,"exit":0,"same":true,"spec":"chr_face","gate":"PASS","attempt":1,"review":"도구 PASS·경고1. 5×3/12칸·동일 인물/자세·중립 주름2칸·평평한 눈감음 유지. 2행3열/5열이 둥근 눈으로 남아 가는 눈 보완 r5 진행, r4보존."}

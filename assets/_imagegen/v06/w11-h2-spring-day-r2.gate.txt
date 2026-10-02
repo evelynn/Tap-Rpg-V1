@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w11-h2-spring-day-r2.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-h2-spring-day-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-h2-spring-day-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.53 (band) · 칸 격자 · 시트 블록 12.2 · 키 비율 - · 배경 100.0% · 안내색 56 · 격자 밖 0 · 경고 4 · 띠 x61 y315 1416×354 비율 4(규격 4) · 위 자름 0 · 좌우 자름 61/59 이음 141.3
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              501193     -    -     -  64.0(-)       12.2   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 315-668 (1536x354 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x354 (4.34:1) is wider than 4.00:1; normalization keeps x 61-1476 (removes 61 left and 59 right columns), the window with the smallest left-right seam difference: seam score 141.3 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 12.2-12.2 image px in 1 cells, not 5.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 56 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+
+EXIT=1
+V06_REPAIR_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-aae90f01-c829-4324-bed0-2f3c41f87726.png","sha256":"877C5D0E4C575629637BA1B8BA01CD4508C10EED1592A575CEBC12DAB524DA98","same":true,"width":1536,"height":1024,"exit":1,"gate":"FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.53 (band) · 칸 격자 · 시트 블록 12.2 · 키 비율 - · 배경 100.0% · 안내색 56 · 격자 밖 0 · 경고 4 · 띠 x61 y315 1416×354 비율 4(규격 4) · 위 자름 0 · 좌우 자름 61/59 이음 141.3","oldShaNow":"D2ECA85B074C2811B8BCF6FC466B6FA9DF614D0B4D95C52FE932C57A675A8242","oldStem":"w11-h2-spring-day","stem":"w11-h2-spring-day-r2","input":"w11-h2-spring-day.png","oldSha":"D2ECA85B074C2811B8BCF6FC466B6FA9DF614D0B4D95C52FE932C57A675A8242","round":1,"originalUnchanged":true,"review":"안내색 224→56, 격자 밖 0, 실제 FAIL 반복으로 추가 재생성 중단. 양쪽 버드나무·물레방앗간·수문·연못·길·먼 마을 및 구름 배치 유지. 꽃과 잎 미세 질감 및 일부 색이 입력과 달라져 정적 화소 보정 잔존. 1536×1024 동일, 원본 불변·생성기 원본 복사 SHA256 일치. 차후 색 보정 필요."}

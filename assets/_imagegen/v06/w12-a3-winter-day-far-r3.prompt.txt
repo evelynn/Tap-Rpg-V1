@@ -1,0 +1,21 @@
+Use case: precise local palette repair of the EXISTING attached finished image. Output exactly 1536 x 1024 pixels, opaque PNG. Preserve this image and its exact strip location, magenta outer margins, composition, buildings, ruins, well, empty bell tower, trees, blossoms, snow, distant houses, mountains, sky and path. This is not a fresh season edit or a new landscape.
+
+Confirmed detector target: cyan guide residue includes EVERY pixel within Euclidean RGB distance 80 of pure cyan (0,255,255), not just exact #00FFFF. The rejected RGB region satisfies R^2 + (255-G)^2 + (255-B)^2 <= 6400. Correct all those isolated bright cyan/aqua/turquoise pixels, including antialiased highlights that are almost cyan.
+For those offending pixels ONLY, use an existing natural neighbouring scenery colour that is more than RGB distance 100 from pure cyan. Safe replacement examples: muted natural blue #4BA0CE / RGB(75,160,206), or a pale desaturated blue-grey with R >= 140. For snow highlight residue use pale blue-grey RGB(185,200,220) or off-white RGB(232,238,242). For spring foliage residue use the adjacent leaf/flower colour with no bright aqua.
+Do not leave any vivid bright aqua highlights, cyan glitter pixels or cyan antialiasing. Exact #00FFFF removal alone is insufficient. The safe repair must avoid the entire radius-80 region with a margin of at least 20 RGB units.
+Change only those local residue colours. Preserve every non-offending colour and every shape/texture/position. Do not blanket-recolour any object, sky, snow, grass or mountain. No resizing, moving, cropping or global relighting.
+
+Historical original prompt follows verbatim for provenance. Its scene/season/fill objective is already completed in the attached image; do not perform it again:
+--- ORIGINAL PROMPT ---
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Keep the source strip boundaries and its exact location, approximately y316..693. All outer margins are solid opaque RGB(255,0,255).
+
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: the sky, clouds, distant mountains, far hills, far trees and far buildings. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF. No new objects.
+
+Remove ALL foreground abandoned houses, roof fragments, stone walls, the large empty bell tower, the roofed well, roster board, pickaxe, fences, barrels, mine entrance and cart, big left/right foreground trees and rocks, tall grass and flowers, and the walking path/stone ground band. Preserve only sky, clouds, distant layered mountains, far hills, far small trees and existing tiny distant buildings/windows. Continue the far landscape behind the removed village and across the entire bottom band. No holes, no buildings in front, no path or near ground band. Preserve the source season and time of day including existing moon/stars and far windows. No pure cyan RGB(0,255,255). Crisp flat pixel clusters, no blur, gradient or halo.
+--- END ORIGINAL PROMPT ---
+--- ACTUAL INPUT GATE FEEDBACK ---
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 7 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+--- END ACTUAL FEEDBACK ---
+
+Only the new confirmed cyan-radius palette correction above is active. Keep the existing finished artwork, 1536x1024 canvas and exact strip bounds. Do not rebuild the template or change the pixel-block size. Avoid the radius-80 cyan region everywhere while touching only its isolated residue; use the safe distance>100 colours above.

@@ -1,0 +1,15 @@
+CANVAS LOCK: Output exactly 1536 x 1024 opaque PNG, identical to the source. Every pixel has alpha 255. Removed parts and all outside background are solid opaque magenta RGB(255,0,255), never transparency. Keep the original coordinates, body, head angles and pixel-block scale of the three poses. The third figure remains asleep with the source CLOSED eyes.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, the flat #FF00FF / RGB(255,0,255) background and the exact position, size and pose of every figure. Change ONLY the part named below, in the cells named below. Every other pixel (face, hair, skin, arms, hands, clothing, trousers, boots, held items) stays exactly as in the input, with its exact colour, except where the new part now covers it; never recolour, relight, brighten, darken or saturate anything that is kept. The new part follows each cell's existing pose: the same head angle, body lean and hand positions. Never move an arm, a hand or the head to fit the part. Empty cells stay empty. Same pixel-block size and outline style as the input. No gradient, no halo, no glow, no extra objects.
+
+SWAP (hair only, all three cells): change ONLY the hairstyle. Keep the same two chestnut browns #7A4E30 #553420 and the #2B2233 outline, follow each cell's head angle, and keep the face, eyes, skin, body and clothing unchanged. New style:
+
+two plaited braids, one hanging down on each side of the head (the far one partly behind the neck), each about one quarter of the head height long below the jaw line, made of three stacked round segments with ends tied in the darker brown. The two braids mirror each other.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+The rightmost sleeping braid must rest ON the floor next to the head, not hang below it. Keep the source body and hands fixed. Bend the near braid gently to the right so no hair pixel extends below the source body's bottom row (image y723). This is the new hair that caused the lowest-pixel failure.
+
+GENERATION FEEDBACK (GF):
+Regenerate this sheet on the chr_head_poses_ref template (one art pixel = 10x10 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (2,0) "lying": the lowest pixel is 3 blocks below the ground line of the other frames in this row; move the figure up 3 blocks so every frame of the row stands on the same ground line.

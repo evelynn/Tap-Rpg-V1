@@ -1,0 +1,26 @@
+Use case: precise local palette repair of the EXISTING attached finished image. Output exactly 1536 x 1024 pixels, opaque PNG. Preserve this image and its exact strip location, magenta outer margins, composition, buildings, ruins, well, empty bell tower, trees, blossoms, snow, distant houses, mountains, sky and path. This is not a fresh season edit or a new landscape.
+
+Confirmed detector target: cyan guide residue includes EVERY pixel within Euclidean RGB distance 80 of pure cyan (0,255,255), not just exact #00FFFF. The rejected RGB region satisfies R^2 + (255-G)^2 + (255-B)^2 <= 6400. Correct all those isolated bright cyan/aqua/turquoise pixels, including antialiased highlights that are almost cyan.
+For those offending pixels ONLY, use an existing natural neighbouring scenery colour that is more than RGB distance 100 from pure cyan. Safe replacement examples: muted natural blue #4BA0CE / RGB(75,160,206), or a pale desaturated blue-grey with R >= 140. For snow highlight residue use pale blue-grey RGB(185,200,220) or off-white RGB(232,238,242). For spring foliage residue use the adjacent leaf/flower colour with no bright aqua.
+Do not leave any vivid bright aqua highlights, cyan glitter pixels or cyan antialiasing. Exact #00FFFF removal alone is insufficient. The safe repair must avoid the entire radius-80 region with a margin of at least 20 RGB units.
+Change only those local residue colours. Preserve every non-offending colour and every shape/texture/position. Do not blanket-recolour any object, sky, snow, grass or mountain. No resizing, moving, cropping or global relighting.
+
+Historical original prompt follows verbatim for provenance. Its scene/season/fill objective is already completed in the attached image; do not perform it again:
+--- ORIGINAL PROMPT ---
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it winter: snow #E8EEF2 / RGB(232,238,242) with #FFFFFF / RGB(255,255,255) highlights covers the ground surface, roof tops, wall tops, rocks and fences; tree foliage becomes snow-laden, white on top of the existing leaf clusters; water turns darker and freezes at the edges. No falling snow.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+--- END ORIGINAL PROMPT ---
+--- ACTUAL INPUT GATE FEEDBACK ---
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 14 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+--- END ACTUAL FEEDBACK ---
+
+Only the new confirmed cyan-radius palette correction above is active. Keep the existing finished artwork, 1536x1024 canvas and exact strip bounds. Do not rebuild the template or change the pixel-block size. Avoid the radius-80 cyan region everywhere while touching only its isolated residue; use the safe distance>100 colours above.

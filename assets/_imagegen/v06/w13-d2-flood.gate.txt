@@ -1,0 +1,19 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d2-flood.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d2-flood.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w13-d2-flood.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.4 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y321 1536×384 비율 4(규격 4) · 위 자름 2 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589824     -    -     -  64.0(-)       11.4   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x386 (3.98:1) is taller than 4.00:1; normalization removes the top 2 rows (y 319-320) and keeps the bottom row y 704.
+- Drawn pixel blocks are 11.4-11.4 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F603FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w13-d2-flood","input":"w13-d2-mine-mid-r2.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-1a620465-1db7-4b5f-adc6-75221277a241.png","sha256":"EEC2C7C63A31B96D759CF666FBF3A36E2E2226C83794552575A5AF3DCF76CCAD","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-94","batch":32,"review":"기존 광차·받침목·배관·화덕 유지, 바닥 발목높이 물띠와 천장 물방울 추가. 물띠/레일 경계 및 정물 미세 화소 정합은 게임 보정."}

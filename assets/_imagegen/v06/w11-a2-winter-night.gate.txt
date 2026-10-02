@@ -1,0 +1,21 @@
+pnpm art:gate assets/_imagegen/v06/w11-a2-winter-night.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-a2-winter-night.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a2-winter-night.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 10.5 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y349 1536×384 비율 4(규격 4) · 위 자름 60 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589689     -    -     -  64.0(-)       10.5   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 289-732 (1536x444 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x444 (3.46:1) is taller than 4.00:1; normalization removes the top 60 rows (y 289-348) and keeps the bottom row y 732.
+- Drawn pixel blocks are 10.5-10.5 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+Exit code: 0
+V06_META: {"stem":"w11-a2-winter-night","input":"w11-a2-winter-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-b379d2a2-7900-4012-9ef0-dc23a9af8c5c.png","sha256":"F402C9D08F8D9BE08F247CC2952B912E13BA0876702EE2FBD985D1236D332D1E","width":1536,"height":1024,"exit":0,"id":"V06-90","batch":28,"review":"겨울 밤 설경·달·별·먼 창 점등 반영. 시설·다리·지면 구도 유지. 달·별 크기 및 먼 신규 집 윤곽, 계곡 수면·그림자 하한은 차후 공통 마스크·팔레트 보정."}

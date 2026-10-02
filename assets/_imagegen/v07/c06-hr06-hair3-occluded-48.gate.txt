@@ -1,0 +1,5 @@
+문 해당 없음 — 머리카락만 있는 가림막. art:gate 실행하지 않음. 자동 PASS가 아님.
+
+육안/남은 차이: V07 기본의 정수리만 덜어낸 3개 더벅머리 가림 마스크. 앞머리와 옆 가시 및 세 자세의 얼굴 구멍 위치 유지, 누움의 잘림은 기울어진 머리 축에 따라 위오른쪽으로 진행. 피부·몸·투구 없음, 자홍 배경. 기본판보다 갈색이 밝고 노란 쪽으로 달라졌으며 내부 질감·절단선에 미세 변화가 있어 기본판 색 및 정적 화소로 정합 필요. 투구 합성 E15와 E21 최종 합격을 주장하지 않음.
+
+V07_META: {"id":"V07-hr06-occluded","stem":"c06-hr06-hair3-occluded-48","input":["assets/_imagegen/v07/c06-hr06-hair3-48.png","assets/_imagegen/v06/c06-hr06-hair3-occluded-48.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e785-27f9-75d3-812f-2aeb3b2c31cb\\exec-ceb39dae-79f7-4a1d-9e53-c004aee77d11.png","sha256":"DB2F30AC7A1C313C4337FB982F097FA9832B75272C2B8CBEF24CD0823063ADDD","width":1536,"height":1024,"gateexit":null,"same":true,"spec":null,"attempt":1,"actualgate":"N/A — hair-only mask; no art:gate command was run","review":"V07 기본의 정수리만 덜어낸 3개 더벅머리 가림 마스크. 앞머리와 옆 가시 및 세 자세의 얼굴 구멍 위치 유지, 누움의 잘림은 기울어진 머리 축에 따라 위오른쪽으로 진행. 피부·몸·투구 없음, 자홍 배경. 기본판보다 갈색이 밝고 노란 쪽으로 달라졌으며 내부 질감·절단선에 미세 변화가 있어 기본판 색 및 정적 화소로 정합 필요. 투구 합성 E15와 E21 최종 합격을 주장하지 않음."}

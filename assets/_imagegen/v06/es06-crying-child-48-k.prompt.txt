@@ -1,0 +1,36 @@
+Asset type: Tap RPG 2D pixel-art EVENT SCENE, a short looping animation of one small side-view scene for a 128x64-pixel game window. This is real game pixel art, not an illustration, poster, UI or pixel-art-themed painting.
+PIXEL LANGUAGE: each panel must look designed on a genuine logical 128x64 pixel canvas and shown with large, uniform, perfectly square pixel blocks. Crisp hard square clusters, deliberate one-block stair-steps, flat color fills in large coherent areas, restrained detail.
+OUTLINE RULE: people, creatures and props have a one-block outer contour in dark plum #2B2233. Background surfaces (sky, walls, floor, ground, water, hills, buildings, tent cloth) have NO dark outlines: their edges use a slightly darker shade of the same hue, and no background pixel is darker than #4C4A52.
+SCALE: chibi people about 2.2 heads tall. Every panel is exactly 128 x 64 art px (NUMBERS). An adult stands exactly 38 art px tall, the feet on art row 56 of 64 (the ground line) and the top of the head on art row 18; Sena is 34, Tori 30 and a seated adult 26 art px tall.
+Light is shown only with flat stepped bands of a lighter color. Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, bloom, painterly strokes, noisy dithering, fur texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/scene_event.grid.png, the layout template of sheet scene_event): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 3 x 3 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template scene_event (docs/art/templates/scene_event.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Strip: 4 panel(s) of 128 x 64 art px = 384 x 192 px each, filling x 0-1535, y 416-607. Outside the strip everything is flat #FF00FF.
+- Panel left edges at x 0, 384, 768, 1152.
+- Ground line: art row 56 of 64 = image y 584; one straight horizontal line.
+- Each panel is one opaque scene edge to edge; panels touch with no gap or divider line.
+
+LAYOUT (key strip): draw on the template strip of input image 1: four panels side by side, each exactly 128 x 64 art px, at the image positions given in the NUMBERS block. ALL FOUR PANELS SHOW FRAME 1 and are pixel-identical copies of one another: this is a still key frame, not yet an animation. Each panel is a complete opaque scene from edge to edge; the panels touch with no gap, border or dividing line. Above and below the strip the canvas is one flat #FF00FF magenta, the exact same value in every pixel.
+A straight flat ground line runs across each panel at art row 56 of 64; every person and prop stands on it. The top eight art rows of each panel (rows 0-7) are one quiet flat color. A position given as a fraction f of the panel width is art x = f x 128 inside the panel.
+
+Input image 2 role: identity reference sheet. Copy ONLY the people named in this scene from it (cell 9 = Tori): the same head shape, hair, face, clothing, colors and body height. Do not copy its layout, its magenta background, its poses or any other person in it.
+
+Input image 3 role: place reference only: copy this place's colours, materials and landmark style, not its layout, its strip size or its pixel size.
+
+SCENE: a child crying under the bridge. Under the stone arch bridge of Acorn Ford by the water: the underside of the arch #9A948C #C8C2B8 fills rows 0-12 and comes down as a thick stone pier at 0.86-1.0; a shallow stream #5A7FA8 with ripple highlights #B9C8FF flows behind the figures in rows 40-54; a pebbly bank #C8C2B8 #9A948C with a few reeds #6D8F5A #4D6A3E in front, its top on the ground line. Soft shaded daylight; lonely but gentle.
+HERO SLOT (keep empty): 0.09 to 0.34 of the panel width, ground line up to row 12, show only plain water, bank and bridge stone. No person, prop, shadow or bright detail (the player character is added later).
+PEOPLE: Tori, a small lost child from a family of clowns, big round eyes, the smallest face of all: a knitted hat shaped like an acorn cap #C08A58 with a darker top #7A4E24 and a tiny stem, a little reddish hair #A4523A, light skin #F6D9C2 #E8B89A, a big flat WOODEN whistle #C08A58 #8E5E38 on a cord around the neck: a flat tube with a round sound hole near the far end, a short mouthpiece and a small loop on top. about 30 blocks tall, a yellow-and-blue patchwork clown tunic #FFE38A #5A7FA8, mismatched boots, the left red #B04A42 and the right blue #3E5A7E. Sitting on the bank centered at 0.64, facing LEFT, hugging both knees, face bowed onto the knees, the flat wooden whistle on its cord clutched in one hand: a flat tube about 12 by 5 blocks, #C08A58 #8E5E38, a round sound hole near the far end, a small loop on top. Two single-block tears #B9C8FF.
+FRAMES: Tori's shoulders rise one block in frames 2 and 4 (sobbing) and settle in frames 1 and 3; the ripple highlights shift one block to the right each frame in a repeating pattern.
+
+Do NOT draw: the player character, any young adventurer who could be mistaken for it, any person in the empty hero slot, any person or creature not listed, text, letters, numbers, runes, writing on signs, paper or banners, labels, frame numbers, arrows, musical notes, zZ letters, speech bubbles, UI elements, panel borders, grid lines, dividing lines, watermark, blood, wounds, corpses, weapons being swung, magic effects not listed, motion trails, vignette, spotlight, glow halo, lens flare, gradient sky. Output only the finished image.

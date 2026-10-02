@@ -1,0 +1,57 @@
+Output exactly 1536 x 1024 opaque PNG. Use input image 1 for layout; remove every cyan guide. Outside the sprites and arcs the image is flat opaque RGB(255,0,255).
+
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 64x56 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 / RGB(43,34,51) (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/boss_bellwarden_b.grid.png, the layout template of sheet boss_bellwarden_b): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 3 x 3 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF / RGB(0,255,255) tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF / RGB(255,0,255), the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template boss_bellwarden_b (docs/art/templates/boss_bellwarden_b.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 4 rows of cells, each 64 x 56 art px = 192 x 168 px. Grid top-left x 192, y 176; grid 1152 x 672 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 176 + (row-1) x 168. Nothing outside the grid.
+- Cells used: 17. Empty cells (stay flat #FF00FF / RGB(255,0,255)): (4,1), (5,1), (6,1), (5,2), (6,2), (5,4), (6,4).
+- Row 1 hit (3 frames): lowest figure pixels on image rows y 338-340 (ground line y 341); height 54 art px = 162 px.
+- Row 2 phase (4 frames): lowest figure pixels on image rows y 506-508 (ground line y 509); height 54 art px = 162 px.
+- Row 3 exit (6 frames): lowest figure pixels on image rows y 674-676 (ground line y 677); height free.
+- Row 4 wave_fx (4 frames): no ground rule (the row text says where the figure goes); height free; no centre rule for frame 1, 2, 3, 4.
+- Horizontal centre (the figure's middle column): column 1 x 285-287, column 2 x 477-479, column 3 x 669-671, column 4 x 861-863, column 5 x 1053-1055, column 6 x 1245-1247.
+
+SUBJECT AND IDENTITY: the same boss in every cell: the Broken-Bell Warden, a broad, low, heavy guardian golem of grey stone and bronze, FACING LEFT in a slight three-quarter side view. Instead of a head it carries one huge bronze bell resting on its shoulders, mouth down, with ONE jagged crack running down the bell's front: exactly the same crack shape and place in every cell. Blocky stone torso with bronze plates and rivets, a small round bell emblem on the chest, thick short legs. Its front arm ends in a heavy bronze bell-clapper mallet. Shoulders span about nine tenths of the cell width; standing, the warden is the height given in the NUMBERS block (54 art px of the 56-row cell). Slow, silent, not evil; no face on the bell.
+PALETTE ONLY: outline #2B2233 / RGB(43,34,51); bronze #E0B06A / RGB(224,176,106) #B07A3A / RGB(176,122,58) #7A4E24 / RGB(122,78,36); stone #B4B2B0 / RGB(180,178,176) #7D7B80 / RGB(125,123,128) #4C4A52 / RGB(76,74,82); the crack ONLY in #B0603A / RGB(176,96,58), a colour used nowhere else.
+
+LAYOUT: exactly 17 sprites in exactly 6 equal columns and 4 equal rows of identical cells, each cell 8:7 (width to height), evenly spaced, reading order left to right then next row. Row 1 holds three sprites, row 2 four sprites and row 4 four sprites; the remaining cells of those rows stay empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, exactly on the ground line given in the NUMBERS block, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: one single flat #FF00FF / RGB(255,0,255) magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+Input image 2 role: this is the exact boss to draw; copy it exactly, not its layout.
+Input image 3 role: pixel-language reference only (outline weight, three tones per material, detail per art pixel); do not draw a rat.
+
+ROW 1 HIT, 3 frames, 70/120/160 ms: 1 flinch, the bell jolts up one art px; 2 pushed one art px to the right, knees bent; 3 halfway back. All three poses clearly different.
+ROW 2 PHASE SHIFT, 4 frames, 150/150/200/400 ms: pose and silhouette EXACTLY the same in all four; only the crack's colour changes step by step: #B0603A / RGB(176,96,58), #C8783A / RGB(200,120,58), #FFE38A / RGB(255,227,138), then #FFE38A / RGB(255,227,138) with a one-block #FFFFFF / RGB(255,255,255) core. No glow outside the crack.
+ROW 3 SHUTDOWN, 6 frames, 150/150/150/200/300 ms then hold: the ringing stops and the warden sinks down, never broken: 1 sways; 2 down on one knee; 3 on both knees; 4 the bell bows forward; 5 still, resting; 6 exactly the same as 5.
+ROW 4 BELL SOUND WAVE, 4 frames, 120 ms each, NO warden in this row, only the effect: three thin concentric arcs, each exactly ONE art px thick, bulging toward the LEFT, spaced four art px apart, their common centre near the right edge of the cell at mid-height. The outermost arc's radius grows 12, 18, 24, 30 art px over frames 1 to 4. Colours #FFE38A / RGB(255,227,138), #FFFFFF / RGB(255,255,255), #B07A3A / RGB(176,122,58) only. Arcs are clipped at the cell edge. No red, no dust, no blur.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, glow, blur, motion trails, speech bubbles, extra characters, duplicate items. Rows 1 to 3 show only the warden; row 4 shows only the sound-wave arcs. Output only the finished sprite sheet.
+
+PREVIOUS ATTEMPT FEEDBACK. Preserve the intended scene and correct these placement and colour differences:
+Regeneration feedback:
+Regenerate this sheet on the boss_bellwarden_b template (one art pixel = 3x3 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (2,0) "hit 3": the cell is empty or nearly empty (0 px). Draw the "hit 3" frame here.
+- Cell (3,0) "hit (empty)": this cell must stay empty (flat #FF00FF background), but it contains 23941 px of drawing. Leave it completely empty.
+- Cell (2,1) "phase 3": the cell is empty or nearly empty (0 px). Draw the "phase 3" frame here.
+- Cell (4,1) "phase (empty)": this cell must stay empty (flat #FF00FF background), but it contains 25086 px of drawing. Leave it completely empty.
+- Cell (0,2) "exit 1": the cell is empty or nearly empty (0 px). Draw the "exit 1" frame here.
+- Cell (5,2) "exit 6": the cell is empty or nearly empty (0 px). Draw the "exit 6" frame here.
+- Cell (0,3) "wave_fx 1": the cell is empty or nearly empty (0 px). Draw the "wave_fx 1" frame here.
+- Cell (4,3) "wave_fx (empty)": this cell must stay empty (flat #FF00FF background), but it contains 652 px of drawing. Leave it completely empty.
+- Cell (5,3) "wave_fx (empty)": this cell must stay empty (flat #FF00FF background), but it contains 1997 px of drawing. Leave it completely empty.
+- Only 91.8% of the area outside the figures is clean background; the background must be one flat #FF00FF magenta (or fully transparent) everywhere, with no gradient, texture, floor, shadow or stray marks.
+- Remove the drawing outside the grid: 47461 px of figures were found in the canvas margin. Everything must be inside the grid cells.

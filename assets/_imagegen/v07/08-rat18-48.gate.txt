@@ -1,0 +1,47 @@
+pnpm art:gate assets/_imagegen/v07/08-rat18-48.png --spec enm_rat
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v07/08-rat18-48.png" "--spec" "enm_rat"
+
+assets/_imagegen/v07/08-rat18-48.png
+FAIL enm_rat · canvas · 이미지 1536×1024 (틀 1536×1024) · S 8 (template) · 칸 격자 · 시트 블록 7.1 · 키 비율 1.143 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 22
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              17483     0    1  -1.3  16.0(14)       7.1   0.0%  ok (경고 bbox)
+  (1,0)   idle 2              17531     0    1   0.2  16.0(14)       7.4   0.0%  ok (경고 bbox)
+  (2,0)   idle 3              17428     0    1   0.8  16.0(14)       7.3   0.0%  ok (경고 bbox)
+  (3,0)   idle 4              17459     0    1   0.9  16.0(14)       7.1   0.0%  ok (경고 bbox)
+  (0,1)   move 1              17675     0    1  -1.2  16.0(14)       7.2   0.0%  ok (경고 bbox)
+  (1,1)   move 2              16759     0    1  -0.7  15.6(14)       7.1   0.0%  ok (경고 bbox)
+  (2,1)   move 3              17488     0    1   0.8  16.1(14)       7.0   0.0%  ok (경고 bbox)
+  (3,1)   move 4              17215     0    1   1.4  17.5(14)       7.2   0.0%  ✗ scale (경고 bbox)
+  (0,2)   attack 1            15925     0    1  -1.4  15.0(-)        7.1   0.0%  ok (경고 bbox)
+  (1,2)   attack 2            17319     0    0  -0.2  15.4(-)        7.0   0.0%  ok (경고 bbox)
+  (2,2)   attack 3            16738     1    1   1.1  15.8(-)        7.0   0.0%  ok (경고 bbox)
+  (3,2)   attack 4            17364     0    1   0.9  15.6(-)        7.3   0.0%  ok (경고 bbox)
+  (0,3)   hit 1               16716     0   -1  -1.6  14.9(14)       7.0   0.0%  ok (경고 bbox)
+  (1,3)   hit 2               16138     0   -1   0.4  15.5(14)       7.0   0.0%  ok (경고 bbox)
+  (0,4)   exit 1              17820     0    0  -2.3  17.6(-)        7.1   0.0%  ok (경고 bbox,center)
+  (1,4)   exit 2              16164     0    0   1.4  16.8(-)        6.6   0.0%  ok (경고 block)
+  (2,4)   exit 3              16071     0   -1   0.4  17.4(-)        7.0   0.0%  ok (경고 bbox)
+  (3,4)   exit 4              11106    -1   -1   6.8  13.4(-)        7.0   0.0%  ok (경고 bbox,center)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 0.3 blocks, right 0.4 blocks).
+- Cell (1,0) "idle 2": crosses the template cell boundary (right 2 blocks).
+- Cell (2,0) "idle 3": crosses the template cell boundary (right 2.5 blocks).
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 2.5 blocks).
+- Cell (0,4) "exit 1": horizontal center 2.3 blocks left of the template center mark.
+- Cell (3,4) "exit 4": horizontal center 6.8 blocks right of the template center mark.
+- Figures are 114.3% of the spec height; normalization resamples the sheet by x0.88 (map scale_to_spec).
+- Drawn pixel blocks are 6.6-6.6 image px in 1 cells, not 8 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA04F9), all within the key tolerance; keying removes them.
+- ...and 13 more bbox warnings of the same kind.
+
+Regeneration feedback:
+Regenerate this sheet on the enm_rat template (one art pixel = 8x8 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (3,1) "move 4": the figure is 9% taller than the other frames of this row (17.5 vs 16 blocks). Draw every frame of the row at the same character scale (±6%).
+ ELIFECYCLE  Command failed with exit code 1.
+
+Exit code: 1
+V07_META: {"id":"V07-A3-rat","stem":"08-rat18-48","input":["docs/art/templates/enm_rat.grid.png","docs/art/templates/enm_rat.placeholder.png","assets/_imagegen/v03/08-rat18-48-r3.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-db5b7f63-7508-4edf-aa7c-f31da2abeba3.png","spec":"enm_rat","review":"18칸, 4열5행/피격 뒤 빈2칸, 퇴장4칸과 도토리 확인. 정체성 유지. 이전보다 도트가 굵고 템플릿 inset 배치에 가까우나 색면 내부 작은 경계·실제8px 일관성은 gate block 경고와 함께 평가. 대기1/3 유사·이동 다리차 존재.","selected":false,"attempt":1,"sha256":"74C035A8D270FAA22315B27CD3C6CAEE964CFBBE15E409176028DE9F1D65B265","width":1536,"height":1024,"exit":1,"same":true}

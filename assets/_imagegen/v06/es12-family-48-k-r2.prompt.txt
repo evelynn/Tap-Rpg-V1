@@ -1,0 +1,9 @@
+Precise edit of the supplied four-panel KEY strip. Keep exactly the 1536x1024 opaque canvas and all four panels identical.
+
+Keep the partner's current head, face, hair, blue tunic, pose, size and exact position. Keep the two lanterns, posts and railing exactly where they are; left lantern lit, right lantern unlit.
+
+CORRECT THE FLOOR BAND: The partner's boots stand around image y606. The scene should end only 24 image pixels below that, at image y630. Remove the oversized bridge arches and water below y630 by painting that entire lower area flat opaque magenta, identical to the surrounding background. Between y606 and630 leave a narrow continuous stone bridge-deck band, with only a thin blue water edge along its bottom. All rows below630 remain opaque magenta. Do not move the partner or lanterns.
+
+EMPTY HERO AREA: Inside each panel, the space between 19% and44% of its width is reserved for the player. Remove the bright sun, village buildings and decorative clouds inside that area, leaving only quiet sunset color bands, plain railing and deck. Keep this identical across all four panels. No new figures.
+
+No transparency, alpha, glow, gradient or canvas crop. Output full1536x1024 with a solid opaque hot-pink backdrop.

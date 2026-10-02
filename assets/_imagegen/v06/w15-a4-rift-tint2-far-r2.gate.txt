@@ -1,0 +1,22 @@
+COMMAND: pnpm art:gate assets/_imagegen/v06/w15-a4-rift-tint2-far-r2.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w15-a4-rift-tint2-far-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w15-a4-rift-tint2-far-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 - · 키 비율 - · 배경 100.0% · 안내색 284 · 격자 밖 0 · 경고 3 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 8 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589549     -    -     -  64.0(-)          -   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 316-707 (1536x392 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x392 (3.92:1) is taller than 4.00:1; normalization removes the top 8 rows (y 316-323) and keeps the bottom row y 707.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F90BFB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 284 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+
+EXIT: 1
+V06_REPAIR_META: {"oldStem":"w15-a4-rift-tint2-far","stem":"w15-a4-rift-tint2-far-r2","input":"w15-a4-rift-tint2-far.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-960217d5-f078-467b-973b-ebbf2d546c25.png","sha256":"F81180D7432D0C78EEF660A098D1507AE21F180345311BC97DF4D694C36F6246","width":1536,"height":1024,"exit":1,"review":"청록 암벽·먼 아치·별균열 및 전경 제거 상태·전체채움 유지. 실제 gate FAIL: 안내색42→284로 같은 지적 반복, 격자 밖0·채움100%. 보완 미해결로 추가 자동 생성 종료; 청록 수치상 이전 원본42가 더 양호하며 둘 모두 보존.","round":1}

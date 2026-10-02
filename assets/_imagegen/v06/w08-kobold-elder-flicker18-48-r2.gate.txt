@@ -1,0 +1,50 @@
+pnpm art:gate assets/_imagegen/v06/w08-kobold-elder-flicker18-48-r2.png --spec 'enm_kobold'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w08-kobold-elder-flicker18-48-r2.png" "--spec" "enm_kobold"
+
+assets/_imagegen/v06/w08-kobold-elder-flicker18-48-r2.png
+PASS enm_kobold · canvas · 이미지 1024×1536 (틀 1024×1536) · S 6 (template) · 칸 내용 추정 · 시트 블록 3.1 · 키 비율 1.157 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 44
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              20883     0   -1 -14.4  34.7(30)       3.1   0.0%  ok (경고 bbox,center,block)
+  (1,0)   idle 2              20385     0   -1  -5.7  34.8(30)       3.0   0.0%  ok (경고 bbox,center,block)
+  (2,0)   idle 3              20516     0   -1   3.1  34.8(30)       3.1   0.0%  ok (경고 bbox,center,block)
+  (3,0)   idle 4              22406     0   -1  11.1  34.7(30)       3.2   0.0%  ok (경고 bbox,center,block)
+  (0,1)   move 1              20937     0   -1 -14.4  34.7(30)       3.3   0.0%  ok (경고 bbox,center,block)
+  (1,1)   move 2              20251     0   -1  -5.4  34.7(30)       3.3   0.0%  ok (경고 bbox,center,block)
+  (2,1)   move 3              20649     0   -1   3.1  34.7(30)       3.1   0.0%  ok (경고 bbox,center,block)
+  (3,1)   move 4              20557     0   -1  11.9  34.7(30)       3.3   0.0%  ok (경고 bbox,center,block)
+  (0,2)   attack 1            22672     0   -1 -15.1  35.8(-)        3.1   0.0%  ok (경고 bbox,center,block)
+  (1,2)   attack 2            21802     0   -1  -5.2  39.7(-)        3.1   0.0%  ok (경고 bbox,center,block)
+  (2,2)   attack 3            17392     0   -1   3.4  27.7(-)        2.9   0.0%  ok (경고 bbox,center,block)
+  (3,2)   attack 4            21440     0   -1  12.3  35.2(-)        3.1   0.0%  ok (경고 bbox,center,block)
+  (0,3)   hit 1               21664     0   -2 -14.4  33.8(30)       3.5   0.0%  ok (경고 bbox,ground,center,block)
+  (1,3)   hit 2               20373     0   -2  -5.2  33.8(30)       3.2   0.0%  ok (경고 bbox,ground,center,block)
+  (0,4)   exit 1              16663     1   -4 -12.4  28.0(-)        3.2   0.0%  ok (경고 bbox,ground,center,block)
+  (1,4)   exit 2              18814     1   -4  -0.7  30.0(-)        3.2   0.0%  ok (경고 bbox,ground,block)
+  (2,4)   exit 3              20023    -1   -6   7.9  32.5(-)        3.0   0.0%  ok (경고 bbox,ground,center,block)
+  (3,4)   exit 4              20765     0   -5  18.6  33.0(-)        3.0   0.0%  ok (경고 bbox,ground,center,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 15.7 blocks).
+- Cell (0,0) "idle 1": horizontal center 14.4 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (left 6.3 blocks).
+- Cell (1,0) "idle 2": horizontal center 5.8 blocks left of the template center mark.
+- Cell (2,0) "idle 3": crosses the template cell boundary (right 4.5 blocks).
+- Cell (2,0) "idle 3": horizontal center 3.1 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 14.7 blocks).
+- Cell (3,0) "idle 4": horizontal center 11.1 blocks right of the template center mark.
+- Cell (0,3) "hit 1": lowest pixel 2 blocks above the template ground line.
+- Cell (1,3) "hit 2": lowest pixel 2 blocks above the template ground line.
+- Cell (0,4) "exit 1": lowest pixel 4 blocks above the template ground line.
+- Cell (1,4) "exit 2": lowest pixel 4 blocks above the template ground line.
+- Figures are 115.7% of the spec height; normalization resamples the sheet by x0.86 (map scale_to_spec).
+- Drawn pixel blocks are 2.9-3.5 image px in 18 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F904F8), all within the key tolerance; keying removes them.
+- ...and 14 more bbox warnings of the same kind.
+- ...and 13 more center warnings of the same kind.
+- ...and 2 more ground warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the enm_kobold template. No regeneration needed.
+Exit code: 0

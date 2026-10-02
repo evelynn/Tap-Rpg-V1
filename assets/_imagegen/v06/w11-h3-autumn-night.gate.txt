@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w11-h3-autumn-night.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-h3-autumn-night.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-h3-autumn-night.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.3 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 10 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589820     -    -     -  64.0(-)       12.3   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 315-708 (1536x394 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x394 (3.90:1) is taller than 4.00:1; normalization removes the top 10 rows (y 315-324) and keeps the bottom row y 708.
+- Drawn pixel blocks are 12.3-12.3 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-5ff70bb7-d10a-4ab0-ab9a-54bc49a249ea.png","sha256":"ACCF08F264C4B8121B0919A671A13BB11F85815D50E5572F6B23AA12A7E3039C","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.3 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 10 · 좌우 자름 0/0","stem":"w11-h3-autumn-night","input":"w11-h3-autumn-day","batch":22,"id":"V06-90"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-5ff70bb7-d10a-4ab0-ab9a-54bc49a249ea.png","sha256":"ACCF08F264C4B8121B0919A671A13BB11F85815D50E5572F6B23AA12A7E3039C","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.3 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 10 · 좌우 자름 0/0","stem":"w11-h3-autumn-night","input":"w11-h3-autumn-day.png","batch":22,"id":"V06-90","review":"가을 단풍·마른 잔디 유지, 새벽의 옅은 원경 안개와 해질녘 보라 산·노을, 밤 달·별·작은 원경 불빛 구분. 봉화탑·길·바위 구성 유지. 고정화소/띠 경계/야간 최저명도는 차후 보정 전제 수용."}

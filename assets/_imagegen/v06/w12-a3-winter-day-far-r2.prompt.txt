@@ -1,0 +1,18 @@
+Use case: precision colour repair of the provided EXISTING finished image. The attached PNG itself is the edit target. It is already the correct scene and season; do not reinterpret or regenerate the scene.
+Output exactly 1536 x 1024 pixels, opaque PNG. Preserve the exact strip position and boundaries, all magenta margins, and every existing building, ruin, well, bell tower, tree, blossom, snow, mountain, cloud, path, distant house, surface texture and silhouette pixel in place.
+The ONLY current edit is to remove isolated pure cyan guide residue RGB(0,255,255) / #00FFFF. Replace each offending cyan pixel with the directly neighbouring natural scenery colour of the surface it lies on. Do not blanket-recolour the sky, snow or foliage. Do not add, delete, move, resize, rescale, crop, brighten, darken or redraw any scene object. No new cyan, turquoise saturated dots, guide ticks or grid. Keep all already correct pixels unchanged.
+
+Original generation prompt follows verbatim as historical context; its requested scene/season is ALREADY achieved, so do not perform those edits again:
+--- ORIGINAL PROMPT ---
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Keep the source strip boundaries and its exact location, approximately y316..693. All outer margins are solid opaque RGB(255,0,255).
+
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: the sky, clouds, distant mountains, far hills, far trees and far buildings. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF. No new objects.
+
+Remove ALL foreground abandoned houses, roof fragments, stone walls, the large empty bell tower, the roofed well, roster board, pickaxe, fences, barrels, mine entrance and cart, big left/right foreground trees and rocks, tall grass and flowers, and the walking path/stone ground band. Preserve only sky, clouds, distant layered mountains, far hills, far small trees and existing tiny distant buildings/windows. Continue the far landscape behind the removed village and across the entire bottom band. No holes, no buildings in front, no path or near ground band. Preserve the source season and time of day including existing moon/stars and far windows. No pure cyan RGB(0,255,255). Crisp flat pixel clusters, no blur, gradient or halo.
+--- END ORIGINAL PROMPT ---
+--- ACTUAL ART:GATE REGENERATION FEEDBACK ---
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 7 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+--- END ACTUAL FEEDBACK ---
+
+Current correction scope takes precedence over the historical template wording: preserve the attached finished artwork and its real strip geometry exactly. Only clean the isolated pure-cyan residue into matching neighbouring surface colours. Do not normalize the block size, canvas, strip size or placement. Keep all spring flowers/winter snow and every existing feature unchanged.

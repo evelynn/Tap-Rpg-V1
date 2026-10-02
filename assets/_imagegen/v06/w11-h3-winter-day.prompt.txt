@@ -1,0 +1,11 @@
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it winter: snow #E8EEF2 / RGB(232,238,242) with #FFFFFF / RGB(255,255,255) highlights covers the ground surface, roof tops, wall tops, rocks and fences; tree foliage becomes snow-laden, white on top of the existing leaf clusters; water turns darker and freezes at the edges. No falling snow.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+Input image role: edit target for h3; preserve its existing rocky landscape and silhouettes. Never paint guide cyan RGB(0,255,255).

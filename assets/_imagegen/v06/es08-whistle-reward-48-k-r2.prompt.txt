@@ -1,0 +1,7 @@
+Use case: precise-object-edit.
+Edit the supplied four-panel key sheet, EXACT same1536x1024 canvas and original fully opaque magenta margins. Four identical STILL frames, no animation yet.
+
+Keep Tori's identity, expression, whistle, acorn hat, yellow-blue clothes, mismatched boots and pose. REDUCE Tori to 90 image pixels high, keeping his feet at the current ground level and his center at59% of each panel. The hat and whistle must remain crisp and readable.
+REPLACE THE WHOLE SCENERY BACKGROUND in each panel with a MUCH SIMPLER scene: completely empty flat pale-blue sky over a flat grey cobbled square. No bridge, hills, houses, clouds, bushes, barrels, flowers, stalls, banners or railings. The LEFT HALF is only flat sky and plain grey square, with no objects, shadows or highlights anywhere.
+Draw ONLY ONE small striped circus tent at the RIGHT of each panel, behind Tori, restricted to the right45% of the panel. Its roof peak must be LOWER THAN Tori's hat top, and its two tiny pennant flags no higher than15 image pixels above his hat. Keep the tent in red/cream/blue/yellow flat color panels, without dark outlines. The tent and flags must fit completely within the bottom160 pixels of the scenery strip, leaving at least32 pixels of uninterrupted flat pale blue above them within its bottom192-pixel window.
+Keep the straight ground line where it is and the scene strip position and size unchanged. No player. No written text, icons, panel borders, gradients, glow, blur or transparency. No change to the1536x1024 canvas.

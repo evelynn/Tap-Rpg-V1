@@ -1,0 +1,9 @@
+OPAQUE MAGENTA CANVAS REQUIREMENT: produce a flat sprite-layer PNG at exactly 1536 x 1024, with the entire canvas visibly PAINTED MAGENTA RGB(255,0,255), alpha 255, except the three retained hair shapes. This is a magenta colour sheet, not a cutout presentation. No black pixels outside the actual hair outlines; no brown or dark canvas; no lighting, no vignette, no halo. Preserve exactly the hair colours of the attached input. Treat removal as painting the removed region magenta; never make it transparent.
+
+OUTPUT exactly 1536 x 1024. Preserve every retained hair pixel at its exact image coordinate and source colour. Removed pixels and the complete outside background must be opaque magenta RGB(255,0,255).
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the hair. Remove face, skin, body, clothing, weapon and all other parts.
+
+VISUAL CORRECTION (not gate feedback): the previous result incorrectly showed black space and brown glowing halos. Every one of those background pixels must instead be uniform opaque magenta RGB(255,0,255). No colour grading of the hair.

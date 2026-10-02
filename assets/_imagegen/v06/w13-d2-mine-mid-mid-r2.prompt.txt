@@ -1,0 +1,12 @@
+OPAQUE OUTPUT exactly 1536 x 1024. Keep the source artwork position, scale, silhouettes and colours. Every removed pixel and every pixel outside the retained artwork is painted solid magenta RGB(255,0,255), alpha255. No transparent or dark backdrop, halo or lighting adjustment.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the support frames, gates, carts, posts, pipes, pillars, crystals, arches, vines and all objects standing in front of the back wall.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the bg_mid template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 2 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+- Remove the drawing outside the strip: 2278 px of drawing were found outside the painted strip (x 46-1519, y 262-630). Everything outside the one rectangular strip must be flat #FF00FF.
+
+FINAL REQUIRED RESULT: keep foreground timber supports, hooks, mine cart, pipes and valve, furnace structure, water channels, crystals, crates, barrels, ladder and loose rocks in their original positions. REMOVE ALL continuous cave back wall and distant blue cavern to flat opaque magenta. REMOVE the continuous walking rail and ground band y620..705 to magenta. Keep no solid back wall between the objects. This is a sparse object cutout layer, not a full scene.

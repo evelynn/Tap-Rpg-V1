@@ -1,0 +1,54 @@
+CURRENT TASK: Redraw this existing game enemy as true coarse pixel art on the exact template grid. The previous art lost detail when reduced to game size. Correct this at drawing time: each visible pixel block is exactly 8 x 8 image pixels, including outline, eyes and tiny details. Do not reproduce fine miniature painted pixels from the old sheet. Preserve character identity while reducing detail into clean large clusters. Use the full exact 1536 x 1024 canvas and the specified inset grid; do not spread the sprites out to the canvas edges.
+
+Input image 1 role: authoritative cell geometry and canvas. Input image 2 role: the already coarse golden monster sample, only for pixel language and shading style. Input image 3 role: this species' accepted identity and poses, NOT its pixel density, positions, spacing or canvas. Re-place all eighteen poses inside input image 1's cells. The final row must contain all FOUR visible escaping sprites, including its last cell.
+
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 32x24 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/enm_rat.grid.png, the layout template of sheet enm_rat): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 8 x 8 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template enm_rat (docs/art/templates/enm_rat.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 8. One art pixel = one 8 x 8 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 4 columns x 5 rows of cells, each 32 x 24 art px = 256 x 192 px. Grid top-left x 256, y 32; grid 1024 x 960 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 256 + (column-1) x 256, y = 32 + (row-1) x 192. Nothing outside the grid.
+- Cells used: 18. Empty cells (stay flat #FF00FF): (3,4), (4,4).
+- Row 1 idle (4 frames): lowest figure pixels on image rows y 184-191 (ground line y 192); height 14 art px = 112 px.
+- Row 2 move (4 frames): lowest figure pixels on image rows y 376-383 (ground line y 384); height 14 art px = 112 px.
+- Row 3 attack (4 frames): lowest figure pixels on image rows y 568-575 (ground line y 576); height free.
+- Row 4 hit (2 frames): lowest figure pixels on image rows y 760-767 (ground line y 768); height 14 art px = 112 px.
+- Row 5 exit (4 frames): lowest figure pixels on image rows y 952-959 (ground line y 960); height free.
+- Horizontal centre (the figure's middle column): column 1 x 376-383, column 2 x 632-639, column 3 x 888-895, column 4 x 1144-1151.
+- Keep 2 art px = 16 px empty inside every cell edge.
+
+MONSTER STANDARD (input image 2 = the golden sample: the accepted river rat sheet, laid out on its own template). Redraw this same rat species on input image 1's precise grid:
+- The same 4 x 5 grid and the same row roles and timing: row 1 IDLE, 4 frames, 200 ms each, looping; row 2 MOVE, 4 frames, 120 ms each, looping; row 3 ATTACK, 4 frames, 100/80/100/160 ms; row 4 HIT, 2 frames, 70/150 ms, then its last two cells stay empty; row 5 EXIT, 4 frames, 120 ms each, running away (never dying, never lying hurt).
+- The same pixel language: a one-art-pixel dark plum #2B2233 outline all around, the same three tones per material (light, mid, dark), flat colour clusters, at most 12 colours in the sprite, eyes 1 to 2 art px, no texture strokes, no thick or double outline, no flat unshaded fill, no anti-aliasing.
+- The same amount of detail per ART pixel as the golden sample (its art pixels are 8 x 8 image px; this sheet's are the S of the NUMBERS block).
+- Every looping row really moves: adjacent frames differ by at least one art px in body height, a limb, the head or the tail. Never four copies of the same pose.
+- Faces LEFT in rows 1 to 4; turns to the RIGHT only while fleeing in row 5.
+- Draw this same accepted rat identity, with the poses below, on the precise NUMBERS grid.
+
+SUBJECT AND IDENTITY: the same cute round river field rat as input image 3, on all fours, FACING LEFT, two round ears, a pointed snout, tiny dark eyes, visible cheek pouches, four short paws and a long thin curling tail. Never a rabbit, hamster without tail, wolf, porcupine, or standing humanlike mouse. The body is 14 art pixels high as NUMBERS specifies; the whole animal including its curling tail fits the 32x24 art-pixel cell with margins.
+PALETTE ONLY: outline/eye #2B2233, fur #9A8A78 #6E5A48, belly #C8C2B8, inner ear #C88E68, tooth #F0E6CC, acorn #8E5E38. A maximum three art pixels #B04A42 inside the mouth only. At most 12 colours total.
+
+LAYOUT: exactly 18 sprites in exactly 4 equal columns and 5 equal rows of identical cells, each cell 32:24 (width to height), evenly spaced, reading order left to right then next row. Row 4 holds two sprites in its first two cells; its last two cells stay completely empty.
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, exactly on the ground line given in the NUMBERS block, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+ROW 1 IDLE: 1 neutral; 2 nose reaches one art pixel forward sniffing; 3 neutral again identical to first; 4 two-art-pixel cheek pouch puff. Same ground baseline throughout.
+ROW 2 MOVE: 1 forepaw contact; 2 body settles one art pixel with hind paw lifting; 3 rear paw push with forepaw forward; 4 high passing pose one art pixel up. Distinct actual leg articulation, tail follows a frame later; seamless loop.
+ROW 3 BITE: 1 crouch anticipating; 2 open mouth a little; 3 short forward bite lunge; 4 recover. No blood, injury, tongue, magic or slash trail.
+ROW 4 HIT: 1 quick compact flinch with eyes squeezed; 2 weight recoils one art pixel back. Then TWO EMPTY CELLS. No white flash painted into fur.
+ROW 5 FLEE: 1 look back and begin turning RIGHT; 2 turn right and curl long tail; 3 round-bodied playful tumble holding a tiny acorn between forepaws; 4 smaller curled rat clutching acorn as it escapes, about two-thirds size. The final row is cute ESCAPE, never dead, wounded or lying as a corpse. No bushes or landscape. Acorn only in last two cells, brown four-by-four art pixels.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+Final check: only eighteen sprites; four columns; five rows; exactly two empty cells at the right of row four. Uniform 8px square blocks aligned to the template cell origins, single-block outline, no smaller edge fragments. No cyan ticks and no graphics in the outer canvas margin.

@@ -1,0 +1,30 @@
+pnpm art:gate assets/_imagegen/v06/c11-clasp-ref-e-48-r4.png --spec chr_actions_b --no-canvas --rows "cheer,collapse"
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c11-clasp-ref-e-48-r4.png" "--spec" "chr_actions_b" "--no-canvas" "--rows" "cheer,collapse"
+
+assets/_imagegen/v06/c11-clasp-ref-e-48-r4.png
+FAIL chr_actions_b · no-canvas · 이미지 2172×724 (틀 1536×1024) · S 7.54 (cell_ratio) · 칸 격자 · 시트 블록 8.8 · 키 비율 0.976 · 배경 100.0% · 안내색 1 · 격자 밖 0 · 경고 4
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   cheer 1             36300     0    -  -0.5  33.0(-)        9.1   0.0%  ok (경고 block)
+  (1,0)   cheer 2             37382     1    -  -0.9  38.9(40)      11.1   0.0%  ok (경고 block)
+  (2,0)   cheer 3             38604     0    -  -1.6  38.5(40)      10.7   0.0%  ok (경고 block)
+  (3,0)   cheer 4             37747     0    -   0.0  35.1(40)       8.8   0.0%  ok (경고 block)
+  (0,1)   collapse 1          45460     0    -   0.5  39.6(40)       8.8   0.0%  ok (경고 block)
+  (1,1)   collapse 2          37767     0    -   0.9  33.7(-)        8.6   0.0%  ok
+  (2,1)   collapse 3          41424     0    -   1.6  30.8(-)        8.4   0.0%  ok
+  (3,1)   collapse 4          33739     0    -     -  17.4(-)        8.1   0.0%  ok (경고 bbox)
+  (4,1)   collapse 5          33792     0    -     -  17.2(-)        8.1   0.0%  ok (경고 bbox)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (3,1) "collapse 4": crosses the equal-grid cell boundary (right 0.3 blocks).
+- Cell (4,1) "collapse 5": crosses the equal-grid cell boundary (right 1.1 blocks).
+- Drawn pixel blocks are 8.8-11.1 image px in 5 cells, not 7.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803F7), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet with the same layout (cells are numbered (column,row) from 0 at the top-left; sizes are in blocks = one game pixel). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 1 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+(Measured without the template canvas: frames are compared with the other frames of the same row, not against the template marks.)
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1

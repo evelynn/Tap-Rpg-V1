@@ -1,0 +1,6 @@
+OPAQUE OUTPUT exactly 1536 x 1024. Keep the source artwork position, scale, silhouettes and colours. Every removed pixel and every pixel outside the retained artwork is painted solid magenta RGB(255,0,255), alpha255. No transparent or dark backdrop, halo or lighting adjustment.
+
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF / RGB(255,0,255) outside the strip. Keep ONLY the far layer: the back cave wall, the ceiling, and the deep cave silhouettes. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF / RGB(255,0,255). No new objects.
+
+
+Preserve the existing narrow star-speckled crack in the cave wall at exactly its source position and shape. Fill the entire original art rectangle x0..1535,y316..707 including behind the removed floor. No new openings, stars, structures or floating objects.

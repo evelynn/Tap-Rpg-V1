@@ -1,0 +1,22 @@
+pnpm art:gate assets/_imagegen/v06/w12-h3-autumn-day-far-r3.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h3-autumn-day-far-r3.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h3-autumn-day-far-r3.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 13.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 13 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589562     -    -     -  64.0(-)       13.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 312-708 (1536x397 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x397 (3.87:1) is taller than 4.00:1; normalization removes the top 13 rows (y 312-324) and keeps the bottom row y 708.
+- Drawn pixel blocks are 13.1-13.1 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+V06_REPAIR_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-4ac4c89d-9cb2-47db-b79f-4d4af2d03490.png","sha256":"7F52C2CF35FD1EC1527DF5653BA0CF01E54A4563BB3408C0C9D7FB9A6CFAAD21","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 13.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 13 · 좌우 자름 0/0","oldShaNow":"FD4E857673A67117A1F9F2440D6F0C39833092B3C7A2A28DDC5DCA2115CDE792","oldStem":"w12-h3-autumn-day-far","stem":"w12-h3-autumn-day-far-r3","input":"w12-h3-autumn-day-far.png","oldSha":"FD4E857673A67117A1F9F2440D6F0C39833092B3C7A2A28DDC5DCA2115CDE792","round":2,"selectionReason":"Use the original failed PNG: r2 changed the left rock spires and widened the lake, so r2 is excluded. The original autumn geometry and foliage are locked.","top":314,"bottom":708,"season":"autumn","originalUnchanged":true,"review":"최종 보완 실제 PASS: 안내색 0·격자 밖 0·전체 띠 채움 정상. 원래 FAIL PNG를 입력으로 사용하여 왼쪽 먼 바위 첨탑과 호수 형태·능선·가을 숲의 구도를 유지함. 하늘·호수·파란 원경을 명시한 낮은 채도 회청색으로 보완하여 청록 제거. 작은 질감 차이와 띠 상단 2행 정도의 위치 차이는 차후 정합 보정. 1536×1024 동일·원본 불변·생성기 원본 복사 SHA256 일치. PASS 수용, 추가 생성 없음."}

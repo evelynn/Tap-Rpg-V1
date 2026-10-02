@@ -1,0 +1,18 @@
+pnpm art:gate assets/_imagegen/v06/w13-h5-mine-gate-dawn-far.png --spec 'bg_far'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w13-h5-mine-gate-dawn-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w13-h5-mine-gate-dawn-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 15.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y322 1536×384 비율 4(규격 4) · 위 자름 4 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              588911     -    -     -  64.0(-)       15.8   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x388 (3.96:1) is taller than 4.00:1; normalization removes the top 4 rows (y 318-321) and keeps the bottom row y 705.
+- Drawn pixel blocks are 15.9-15.9 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F703FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+Exit code: 0

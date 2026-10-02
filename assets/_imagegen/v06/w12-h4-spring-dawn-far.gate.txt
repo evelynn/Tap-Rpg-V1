@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-h4-spring-dawn-far.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h4-spring-dawn-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h4-spring-dawn-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 13.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 13 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589546     -    -     -  64.0(-)       13.8   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 312-708 (1536x397 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x397 (3.87:1) is taller than 4.00:1; normalization removes the top 13 rows (y 312-324) and keeps the bottom row y 708.
+- Drawn pixel blocks are 13.8-13.8 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA02FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-01549399-3559-4323-a72f-e29557448766.png","sha256":"EA2CD91E8FCC588CFAC1653FD8F40544F49C4CA48E419FFF50BC0C3834CD58DE","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 13.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 13 · 좌우 자름 0/0","stem":"w12-h4-spring-dawn-far","input":"w11-h4-spring-dawn","batch":25,"id":"V06-91"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-01549399-3559-4323-a72f-e29557448766.png","sha256":"EA2CD91E8FCC588CFAC1653FD8F40544F49C4CA48E419FFF50BC0C3834CD58DE","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 13.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 13 · 좌우 자름 0/0","stem":"w12-h4-spring-dawn-far","input":"w11-h4-spring-dawn.png","batch":25,"id":"V06-91","review":"앞 폐광시설·수레·레일·길 제거, 먼 광산 및 신록·봄꽃 산림이 띠 전체 채움. 새벽/노을/밤 달별·원경창 유지. 확장부 안개가 몇 줄 증가한 부분·수목/꽃 밀도·고정화소 정합·야간 최저명도는 차후 보정 전제 수용."}

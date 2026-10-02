@@ -1,0 +1,19 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-summer-dawn-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-summer-dawn-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a3-summer-dawn-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.95 (band) · 칸 격자 · 시트 블록 5.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x1 y313 1524×381 비율 4(규격 4) · 위 자름 0 · 좌우 자름 1/11 이음 93.7
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              580644     -    -     -  64.0(-)        5.5   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 313-693 (1536x381 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x381 (4.03:1) is wider than 4.00:1; normalization keeps x 1-1524 (removes 1 left and 11 right columns), the window with the smallest left-right seam difference: seam score 93.7 (mean colour distance of the 4 edge columns, 0 = identical).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F802FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w12-a3-summer-dawn-far","input":"w11-a3-summer-dawn.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-ab9a082a-ea9a-477c-8882-d51c06853230.png","sha256":"188A1FC4D373948AEA59EB8A9108918EEC2CEC5C829259296AA207205B4FA203","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-91","batch":31,"review":"새벽 산·숲으로 전경 폐촌/길 제거 후 전체채움. 추가된 먼 마을과 점등은 원본 가시 화소 복원 및 채움 마스크/창색 보정."}

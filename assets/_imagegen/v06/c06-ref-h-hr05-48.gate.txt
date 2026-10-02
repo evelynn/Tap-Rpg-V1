@@ -1,0 +1,22 @@
+pnpm art:gate assets/_imagegen/v06/c06-ref-h-hr05-48.png --spec chr_head_poses_ref
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c06-ref-h-hr05-48.png" "--spec" "chr_head_poses_ref"
+
+assets/_imagegen/v06/c06-ref-h-hr05-48.png
+FAIL chr_head_poses_ref · canvas · 이미지 1536×1024 (틀 1536×1024) · S 10 (template) · 칸 격자 · 시트 블록 8.4 · 키 비율 0.955 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   basic               66318     0    0  -0.4  38.2(40)       9.8   0.0%  ok
+  (1,0)   bowed               58090     0    0  -1.7  35.9(-)        8.4   0.0%  ok (경고 block)
+  (2,0)   lying               58443     3    3     -  22.2(-)        8.4   0.0%  ✗ ground (경고 ground,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (2,0) "lying": lowest pixel 3 blocks below the template ground line.
+- Drawn pixel blocks are 8.4-8.4 image px in 2 cells, not 10 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F904FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the chr_head_poses_ref template (one art pixel = 10x10 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (2,0) "lying": the lowest pixel is 3 blocks below the ground line of the other frames in this row; move the figure up 3 blocks so every frame of the row stands on the same ground line.
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1

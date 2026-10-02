@@ -1,0 +1,7 @@
+OUTPUT one opaque PNG exactly 1024 x 1536. Keep every pose, position, silhouette and drawing scale identical to the source. Unchanged colours come directly from the source. Outside the sprites, paint solid magenta RGB(255,0,255), alpha 255; no transparent, black or brown backdrop and no halo.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Recolour ONLY the wing membranes: #9A8A78 / RGB(154,138,120) becomes #E8E6E0 / RGB(232,230,224), #6E5A48 / RGB(110,90,72) becomes #B4B2B0 / RGB(180,178,176), #4A3F55 / RGB(74,63,85) becomes #7D7B80 / RGB(125,123,128), so the wings look like thin sheets of metal.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.

@@ -1,0 +1,10 @@
+Use case: precise-object-edit.
+Edit this existing still key sheet, preserving its exact 1536 x 1024 canvas, the four panel widths and current strip placement. Keep the fully opaque magenta above and below the strip. This remains four identical copies of one still frame.
+
+In EACH 384-pixel-wide panel, adjust only the following composition details:
+1. The empty HERO SLOT is local x42 through x138. Remove all objects, plants, stones, cloud shapes, mountain silhouettes and mortar-line details from this rectangle between local floor level and the sky. Replace with quiet uninterrupted flat sky, plain low stone-wall surface and plain road bands using the existing colors. No props or highlights in this space.
+2. Place the small crate between local x158 and x192, on the same ground line. Its top is 30 image pixels above the ground line. Put the unfolded cream torn map on top, about42 by30 image pixels, with the same brown route lines, tiny bell pictogram and jagged edge, no writing. Keep every map pixel to the right of local x150.
+3. Place Sena centered at local x253, same height and same ground contact, same left-facing surprised expression, brown ponytail, brown work jacket, grey-beige trousers, brown boots, red miner muffler and bronze pendant. Do not change her identity or colors.
+4. Keep the area y448 through y471 of the whole canvas a single flat pale sky color #B9C8FF, no clouds or scenery there. All heads and important props remain below y472. Keep the round-roof house and clothesline on the right below that band.
+
+Everything else stays unchanged. Four still panels identical. No player character. No new objects. No transparency, smooth lighting, blur, labels, lines between panels or text. Exact1536x1024 output.

@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-a2-summer-dusk-far.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-a2-summer-dusk-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a2-summer-dusk-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y348 1536×384 비율 4(규격 4) · 위 자름 59 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589824     -    -     -  64.0(-)       12.0   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 289-731 (1536x443 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x443 (3.47:1) is taller than 4.00:1; normalization removes the top 59 rows (y 289-347) and keeps the bottom row y 731.
+- Drawn pixel blocks are 12-12 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F703FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-6a0b1bbf-c450-40cd-89f6-b2993474f954.png","sha256":"C41806C871AA861D236AC1A2EF118BA364539FF60DEE975F436C3627DC67E191","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y348 1536×384 비율 4(규격 4) · 위 자름 59 · 좌우 자름 0/0","stem":"w12-a2-summer-dusk-far","input":"w11-a2-summer-dusk","batch":29,"id":"V06-91"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-6a0b1bbf-c450-40cd-89f6-b2993474f954.png","sha256":"C41806C871AA861D236AC1A2EF118BA364539FF60DEE975F436C3627DC67E191","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 12.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y348 1536×384 비율 4(규격 4) · 위 자름 59 · 좌우 자름 0/0","stem":"w12-a2-summer-dusk-far","input":"w11-a2-summer-dusk.png","batch":29,"id":"V06-91","review":"큰소나무·이정표·줄다리·가까운절벽/광산시설·길 제거. 먼산·숲·안개가 띠끝까지 채워지고 새벽/노을/밤달별·기존먼불빛 유지. 확장부 안개여러줄과 먼굴뚝·창 추가화소, 원경정적화소 및 띠비율·야간최저명도는 차후 마스크/정규화 보정 전제 수용."}

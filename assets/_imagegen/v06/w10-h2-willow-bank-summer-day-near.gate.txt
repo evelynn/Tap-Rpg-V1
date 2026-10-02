@@ -1,0 +1,20 @@
+pnpm art:gate assets/_imagegen/v06/w10-h2-willow-bank-summer-day-near.png --spec bg_near
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w10-h2-willow-bank-summer-day-near.png" "--spec" "bg_near"
+
+assets/_imagegen/v06/w10-h2-willow-bank-summer-day-near.png
+FAIL bg_near · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 2.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y284 1536×384 비율 4(규격 4) · 위 자름 0 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   near 1              60458     -    -     -  6.7(-)         2.6   0.0%  ✗ ground_band (경고 block) 채움 10%/82%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 629-667 (1536x39 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Drawn pixel blocks are 2.6-2.6 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F804FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_near template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "near 1": only 82% of the rows below the ground line (row 56) are painted; the walkable ground must fill every column from the ground line to the bottom edge.
+ ELIFECYCLE  Command failed with exit code 1.

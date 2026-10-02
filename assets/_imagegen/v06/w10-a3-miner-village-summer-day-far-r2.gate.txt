@@ -1,0 +1,18 @@
+pnpm art:gate assets/_imagegen/v06/w10-a3-miner-village-summer-day-far-r2.png --spec bg_far
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w10-a3-miner-village-summer-day-far-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w10-a3-miner-village-summer-day-far-r2.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.91 (band) · 칸 격자 · 시트 블록 4.7 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x24 y316 1512×378 비율 4(규격 4) · 위 자름 0 · 좌우 자름 24/0 이음 104.7
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              571536     -    -     -  64.0(-)        4.7   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x378 (4.06:1) is wider than 4.00:1; normalization keeps x 24-1535 (removes 24 left and 0 right columns), the window with the smallest left-right seam difference: seam score 104.7 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 4.7-4.7 image px in 1 cells, not 5.9 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.

@@ -1,0 +1,21 @@
+pnpm art:gate assets/_imagegen/v06/w12-a2-autumn-dusk-far-r2.png --spec 'bg_far'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-a2-autumn-dusk-far-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a2-autumn-dusk-far-r2.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 7.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y349 1536×384 비율 4(규격 4) · 위 자름 60 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589690     -    -     -  64.0(-)        7.8   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 289-732 (1536x444 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x444 (3.46:1) is taller than 4.00:1; normalization removes the top 60 rows (y 289-348) and keeps the bottom row y 732.
+- Drawn pixel blocks are 7.8-7.8 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F902FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+Exit code: 0
+
+V06_REPAIR_META: {"oldStem":"w12-a2-autumn-dusk-far","stem":"w12-a2-autumn-dusk-far-r2","input":"w12-a2-autumn-dusk-far.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-08814f35-d254-4b7f-85af-a7316d49c099.png","sha256":"51FC3DF29CAFA5EB427199F5DA75B772AC011F672756FF2BDEE68F7B89481C61","width":1536,"height":1024,"exit":0,"review":"독립 육안 검토: 산·숲·안개·먼 집/창·노을 하늘 구도 유지. 키색과 충돌하던 분홍보라 안개/산림을 회청·따뜻한 회색으로 정리해 띠 전체가 불투명 경관으로 이어진다. 가을/겨울 구분 및 주황 노을 유지. 미세 경계 화소의 완전 일치는 후속 합성 검수 필요; 기존 추가 원경/띠 비율 인계 사항은 유지.","round":1}

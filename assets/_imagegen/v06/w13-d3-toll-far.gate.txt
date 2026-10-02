@@ -1,0 +1,18 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d3-toll-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w13-d3-toll-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w13-d3-toll-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 - · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2 · 띠 x0 y322 1536×384 비율 4(규격 4) · 위 자름 4 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589824     -    -     -  64.0(-)          -   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x388 (3.96:1) is taller than 4.00:1; normalization removes the top 4 rows (y 318-321) and keeps the bottom row y 705.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB02FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w13-d3-toll-far","input":"w13-d3-toll.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-cbaee4e9-9943-4feb-9e4e-602937ddbde1.png","sha256":"E68784D82D9136130B9E368E5615670F8F01D125EAF9446B4EC5AA26DE3D30B5","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-96","batch":33,"review":"천장 먼지 유지, 종/기둥/전경/바닥 제거 후 동굴 채움. 추가된 먼탑/다리 하부 실루엣은 마스크 제한 및 원경 정합 보정."}

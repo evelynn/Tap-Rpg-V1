@@ -1,0 +1,21 @@
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it early spring: grass and leaves turn fresh light green #8FC06A / RGB(143,192,106), tree crowns look lighter and younger, small white and pale pink blossoms appear on the trees, and small wildflowers dot the meadow and verges.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 56 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+
+CURRENT COLOUR-REPAIR TASK — INPUT IMAGE 1 IS w11-h2-spring-day-r2.png
+The earlier prompt is historical scene context only. Its season conversion and object-removal work has already been done; do not perform it again. First repair reduced guide pixels from 224 to 56 and kept the main scene composition, so the improved r2 is the edit input.
+The first repair targeted literal cyan too narrowly. Newly confirmed checker rule: opaque non-magenta pixels are forbidden if R*R + (255-G)*(255-G) + (255-B)*(255-B) <= 6400 (distance 80 from RGB(0,255,255)). The edit scope includes this entire near-cyan colour family, even if it occurs in natural sky, water, or small highlights. It is not a drawn cyan line to erase.
+Perform an exact palette-only touch-up: replace every pixel in that cyan/near-cyan range with a low-saturation natural blue already present beside it, safely more than RGB distance 100 away from cyan. For flagged sky or water pixels use RGB(75,160,206) #4BA0CE, or the immediately adjacent muted blue farther than distance 100 from cyan. No vivid turquoise, electric aqua, cyan-tinted white, or high-green/high-blue low-red pixels. Maintain the shape and position of every original pixel cluster. Do not alter existing whites, pinks, greens, yellows, browns, normal blues or any non-flagged colour.
+LOCKED CONTENT: Preserve both large willow trees and every existing white/pink blossom, the watermill, water wheel, wooden sluice, pond, fences, rocks, walking path, distant village/tower, hills, sky and clouds.
+LOCKED LAYOUT: exactly 1536 x 1024 opaque PNG; original strip x0..1535, y315..668 unchanged. Preserve all magenta outer margins. No rescaling, cropping, reframing, moving, adding, removing, relighting, recolouring the overall palette, changing density or redrawing fine detail. Only the unsafe near-cyan pixels change; everything else remains visually identical to input.
+Output one complete opaque PNG. Before finishing, ensure there are zero cyan-family colours in the forbidden range. This repair must not simplify the meadow, tree foliage, spring blossom clusters or water details.

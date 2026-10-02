@@ -1,0 +1,41 @@
+pnpm art:gate assets/_imagegen/v06/c11-muffler-ref-a-48.png --spec chr_elder --rows "walk:6,walk:6"
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c11-muffler-ref-a-48.png" "--spec" "chr_elder" "--rows" "walk:6,walk:6"
+
+assets/_imagegen/v06/c11-muffler-ref-a-48.png
+PASS chr_elder · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5 (template) · 칸 격자 · 시트 블록 3.7 · 키 비율 1.175 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 29
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   walk 1              21995     0   -7  -2.2  46.4(40)         -   0.0%  ok (경고 bbox,ground,center)
+  (1,0)   walk 2              21517     0   -7  -1.0  46.6(40)       3.6   0.0%  ok (경고 bbox,ground,block)
+  (2,0)   walk 3              20698     0   -7  -0.4  46.8(40)       3.6   0.0%  ok (경고 bbox,ground,block)
+  (3,0)   walk 4              19334     0   -7  -0.2  46.6(40)       3.8   0.0%  ok (경고 bbox,ground,block)
+  (4,0)   walk 5              21412     0   -7   0.4  46.6(40)         -   0.0%  ok (경고 bbox,ground)
+  (5,0)   walk 6              21390     0   -7   1.4  46.6(40)         -   0.0%  ok (경고 bbox,ground)
+  (0,1)   walk 1              22013     0   11  -2.4  47.4(40)         -   0.0%  ok (경고 bbox,ground,center)
+  (1,1)   walk 2              22071     0   11  -1.2  47.2(40)       3.8   0.0%  ok (경고 bbox,ground,block)
+  (2,1)   walk 3              20714     0   11  -0.4  47.4(40)         -   0.0%  ok (경고 bbox,ground)
+  (3,1)   walk 4              19124     0   11  -0.4  47.4(40)       3.7   0.0%  ok (경고 bbox,ground,block)
+  (4,1)   walk 5              21901     0   11   0.6  47.4(40)      32.3   0.0%  ok (경고 bbox,ground,block)
+  (5,1)   walk 6              21695     0   11   1.4  47.2(40)         -   0.0%  ok (경고 bbox,ground)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "walk 1": crosses the template cell boundary (top 9.8 blocks).
+- Cell (0,0) "walk 1": lowest pixel 7 blocks above the template ground line.
+- Cell (0,0) "walk 1": horizontal center 2.2 blocks left of the template center mark.
+- Cell (1,0) "walk 2": crosses the template cell boundary (top 9.8 blocks).
+- Cell (1,0) "walk 2": lowest pixel 7 blocks above the template ground line.
+- Cell (2,0) "walk 3": crosses the template cell boundary (top 9.8 blocks).
+- Cell (2,0) "walk 3": lowest pixel 7 blocks above the template ground line.
+- Cell (3,0) "walk 4": crosses the template cell boundary (top 9.8 blocks).
+- Cell (3,0) "walk 4": lowest pixel 7 blocks above the template ground line.
+- Cell (0,1) "walk 1": horizontal center 2.4 blocks left of the template center mark.
+- Figures are 117.5% of the spec height; normalization resamples the sheet by x0.85 (map scale_to_spec).
+- Drawn pixel blocks are 3.6-32.3 image px in 6 cells, not 5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903F9), all within the key tolerance; keying removes them.
+- ...and 8 more bbox warnings of the same kind.
+- ...and 8 more ground warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the chr_elder template. No regeneration needed.
+Exit code: 0

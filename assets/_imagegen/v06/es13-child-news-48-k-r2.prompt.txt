@@ -1,0 +1,5 @@
+Precise edit of this four-panel still key scene at exactly1536x1024, opaque. Keep the partner, baby bundle, face, hair, clothes, boots, house, window, door, red shoes and all their positions and colors unchanged.
+
+In EACH panel, simplify only the LEFT 42% (local x0..160): remove the distant castle/village, trees, bright water ripples, tall grass and foreground bushes. Replace them with plain muted sunset bands, one simple low muted-green distant-bank silhouette and flat slate-blue water. Keep a quiet stone path below the feet line. There must be no bright speckle, plant, rock or prop in the left hero slot local x20..52 art pixels. Retain the original house and all people to the right. Do it identically in all FOUR panels. Keep the narrow bottom floor band and original strip position.
+
+All outside pixels remain fully opaque vivid magenta RGB(255,0,255), no alpha transparency, gradients or glow. No new people or objects.

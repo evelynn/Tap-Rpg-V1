@@ -1,0 +1,18 @@
+pnpm art:gate assets/_imagegen/v06/w10-t00-town-summer-day-mid.png --spec bg_mid
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w10-t00-town-summer-day-mid.png" "--spec" "bg_mid"
+
+assets/_imagegen/v06/w10-t00-town-summer-day-mid.png
+PASS bg_mid · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 10.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y289 1536×384 비율 4(규격 4) · 위 자름 0 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   mid 1              313888     -    -     -  55.0(-)       10.9   0.0%  ok (경고 block) 채움 53%/99%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 478-672 (1536x195 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Drawn pixel blocks are 10.9-10.9 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB03FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_mid template. No regeneration needed.

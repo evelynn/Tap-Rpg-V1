@@ -1,0 +1,22 @@
+pnpm art:gate assets/_imagegen/v06/w11-h2-spring-day-r4.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-h2-spring-day-r4.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-h2-spring-day-r4.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.55 (band) · 칸 격자 · 시트 블록 12.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x77 y315 1420×355 비율 4(규격 4) · 위 자름 0 · 좌우 자름 77/39 이음 130.8
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              504077     -    -     -  64.0(-)       12.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 315-669 (1536x355 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x355 (4.33:1) is wider than 4.00:1; normalization keeps x 77-1496 (removes 77 left and 39 right columns), the window with the smallest left-right seam difference: seam score 130.8 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 12.1-12.1 image px in 1 cells, not 5.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+V06_REPAIR_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-730bd45d-6d9b-4f2d-8ca7-fb494cbf7426.png","sha256":"1E80CB6CC20BB1BB1A8FF10E5A69A5861626F60B32DD7685C15657CC369187AF","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.55 (band) · 칸 격자 · 시트 블록 12.1 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x77 y315 1420×355 비율 4(규격 4) · 위 자름 0 · 좌우 자름 77/39 이음 130.8","oldShaNow":"D2ECA85B074C2811B8BCF6FC466B6FA9DF614D0B4D95C52FE932C57A675A8242","oldStem":"w11-h2-spring-day","stem":"w11-h2-spring-day-r4","input":"w11-h2-spring-day-r3.png","oldSha":"D2ECA85B074C2811B8BCF6FC466B6FA9DF614D0B4D95C52FE932C57A675A8242","round":3,"selectionReason":"Use r3, the best prior repair: guide pixels decreased from original 224 to r2 56 and r3 28. Use the successful H3 visual low-saturation sky/water repair wording for this final third repair.","originalUnchanged":true,"review":"보완 3차 최종 실제 PASS: 안내색 0·격자 밖 0·전체 띠 채움 정상(원본224→r2 56→r3 28→r4 0). 최선 r3 입력에서 하늘·연못/수로를 무광 회청색으로 보완하고 밝은 물반사를 백색/회백으로 정리. 양쪽 봄꽃 버드나무·물레방앗간/수차·수문·돌담·울타리·길·마을/탑 주요 구도 유지. 비청록 영역의 작은 질감/색 편차는 차후 정적 화소 정합 보정. 1536×1024 동일·원본 불변·생성기 원본 복사 SHA256 일치. 최종 선정, 추가 호출 없음."}

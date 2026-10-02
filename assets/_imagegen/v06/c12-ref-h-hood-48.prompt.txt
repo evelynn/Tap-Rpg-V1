@@ -1,0 +1,9 @@
+CANVAS LOCK: Output exactly 1536 x 1024 opaque PNG, identical to the source. Keep the three figures at their exact source coordinates and source pixel-block scale. The background is opaque paint RGB(255,0,255), alpha255, not transparency. Keep the source teal trousers, cream shirt, boots, skin and face unchanged. Only the specified headwear changes.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, the flat #FF00FF / RGB(255,0,255) background and the exact position, size and pose of every figure. Change ONLY the part named below, in the cells named below. Every other pixel (face, hair, skin, arms, hands, clothing, trousers, boots, held items) stays exactly as in the input, with its exact colour, except where the new part now covers it; never recolour, relight, brighten, darken or saturate anything that is kept. The new part follows each cell's existing pose: the same head angle, body lean and hand positions. Never move an arm, a hand or the head to fit the part. Empty cells stay empty. Same pixel-block size and outline style as the input. No gradient, no halo, no glow, no extra objects.
+
+SWAP (headwear, all three cells): put the helmet described below on the head, following each head angle. The face stays as it is.
+
+A dark brown cloth hood #5E3C24 / RGB(94,60,36) with #4A3F55 / RGB(74,63,85) inner lining, a pointed triangular silhouette with the peak falling back behind the head, the hem reaching the shoulders; the face opening shows the eyes, eyebrows and fringe.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.

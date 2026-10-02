@@ -1,0 +1,13 @@
+OPAQUE OUTPUT exactly 1536 x 1024. Keep the source artwork position, scale, silhouettes and colours. Every pixel outside the source artwork strip is painted solid magenta RGB(255,0,255), alpha 255. No transparent or dark backdrop, no halo, no lighting adjustment.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the walking path from the ground line down to the strip bottom, with its edge grass and stones.
+
+VISUAL POSITION REPAIR (not gate feedback): the original walking-path edge grass and stones are at image y635..672, across x0..1535. Keep that source strip at precisely those coordinates. Never place it at the bottom of the 1024px canvas. Never scale it or add new ground. Every other pixel becomes opaque magenta RGB(255,0,255). This is a positioned layer that will overlap the unmodified source at the exact original coordinates.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the bg_near template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "near 1": only 75.4% of the rows below the ground line (row 56) are painted; the walkable ground must fill every column from the ground line to the bottom edge.
+
+FINAL REQUIRED RESULT: keep ONLY the original thin path and stone/grass band y635..672 at its original location across the image. Remove ALL buildings, trees, bridge, water, sky, mountains and props to magenta. Every row above y635 and below y672 is bright opaque magenta except original edge-grass protrusions. Do not place terrain at the canvas bottom and do not keep the complete town.

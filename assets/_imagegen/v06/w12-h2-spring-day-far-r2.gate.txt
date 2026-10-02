@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-h2-spring-day-far-r2.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h2-spring-day-far-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h2-spring-day-far-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.53 (band) · 칸 격자 · 시트 블록 11.0 · 키 비율 - · 배경 100.0% · 안내색 1660 · 격자 밖 0 · 경고 4 · 띠 x0 y314 1416×354 비율 4(규격 4) · 위 자름 0 · 좌우 자름 0/120 이음 109.9
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              499734     -    -     -  64.0(-)       11.0   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 314-667 (1536x354 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x354 (4.34:1) is wider than 4.00:1; normalization keeps x 0-1415 (removes 0 left and 120 right columns), the window with the smallest left-right seam difference: seam score 109.9 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 11-11 image px in 1 cells, not 5.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 1660 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+
+EXIT=1
+V06_REPAIR_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-c77f90fe-c58f-4d88-acef-a820c6df836e.png","sha256":"29FEBCC42126FA39496AAF2A3EC24F889AF4C4D4BB9E1DE51027FE47F51B3C49","same":true,"width":1536,"height":1024,"exit":1,"gate":"FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.53 (band) · 칸 격자 · 시트 블록 11.0 · 키 비율 - · 배경 100.0% · 안내색 1660 · 격자 밖 0 · 경고 4 · 띠 x0 y314 1416×354 비율 4(규격 4) · 위 자름 0 · 좌우 자름 0/120 이음 109.9","oldShaNow":"8C4F9FB277393BD0E0C1D55A3C43B59C93BCADF6C17C2C4A693CC71807600092","oldStem":"w12-h2-spring-day-far","stem":"w12-h2-spring-day-far-r2","input":"w12-h2-spring-day-far.png","oldSha":"8C4F9FB277393BD0E0C1D55A3C43B59C93BCADF6C17C2C4A693CC71807600092","round":1,"originalUnchanged":true,"review":"안내색 1519→1660, 격자 밖 0, 실제 FAIL 반복으로 추가 재생성 중단. 먼 마을·탑·능선·구름의 주요 배치와 원경 전체 채움 유지. 꽃 핀 수목이 녹색 수목으로 단순화되고 초지 질감 변경되어 정적 화소/봄 표면 보정 잔존. 1536×1024 동일, 원본 불변·생성기 원본 복사 SHA256 일치. 차후 색 보정 필요."}

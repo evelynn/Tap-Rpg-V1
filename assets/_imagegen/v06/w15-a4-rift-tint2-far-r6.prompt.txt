@@ -1,0 +1,12 @@
+Use case: precise image edit / color correction.
+Edit the supplied pixel-art image. Make exactly ONE selective color adjustment: desaturate the bright cyan/aqua pixels in the painted cave strip by about 50%, shifting them toward dusty jade-gray. Keep their brightness close to the source. Safe bright colors include #97B6B7 and #B9CCCA; use neutral ivory #E8EAE5 for the tiny stars and the thin brightest crack rim. Keep all dark teal colors and all magenta margins unchanged.
+
+Treat this as a selective color adjustment of the EXISTING PICTURE. Preserve every silhouette and detail of the provided image: the single uninterrupted narrow star-speckled fissure on the left, its exact zigzag contour and tip ending ABOVE the strip bottom, the stars at their current positions, the ceiling stalactites, overlapping rock peaks, and exactly THREE distant arch silhouettes in their current positions. Preserve the original rock/arch sizes, relative spacing, depth, and pixel texture. No scene reconstruction, added rock crossing the fissure, added arches, extended fissure, new lighting, or newly drawn objects.
+
+Output one opaque PNG on the exact same 1536 x 1024 canvas, with the unchanged full-width painted strip x0..1535, y316..707 and unchanged flat magenta outer margins. Fill stays 100%; no transparent or magenta holes inside the artwork. No cropping, resizing, reframing, new text, marks or panels. Crisp pixel clusters.
+
+The source is the already completed FAR layer; no extraction or object removal is requested. Only remove the remaining bright aqua/cyan color residuals. The guide detector includes colors within RGB distance 80 of (0,255,255), so make bright aqua colors comfortably muted rather than leaving saturated near-cyan highlights anywhere in the strip. The layout must remain the supplied picture.
+
+ACTUAL GATE REGENERATION FEEDBACK (verbatim):
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 10 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.

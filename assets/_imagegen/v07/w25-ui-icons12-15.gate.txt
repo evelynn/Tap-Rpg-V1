@@ -1,0 +1,38 @@
+pnpm art:gate assets/_imagegen/v07/w25-ui-icons12-15.png --spec 'ui_icon_12'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v07/w25-ui-icons12-15.png" "--spec" "ui_icon_12"
+
+assets/_imagegen/v07/w25-ui-icons12-15.png
+PASS ui_icon_12 · canvas · 이미지 1536×1024 (틀 1536×1024) · S 20 (template) · 칸 격자 · 시트 블록 12.3 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 13
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   state 1             28798     -    -     -  9.8(-)        13.0   0.0%  ok (경고 bbox,block)
+  (1,0)   state 2             24034     -    -     -  10.6(-)       12.3   0.0%  ok (경고 bbox,block)
+  (2,0)   state 3             23808     -    -     -  10.4(-)       11.2   0.0%  ok (경고 bbox,block)
+  (3,0)   state 4             20125     -    -     -  10.1(-)       12.2   0.0%  ok (경고 bbox,block)
+  (4,0)   state 5             30352     -    -     -  9.0(-)        12.8   0.0%  ok (경고 bbox,block)
+  (5,0)   state 6             33497     -    -     -  10.8(-)       12.7   0.0%  ok (경고 bbox,block)
+  (0,1)   state 7             25713     -    -     -  10.6(-)       11.8   0.0%  ok (경고 bbox,block)
+  (1,1)   state 8             32080     -    -     -  10.0(-)       12.3   0.0%  ok (경고 block)
+  (2,1)   state 9             22432     -    -     -  10.3(-)       11.9   0.0%  ok (경고 block)
+  (3,1)   state 10            33142     -    -     -  11.0(-)       12.3   0.0%  ok (경고 bbox,block)
+  (4,1)   state 11            33118     -    -     -  9.1(-)        12.6   0.0%  ok (경고 block)
+  (5,1)   state 12            21171     -    -     -  8.3(-)        11.9   0.0%  ok (경고 block)
+  (0,2)   fatal lantern_out    26299     -    -     -  11.8(-)       13.0   0.0%  ok (경고 bbox,block)
+  (1,2)   book lit            26181     -    -     -  11.8(-)       12.7   0.0%  ok (경고 bbox,block)
+  (2,2)   book moon           23537     -    -     -  10.3(-)       12.6   0.0%  ok (경고 bbox,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "state 1": crosses the template cell boundary (left 0.1 blocks, top 1.3 blocks).
+- Cell (1,0) "state 2": crosses the template cell boundary (top 1.4 blocks).
+- Cell (2,0) "state 3": crosses the template cell boundary (top 1.4 blocks).
+- Cell (3,0) "state 4": crosses the template cell boundary (top 1.5 blocks).
+- Drawn pixel blocks are 11.2-13 image px in 15 cells, not 20 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F904F9), all within the key tolerance; keying removes them.
+- ...and 7 more bbox warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the ui_icon_12 template. No regeneration needed.
+Exit code: 0
+
+V07_META: {"id":"V07-icons12","stem":"w25-ui-icons12-15","spec":"ui_icon_12","input":"docs/art/templates/ui_icon_12.grid.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-0dcaf7eb-e6cf-4a0c-9292-561a1dec7bb4.png","sha256":"AFFE970A96E7F2FF3F5DDB9D31EA7587058846CDA5C2020C519EDFE2D9981688","width":1536,"height":1024,"exit":0,"same":true,"actualgate":"PASS ui_icon_12 · canvas · 이미지 1536×1024 (틀 1536×1024) · S 20 (template) · 칸 격자 · 시트 블록 12.3 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 13","review":"15개기호/순서/그룹수는정확하고gatePASS. 그러나block11.2~13px(규격20),여러색/질감과세밀한오브젝트로실제12×12기호목적에부족하여팔레트/도트단순화r2진행.","selected":false}

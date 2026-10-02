@@ -1,0 +1,18 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-spring-dusk-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-spring-dusk-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a3-spring-dusk-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.92 (band) · 칸 격자 · 시트 블록 6.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2 · 띠 x9 y315 1516×379 비율 4(규격 4) · 위 자름 0 · 좌우 자름 9/11 이음 60.8
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              574422     -    -     -  64.0(-)        6.0   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x379 (4.05:1) is wider than 4.00:1; normalization keeps x 9-1524 (removes 9 left and 11 right columns), the window with the smallest left-right seam difference: seam score 60.8 (mean colour distance of the 4 edge columns, 0 = identical).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w12-a3-spring-dusk-far","input":"w11-a3-spring-dusk.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-10cb703f-e8c7-49da-ba20-a55a5abefb0e.png","sha256":"BEB9606FB07B0649CE95CEBA0C5F29988335673E408F78DC6119F68845051337","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-91","batch":31,"review":"봄 노을 원경 유지, 전경 전체 제거/숲 채움. 추가된 탑/먼마을과 채움 수목 스케일은 마스크 보정."}

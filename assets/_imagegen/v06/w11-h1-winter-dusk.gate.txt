@@ -1,0 +1,19 @@
+pnpm art:gate assets/_imagegen/v06/w11-h1-winter-dusk.png --spec bg_far
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w11-h1-winter-dusk.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-h1-winter-dusk.png
+PASS bg_far · canvas · 이미지 1983×793 (틀 1536×1024) · S 6.13 (band) · 칸 격자 · 시트 블록 10.4 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x117 y202 1568×392 비율 4(규격 4) · 위 자름 0 · 좌우 자름 117/298 이음 156.3
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              614467     -    -     -  64.0(-)       10.3   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Image is 1983x793, not the 1536x1024 template canvas; the strip was found by its content at x 0-1982, y 202-593 (1983x392 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1983x392 (5.06:1) is wider than 4.00:1; normalization keeps x 117-1684 (removes 117 left and 298 right columns), the window with the smallest left-right seam difference: seam score 156.3 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 10.4-10.4 image px in 1 cells, not 6.1 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F503FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.

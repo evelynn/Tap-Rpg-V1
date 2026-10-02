@@ -1,0 +1,5 @@
+Edit the supplied 4-panel still key image, exactly1536x1024, fully opaque. In EVERY panel remove the hanging WALL LANTERN on the left completely, including hook, flame and all its highlights, and replace it with the same plain wooden wall planks. The left hero area must be only quiet wood wall and floor.
+
+Make Dodam with her bread and three candles together about90% of current height, keeping her feet at the same floor position and the same horizontal center, so the top of her headscarf is below image y455. Preserve her same round face, brown headscarf, red dress, cream apron, ladle, expression and pose. Keep her bread and exactly three candles. Do not move the window, flowerpot, right table or soup bowl. Four panels remain identical.
+
+Keep all original magenta above/below the strip fully opaque RGB(255,0,255); no transparency, glow, halo, crop or canvas resizing. No additional objects or people.

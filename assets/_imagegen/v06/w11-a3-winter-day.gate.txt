@@ -1,0 +1,21 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-winter-day.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-winter-day.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a3-winter-day.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.91 (band) · 칸 격자 · 시트 블록 8.3 · 키 비율 - · 배경 100.0% · 안내색 14 · 격자 밖 0 · 경고 3 · 띠 x2 y316 1512×378 비율 4(규격 4) · 위 자름 0 · 좌우 자름 2/22 이음 247.5
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              571396     -    -     -  64.0(-)        8.3   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x378 (4.06:1) is wider than 4.00:1; normalization keeps x 2-1513 (removes 2 left and 22 right columns), the window with the smallest left-right seam difference: seam score 247.5 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 8.3-8.3 image px in 1 cells, not 5.9 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA02FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 14 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+EXIT: 1
+V06_META: {"stem":"w11-a3-winter-day","input":"w10-a3-miner-village-summer-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-cbd49538-fe27-4734-bcbc-0844d37495b9.png","sha256":"483684219BEC472329CA3B75680D9B5E1D4EF3B5AC725B139E558ECC85D6ECBA","same":true,"width":1536,"height":1024,"exit":1,"id":"V06-90","batch":30,"review":"겨울 설경 반영, 폐가·우물·빈 종탑·광산 입구 배치 유지. 눈 때문에 일부 잎/지붕 실루엣 확장, 게임 마스크 정합 보정."}

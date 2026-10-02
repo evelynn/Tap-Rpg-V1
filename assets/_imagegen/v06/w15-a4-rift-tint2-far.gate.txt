@@ -1,0 +1,21 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w15-a4-rift-tint2-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w15-a4-rift-tint2-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w15-a4-rift-tint2-far.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 - · 키 비율 - · 배경 100.0% · 안내색 42 · 격자 밖 0 · 경고 3 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 8 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589784     -    -     -  64.0(-)          -   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 316-707 (1536x392 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x392 (3.92:1) is taller than 4.00:1; normalization removes the top 8 rows (y 316-323) and keeps the bottom row y 707.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA08FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 42 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+EXIT: 1
+V06_META: {"stem":"w15-a4-rift-tint2-far","input":"w15-a4-rift-tint2.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-7a23b1ec-1e80-4a0d-8b56-012ff1938170.png","sha256":"4029EC544C85F01ADC1EFB2C44CBBB56023EAB0CE9DDAE5F5F63581828782EE4","same":true,"width":1536,"height":1024,"exit":1,"id":"V06-96","batch":33,"review":"청록 동굴·별균열·먼 아치 유지, 전경 아치/장미/수정/부유돌/바닥 제거 및 전체채움. 균열 가장자리 후광·암벽 패턴 접합 보정."}

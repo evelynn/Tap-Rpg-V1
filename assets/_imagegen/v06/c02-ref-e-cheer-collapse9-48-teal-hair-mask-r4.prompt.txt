@@ -1,0 +1,16 @@
+CRITICAL TECHNICAL OUTPUT: output exactly one opaque PNG, 2172 x 724 image pixels. Every area outside the required artwork is a SOLID BRIGHT MAGENTA COLOUR FIELD, red=255 green=0 blue=255 (RGB 255,0,255; hex #FF00FF). This magenta is actual visible image colour, not a transparency instruction. Alpha must be 255 everywhere, including all background pixels. Never replace this magenta with a dark background, transparent background, checkers, black, brown, halo, vignette, shadow or colour gradient. Preserve flat magenta right up to the hard pixel-art edges.
+REFERENCE PRIORITY: the supplied image is the authoritative source for exact canvas, cell placement, pose, silhouette and retained pixel colours. Edit only the explicitly requested part. Do not redraw or restyle the whole image; retained regions and colours must match the source.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the hair. Remove face, skin, body, clothing, weapon and all other parts.
+
+HAIR ISOLATION COLOUR RULE: keep only the source hair browns and its own outline. Remove every peach ear pixel and every dark eye/mouth pixel, especially the final two lying frames at bottom right. The complete empty face area must be the SAME BRIGHT VISIBLE MAGENTA as the reference image. Keep source hair colours exactly.
+
+REGENERATION CORRECTION: the previous attempt wrongly produced a black background with colour fringing. The background must be a visible opaque RGB(255,0,255) painted colour field like the input, covering the full image outside hair. Do not output an alpha cutout or transparent image. Do not darken or recolour the retained hair.
+
+FINAL OUTPUT CHECK: fully opaque, flat background RGB(255,0,255), no glow or background shading; exact requested canvas and placement. Deliver only the finished PNG.
+
+
+MISSING-ASSET COMPLETION — EDIT TARGET:
+Input image 1 is the original accepted REF-E teal character sheet, assets/_imagegen/v05/c02-ref-e-cheer-collapse9-48-teal.png. Keep only the original visible scalp hair of all NINE poses: FOUR hair shapes in the top row and FIVE in the bottom row. The two rightmost lower heads are lying sideways; retain only their sideways brown hair at the original locations. Delete every ear, face, skin, eye, brow, mouth and body pixel to solid opaque magenta. Keep hair browns and the hair's own dark outline. Do not create a face-shaped outline or neck. Keep the original asymmetric arrangement and empty space; never centre, redistribute or resize the hair pieces. Output exactly 2172 x 724 opaque pixels. Nine hair fragments only, on one uniform visible RGB(255,0,255) background.

@@ -1,0 +1,5 @@
+OPAQUE MAGENTA SHEET: exactly 1402 x 1122 PNG. Show the eighteen retained near ears at their identical source positions. Every removed pixel and the entire space around the ears is visibly painted solid magenta RGB(255,0,255), alpha 255. No transparency, black backdrop, brown backdrop, glow, halo or vignette. Retained ear pixels keep their exact source colours.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the near ear, including its nick, pixel for pixel.

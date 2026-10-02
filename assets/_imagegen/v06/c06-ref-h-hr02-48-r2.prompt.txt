@@ -1,0 +1,13 @@
+This is an opaque magenta sprite sheet, not a transparent sticker or isolated cutout. Paint the complete background solid bright magenta RGB(255,0,255). No transparency, no alpha cutout, no shadows, no vignette. Keep the 1536 x 1024 source canvas and original figure coordinates. Replace only the hair with the ponytail described below.
+
+CANVAS LOCK: Output exactly 1536 x 1024 opaque PNG, identical to the source. Every pixel has alpha 255. Removed parts and all outside background are solid opaque magenta RGB(255,0,255), never transparency. Keep the original coordinates, body, head angles and pixel-block scale of the three poses. The third figure remains asleep with the source CLOSED eyes.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, the flat #FF00FF / RGB(255,0,255) background and the exact position, size and pose of every figure. Change ONLY the part named below, in the cells named below. Every other pixel (face, hair, skin, arms, hands, clothing, trousers, boots, held items) stays exactly as in the input, with its exact colour, except where the new part now covers it; never recolour, relight, brighten, darken or saturate anything that is kept. The new part follows each cell's existing pose: the same head angle, body lean and hand positions. Never move an arm, a hand or the head to fit the part. Empty cells stay empty. Same pixel-block size and outline style as the input. No gradient, no halo, no glow, no extra objects.
+
+SWAP (hair only, all three cells): change ONLY the hairstyle. Keep the same two chestnut browns #7A4E30 #553420 and the #2B2233 outline, follow each cell's head angle, and keep the face, eyes, skin, body and clothing unchanged. New style:
+
+one ponytail at the BACK of the head (the left side, away from the face). The top stays short and neat; the tail hangs down behind the head, about one third of the head height long below the tie, tied with a small band in the darker hair brown. No ribbon.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+Final check: the four canvas corners and every gap between figures must visibly be the same solid bright magenta as the input. No dark background and no soft halos.

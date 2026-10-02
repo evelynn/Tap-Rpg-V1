@@ -1,0 +1,32 @@
+pnpm art:gate assets/_imagegen/v06/w43-npc-portraits11-64.png --spec por_npc_64
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w43-npc-portraits11-64.png" "--spec" "por_npc_64"
+
+assets/_imagegen/v06/w43-npc-portraits11-64.png
+PASS por_npc_64 · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5 (template) · 칸 격자 · 시트 블록 5.7 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 13
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   portrait 1          68207     -    -     -  64.2(-)        5.8   0.0%  ok (경고 bbox,block)
+  (1,0)   portrait 2          85875     -    -     -  65.2(-)        5.4   0.0%  ok (경고 bbox)
+  (2,0)   portrait 3          75010     -    -     -  65.6(-)        5.8   0.0%  ok (경고 bbox,block)
+  (3,0)   portrait 4          77165     -    -     -  63.0(-)        5.3   0.0%  ok (경고 bbox)
+  (0,1)   portrait 5          66619     -    -     -  56.8(-)        5.7   0.0%  ok (경고 bbox)
+  (1,1)   portrait 6          67384     -    -     -  61.4(-)        5.8   0.0%  ok (경고 bbox,block)
+  (2,1)   portrait 7          74775     -    -     -  61.4(-)        5.7   0.0%  ok (경고 bbox)
+  (3,1)   portrait 8          74326     -    -     -  61.4(-)        5.4   0.0%  ok (경고 bbox)
+  (0,2)   portrait 9          61162     -    -     -  62.6(-)        5.7   0.0%  ok (경고 bbox)
+  (1,2)   portrait 10         68018     -    -     -  59.2(-)        5.5   0.0%  ok (경고 bbox)
+  (2,2)   portrait 11         72052     -    -     -  61.2(-)        5.5   0.0%  ok (경고 bbox)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "portrait 1": crosses the template cell boundary (left 15.4 blocks, bottom 0.2 blocks).
+- Cell (1,0) "portrait 2": crosses the template cell boundary (left 7.8 blocks, top 1.2 blocks).
+- Cell (2,0) "portrait 3": crosses the template cell boundary (right 4.4 blocks, top 1.4 blocks, bottom 0.2 blocks).
+- Cell (3,0) "portrait 4": crosses the template cell boundary (right 15.8 blocks, bottom 0.2 blocks).
+- Drawn pixel blocks are 5.8-5.8 image px in 3 cells, not 5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F604F8), all within the key tolerance; keying removes them.
+- ...and 7 more bbox warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the por_npc_64 template. No regeneration needed.

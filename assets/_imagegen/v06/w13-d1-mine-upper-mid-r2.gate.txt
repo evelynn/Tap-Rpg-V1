@@ -1,0 +1,20 @@
+pnpm art:gate assets/_imagegen/v06/w13-d1-mine-upper-mid-r2.png --spec 'bg_mid'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w13-d1-mine-upper-mid-r2.png" "--spec" "bg_mid"
+
+assets/_imagegen/v06/w13-d1-mine-upper-mid-r2.png
+FAIL bg_mid · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.57 (band) · 칸 격자 · 시트 블록 3.0 · 키 비율 - · 배경 99.1% · 안내색 0 · 격자 밖 9180 · 경고 3 · 띠 x60 y276 1426×357 비율 3.994(규격 4) · 위 자름 0 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   mid 1              140687     -    -     -  53.1(-)        3.0   0.0%  ok (경고 block) 채움 28%/66%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 60-1485, y 386-632 (1426x247 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Drawn pixel blocks are 3-3 image px in 1 cells, not 5.6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB03FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_mid template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the drawing outside the strip: 9180 px of drawing were found outside the painted strip (x 60-1485, y 276-632). Everything outside the one rectangular strip must be flat #FF00FF.
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1

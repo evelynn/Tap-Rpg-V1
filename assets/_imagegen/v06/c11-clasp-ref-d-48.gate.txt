@@ -1,0 +1,27 @@
+pnpm art:gate assets/_imagegen/v06/c11-clasp-ref-d-48.png --spec chr_actions_a --no-canvas --rows "hit,discover,interact"
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c11-clasp-ref-d-48.png" "--spec" "chr_actions_a" "--no-canvas" "--rows" "hit,discover,interact"
+
+assets/_imagegen/v06/c11-clasp-ref-d-48.png
+PASS chr_actions_a · no-canvas · 이미지 1774×887 (틀 1536×1024) · S 6.16 (cell_ratio) · 칸 격자 · 시트 블록 6.3 · 키 비율 0.995 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 2
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   hit 1               31916     0    -   0.0  39.8(40)       6.2   0.0%  ok
+  (1,0)   hit 2               30367     0    -  -1.3  38.0(40)       6.3   0.0%  ok
+  (2,0)   hit 3               31095     0    -   0.0  39.8(40)       6.5   0.0%  ok
+  (0,1)   discover 1          27570     0    -  -0.3  41.4(40)       6.4   0.0%  ok
+  (1,1)   discover 2          27676     0    -   3.2  39.9(40)       6.3   0.0%  ok (경고 center)
+  (2,1)   discover 3          28262     0    -   1.6  40.3(40)       7.0   0.0%  ok
+  (3,1)   discover 4          28085     0    -  -0.3  39.9(40)       6.7   0.0%  ok
+  (0,2)   interact 1          30716     0    -   0.0  39.6(40)       6.1   0.0%  ok
+  (1,2)   interact 2          29584     0    -   0.0  39.6(40)       6.1   0.0%  ok
+  (2,2)   interact 3          28120     0    -  -1.5  39.4(40)       6.0   0.0%  ok
+  (3,2)   interact 4          30453     0    -   0.3  39.6(40)       5.9   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (1,1) "discover 2": horizontal center 3.2 blocks right of the column median.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_actions_a template. No regeneration needed.
+Exit code: 0

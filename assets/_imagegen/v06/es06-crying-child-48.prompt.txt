@@ -1,0 +1,7 @@
+Use case: precise edit of the provided key strip (four panels on the scene template). Keep the exact canvas, the strip position, panel 1 and the flat #FF00FF outside the strip exactly. Make panels 2, 3 and 4 exact copies of panel 1, pixel for pixel with the exact colours, then apply ONLY the changes listed under FRAMES (panel 1 = frame 1, left to right). Do not redraw, move, restyle, recolour, relight, brighten or saturate anything else. The empty hero slot stays empty in all four panels.
+
+FRAMES: Tori's shoulders rise one block in frames 2 and 4 (sobbing) and settle in frames 1 and 3; the ripple highlights shift one block to the right each frame in a repeating pattern.
+
+Do NOT draw: the player character, any young adventurer who could be mistaken for it, any person in the empty hero slot, any person or creature not listed, text, letters, numbers, runes, writing on signs, paper or banners, labels, frame numbers, arrows, musical notes, zZ letters, speech bubbles, UI elements, panel borders, grid lines, dividing lines, watermark, blood, wounds, corpses, weapons being swung, magic effects not listed, motion trails, vignette, spotlight, glow halo, lens flare, gradient sky. Output only the finished image.
+
+CANVAS: exactly 1536 x 1024 opaque PNG. Keep the outside magenta fully opaque. Any ripple highlight motion must stay to the RIGHT of the empty hero slot (to the right of local art x44); keep the left hero region plain. Shoulder motion is only one existing pixel block, not a change of pose.

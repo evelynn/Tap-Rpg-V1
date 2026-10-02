@@ -1,0 +1,8 @@
+Precise edit of this four-panel still key scene. Output exactly 1536 x 1024 opaque PNG. Keep the four panel widths and background magenta.
+
+Correct composition identically in ALL four panels:
+- Keep the entire LEFT 28% of each panel empty for the hero: only plain muted sky and grass, no wolf, boulder, flowers or white cloud in that region.
+- Move BOTH small distant wolves into the narrow span from 34% to52% of each panel width, one slightly behind the other, facing right. They remain tiny grey silhouettes.
+- Tori and the wagon must fit entirely in the BOTTOM 192 pixels of the painted scene strip. Tori's feet stay on the wagon's front board. Make Tori smaller so the TOP OF HIS ACORN HAT is no higher than image y465 and his boots stay at y551; preserve the same identity, hat, patchwork clothes and wooden whistle at mouth. The wagon cover's upper edge must be at or below y460 while its wheels remain in place. Keep the wagon, Tori and wolves completely inside each panel without clipping at an edge.
+- Use ONE sound arc in all four panels: these are identical copies of frame1, not animation yet.
+- Flat pixel-art color clusters, no soft gradient. All pixels above and below the strip remain fully opaque magenta RGB(255,0,255). No extra people or animals.

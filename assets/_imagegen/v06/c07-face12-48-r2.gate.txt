@@ -1,0 +1,37 @@
+pnpm art:gate assets/_imagegen/v06/c07-face12-48-r2.png --spec 'chr_face'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c07-face12-48-r2.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/c07-face12-48-r2.png
+FAIL chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 7.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 1
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic           606     -    -     -  4.5(-)        11.7   0.7%  ok (경고 block)
+  (1,0)   round_smile           664     -    -     -  7.0(-)        11.8   1.4%  ✗ alpha (경고 block)
+  (2,0)   round_frown           587     -    -     -  4.3(-)        11.0   3.4%  ✗ alpha (경고 block)
+  (3,0)   round_closed          358     -    -     -  1.8(-)         6.0   0.0%  ok
+  (4,0)   round_surprised       793     -    -     -  8.3(-)        11.7   1.8%  ✗ alpha (경고 block)
+  (0,1)   narrow_basic          354     -    -     -  1.8(-)         6.1   0.0%  ok
+  (1,1)   narrow_smile          421     -    -     -  4.5(-)         6.0   1.3%  ✗ alpha
+  (2,1)   narrow_frown          471     -    -     -  4.5(-)         6.1   5.2%  ✗ alpha
+  (3,1)   narrow_closed         358     -    -     -  1.8(-)         6.1   0.0%  ok
+  (4,1)   narrow_surprised      751     -    -     -  8.3(-)        12.1   2.2%  ✗ alpha (경고 block)
+  (0,2)   wrinkle_veteran       190     -    -     -  1.3(-)         8.0   0.0%  ok (경고 block)
+  (1,2)   wrinkle_elder         253     -    -     -  5.8(-)         4.7  10.2%  ✗ alpha (경고 block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Drawn pixel blocks are 4.7-12.1 image px in 7 cells, not 6 (one logical pixel); normalization resamples.
+
+Regeneration feedback:
+Regenerate this sheet on the chr_face template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (1,0) "round_smile": 1.4% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (2,0) "round_frown": 3.4% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (4,0) "round_surprised": 1.8% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (1,1) "narrow_smile": 1.3% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (2,1) "narrow_frown": 5.2% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (4,1) "narrow_surprised": 2.2% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+- Cell (1,2) "wrinkle_elder": 10.2% of the pixels inside the figure are semi-transparent; every figure pixel must be fully opaque with hard edges (no anti-aliasing, no soft glow).
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1
+
+V06_MISSING_META: {"id":"V06-07","stem":"c07-face12-48-r2","input":"assets/_imagegen/v06/c07-face12-48.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-f1a17206-b860-45e4-a078-63a82529cba1.png","sha256":"9A77D218915734D901A7905461AA9479AB5AE9FCAE2C836AEBA7430B9D6BDCCC","width":1536,"height":1024,"exit":1,"same":true,"spec":"chr_face","gate":"FAIL","attempt":2,"review":"첫주름이더두꺼워졌으나검정/갈색후광배경이생겨미채택. 기존원본/r2모두보존하고r3에서배경만밝은마젠타로복구."}

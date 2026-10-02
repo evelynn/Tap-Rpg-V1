@@ -1,0 +1,7 @@
+Edit this existing sprite sheet. Keep all 12 characters, all expressions, the exact 5-column/3-row positions and their sizes.
+
+Correct TWO things:
+1. Replace the entire black/brown background and every soft halo outside the characters with a single BRIGHT SOLID MAGENTA color, RGB(255,0,255). The result must be fully opaque with bright pink-magenta visible across ALL margins, gaps and the three empty cells. Preserve crisp character outlines.
+2. Keep the nine existing small red cheek squares on the first two rows. Add the matching missing red cheek square to the RIGHTMOST FACE IN THE MIDDLE ROW (row 2, column 5). All ten first-two-row faces must have exactly one muted red cheek square RGB(176,74,66), one art block (6x6 image pixels), one block below and one block toward the ear from the near eye. The bottom two age faces have no cheek squares.
+
+No other changes. Same 1536x1024 canvas. No additional light or shadows. No text or grid. Return only the finished opaque PNG.

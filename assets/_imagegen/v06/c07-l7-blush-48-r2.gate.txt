@@ -1,0 +1,29 @@
+pnpm art:gate assets/_imagegen/v06/c07-l7-blush-48-r2.png --spec 'chr_face'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c07-l7-blush-48-r2.png" "--spec" "chr_face"
+
+assets/_imagegen/v06/c07-l7-blush-48-r2.png
+PASS chr_face · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (template) · 칸 격자 · 시트 블록 5.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 1
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   round_basic         22317     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,0)   round_smile         22337     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,0)   round_frown         22325     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,0)   round_closed        22250     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,0)   round_surprised     22277     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,1)   narrow_basic        22301     -    -     -  40.0(-)        5.9   0.0%  ok
+  (1,1)   narrow_smile        22339     -    -     -  40.0(-)        5.9   0.0%  ok
+  (2,1)   narrow_frown        22329     -    -     -  40.0(-)        5.9   0.0%  ok
+  (3,1)   narrow_closed       22250     -    -     -  40.0(-)        5.9   0.0%  ok
+  (4,1)   narrow_surprised    22270     -    -     -  40.0(-)        5.9   0.0%  ok
+  (0,2)   wrinkle_veteran     22247     -    -     -  39.8(-)        5.8   0.0%  ok
+  (1,2)   wrinkle_elder       22260     -    -     -  39.8(-)        5.9   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F804F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_face template. No regeneration needed.
+Exit code: 0
+
+V06_MISSING_META: {"id":"V06-07","stem":"c07-l7-blush-48-r2","input":"assets/_imagegen/v06/l7-expression12-48-r5.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-b15e3254-cece-48e0-83f8-9581f2646b94.png","sha256":"051A3A5DEF5D8518FDDFA68E276A2E2C0B440FD8DDA4819CC164733429EC4138","width":1536,"height":1024,"exit":0,"same":true,"spec":"chr_face","gate":"PASS","attempt":2,"review":"도구 PASS이지만 홍조10개가 반영되지 않아 미선정. 밝은 자홍 배경은 유지. r1의9개홍조 유지+배경복구+누락1개추가로r3편집."}

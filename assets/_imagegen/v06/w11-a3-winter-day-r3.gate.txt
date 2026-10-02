@@ -1,0 +1,21 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-winter-day-r3.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w11-a3-winter-day-r3.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w11-a3-winter-day-r3.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.91 (band) · 칸 격자 · 시트 블록 9.3 · 키 비율 - · 배경 100.0% · 안내색 22 · 격자 밖 0 · 경고 3 · 띠 x1 y316 1512×378 비율 4(규격 4) · 위 자름 0 · 좌우 자름 1/23 이음 250.4
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              571495     -    -     -  64.0(-)        9.3   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x378 (4.06:1) is wider than 4.00:1; normalization keeps x 1-1512 (removes 1 left and 23 right columns), the window with the smallest left-right seam difference: seam score 250.4 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 9.3-9.3 image px in 1 cells, not 5.9 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 22 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+EXIT: 1
+V06_REPAIR_META: {"stem":"w11-a3-winter-day-r3","input":"w11-a3-winter-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-b380424e-1420-450a-ae46-260914a9f5ee.png","sha256":"E492C96E584D01432ECE5CC49AA896D9F12AEDABD7349A4667DB749314DD0ACD","same":true,"width":1536,"height":1024,"exit":1,"id":"V06-90","batch":30,"oldStem":"w11-a3-winter-day","round":2,"review":"원본 안내색14가 1차 보완본16보다 적어 원본을 입력으로 선택. 검출 반경80 전체를 피하는 색보완 적용. 겨울 눈·건물·우물·종탑·광산입구·산선 유지, 눈 표면 미세 화소변화는 차후 정합."}

@@ -1,0 +1,11 @@
+Use case: precise-object-edit. Input image 1 is the newly redrawn V07 base enemy sheet and the ONLY edit target. Output one fully opaque PNG exactly 1536 x 1024. This is a colour/prop variant of that exact sheet, with the identical eighteen-cell occupancy, silhouettes except the added prop, and every original position. Keep the source pixel grid and hard stepped blocks; added props use the same coarse game pixel language with nominal 8x8 image-pixel blocks, never tiny detailed painting. Preserve all four visible escaping poses.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Recolour the fur: #9A8A78 becomes #6E5A48 and #6E5A48 becomes #4A3F55. On the NEAR ear only, draw a torn nick: a small V-shaped notch drawn as a dark #2B2233 line inside the ear's existing outline; the outer ear outline stays unchanged. The same nick in every cell.
+
+The cream cheek/muzzle/belly, teeth, pink ear interiors, tan tail and paws keep their exact original colours. Do not recolour cream patches purple. The name big rat is a variant label: do not enlarge its silhouette.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+The background, including every margin and the two empty cells on row four, is one fully opaque flat #FF00FF. No cyan, no transparency, no extra character or prop.

@@ -1,0 +1,18 @@
+pnpm art:gate assets/_imagegen/v06/w12-h2-autumn-dawn-far.png --spec 'bg_far'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h2-autumn-dawn-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h2-autumn-dawn-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.58 (band) · 칸 격자 · 시트 블록 5.9 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x36 y312 1428×357 비율 4(규격 4) · 위 자름 0 · 좌우 자름 36/72 이음 90.1
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              509630     -    -     -  64.0(-)        5.9   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 312-668 (1536x357 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x357 (4.30:1) is wider than 4.00:1; normalization keeps x 36-1463 (removes 36 left and 72 right columns), the window with the smallest left-right seam difference: seam score 90.1 (mean colour distance of the 4 edge columns, 0 = identical).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+Exit code: 0

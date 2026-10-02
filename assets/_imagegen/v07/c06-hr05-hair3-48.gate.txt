@@ -1,0 +1,5 @@
+문 해당 없음 — 머리카락만 있는 가림막. art:gate 실행하지 않음. 자동 PASS가 아님.
+
+육안/남은 차이: 기본/숙임/누움 3개 땋은 머리 마스크만 남고 얼굴·귀·피부·몸 없음. 양 땋은 줄의 길이·원래 위치와 세 포즈 각도 보존. 기본/숙임의 앞머리 안쪽 단차가 소폭 달라졌으며 기존 추출판의 밝은 갈색이 남아 합성판과 팔레트 정합 필요. 1536×1024 자홍 캔버스. 얼굴 구멍 정밀 정합은 게임 검수이며 화소 동일성을 주장하지 않음.
+
+V07_META: {"id":"V07-hr05-basic","stem":"c06-hr05-hair3-48","input":["assets/_imagegen/v06/c06-hr05-hair3-48.png","assets/_imagegen/v06/c06-ref-h-hr05-48-r2.png","assets/_imagegen/v06/c04-ref-h-headposes3-48.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e785-27f9-75d3-812f-2aeb3b2c31cb\\exec-836d8ecb-1daa-4050-aead-15fd0a94f1c6.png","sha256":"0DD726E0E4F092D7243F9026072C288F0C20A8AED6847516B5104F481BA16542","width":1536,"height":1024,"gateexit":null,"same":true,"spec":null,"attempt":1,"actualgate":"N/A — hair-only mask; no art:gate command was run","review":"기본/숙임/누움 3개 땋은 머리 마스크만 남고 얼굴·귀·피부·몸 없음. 양 땋은 줄의 길이·원래 위치와 세 포즈 각도 보존. 기본/숙임의 앞머리 안쪽 단차가 소폭 달라졌으며 기존 추출판의 밝은 갈색이 남아 합성판과 팔레트 정합 필요. 1536×1024 자홍 캔버스. 얼굴 구멍 정밀 정합은 게임 검수이며 화소 동일성을 주장하지 않음."}

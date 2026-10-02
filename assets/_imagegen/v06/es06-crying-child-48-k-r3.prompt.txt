@@ -1,0 +1,7 @@
+Use case: precise-object-edit. This is a still KEY strip, four identical panels, not animation. Edit the supplied image at exactly 1536 x 1024, fully opaque.
+
+Keep Tori, his acorn hat, face, clothes, whistle, seated pose, boots, the right stone pier, right reeds, the bridge arch, all four panel positions and the magenta background unchanged.
+
+In EACH of the four panels clear the LEFT QUARTER where the game hero will stand: from 0.09 to 0.34 of each panel's width, from below the top flat grey band down to the shoreline. Remove all clouds, tree silhouettes, reeds, rocks, water ripple highlights and contrasting detail inside that area. Replace them with quiet unbroken flat background surfaces: muted blue sky in the upper open space, a simple muted green distant bank stripe, flat blue water below. No vertical border around this quiet area. Keep the background surfaces continuous into their surroundings. Keep the lower ground floor band, but remove tall rocks from this left hero area. Do this identically in all FOUR panels. No person or object is added.
+
+No transparent pixels, no glow, no vignette. Keep exact 1536 x 1024 full canvas and the same solid magenta outside the strip.

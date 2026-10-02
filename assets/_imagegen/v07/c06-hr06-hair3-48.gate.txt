@@ -1,0 +1,5 @@
+문 해당 없음 — 머리카락만 있는 가림막. art:gate 실행하지 않음. 자동 PASS가 아님.
+
+육안/남은 차이: 기본/숙임/누움 3개 더벅머리 마스크만 남고 얼굴·귀·피부·몸 없음. 바깥 짧은 가시·두꺼운 앞머리·세 머리 각도 및 얼굴 구멍 기본 위치 유지. 기존 추출판보다 미세한 가시 경계/갈색 질감이 달라 게임 측 경계·팔레트 정합 필요. 1536×1024 자홍 캔버스. 코드 겹침이나 화소 동일성 검사는 미실행.
+
+V07_META: {"id":"V07-hr06-basic","stem":"c06-hr06-hair3-48","input":["assets/_imagegen/v06/c06-hr06-hair3-48.png","assets/_imagegen/v06/c06-ref-h-hr06-48.png","assets/_imagegen/v06/c04-ref-h-headposes3-48.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e785-27f9-75d3-812f-2aeb3b2c31cb\\exec-a535e700-1d14-4259-a346-aae468535f8e.png","sha256":"03090EF2D469931CDD9A4D95FCB93B784C3DCFE192F8681FF784F5C89B497463","width":1536,"height":1024,"gateexit":null,"same":true,"spec":null,"attempt":1,"actualgate":"N/A — hair-only mask; no art:gate command was run","review":"기본/숙임/누움 3개 더벅머리 마스크만 남고 얼굴·귀·피부·몸 없음. 바깥 짧은 가시·두꺼운 앞머리·세 머리 각도 및 얼굴 구멍 기본 위치 유지. 기존 추출판보다 미세한 가시 경계/갈색 질감이 달라 게임 측 경계·팔레트 정합 필요. 1536×1024 자홍 캔버스. 코드 겹침이나 화소 동일성 검사는 미실행."}

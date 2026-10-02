@@ -1,0 +1,5 @@
+문 해당 없음 — 머리카락만 있는 가림막. art:gate 실행하지 않음. 자동 PASS가 아님.
+
+육안/남은 차이: V07 기본의 정수리를 지운 기본/숙임/누움 3개 가림 마스크. 곱슬 옆 덩어리와 앞머리·얼굴 빈자리의 전체 위치 유지, 누움은 목 반대쪽 위오른쪽 정수리 영역을 더 깊게 제거. 얼굴·몸·투구가 추가되지 않고 자홍 배경 유지. 숙임의 잘린 중앙선과 앞머리 안쪽 미세 윤곽이 달라졌고 갈색이 약간 밝아져 기본판 기준 경계·팔레트 정합 필요. 투구 합성 E15 및 E21 정밀 검수는 게임 측 작업.
+
+V07_META: {"id":"V07-hr04-occluded","stem":"c06-hr04-hair3-occluded-48","input":["assets/_imagegen/v07/c06-hr04-hair3-48.png","assets/_imagegen/v06/c06-hr04-hair3-occluded-48.png"],"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e785-27f9-75d3-812f-2aeb3b2c31cb\\exec-7a10de72-aa9b-4194-b663-38d31f11e84d.png","sha256":"7AC01DE1848A94893AB794BEE9040174669499F568C92A0CD9F31977E04298E5","width":1536,"height":1024,"gateexit":null,"same":true,"spec":null,"attempt":1,"actualgate":"N/A — hair-only mask; no art:gate command was run","review":"V07 기본의 정수리를 지운 기본/숙임/누움 3개 가림 마스크. 곱슬 옆 덩어리와 앞머리·얼굴 빈자리의 전체 위치 유지, 누움은 목 반대쪽 위오른쪽 정수리 영역을 더 깊게 제거. 얼굴·몸·투구가 추가되지 않고 자홍 배경 유지. 숙임의 잘린 중앙선과 앞머리 안쪽 미세 윤곽이 달라졌고 갈색이 약간 밝아져 기본판 기준 경계·팔레트 정합 필요. 투구 합성 E15 및 E21 정밀 검수는 게임 측 작업."}

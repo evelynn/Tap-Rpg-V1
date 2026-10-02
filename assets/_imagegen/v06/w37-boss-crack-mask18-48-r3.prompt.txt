@@ -1,0 +1,9 @@
+Use case: precise-object-edit. Input image 1 is the edit target. Output exactly one fully opaque PNG, 1536 x 1024.
+
+CURRENT EDIT: Paint out the entire bell wardens with solid opaque #FF00FF magenta, leaving ONLY the thin rust-orange zigzag crack visible on the front of each of the eighteen large bell heads. Keep each crack at its exact source coordinate, exact small size and exact jagged shape, so this layer fits directly over the input. Keep all eighteen cracks in their six-column, three-row positions. These are tiny flat painted marks, not glowing effects.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the crack pixels (#B0603A) in each cell.
+
+Every other pixel, including bronze bell surfaces, dark outlines, rivets, chest emblems, grey stone, legs, weapons and all empty areas, becomes one flat solid opaque RGB(255,0,255). Preserve only the visible rust-orange crack fill, never complete hidden sections. No black, no brown backdrop, no shadow, glow, halo or transparency. The finished image shows eighteen small rust-orange crack shapes on a uniform bright magenta canvas.

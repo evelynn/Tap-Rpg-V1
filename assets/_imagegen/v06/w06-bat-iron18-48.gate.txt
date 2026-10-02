@@ -1,0 +1,50 @@
+pnpm art:gate assets/_imagegen/v06/w06-bat-iron18-48.png --spec enm_bat
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w06-bat-iron18-48.png" "--spec" "enm_bat"
+
+assets/_imagegen/v06/w06-bat-iron18-48.png
+PASS enm_bat · canvas · 이미지 1024×1536 (틀 1024×1536) · S 7 (template) · 칸 격자 · 시트 블록 6.1 · 키 비율 1.489 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 42
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              15763     0   -4  -5.6  22.7(14)       6.0   0.0%  ok (경고 bbox,ground,center)
+  (1,0)   idle 2              15107     0   -4  -2.1  19.4(14)       6.1   0.0%  ok (경고 bbox,ground,center)
+  (2,0)   idle 3              13256     1   -3   3.3  18.1(14)       5.8   0.0%  ok (경고 bbox,ground,center,block)
+  (3,0)   idle 4              15520     0   -4   4.6  22.3(14)       6.1   0.0%  ok (경고 bbox,ground,center)
+  (0,1)   move 1              16028     0    2  -5.4  22.4(14)       6.3   0.0%  ok (경고 bbox,ground,center)
+  (1,1)   move 2              14633    -1    1  -2.0  19.6(14)       6.1   0.0%  ok (경고 bbox)
+  (2,1)   move 3              14060     1    3   1.7  19.6(14)       6.0   0.0%  ok (경고 bbox,ground)
+  (3,1)   move 4              16184     0    2   4.0  21.7(14)       6.2   0.0%  ok (경고 bbox,ground,center)
+  (0,2)   attack 1            16097     0    5  -3.1  20.7(-)        6.0   0.0%  ok (경고 bbox,ground,center)
+  (1,2)   attack 2            14462     0    6  -0.7  17.0(-)        6.3   0.0%  ok (경고 ground)
+  (2,2)   attack 3            15498     0    5   0.4  19.0(-)        6.3   0.0%  ok (경고 bbox,ground)
+  (3,2)   attack 4            15556     0    5   4.4  22.4(-)        6.1   0.0%  ok (경고 bbox,ground,center)
+  (0,3)   hit 1               16213     0   11  -3.9  23.1(14)       6.1   0.0%  ok (경고 bbox,ground,center)
+  (1,3)   hit 2               14542     0   10   0.9  19.3(14)       6.0   0.0%  ok (경고 ground)
+  (0,4)   exit 1              14632     -    -  -0.6  21.9(-)        6.0   0.0%  ok (경고 bbox,block)
+  (1,4)   exit 2              13117     -    -   2.1  19.7(-)        5.8   0.0%  ok (경고 center,block)
+  (2,4)   exit 3               8323     -    -   3.7  15.4(-)        6.0   0.0%  ok (경고 center,block)
+  (3,4)   exit 4               5498     -    -   8.6  12.7(-)        6.0   0.0%  ok (경고 bbox,center)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 2.3 blocks, top 12.4 blocks).
+- Cell (0,0) "idle 1": lowest pixel 4 blocks above the template hover line.
+- Cell (0,0) "idle 1": horizontal center 5.6 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (top 9.1 blocks).
+- Cell (1,0) "idle 2": lowest pixel 4 blocks above the template hover line.
+- Cell (1,0) "idle 2": horizontal center 2.1 blocks left of the template center mark.
+- Cell (2,0) "idle 3": crosses the template cell boundary (right 1.1 blocks, top 6.7 blocks).
+- Cell (2,0) "idle 3": lowest pixel 3 blocks above the template hover line.
+- Cell (2,0) "idle 3": horizontal center 3.3 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 3.6 blocks, top 11.4 blocks).
+- Cell (3,0) "idle 4": lowest pixel 4 blocks above the template hover line.
+- Cell (3,0) "idle 4": horizontal center 4.6 blocks right of the template center mark.
+- Figures are 148.9% of the spec height; normalization resamples the sheet by x0.67 (map scale_to_spec).
+- Drawn pixel blocks are 5.8-6 image px in 4 cells, not 7 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F804F8), all within the key tolerance; keying removes them.
+- ...and 10 more bbox warnings of the same kind.
+- ...and 9 more ground warnings of the same kind.
+- ...and 8 more center warnings of the same kind.
+
+Regeneration feedback:
+The delivery matches the enm_bat template. No regeneration needed.

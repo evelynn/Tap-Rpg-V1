@@ -1,0 +1,21 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-winter-day-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-winter-day-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a3-winter-day-far.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.92 (band) · 칸 격자 · 시트 블록 22.1 · 키 비율 - · 배경 100.0% · 안내색 7 · 격자 밖 0 · 경고 3 · 띠 x2 y315 1516×379 비율 4(규격 4) · 위 자름 0 · 좌우 자름 2/18 이음 187.8
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              574557     -    -     -  64.0(-)       22.1   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x379 (4.05:1) is wider than 4.00:1; normalization keeps x 2-1517 (removes 2 left and 18 right columns), the window with the smallest left-right seam difference: seam score 187.8 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 22.1-22.1 image px in 1 cells, not 5.9 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F703FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 7 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+EXIT: 1
+V06_META: {"stem":"w12-a3-winter-day-far","input":"w11-a3-winter-day.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-eadcd9e5-267e-4314-aad4-1f17e0cb6357.png","sha256":"15D53738087C1E45A467880E93D58E09AEC4CFECAB0763FA60891838C2A17191","same":true,"width":1536,"height":1024,"exit":1,"id":"V06-91","batch":31,"review":"전경 시설/길 제거, 겨울 설산·침엽수 채움. 추가된 먼 성채 모양은 채움 후보에서 지우거나 마스크 제한, 기존 원경 정합 보정."}

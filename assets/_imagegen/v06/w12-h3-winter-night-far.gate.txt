@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-h3-winter-night-far.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h3-winter-night-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h3-winter-night-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 8 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589822     -    -     -  64.0(-)       11.0   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 316-707 (1536x392 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x392 (3.92:1) is taller than 4.00:1; normalization removes the top 8 rows (y 316-323) and keeps the bottom row y 707.
+- Drawn pixel blocks are 11-11 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA02FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-5deee321-19f3-483a-b79a-cda2f62b8698.png","sha256":"742394A92ECDD51220280294B208315825998706372186E9F53E4100A087CAE1","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 8 · 좌우 자름 0/0","stem":"w12-h3-winter-night-far","input":"w11-h3-winter-night","batch":23,"id":"V06-91"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-5deee321-19f3-483a-b79a-cda2f62b8698.png","sha256":"742394A92ECDD51220280294B208315825998706372186E9F53E4100A087CAE1","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 8 · 좌우 자름 0/0","stem":"w12-h3-winter-night-far","input":"w11-h3-winter-night.png","batch":23,"id":"V06-91","review":"전경 나무·봉화탑·바위·길 제거, 눈 덮인 산숲·호수가 띠 하단까지 빈틈없이 채워짐. 겨울 새벽 안개/노을/밤 달별과 원경불빛 유지. 원경 고정화소와 확장부 마스크 정합, 야간 최저명도는 차후 보정 전제 수용."}

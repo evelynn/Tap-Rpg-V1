@@ -1,0 +1,8 @@
+Precise pixel-art edit of input image 1. Output exactly 2172 x 724 pixels, same full opaque canvas. Change ONLY the eyes of the THIRD FIGURE IN THE BOTTOM ROW: restore the two small CLOSED eyelids, one short dark descending/curved stroke per eye, matching the weary closed-eye expression of the adjacent kneeling figure to its left. Do not change the head or eyebrows. All NINE existing bronze shoulder clasps must stay visible and identical. Every other sprite pixel, pose, position, color, clothing and the solid opaque magenta background must stay exactly as input. No transparency, no crop, no rescale, no glow, no extra detail.
+
+Also remove any cyan #00FFFF speckle by matching its immediate neighboring color; retain dark teal trousers.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet with the same layout (cells are numbered (column,row) from 0 at the top-left; sizes are in blocks = one game pixel). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 1 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+(Measured without the template canvas: frames are compared with the other frames of the same row, not against the template marks.)

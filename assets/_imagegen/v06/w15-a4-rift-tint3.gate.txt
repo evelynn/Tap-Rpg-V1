@@ -1,0 +1,20 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w15-a4-rift-tint3.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w15-a4-rift-tint3.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w15-a4-rift-tint3.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 2.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 7 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              581045     -    -     -  64.0(-)        2.6   0.0%  ok (경고 block) 채움 99%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 317-707 (1536x391 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x391 (3.93:1) is taller than 4.00:1; normalization removes the top 7 rows (y 317-323) and keeps the bottom row y 707.
+- Drawn pixel blocks are 2.6-2.6 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F805F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+EXIT: 0
+V06_META: {"stem":"w15-a4-rift-tint3","input":"w15-a4-rift.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-057ad6b0-1afb-45a5-ac8a-ddb7d9857f63.png","sha256":"37659685399611D47D60C5CC2571992490078FFEDE10E7492E1667E7E713809D","same":true,"width":1536,"height":1024,"exit":0,"id":"V06-95","batch":32,"review":"장밋빛 보라 벽·분홍 별균열과 검붉은 장미 유지. 구조/실루엣 양호; 균열 후광과 최저명도는 평면팔레트 보정."}

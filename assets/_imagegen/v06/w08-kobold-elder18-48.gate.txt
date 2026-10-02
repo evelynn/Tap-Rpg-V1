@@ -1,0 +1,52 @@
+pnpm art:gate assets/_imagegen/v06/w08-kobold-elder18-48.png --spec enm_kobold
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w08-kobold-elder18-48.png" "--spec" "enm_kobold"
+
+assets/_imagegen/v06/w08-kobold-elder18-48.png
+FAIL enm_kobold · canvas · 이미지 1024×1536 (틀 1024×1536) · S 6 (template) · 칸 내용 추정 · 시트 블록 3.9 · 키 비율 1.163 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 41
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   idle 1              21272     0   -1 -14.2  34.7(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (1,0)   idle 2              20964     0   -1  -5.6  35.2(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (2,0)   idle 3              21250     0   -1   3.1  35.0(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (3,0)   idle 4              23248     0   -1  11.1  34.8(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (0,1)   move 1              21588     0   -1 -14.4  35.0(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (1,1)   move 2              20585     0   -1  -5.4  34.8(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (2,1)   move 3              21332     0   -1   3.1  35.0(30)       4.0   0.0%  ok (경고 bbox,center,block)
+  (3,1)   move 4              21324     0   -1  11.8  35.0(30)       3.9   0.0%  ok (경고 bbox,center,block)
+  (0,2)   attack 1            23897     0    0 -15.4  36.2(-)        4.0   0.0%  ok (경고 bbox,center,block)
+  (1,2)   attack 2            22627     0    0  -5.1  40.5(-)        3.9   0.0%  ok (경고 bbox,center,block)
+  (2,2)   attack 3            18527     5    5   2.9  31.8(-)        3.9   0.0%  ✗ ground (경고 bbox,ground,center,block)
+  (3,2)   attack 4            22110     0    0  12.3  35.8(-)        3.9   0.0%  ok (경고 bbox,center,block)
+  (0,3)   hit 1               22244     0   -1 -14.4  34.2(30)       4.0   0.0%  ok (경고 bbox,center,block)
+  (1,3)   hit 2               20864     0   -1  -5.7  34.2(30)       3.8   0.0%  ok (경고 bbox,center,block)
+  (0,4)   exit 1              17796     2    1 -12.6  29.2(-)        3.7   0.0%  ✗ ground (경고 bbox,center,block)
+  (1,4)   exit 2              20379     2    0  -0.4  33.0(-)        3.9   0.0%  ✗ ground (경고 bbox,block)
+  (2,4)   exit 3              21404    -1   -3   7.8  33.3(-)        3.7   0.0%  ok (경고 bbox,ground,center,block)
+  (3,4)   exit 4              21300    -1   -3  18.3  32.7(-)        3.6   0.0%  ok (경고 bbox,ground,center,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "idle 1": crosses the template cell boundary (left 13.8 blocks).
+- Cell (0,0) "idle 1": horizontal center 14.3 blocks left of the template center mark.
+- Cell (1,0) "idle 2": crosses the template cell boundary (left 5.7 blocks).
+- Cell (1,0) "idle 2": horizontal center 5.6 blocks left of the template center mark.
+- Cell (2,0) "idle 3": crosses the template cell boundary (right 4.7 blocks).
+- Cell (2,0) "idle 3": horizontal center 3.1 blocks right of the template center mark.
+- Cell (3,0) "idle 4": crosses the template cell boundary (right 14.8 blocks).
+- Cell (3,0) "idle 4": horizontal center 11.1 blocks right of the template center mark.
+- Cell (2,2) "attack 3": lowest pixel 5 blocks below the template ground line.
+- Cell (2,4) "exit 3": lowest pixel 3 blocks above the template ground line.
+- Cell (3,4) "exit 4": lowest pixel 3 blocks above the template ground line.
+- Figures are 116.3% of the spec height; normalization resamples the sheet by x0.86 (map scale_to_spec).
+- Drawn pixel blocks are 3.6-4 image px in 18 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803F9), all within the key tolerance; keying removes them.
+- ...and 14 more bbox warnings of the same kind.
+- ...and 13 more center warnings of the same kind.
+
+Regeneration feedback:
+Regenerate this sheet on the enm_kobold template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (2,2) "attack 3": the lowest pixel is 5 blocks below the ground line of the other frames in this row; move the figure up 5 blocks so every frame of the row stands on the same ground line.
+- Cell (0,4) "exit 1": the lowest pixel is 2 blocks below the ground line of the other frames in this row; move the figure up 2 blocks so every frame of the row stands on the same ground line.
+- Cell (1,4) "exit 2": the lowest pixel is 2 blocks below the ground line of the other frames in this row; move the figure up 2 blocks so every frame of the row stands on the same ground line.
+ ELIFECYCLE  Command failed with exit code 1.

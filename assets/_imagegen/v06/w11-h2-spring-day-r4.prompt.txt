@@ -1,0 +1,23 @@
+HISTORICAL ORIGINAL PRODUCTION PROMPT — already completed, reference only. Do not repeat season changes or reconstruct the scene. The active request at the end is only a colour repair.
+
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it early spring: grass and leaves turn fresh light green #8FC06A / RGB(143,192,106), tree crowns look lighter and younger, small white and pale pink blossoms appear on the trees, and small wildflowers dot the meadow and verges.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light sources, lit windows, flames, glow, light rays, gradients, vignette, fog. Output only the finished strip.
+
+END OF HISTORICAL PRODUCTION PROMPT.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 28 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+
+ACTIVE EDIT — COLOUR ONLY, KEEP THE EXACT PICTURE:
+Input image 1 is w11-h2-spring-day-r3.png, the current best finished spring scene. The earlier production prompt is reference history only; do not remake the scene or repeat the season conversion.
+Change ONLY the bright aqua/cyan/turquoise on the existing sky and pond/water channel into matte, clearly low-saturation blue-grey. Use muted sky #A9BDD3, water #8296AA, darker water/shadows #52697E. Bright water reflections must be white or pale neutral grey, never cyan. Remove every tiny vivid cyan/aqua highlight from the water and sky. Keep the exact surface shapes and pixel-cluster boundaries; this is a palette touch-up only.
+Lock the watermill building and wheel, both willow trees, all spring blossoms, flowers, green leaves and meadow, fences, wooden sluice, stone walls, rocks, path, distant houses/tower, mountain silhouettes and white clouds. Do not alter their colours, positions, outlines, sizes or detail. Do not add, remove or redraw anything.
+Exact opaque PNG 1536 x 1024, strip x0..1535 y315..669 and magenta outer margins unchanged. No cropping, moving, scaling, global relighting or global desaturation. Only the existing cyan-family colours in sky/water become the specified muted blue-greys. Output one finished image with no cyan, aqua or turquoise.

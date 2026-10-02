@@ -1,0 +1,5 @@
+OPAQUE OUTPUT exactly 1536 x 1024. Keep the source artwork position, scale, silhouettes and colours. Every removed pixel and every pixel outside the retained artwork is painted solid magenta RGB(255,0,255), alpha255. No transparent or dark backdrop, halo or lighting adjustment.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, and the exact position, size and pose of everything that remains. Do not redraw, move or restyle anything that is kept. Keep every kept pixel's exact colour: never recolour, relight, brighten, darken or saturate anything. Keep ONLY the pixels of the kept part that are VISIBLE in the input: never draw hidden portions, never extend sleeves or garments over skin that was visible, never smooth or complete a shape. Everything removed becomes the same single flat #FF00FF / RGB(255,0,255) magenta as the input background, one exact value everywhere: no gradient, no shading, no vignette, no glow, no halo, no dark fringe. No new content.
+
+Keep ONLY the support frames, gates, carts, posts, pipes, pillars, crystals, arches, vines and all objects standing in front of the back wall.

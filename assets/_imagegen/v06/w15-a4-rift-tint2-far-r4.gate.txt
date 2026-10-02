@@ -1,0 +1,22 @@
+pnpm art:gate assets/_imagegen/v06/w15-a4-rift-tint2-far-r4.png --spec 'bg_far'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w15-a4-rift-tint2-far-r4.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w15-a4-rift-tint2-far-r4.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 - · 키 비율 - · 배경 100.0% · 안내색 18 · 격자 밖 0 · 경고 3 · 띠 x0 y324 1536×384 비율 4(규격 4) · 위 자름 8 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589806     -    -     -  64.0(-)          -   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 316-707 (1536x392 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x392 (3.92:1) is taller than 4.00:1; normalization removes the top 8 rows (y 316-323) and keeps the bottom row y 707.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F90AFA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 18 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1
+
+V06_REPAIR_META: {"oldStem":"w15-a4-rift-tint2-far","stem":"w15-a4-rift-tint2-far-r4","input":"w15-a4-rift-tint2-far-r3.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-1ae0a57c-3063-4878-8aa7-56de4466379b.png","sha256":"51D95B3351C6268FB22E07A3DC1282A5B92E12100AF3D3AAA7E22AA49339BEC5","width":1536,"height":1024,"exit":1,"round":3,"review":"육안: 청록 동굴·먼 아치·별균열·별 위치와 전체 띠의 큰 구도를 유지하고 균열 양옆 가장자리의 밝은 청록을 중성 회백색으로 정리했다. 띠 y316..707 유지. 벽면 암석의 미세 질감과 밝기에는 차이가 있으므로 후속 층 합성 정합 대상으로 기록. 이전 -r3의 안내색10 잔류를 수정한 보완 3회차."}

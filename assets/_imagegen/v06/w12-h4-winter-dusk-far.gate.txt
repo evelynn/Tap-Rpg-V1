@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v06/w12-h4-winter-dusk-far.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-h4-winter-dusk-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-h4-winter-dusk-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 11 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              583926     -    -     -  64.0(-)       11.8   0.0%  ok (경고 block) 채움 99%/99%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 314-708 (1536x395 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x395 (3.89:1) is taller than 4.00:1; normalization removes the top 11 rows (y 314-324) and keeps the bottom row y 708.
+- Drawn pixel blocks are 11.8-11.8 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F304F8), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-084156df-6db0-48da-b0ba-555ff9b79cf0.png","sha256":"EDC27A82BC1250A527C329E3C59BF82153DEE3933BCBB424FF3DF8DF90040DE0","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 11 · 좌우 자름 0/0","stem":"w12-h4-winter-dusk-far","input":"w11-h4-winter-dusk","batch":25,"id":"V06-91"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-084156df-6db0-48da-b0ba-555ff9b79cf0.png","sha256":"EDC27A82BC1250A527C329E3C59BF82153DEE3933BCBB424FF3DF8DF90040DE0","same":true,"width":1536,"height":1024,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 11.8 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y325 1536×384 비율 4(규격 4) · 위 자름 11 · 좌우 자름 0/0","stem":"w12-h4-winter-dusk-far","input":"w11-h4-winter-dusk.png","batch":25,"id":"V06-91","review":"앞 폐광시설·수레·레일·길 제거, 먼 광산·설산과 눈 덮인 침엽수숲이 띠 하단까지 채워짐. 새벽의 분홍빛/노을/밤 달별 및 먼 광산 창 유지. 눈·수목 밀도와 고정화소/마스크 정합, 밤 어두운 침엽수의 최저명도는 차후 보정 전제 수용."}

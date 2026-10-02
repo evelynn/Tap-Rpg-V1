@@ -1,0 +1,63 @@
+pnpm art:gate assets/_imagegen/v06/w36-boss-bellwarden-b17-48-r2.png --spec 'boss_bellwarden_b'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w36-boss-bellwarden-b17-48-r2.png" "--spec" "boss_bellwarden_b"
+
+assets/_imagegen/v06/w36-boss-bellwarden-b17-48-r2.png
+FAIL boss_bellwarden_b · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (template) · 칸 격자 · 시트 블록 8.8 · 키 비율 1.161 · 배경 91.8% · 안내색 0 · 격자 밖 101605 · 경고 29
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   hit 1                   0     -    -     -  -                -   0.0%  ✗ missing
+  (1,0)   hit 2               19857     0  -26 -15.3  55.7(54)       8.8   0.0%  ok (경고 bbox,ground,center,block)
+  (2,0)   hit 3               22622     0  -26   1.7  61.7(54)       8.9   0.0%  ok (경고 bbox,ground,block)
+  (0,1)   phase 1                 0     -    -     -  -                -   0.0%  ✗ missing
+  (1,1)   phase 2             25597     0   -4 -19.3  66.7(54)       8.9   0.0%  ok (경고 bbox,ground,center,block)
+  (2,1)   phase 3             25794     0   -4  -3.7  66.7(54)       8.9   0.0%  ok (경고 bbox,ground,center,block)
+  (3,1)   phase 4             25699     0   -4  11.7  66.7(54)       8.8   0.0%  ok (경고 bbox,ground,center,block)
+  (0,2)   exit 1                  0     -    -     -  -                -   0.0%  ✗ missing
+  (1,2)   exit 2              20553     0   14 -21.0  52.3(-)        8.8   0.0%  ok (경고 bbox,ground,center,block)
+  (2,2)   exit 3              20845     2   16  -2.7  51.0(-)        8.0   0.0%  ✗ ground (경고 bbox,ground,center,block)
+  (3,2)   exit 4              19666     0   14  14.3  47.3(-)        8.8   0.0%  ok (경고 bbox,ground,center,block)
+  (4,2)   exit 5              21669     0   14  31.0  54.3(-)        8.7   0.0%  ok (경고 bbox,ground,center,block)
+  (5,2)   exit 6                  0     -    -     -  -                -   0.0%  ✗ missing
+  (0,3)   wave_fx 1               0     -    -     -  -                -   0.0%  ✗ missing
+  (1,3)   wave_fx 2               0     -    -     -  -                -   0.0%  ✗ missing
+  (2,3)   wave_fx 3               0     -    -     -  -                -   0.0%  ✗ missing
+  (3,3)   wave_fx 4               0     -    -     -  -                -   0.0%  ✗ missing
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (1,0) "hit 2": crosses the template cell boundary (left 21.7 blocks, top 26.7 blocks).
+- Cell (1,0) "hit 2": lowest pixel 26 blocks above the template ground line.
+- Cell (1,0) "hit 2": horizontal center 15.3 blocks left of the template center mark.
+- Cell (2,0) "hit 3": crosses the template cell boundary (left 8.3 blocks, right 1.3 blocks, top 32.7 blocks).
+- Cell (2,0) "hit 3": lowest pixel 26 blocks above the template ground line.
+- Cell (1,1) "phase 2": crosses the template cell boundary (left 29 blocks, top 15.7 blocks).
+- Cell (1,1) "phase 2": lowest pixel 4 blocks above the template ground line.
+- Cell (1,1) "phase 2": horizontal center 19.3 blocks left of the template center mark.
+- Cell (2,1) "phase 3": crosses the template cell boundary (left 12.7 blocks, top 15.7 blocks).
+- Cell (2,1) "phase 3": lowest pixel 4 blocks above the template ground line.
+- Cell (2,1) "phase 3": horizontal center 3.7 blocks left of the template center mark.
+- Cell (3,1) "phase 4": horizontal center 11.7 blocks right of the template center mark.
+- Figures are 116.1% of the spec height; normalization resamples the sheet by x0.86 (map scale_to_spec).
+- Drawn pixel blocks are 8-8.9 image px in 9 cells, not 3 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+- ...and 5 more bbox warnings of the same kind.
+- ...and 5 more ground warnings of the same kind.
+- ...and 4 more center warnings of the same kind.
+
+Regeneration feedback:
+Regenerate this sheet on the boss_bellwarden_b template (one art pixel = 3x3 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "hit 1": the cell is empty or nearly empty (0 px). Draw the "hit 1" frame here.
+- Cell (0,1) "phase 1": the cell is empty or nearly empty (0 px). Draw the "phase 1" frame here.
+- Cell (0,2) "exit 1": the cell is empty or nearly empty (0 px). Draw the "exit 1" frame here.
+- Cell (2,2) "exit 3": the lowest pixel is 2 blocks below the ground line of the other frames in this row; move the figure up 2 blocks so every frame of the row stands on the same ground line.
+- Cell (5,2) "exit 6": the cell is empty or nearly empty (0 px). Draw the "exit 6" frame here.
+- Cell (0,3) "wave_fx 1": the cell is empty or nearly empty (0 px). Draw the "wave_fx 1" frame here.
+- Cell (1,3) "wave_fx 2": the cell is empty or nearly empty (0 px). Draw the "wave_fx 2" frame here.
+- Cell (2,3) "wave_fx 3": the cell is empty or nearly empty (0 px). Draw the "wave_fx 3" frame here.
+- Cell (3,3) "wave_fx 4": the cell is empty or nearly empty (0 px). Draw the "wave_fx 4" frame here.
+- Row 0 "hit": the figures are 6% smaller than in the other rows. Draw the same character at one scale on the whole sheet (±6%).
+- Row 1 "phase": the figures are 6% larger than in the other rows. Draw the same character at one scale on the whole sheet (±6%).
+- Only 91.7% of the area outside the figures is clean background; the background must be one flat #FF00FF magenta (or fully transparent) everywhere, with no gradient, texture, floor, shadow or stray marks.
+- Remove the drawing outside the grid: 101605 px of figures were found in the canvas margin. Everything must be inside the grid cells.
+ ELIFECYCLE  Command failed with exit code 1.
+Exit code: 1

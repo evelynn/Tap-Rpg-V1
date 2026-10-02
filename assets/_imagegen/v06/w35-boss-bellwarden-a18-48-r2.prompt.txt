@@ -1,0 +1,43 @@
+Output exactly 1536 x 1024 opaque PNG. Use the cyan guide input ONLY as the layout template; remove all guide lines from the finished image. Flat opaque RGB(255,0,255) outside all sprites.
+
+Asset type: Tap RPG small 2D pixel-art game sprite sheet. This is a real sprite art request, not a UI, diagram, poster or pixel-art-themed illustration.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 64x56 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 / RGB(43,34,51) (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/boss_bellwarden_a.grid.png, the layout template of sheet boss_bellwarden_a): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 3 x 3 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF / RGB(0,255,255) tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF / RGB(255,0,255), the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template boss_bellwarden_a (docs/art/templates/boss_bellwarden_a.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 3. One art pixel = one 3 x 3 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 3 rows of cells, each 64 x 56 art px = 192 x 168 px. Grid top-left x 192, y 260; grid 1152 x 504 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 192 + (column-1) x 192, y = 260 + (row-1) x 168. Nothing outside the grid.
+- Cells used: 18, no empty cell.
+- Row 1 idle (6 frames): lowest figure pixels on image rows y 422-424 (ground line y 425); height 54 art px = 162 px.
+- Row 2 attack_a (6 frames): lowest figure pixels on image rows y 590-592 (ground line y 593); height free.
+- Row 3 attack_b (6 frames): lowest figure pixels on image rows y 758-760 (ground line y 761); height free.
+- Horizontal centre (the figure's middle column): column 1 x 285-287, column 2 x 477-479, column 3 x 669-671, column 4 x 861-863, column 5 x 1053-1055, column 6 x 1245-1247.
+
+SUBJECT AND IDENTITY: the same boss in every cell: the Broken-Bell Warden, a broad, low, heavy guardian golem of grey stone and bronze, FACING LEFT in a slight three-quarter side view. Instead of a head it carries one huge bronze bell resting on its shoulders, mouth down, with ONE jagged crack running down the bell's front: exactly the same crack shape and place in every cell. Blocky stone torso with bronze plates and rivets, a small round bell emblem on the chest, thick short legs. Its front arm ends in a heavy bronze bell-clapper mallet. Shoulders span about nine tenths of the cell width; standing, the warden is the height given in the NUMBERS block (54 art px of the 56-row cell). Slow, silent, not evil; no face on the bell.
+PALETTE ONLY: outline #2B2233 / RGB(43,34,51); bronze #E0B06A / RGB(224,176,106) #B07A3A / RGB(176,122,58) #7A4E24 / RGB(122,78,36); stone #B4B2B0 / RGB(180,178,176) #7D7B80 / RGB(125,123,128) #4C4A52 / RGB(76,74,82); the crack ONLY in #B0603A / RGB(176,96,58), a colour used nowhere else.
+
+LAYOUT: exactly 18 sprites in exactly 6 equal columns and 3 equal rows of identical cells, each cell 8:7 (width to height), evenly spaced, reading order left to right then next row. 
+One pose per cell. Every sprite is entirely inside its own cell with clear empty margins; nothing crosses into a neighbouring cell. Same drawing scale in every cell, except where a pose line says the creature gets smaller while escaping. Every sprite's lowest paw or foot sits on the SAME local ground line in its cell, exactly on the ground line given in the NUMBERS block, except where a pose line lifts it; no ground line is drawn.
+BACKGROUND: one single flat #FF00FF / RGB(255,0,255) magenta color everywhere outside the sprites, the exact same value in every pixel. Never a brown, dark or coloured backdrop, never a vignette, spotlight, halo, glow ring, gradient or drawn checkerboard.
+
+Input image 2 role: this is the exact boss to draw; copy it exactly, not its layout.
+Input image 3 role: pixel-language reference only (outline weight, three tones per material, detail per art pixel); do not draw a rat.
+
+ROW 1 IDLE, 6 frames, 180 ms each. The body, arms and legs do not move by even one art px; only the bell rocks on the shoulders: 1 upright; 2 bell tilted one art px left; 3 upright; 4 tilted one art px right; 5 upright; 6 the bell sits one art px lower.
+ROW 2 ATTACK A, mallet slam, 6 frames, 100/80/60/60/140/200 ms: 1 ready, mallet low; 2 mallet raised to the shoulder; 3 mallet at its highest point beside the bell; 4 slams down in front on the left, mallet head at the ground line; 5 follow-through, body leaning forward; 6 back to ready.
+ROW 3 ATTACK B, bell toll, 6 frames, 120/120/100/100/160/240 ms: 1 crouches one art px; 2 braces with arms spread; 3 the bell rings: body fixed, the bell silhouette two art px larger; 4 bell still enlarged; 5 bell back to normal size, slight lean; 6 back to the idle pose.
+Draw NO sound waves, rings, lines, dust or light: the shockwave is a separate row of the second sheet.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+VISUAL REGENERATION FEEDBACK (not normalization warnings): The previous sheet loses the bell-clapper mallet in ATTACK A frame 5 and ATTACK B frames 3 and 4, replacing the weapon arm with an ordinary empty hand. Correct this: the SAME heavy bronze mallet is the end of the FRONT arm in ALL EIGHTEEN frames, including slam follow-through and both enlarged-bell toll frames. It is a permanent anatomical weapon, not a detachable item. Never omit it, shrink it away, hide it behind the torso, or move it to the far arm. Keep the mallet visible and separate from every neighbouring frame. Preserve the fixed body/feet of all six idle frames; animate only the bell there.

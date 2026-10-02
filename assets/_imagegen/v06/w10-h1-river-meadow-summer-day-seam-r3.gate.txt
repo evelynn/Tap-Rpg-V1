@@ -1,0 +1,22 @@
+pnpm art:gate assets/_imagegen/v06/w10-h1-river-meadow-summer-day-seam-r3.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w10-h1-river-meadow-summer-day-seam-r3.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w10-h1-river-meadow-summer-day-seam-r3.png
+PASS bg_far · canvas · 이미지 1981×793 (틀 1536×1024) · S 6.13 (band) · 칸 격자 · 시트 블록 4.7 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x233 y203 1568×392 비율 4(규격 4) · 위 자름 0 · 좌우 자름 233/180 이음 137
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              614379     -    -     -  64.0(-)        4.7   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Image is 1981x793, not the 1536x1024 template canvas; the strip was found by its content at x 0-1980, y 203-594 (1981x392 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1981x392 (5.05:1) is wider than 4.00:1; normalization keeps x 233-1800 (removes 233 left and 180 right columns), the window with the smallest left-right seam difference: seam score 137 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 4.7-4.7 image px in 1 cells, not 6.1 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F403FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+EXIT=0
+V06_MISSING_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-55417a20-f0ef-4dca-8f49-ca964ab44280.png","sha256":"A4FFC724E3526E481A4D07DD69BD67DB9397AD6CFFD2A0899D74EA721B279E58","same":true,"width":1981,"height":793,"exit":0,"gate":"PASS bg_far · canvas · 이미지 1981×793 (틀 1536×1024) · S 6.13 (band) · 칸 격자 · 시트 블록 4.7 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x233 y203 1568×392 비율 4(규격 4) · 위 자름 0 · 좌우 자름 233/180 이음 137","inputShaNow":"6073DFD3DEFD6E02625F634CBED21B7EE83671D7D10C9D198F63B76BE20C97FF","oldStem":"w10-h1-river-meadow-summer-day-seam","stem":"w10-h1-river-meadow-summer-day-seam-r3","previousPrompt":"w10-h1-river-meadow-summer-day-seam-r2.prompt.txt","id":"V06-06","input":"E:/AI_work/Tap_rpg/assets/_imagegen/v05/w10-h1-river-meadow-summer-day-r3.png","spec":"bg_far","round":1,"inputSha":"6073DFD3DEFD6E02625F634CBED21B7EE83671D7D10C9D198F63B76BE20C97FF","inputWidth":1983,"inputHeight":793,"inputUnchanged":true,"prompt":"w10-h1-river-meadow-summer-day-seam-r3.prompt.txt","gateFile":"w10-h1-river-meadow-summer-day-seam-r3.gate.txt","review":"V06-06 실제 gate PASS, 안내색0·격자밖0·채움100%. 양 끝 나무·풀·바닥을 대응하도록 수정하고 중앙 마을·산·강/징검돌·울타리·갈대 구도 유지. 오른쪽 끝 통나무가 제거되고 양 끝 수목/바위 배치가 조정되어 이음 편집 범위에 부합. 완전한 화소 이음/중앙 정적 화소 정합은 후속 보정 필요(도구가 고른 구간 seam137). 출력1981×793으로 입력1983×793보다 폭2px 작음; 최신 사용자 지시대로 크기 보정 전제 수용, 재생성 사유로 삼지 않음. 생성기 원본 복사 SHA256 일치·입력 불변.","decision":"차후 크기·이음 정합 보정 전제 수용"}

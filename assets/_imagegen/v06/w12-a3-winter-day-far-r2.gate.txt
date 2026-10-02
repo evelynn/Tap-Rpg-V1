@@ -1,0 +1,21 @@
+COMMAND: pnpm art:gate E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-winter-day-far-r2.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "E:/AI_work/Tap_rpg/assets/_imagegen/v06/w12-a3-winter-day-far-r2.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a3-winter-day-far-r2.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.92 (band) · 칸 격자 · 시트 블록 26.0 · 키 비율 - · 배경 100.0% · 안내색 45 · 격자 밖 0 · 경고 3 · 띠 x2 y315 1516×379 비율 4(규격 4) · 위 자름 0 · 좌우 자름 2/18 이음 207.4
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              574514     -    -     -  64.0(-)       26.0   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x379 (4.05:1) is wider than 4.00:1; normalization keeps x 2-1517 (removes 2 left and 18 right columns), the window with the smallest left-right seam difference: seam score 207.4 (mean colour distance of the 4 edge columns, 0 = identical).
+- Drawn pixel blocks are 26-26 image px in 1 cells, not 5.9 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F902FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 45 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+ ELIFECYCLE  Command failed with exit code 1.
+EXIT: 1
+V06_REPAIR_META: {"stem":"w12-a3-winter-day-far-r2","input":"w12-a3-winter-day-far.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-8197-7082-8497-8c69a588460c\\exec-99b6a6b9-c69a-4c4f-afc4-add3aa1ca5b8.png","sha256":"9505330DB93D61076A200AC10572068C67DC50B55EAB4206E013F489E2B875B1","same":true,"width":1536,"height":1024,"exit":1,"id":"V06-91","batch":31,"oldStem":"w12-a3-winter-day-far","round":1,"review":"겨울 원경 설산·숲·먼 마을과 띠배치 유지. 청록 잔류만 제거 보완, 나무/눈 표면의 미세 화소차이는 원본 가시 화소 재사용과 채움마스크로 정합."}

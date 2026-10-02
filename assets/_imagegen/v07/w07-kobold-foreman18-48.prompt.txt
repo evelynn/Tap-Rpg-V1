@@ -1,0 +1,11 @@
+Use case: precise-object-edit. Input image 1 is the newly redrawn V07 base enemy sheet and the ONLY edit target. Output one fully opaque PNG exactly 1024 x 1536. This is a colour/prop variant of that exact sheet, with the identical eighteen-cell occupancy, silhouettes except the added prop, and every original position. Keep the source pixel grid and hard stepped blocks; added props use the same coarse game pixel language with nominal 6x6 image-pixel blocks, never tiny detailed painting. Preserve all four visible escaping poses.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Recolour the skin: #9AA85A becomes #C8783A and #6E7A5A becomes #B0603A. Add a rounded brown leather miner's cap #8E5E38 #5E3C24 with a short front brim and a small dull brass plate #B07A3A on the front, sitting on top of the head between the ears; the ears stay visible.
+
+Keep the existing pickaxes, poses, vest, belt, belly and eighteen occupied cells exactly. The cap follows the source head in each pose.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+The background, including every margin and the two empty cells on row four, is one fully opaque flat #FF00FF. No cyan, no transparency, no extra character or prop.

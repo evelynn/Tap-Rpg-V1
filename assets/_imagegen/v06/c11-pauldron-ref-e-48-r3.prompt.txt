@@ -1,0 +1,6 @@
+Precise technical cleanup of the supplied pixel-art sprite sheet. Output exactly 2172 x 724 pixels; same opaque canvas and every sprite in the same position. Change ONLY stray bright CYAN color marks. Remove every pixel colored #00FFFF or bright cyan close to RGB(0,255,255), replacing each with the color of its immediate surrounding region. There must be ZERO cyan or turquoise guide speckles. The trousers remain DARK TEAL, NOT bright cyan. Do not otherwise recolor or redraw the sprites. Keep all nine enlarged near-side steel pauldrons, bell chest insignia, faces, hands, poses and clothes exactly unchanged. Keep the background fully opaque flat magenta RGB(255,0,255), alpha255. No transparency, no crop, no rescale, no gradient.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet with the same layout (cells are numbered (column,row) from 0 at the top-left; sizes are in blocks = one game pixel). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 4 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+(Measured without the template canvas: frames are compared with the other frames of the same row, not against the template marks.)

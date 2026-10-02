@@ -1,0 +1,19 @@
+HISTORICAL ORIGINAL PRODUCTION PROMPT — already completed, reference only. Do not repeat extraction, seasonal changes, or terrain reconstruction. The active request at the end is a colour-only repair.
+
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Keep the input artwork strip at its exact position and size. Outside it is solid magenta RGB(255,0,255), alpha 255.
+
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: the sky, clouds, distant mountains, far hills, far trees and far buildings. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF. No new objects.
+
+FINAL REQUIRED RESULT: For H3 Wolf Hill, completely remove the large foreground tree on the left, all foreground boulders and rock ledges, the ruined beacon tower and its stairs/walls, both fences, silver-grass tufts, flowers, and the entire walking-path/ground band. Replace their pixels with continuous distant mountains, hills, valley and far woodland scenery. Paint the far scenery all the way to the strip bottom edge; no holes, no horizontal path, no foreground stones. Do not return the full original scene. Keep its existing far ridge line, sky/cloud shapes and season/time palette. Preserve existing moon, stars, flat dawn mist or tiny far lights if present. No new celestial bodies or lights. No characters, text, writing, borders or guide cyan RGB(0,255,255). Crisp pixel clusters, no blur, no gradient or glow.
+
+END OF HISTORICAL PRODUCTION PROMPT.
+
+PREVIOUS ATTEMPT FAILED THE SIZE CHECK. Keep everything that was right and fix exactly these problems:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 838 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+
+ACTIVE EDIT — ONLY BLUE/NEAR-CYAN COLOUR REPAIR:
+Input image 1 is w12-h3-autumn-day-far.png. Use the original failed PNG: r2 changed the left rock spires and widened the lake, so r2 is excluded. The original autumn geometry and foliage are locked.
+Keep this exact landscape. Change the bright aqua, cyan and turquoise colours on the existing sky, lake and blue distant mountain surfaces into matte, visibly desaturated blue-grey: sky highlights #A9BDD3, water #8296AA, darker blue-grey #52697E. There must be no vivid cyan, aqua or turquoise remaining, including tiny bright lake highlights. Keep pixel-cluster shapes and boundaries; this is recolouring existing surfaces only.
+Keep every original rock spire on the left ridge, every mountain silhouette, lake shoreline, tree, forest band, cloud and all autumn colours fixed. Do not remove the spires or widen the lake. Preserve white clouds, white snow, golden foliage, dark conifers and all non-blue objects. Do not perform FILL extraction again or reconstruct any terrain.
+Exact opaque PNG canvas 1536 x 1024. Exact strip x0..1535, y314..708. Exact solid magenta outer margins. No scaling, cropping, moving, adding or removing objects. Only the cyan-family surface colours change to the specified muted blue-greys. Output one finished image.

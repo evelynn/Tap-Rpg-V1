@@ -1,0 +1,21 @@
+Use case: precise-object-edit.
+Input image 1 is the existing muted-teal pixel-art cave FAR layer. Preserve this exact 1536 x 1024 canvas, full-width scenery band y316..707, jagged star-fissure outline, stars, arches, stalactites, rock silhouettes and all positions. The entire outside is opaque solid RGB(255,0,255).
+
+ACTIVE EDIT: CLEAN UP THE ENTIRE BRIGHT CYAN COLOUR RAMP, not just the white fissure outline. Lower the saturation of ALL bright turquoise/aqua glints anywhere inside the cave strip: tiny coloured stars, fissure tip and rim, far mist/wall highlights and small bright rock facets. Make them matte dusty jade, muted slate-teal or neutral ivory. Retain the cave's teal colour identity, depth and shading. Use dusty slate-teal #5B858B for medium glints, pale jade-grey #97B6B7 for brighter highlights, and neutral ivory #DFDFD8 for star/rim light. Existing dark teal shadows can remain unchanged. Every very bright highlight must have substantial red as in pale jade-grey or neutral ivory; no vivid blue-green or electric aqua remains.
+Use crisp hard-edged pixel clusters and flat light, no coloured glow, bloom or colour-fringed star edges. Where the old fissure rim and tiny star flecks were cyan, make them neutral grey-white. Keep all objects and rock pattern geometry exactly. No new detail, no changed arch design, no rearranged stars, no filled-in fissure.
+The key guide detector rejects not only pure RGB(0,255,255) but every colour within RGB distance80 of it. Keep edited highlights well away from that range by using the muted colours above. Do not affect the magenta outside key background.
+All previous scene construction and layer extraction are ALREADY COMPLETE. The historical request below is reference only. Do not rebuild or extract the scene again; only apply the brighter-colour desaturation to the supplied image.
+
+=== ARCHIVED PRODUCTION REQUEST — REFERENCE ONLY ===
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the source strip boundaries and exact position. All outer margins solid opaque RGB(255,0,255).
+
+Use case: edit of the provided background strip. Keep the exact canvas, the strip position and the flat #FF00FF outside the strip. Keep ONLY the far layer: the back cave wall, the ceiling, the deep cave silhouettes, and for H5 the daylight opening with the distant bell tower. Remove every middle and near object and paint what the far layer shows behind them, continuing its shapes, colours, season and time of day seamlessly. Every far-layer pixel that was already visible keeps its exact colour. The far layer fills the whole strip with no hole: behind the removed objects and behind the ground band it continues the far scenery, so every pixel inside the strip is painted. Outside the strip stays flat #FF00FF. No new objects.
+
+Remove the foreground ruined stone arch and columns, steps, vines and black roses, all near crystals and rubble and floating stone shards, and the ground/floor band. Preserve the star-speckled crack as part of the back wall, exact crack position/shape/colour, back cave wall, ceiling and distant ruin silhouettes. Continue the back-wall cave scenery behind every removed item to the strip bottom. Preserve the source teal or rose-violet colour mood. No holes anywhere in the strip, no floor band. No new objects or lights. No pure cyan RGB(0,255,255). Crisp flat pixel clusters, no blur, gradient or halo.
+=== END ARCHIVE ===
+
+[GF — actual previous gate feedback]
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Remove the cyan #00FFFF guide marks: 10 cyan pixels were found. The guide ticks are for placement only and must not appear in the output.
+
+FINAL ACTIVE EDIT: Preserve every shape and the exact band; neutralize ALL tiny bright aqua/cyan highlights across the entire interior, including stars, fissure edges and bright far-wall pixels, into the muted jade/grey-white ramp. Keep the matte teal cave and solid magenta outside.

@@ -1,0 +1,19 @@
+BACKGROUND IS PAINT, NOT TRANSPARENCY: a single flat opaque RGB(255,0,255) rectangular field, alpha255, everywhere outside the figures right up to their original outlines. No cutout preview, no brown halo or black field. Preserve source pixel colours on all unchanged figure parts.
+
+CANVAS LOCK: output exactly 1774 x 887 pixels, identical to the supplied image. This is a full opaque sprite sheet. All background is flat RGB(255,0,255), alpha255. Preserve the original grid, every figure's coordinates, head, face, skin, arm and hand poses, and the original pixel-block scale. Keep the source teal trousers RGB(39,151,141) and RGB(0,118,109), hair and skin colours exactly as they are. Only the specifically listed parts change. No cropping, resizing or colour grading.
+
+Use case: precise edit of the provided sprite sheet. Keep the exact canvas, the exact cell layout, the flat #FF00FF / RGB(255,0,255) background and the exact position, size and pose of every figure. Change ONLY the part named below, in the cells named below. Every other pixel (face, hair, skin, arms, hands, clothing, trousers, boots, held items) stays exactly as in the input, with its exact colour, except where the new part now covers it; never recolour, relight, brighten, darken or saturate anything that is kept. The new part follows each cell's existing pose: the same head angle, body lean and hand positions. Never move an arm, a hand or the head to fit the part. Empty cells stay empty. Same pixel-block size and outline style as the input. No gradient, no halo, no glow, no extra objects.
+
+SWAP (weapon): in every cell where the character holds the short sword, replace the sword with the weapon described below; all other cells stay exactly unchanged. The grip sits in the same front hand at the same place in every cell; the rear hand and both arms do not move. Identical length and shape in every cell; never shorten the weapon to fit. The blade or head may reach past the edge of its own cell into the empty margin, but it never touches the neighbouring figure or its weapon. Weapon:
+
+a SPEAR about 1.4 times as long as the input sword: a straight wooden shaft #8E5E38 / RGB(142,94,56) #5E3C24 / RGB(94,60,36), a leaf-shaped ivory head #F0E6CC / RGB(240,230,204), and a small curved fang-shaped steel ornament #B4B2B0 / RGB(180,178,176) just below the head. The spear is ALWAYS horizontal with the head pointing RIGHT, never rotated; the front hand holds the shaft near its middle and the spear simply follows the hand's position in each cell.
+
+Do NOT draw: text, letters, numbers, labels, frame numbers, arrows, grid lines, cell borders, panel frames, watermark, ground shadow, landscape or scenery, blood, wounds, corpses, magic effects, motion trails, speech bubbles, extra characters, duplicate items. Output only the finished sprite sheet.
+
+
+Correction: the three spear shafts must be strictly horizontal, with both shaft ends at the same y coordinate as the original front hand in that cell. Do not slope the shafts upward. There must be visible magenta clearance between the first spearhead and the second character. All three characters remain at their original positions. Keep every source hand fixed.
+
+Regenerate this sheet with the same layout (cells are numbered (column,row) from 0 at the top-left; sizes are in blocks = one game pixel). Fix exactly these problems and change nothing else:
+- Cell (1,0) "hit 2": the cell is empty or nearly empty (0 px). Draw the "hit 2" frame here.
+- Cell (0,0) "hit 1": this drawing is joined to a neighbouring frame (one connected shape 93.3 blocks wide and 39.8 blocks tall, 2.2 times the pixels of a single frame). Frames must never touch or overlap; leave clear #FF00FF background between every pair of frames.
+(Measured without the template canvas: frames are compared with the other frames of the same row, not against the template marks.)

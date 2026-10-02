@@ -1,0 +1,36 @@
+Asset type: Tap RPG pixel-art icon sheet for a tiny game HUD. These are real in-game pixel icons, not a UI mockup, screenshot, diagram or poster. Icons also use the one-block dark plum #2B2233 outline.
+PIXEL LANGUAGE: every figure must look designed on a genuine logical 12x12 pixel canvas and then shown with large, uniform, perfectly square pixel blocks. Crisp hard square pixel clusters and deliberate one-block stair-steps. Strong readable silhouette with very restrained internal detail. Outer contour exactly one pixel-block thick in dark plum #2B2233 (characters, enemies, weapons and props only; backgrounds follow their own rule in §3.5). Flat color fills in large coherent clusters.
+Absolutely no blur, anti-aliasing, smooth vector curves, gradients, soft lighting, glow, painterly strokes, noisy dithering, fur or hair texture, glossy or 3D rendering, photographic detail.
+
+TEMPLATE (input image 1 = docs/art/templates/ui_icon_12.grid.png, the layout template of sheet ui_icon_12): input image 1 is NOT art to copy; it fixes the canvas, the cells and the size of every drawing.
+- Output exactly one image of exactly 1536 x 1024 pixels, the same canvas as input image 1. Keep every cell exactly where it is in input image 1.
+- Draw on a hard art-pixel grid: every art pixel is exactly 20 x 20 image pixels, every block the same size, straight square steps, no half blocks, no anti-aliasing, no blur.
+- If input image 1 shows placeholder figures: repaint each placeholder figure in place with the pose asked for below, at the same height, with its lowest pixel exactly on the placeholder's lowest pixel row (the ground line) and on the same horizontal centre. The placeholder gives size and position only: do not copy its colours, clothes, pose or identity.
+- If input image 1 is an empty grid: the cyan ticks in the margins mark the cell borders, each column's centre and, on the left and right, the row just below each row's lowest pixel (the ground line). Use them only to place the drawings.
+- Nothing outside the cells. Remove every cyan #00FFFF tick: the output has no cyan pixel at all.
+- Everything that is not a drawing is one flat #FF00FF, the exact same value in every pixel, including the margins and the empty cells. The image is fully opaque: no transparency, no semi-transparent pixels.
+- No text, letters, numbers, labels, grid lines, cell borders or tick marks in the output.
+
+NUMBERS - template ui_icon_12 (docs/art/templates/ui_icon_12.json). Numbers are image pixels of the output unless they say art px.
+- Canvas: exactly 1536 x 1024 px (landscape).
+- Block: S = 20. One art pixel = one 20 x 20 square of identical image pixels; every block exactly the same size, hard edges, no half blocks.
+- Grid: 6 columns x 3 rows of cells, each 12 x 12 art px = 240 x 240 px. Grid top-left x 48, y 152; grid 1440 x 720 px. Cell (column,row), counted from (1,1) at the top-left, starts at x = 48 + (column-1) x 240, y = 152 + (row-1) x 240. Nothing outside the grid.
+- Cells used: 15. Empty cells (stay flat #FF00FF): (4,3), (5,3), (6,3).
+- No ground-line or centre numbers: keep each drawing where the row text or the placeholder puts it, fully inside its cell.
+
+LAYOUT: exactly 15 icons in 6 equal columns and 3 equal rows of identical square cells; each cell is one 12x12 logical pixel canvas. Row 3 holds three icons; its last three cells stay empty. Each icon is centred in its cell, fills most of it and leaves a one-block empty margin on every side. Same block size in every cell.
+BACKGROUND: one single flat #FF00FF magenta color everywhere outside the icons, the exact same value in every pixel. No backing plate, badge, vignette, halo or gradient.
+
+ROWS 1 AND 2, six glyphs per row in reading order:
+Twelve status glyphs, bold simple silhouettes readable at their real 12-pixel size, each with a clearly different outline shape: 1 house with a pitched roof #8C6E4B; 2 hammer beside a small pouch #B07A3A; 3 two footprints #6D8F5A; 4 short sword pointing up-right #C0603A; 5 folded map #3F8F8A; 6 arched door with two steps #6A5A8C; 7 small campfire #D98A2B; 8 house with an arrow pointing LEFT #5A7FA8; 9 small vial with a cross #4FA37A; 10 sealed scroll with an exclamation mark #7B5CC4; 11 open book with a sprout #A8894A; 12 two vertical bars #6C7A89.
+
+ROW 3, cells 1 to 3:
+Three small emblems: 1 a lantern frame with NO flame, the glass empty and dull, #6E6862; 2 the same lantern lit, frame #B07A3A with a gold flame #FFE38A inside; 3 a crescent moon #B9C8FF. Lanterns 1 and 2 have exactly the same frame shape.
+
+Each icon uses at most three colors: the stated accent, one darker shade and the dark-plum outline. Only the lit lantern uses its stated frame and flame colors plus the outline. Keep every art pixel exactly 20x20 image pixels; these are deliberately tiny 12x12 icons, not detailed illustrations. All non-icon pixels and all empty cells are opaque RGB(255,0,255).
+
+Do NOT draw: text, letters, numbers, labels, arrows unless an icon line asks for one, grid lines, cell borders, panel frames, backing plates, drop shadows, glow, gradients, watermark. Output only the finished icon sheet.
+
+VISUAL CORRECTION FOR TRUE 12x12 ICONS: The prior result was a detailed 18-20-pixel illustration inside each cell. Replace that detail with a NATIVE 12x12 glyph. Each entire icon fits within TEN logical columns and TEN logical rows, plus a one-pixel empty border. Every smallest square, every stair step and the outline thickness is exactly 20 image pixels. No sub-pixel texture, tiny highlights, small brick lines or miniature decorations. Think large chunky low-resolution symbols with 3 flat colors, not illustrated objects. A silhouette with one simple darker shadow is enough.
+
+Palette correction: each icon uses ONLY its named accent, ONE darker shade of that accent and #2B2233. House only brown (no cream wall/blue window); hammer-and-pouch only ochre (no silver hammer); sword only russet (no silver blade); door only muted purple (no brown door/gold handle); scroll only purple (no cream parchment); book-and-sprout only ochre (no green leaves); vial only green (no white glass). The lantern pair is the stated exception: empty grey lantern, lit ochre frame plus gold flame, both same outline. All 15 symbols remain in the prescribed template cells, NOT shifted above the grid. No cyan ticks survive.

@@ -1,0 +1,13 @@
+TECHNICAL OUTPUT: one opaque PNG exactly 1536 x 1024 pixels. Preserve the artwork strip at its original location and dimensions; do not move, reframe or enlarge it. Paint every outer margin solid magenta RGB(255,0,255), alpha 255. Preserve the existing source colours except the explicitly listed season or time changes.
+
+Use case: precise edit of the provided image. Keep the exact canvas, the exact cell layout or strip, the flat #FF00FF / RGB(255,0,255) background and the exact position, size, pose and outline of everything that already exists. Change ONLY what is listed below, in every cell unless cells are named. Every other pixel stays exactly as in the input, with its exact colour, except where a new part now covers it; never recolour, relight, brighten, darken or saturate anything that is not listed. Same pixel-block size, palette mood and outline style as the input. No gradient, no halo, no glow, no extra objects, no new poses. Empty cells stay empty.
+
+Make it night: the sky becomes deep blue with a small round moon and scattered one-block stars; everything is lit by cool moonlight, one to two shades darker and bluer, but the band from the ground line up to character height stays readable and no colour is darker than #4C4A52 / RGB(76,74,82). A few tiny distant windows in the far layer glow warm; windows and lanterns in the middle and near layers stay unlit.
+
+Keep every silhouette, building, object and the ground line exactly where they are and exactly the same shape; change only colours and surface details inside existing shapes, and the sky. Do not add, move or remove objects.
+
+Do NOT draw: text, letters, numbers, signs with writing, arrows, grid lines, borders, frames, watermark, characters, people, animals, enemies, blood, sun disc, light rays, lens flare, bloom, soft glow halos, gradients, vignette. Output only the finished strip.
+
+Sky recolour palette: deep moonlit blue RGB(80,90,118), moon and stars RGB(232,238,242). Floor palette must stay readable; darkest permitted artwork shade is RGB(76,74,82), #4C4A52 / RGB(76,74,82). Do not introduce black.
+
+Input image role: edit target for h4; preserve its existing rocky landscape and silhouettes. Never paint guide cyan RGB(0,255,255).

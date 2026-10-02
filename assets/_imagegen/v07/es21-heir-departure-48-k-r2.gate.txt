@@ -1,0 +1,24 @@
+pnpm art:gate assets/_imagegen/v07/es21-heir-departure-48-k-r2.png --spec 'scene_event'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v07/es21-heir-departure-48-k-r2.png" "--spec" "scene_event"
+
+assets/_imagegen/v07/es21-heir-departure-48-k-r2.png
+PASS scene_event · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (band) · 칸 격자 · 시트 블록 3.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y412 1536×192 비율 8(규격 8) · 위 자름 28 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   scene 1             73727     -    -     -  64.0(-)        3.6   0.0%  ok (경고 block) 채움 100%/100%
+  (1,0)   scene 2             73728     -    -     -  64.0(-)        3.6   0.0%  ok (경고 block) 채움 100%/100%
+  (2,0)   scene 3             73728     -    -     -  64.0(-)        3.7   0.0%  ok (경고 block) 채움 100%/100%
+  (3,0)   scene 4             73728     -    -     -  64.0(-)        3.6   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 384-603 (1536x220 px); the template strip is x 0-1535, y 416-607 (1536x192 px); normalization crops the strip and resamples it to 512x64.
+- Strip 1536x220 (6.98:1) is taller than 8.00:1; normalization removes the top 28 rows (y 384-411) and keeps the bottom row y 603.
+- Drawn pixel blocks are 3.6-3.7 image px in 4 cells, not 3 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FB03FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the scene_event template. No regeneration needed.
+Exit code: 0
+
+V07_META: {"id":"V07-ES21-key","stem":"es21-heir-departure-48-k-r2","spec":"scene_event","input":"E:/AI_work/Tap_rpg/docs/art/templates/scene_event.grid.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e579-37a6-7121-949f-c470bfae816a\\exec-692c4615-84de-459b-9c57-5958f90dc4ca.png","sha256":"65A774B48CFA10AC341BE814F59725CF60B3AFDA988FB4EA43CF91FF6CB7BF59","width":1536,"height":1024,"exit":0,"same":true,"actualgate":"PASS scene_event · canvas · 이미지 1536×1024 (틀 1536×1024) · S 3 (band) · 칸 격자 · 시트 블록 3.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y412 1536×192 비율 8(규격 8) · 위 자름 28 · 좌우 자름 0/0","review":"4개같은구도,인물0·이정표x64·돌다리/길확인. 혼잡한울타리와앞쪽나무를줄여인물자리를비웠다. 실제띠의치수/도트경고는정규화대상. 정지배경칸별픽셀동일성/최암색정량은미검증.","selected":true}

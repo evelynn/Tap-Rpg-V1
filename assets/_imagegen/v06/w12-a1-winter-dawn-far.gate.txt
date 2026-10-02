@@ -1,0 +1,20 @@
+pnpm art:gate assets/_imagegen/v06/w12-a1-winter-dawn-far.png --spec bg_far
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-a1-winter-dawn-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a1-winter-dawn-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 34.6 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x0 y321 1536×384 비율 4(규격 4) · 위 자름 5 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              589824     -    -     -  64.0(-)       34.5   0.0%  ok (경고 block) 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip 1536x389 (3.95:1) is taller than 4.00:1; normalization removes the top 5 rows (y 316-320) and keeps the bottom row y 704.
+- Drawn pixel blocks are 34.6-34.6 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F802FB), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.
+
+Exit code: 0
+V06_META: {"stem":"w12-a1-winter-dawn-far","input":"w11-a1-winter-dawn.png","source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a8-1dbb-7b63-ace2-f22c35eda753\\exec-4dc05729-7e50-474b-8a8f-8b268be78cd5.png","sha256":"8392AC87315700877C19ABA901386CF895AF0255DB8126EB0559E11B6DFB0CC8","width":1536,"height":1024,"exit":0,"id":"V06-91","batch":27,"review":"겨울 새벽 설원·먼 마을·안개 유지, 전경 시설·길 제거. 빈 영역을 눈 언덕으로 채움. 원경 나무 재배치와 눈 반복 무늬는 차후 마스크 보정."}

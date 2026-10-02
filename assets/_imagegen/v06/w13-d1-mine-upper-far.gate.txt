@@ -1,0 +1,18 @@
+pnpm art:gate assets/_imagegen/v06/w13-d1-mine-upper-far.png --spec bg_far
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w13-d1-mine-upper-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w13-d1-mine-upper-far.png
+PASS bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 5.47 (band) · 칸 격자 · 시트 블록 - · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 3 · 띠 x59 y338 1400×350 비율 4(규격 4) · 위 자름 0 · 좌우 자름 59/77 이음 60.5
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              490000     -    -     -  64.0(-)          -   0.0%  ok 채움 100%/100%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 338-687 (1536x350 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x350 (4.39:1) is wider than 4.00:1; normalization keeps x 59-1458 (removes 59 left and 77 right columns), the window with the smallest left-right seam difference: seam score 60.5 (mean colour distance of the 4 edge columns, 0 = identical).
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F803FA), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the bg_far template. No regeneration needed.

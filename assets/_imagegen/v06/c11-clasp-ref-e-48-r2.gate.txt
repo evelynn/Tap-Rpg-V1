@@ -1,0 +1,27 @@
+pnpm art:gate assets/_imagegen/v06/c11-clasp-ref-e-48-r2.png --spec chr_actions_b --no-canvas --rows "cheer,collapse"
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c11-clasp-ref-e-48-r2.png" "--spec" "chr_actions_b" "--no-canvas" "--rows" "cheer,collapse"
+
+assets/_imagegen/v06/c11-clasp-ref-e-48-r2.png
+PASS chr_actions_b · no-canvas · 이미지 2171×724 (틀 1536×1024) · S 7.54 (cell_ratio) · 칸 격자 · 시트 블록 8.5 · 키 비율 0.979 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   cheer 1             36426     0    -  -0.5  33.3(-)        9.6   0.0%  ok (경고 block)
+  (1,0)   cheer 2             37627     1    -  -0.9  39.0(40)      11.3   0.0%  ok (경고 block)
+  (2,0)   cheer 3             38835     0    -  -1.7  38.5(40)       9.2   0.0%  ok (경고 block)
+  (3,0)   cheer 4             37788     0    -   0.0  35.3(40)       8.3   0.0%  ok
+  (0,1)   collapse 1          45600     0    -   0.5  39.8(40)       9.0   0.0%  ok (경고 block)
+  (1,1)   collapse 2          37938     0    -   0.9  33.9(-)        8.4   0.0%  ok
+  (2,1)   collapse 3          41579     0    -   1.7  31.0(-)        8.5   0.0%  ok
+  (3,1)   collapse 4          33736     0    -     -  17.4(-)        8.3   0.0%  ok (경고 bbox)
+  (4,1)   collapse 5          33827     0    -     -  17.4(-)        8.1   0.0%  ok (경고 bbox)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (3,1) "collapse 4": crosses the equal-grid cell boundary (right 0.3 blocks).
+- Cell (4,1) "collapse 5": crosses the equal-grid cell boundary (right 1.1 blocks).
+- Drawn pixel blocks are 9-11.3 image px in 4 cells, not 7.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F903F8), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_actions_b template. No regeneration needed.
+Exit code: 0

@@ -1,0 +1,34 @@
+pnpm art:gate assets/_imagegen/v06/c14-ref-d-v4-48.png --spec chr_actions_a --no-canvas --rows "hit,discover,interact"
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c14-ref-d-v4-48.png" "--spec" "chr_actions_a" "--no-canvas" "--rows" "hit,discover,interact"
+
+assets/_imagegen/v06/c14-ref-d-v4-48.png
+FAIL chr_actions_a · no-canvas · 이미지 1774×887 (틀 1536×1024) · S 6.16 (cell_ratio) · 칸 격자 · 시트 블록 6.5 · 키 비율 0.995 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 5
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   hit 1               63068     0    -  24.2  39.8(40)      18.7   0.0%  ✗ touch (경고 bbox,center,block)
+  (1,0)   hit 2                   0     -    -     -  -                -   0.0%  ✗ missing
+  (2,0)   hit 3               32044     0    -   0.0  39.8(40)       5.6   0.0%  ok (경고 bbox)
+  (0,1)   discover 1          27677     0    -  -0.3  41.7(40)       6.7   0.0%  ok
+  (1,1)   discover 2          27882     0    -   1.5  40.1(40)       6.7   0.0%  ok
+  (2,1)   discover 3          28444     0    -   1.8  40.4(40)       7.0   0.0%  ok
+  (3,1)   discover 4          28216     0    -  -0.3  39.9(40)       6.3   0.0%  ok
+  (0,2)   interact 1          30743     0    -   0.0  39.6(40)       6.1   0.0%  ok
+  (1,2)   interact 2          29675     0    -  -1.5  39.6(40)       6.3   0.0%  ok
+  (2,2)   interact 3          28129     0    -  -1.3  39.6(40)       6.6   0.0%  ok
+  (3,2)   interact 4          30507     0    -   0.3  39.6(40)       6.0   0.0%  ok
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (0,0) "hit 1": crosses the equal-grid cell boundary (right 53.6 blocks).
+- Cell (0,0) "hit 1": horizontal center 24.2 blocks right of the column median.
+- Cell (2,0) "hit 3": crosses the equal-grid cell boundary (right 9.4 blocks).
+- Drawn pixel blocks are 18.7-18.7 image px in 1 cells, not 6.2 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F705F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet with the same layout (cells are numbered (column,row) from 0 at the top-left; sizes are in blocks = one game pixel). Fix exactly these problems and change nothing else:
+- Cell (1,0) "hit 2": the cell is empty or nearly empty (0 px). Draw the "hit 2" frame here.
+- Cell (0,0) "hit 1": this drawing is joined to a neighbouring frame (one connected shape 93.3 blocks wide and 39.8 blocks tall, 2.2 times the pixels of a single frame). Frames must never touch or overlap; leave clear #FF00FF background between every pair of frames.
+(Measured without the template canvas: frames are compared with the other frames of the same row, not against the template marks.)
+ ELIFECYCLE  Command failed with exit code 1.

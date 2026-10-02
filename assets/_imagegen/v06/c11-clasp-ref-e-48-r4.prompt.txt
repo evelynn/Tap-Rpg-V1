@@ -1,0 +1,6 @@
+Use case: precise-object-edit. Input image 1 is the edit target, a 2172 x 724 opaque pixel-art sprite atlas. Output EXACTLY 2172 x 724. Keep the entire canvas and every existing pixel unchanged except the two small additions specified here.
+
+ONLY in the bottom row's SECOND and THIRD figures (the two kneeling poses), add one small round bronze clasp at the neck edge of the near shoulder, just above the blue sleeve, matching the bronze clasps already present on the other seven figures. Each clasp is about two existing pixel blocks in diameter, bronze face #B07A3A, darker edge #7A4E24. Both kneeling figures must have one visible clasp. Do not add anything to the other seven figures. Do not change any face, hair, arm, sleeve, clothing, boot, pose, position, pixel scale, or color elsewhere.
+
+Background must remain fully opaque vivid solid RGB(255,0,255) magenta. No alpha transparency, no glow, no shadow, no resizing, no cropping, no extra objects. Preserve all 2172 columns and all 724 rows.
+

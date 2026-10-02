@@ -1,0 +1,26 @@
+pnpm art:gate assets/_imagegen/v06/w12-a2-autumn-dusk-far.png --spec 'bg_far'
+
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/w12-a2-autumn-dusk-far.png" "--spec" "bg_far"
+
+assets/_imagegen/v06/w12-a2-autumn-dusk-far.png
+FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 7.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y348 1536×384 비율 4(규격 4) · 위 자름 59 · 좌우 자름 0/0
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   far 1              512345     -    -     -  64.0(-)        7.0   0.0%  ✗ fill (경고 block) 채움 87%/99%
+
+Warnings (normalization fixes these; not sent to the generator):
+- Strip painted at x 0-1535, y 289-731 (1536x443 px); the template strip is x 0-1535, y 320-703 (1536x384 px); normalization crops the strip and resamples it to 256x64.
+- Strip 1536x443 (3.47:1) is taller than 4.00:1; normalization removes the top 59 rows (y 289-347) and keeps the bottom row y 731.
+- Drawn pixel blocks are 7-7 image px in 1 cells, not 6 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #F10AF3), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+Regenerate this sheet on the bg_far template (one art pixel = 6x6 image pixels; cells are numbered (column,row) from 0 at the top-left). Fix exactly these problems and change nothing else:
+- Cell (0,0) "far 1": only 86.9% of the frame is painted; fill the whole 256x64-block frame edge to edge with opaque scenery (no magenta or transparent gaps).
+ ELIFECYCLE  Command failed with exit code 1.
+
+EXIT=1
+META {"source":"C:\\Users\\hansol\\.codex\\generated_images\\01a0e6a4-d1b1-7212-9783-7ee3a4819356\\exec-2921c1b2-99b0-4ee9-a4c5-c6db225d9f11.png","sha256":"45FBDF132E380F2E6CA8C3C8F024FF319BDE261F6CE4FAF57AE360667A0AFE32","same":true,"width":1536,"height":1024,"exit":1,"gate":"FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 7.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y348 1536×384 비율 4(규격 4) · 위 자름 59 · 좌우 자름 0/0","stem":"w12-a2-autumn-dusk-far","input":"w11-a2-autumn-dusk","batch":29,"id":"V06-91"}
+
+V06_META: {"source":"C:/Users/hansol/.codex/generated_images/01a0e6a4-d1b1-7212-9783-7ee3a4819356/exec-2921c1b2-99b0-4ee9-a4c5-c6db225d9f11.png","sha256":"45FBDF132E380F2E6CA8C3C8F024FF319BDE261F6CE4FAF57AE360667A0AFE32","same":true,"width":1536,"height":1024,"exit":1,"gate":"FAIL bg_far · canvas · 이미지 1536×1024 (틀 1536×1024) · S 6 (band) · 칸 격자 · 시트 블록 7.0 · 키 비율 - · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4 · 띠 x0 y348 1536×384 비율 4(규격 4) · 위 자름 59 · 좌우 자름 0/0","stem":"w12-a2-autumn-dusk-far","input":"w11-a2-autumn-dusk.png","batch":29,"id":"V06-91","review":"gate 실제 FAIL: fill 86.9%/99%, 안내색 0, 격자 밖 0. 육안상 가까운 소나무·이정표·줄다리·절벽 전경·길·대형 광산 구조물 제거 및 노을 산·먼 숲·안개의 띠 전체 채움 확인. 보라색 원경의 키색 분류 영향으로 추정되며 차후 색·키 마스크 보정 전제 수용. 원본 정적 화소·먼 창 불빛·안개 띠 정합도 차후 보정."}

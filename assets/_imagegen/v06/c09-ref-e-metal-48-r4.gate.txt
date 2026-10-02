@@ -1,0 +1,37 @@
+pnpm art:gate assets/_imagegen/v06/c09-ref-e-metal-48-r4.png --spec chr_actions_b --no-canvas --rows cheer,collapse
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c09-ref-e-metal-48-r4.png" "--spec" "chr_actions_b" "--no-canvas" "--rows" "cheer collapse"
+
+chr_actions_b: 행 0 cheer collapse의 프레임 수가 없다(계열 character의 동작 목록에도 없다)
+ ELIFECYCLE  Command failed with exit code 2.
+Exit code: 2
+
+--- Corrected invocation: --rows is one quoted comma-separated argument ---
+pnpm art:gate assets/_imagegen/v06/c09-ref-e-metal-48-r4.png --spec chr_actions_b --no-canvas --rows 'cheer,collapse'
+
+> tap-rpg@ art:gate E:\AI_work\Tap_rpg
+> tsx tools/art-check/src/cli.ts gate "assets/_imagegen/v06/c09-ref-e-metal-48-r4.png" "--spec" "chr_actions_b" "--no-canvas" "--rows" "cheer,collapse"
+
+assets/_imagegen/v06/c09-ref-e-metal-48-r4.png
+PASS chr_actions_b · no-canvas · 이미지 2171×724 (틀 1536×1024) · S 7.54 (cell_ratio) · 칸 격자 · 시트 블록 9.1 · 키 비율 0.980 · 배경 100.0% · 안내색 0 · 격자 밖 0 · 경고 4
+  칸      동작              화소     바닥Δ 틀Δ  중심Δ  키(기준)      블록  반투명  판정
+  (0,0)   cheer 1             37119     0    -  -0.5  33.4(-)        9.1   0.0%  ok (경고 block)
+  (1,0)   cheer 2             37998     1    -  -0.9  39.1(40)       9.2   0.0%  ok (경고 block)
+  (2,0)   cheer 3             39170     0    -  -1.7  38.6(40)       9.1   0.0%  ok (경고 block)
+  (3,0)   cheer 4             38329     0    -   0.0  35.4(40)       9.3   0.0%  ok (경고 block)
+  (0,1)   collapse 1          46148     0    -   0.5  39.8(40)       8.9   0.0%  ok (경고 block)
+  (1,1)   collapse 2          39012     0    -   0.9  33.8(-)        9.1   0.0%  ok (경고 block)
+  (2,1)   collapse 3          42168     0    -   1.7  30.9(-)        8.9   0.0%  ok (경고 block)
+  (3,1)   collapse 4          34473     0    -     -  17.4(-)        6.1   0.0%  ok (경고 bbox,block)
+  (4,1)   collapse 5          34609     0    -     -  17.4(-)        6.2   0.0%  ok (경고 bbox,block)
+
+Warnings (normalization fixes these; not sent to the generator):
+- Cell (3,1) "collapse 4": crosses the equal-grid cell boundary (right 0.3 blocks).
+- Cell (4,1) "collapse 5": crosses the equal-grid cell boundary (right 1.1 blocks).
+- Drawn pixel blocks are 6.1-9.3 image px in 9 cells, not 7.5 (one logical pixel); normalization resamples.
+- Background is not exactly #FF00FF: 100% of background pixels differ (mean #FA03F9), all within the key tolerance; keying removes them.
+
+Regeneration feedback:
+The delivery matches the chr_actions_b template. No regeneration needed.
+Exit code: 0
